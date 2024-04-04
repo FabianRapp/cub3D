@@ -7,3 +7,7 @@ MLX42
 */*.a
 */*/*.a
 .vscode
+MLX42.h
+x/*
+fdf
+

@@ -1,9 +1,20 @@
 CC= cc
 CFLAGS=
 
+
+
+INCLUDES=-I./includes -I./MLX42/include/MLX42
 MLX=MLX42/build/libmlx42.a
-MLX_INC= $(MLX) -Iinclude -ldl -lglfw -pthread -lm -I MLX42/include/MLX42
-INCLUDES= $(MLX_INC) -I headers
+MLX_FLAGS_LINUX=-Iinclude -ldl -lglfw -pthread -lm
+MLX_FLAGS_MAC= -framework Cocoa $(MLX) -framework OpenGL -framework IOKit -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
+MLX_FLAGS_LINUX =-I MLX42/include/MLX42 $(MLX) -Iinclude -ldl -lglfw -pthread -lm
+OS := $(shell uname)
+ifeq ($(OS), Darwin)
+	MLX_FLAGS = $(MLX_FLAGS_MAC)
+else
+	MLX_FLAGS = $(MLX_FLAGS_LINUX)
+endif
+
 
 NAME=cub3D
 SOURCES= \
@@ -19,11 +30,11 @@ CLEAR	=	\033[0m
 .PHONY: clone_mlx42 all clean fclean ffclean
 
 all: mlx $(OBJECTS)
-	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJECTS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJECTS) $(INCLUDES) -o $(NAME) $(MLX_FLAGS)
 	@echo "$(GREEN)$(NAME) compiled!$(CLEAR)"
 
 %.o: %.c mlx
-	$(CC) $(CFLAGS) $(INCLUDES)  -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
 
 clean:
 	@rm -f $(OBJECTS)
@@ -43,9 +54,7 @@ rre: ffclean all
 
 mlx: clone_mlx
 	@if [ ! -e $(MLX) ]; then \
-		cd MLX42; \
-		cmake -B build; \
-		cmake --build build -j4; \
+		cd MLX42 && cmake -B build && cmake --build build -j4; \
 		echo "$(GREEN) lib_MLX compiled!$(CLEAR)"; \
 	fi
 

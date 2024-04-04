@@ -6,13 +6,16 @@
 /*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/04 15:08:58 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/04 15:53:42 by fabian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include <cub3D.h>
+#include <MLX42.h>
 
 int	main(void)
 {
 	printf("hi\n");
+	mlx_set_setting(MLX_MAXIMIZED, true);
+	return (0);
 }

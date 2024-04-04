@@ -6,9 +6,14 @@
 /*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/04 15:13:12 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/04 15:47:22 by fabian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "MLX42.h"
+#ifndef CUB3D_H
+# define CUB3D_H
+
+# include <stdio.h>
+# include <MLX42.h>
+
+#endif
