@@ -1,7 +1,5 @@
 CC= cc
-CFLAGS=
-
-
+CFLAGS= -Wextra -Wall -Werror
 
 INCLUDES=-I./includes -I./MLX42/include/MLX42
 MLX=MLX42/build/libmlx42.a
@@ -17,8 +15,9 @@ endif
 
 
 NAME=cub3D
+MAIN= main.c
 SOURCES= \
-	main.c
+	utils/fps.c
 
 OBJECTS=$(SOURCES:.c=.o)
 
@@ -29,6 +28,7 @@ CLEAR	=	\033[0m
 
 .PHONY: clone_mlx42 all clean fclean ffclean
 
+all: SOURCES += main.c
 all: mlx $(OBJECTS)
 	@$(CC) $(CFLAGS) $(OBJECTS) $(INCLUDES) -o $(NAME) $(MLX_FLAGS)
 	@echo "$(GREEN)$(NAME) compiled!$(CLEAR)"
@@ -36,6 +36,7 @@ all: mlx $(OBJECTS)
 %.o: %.c mlx
 	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
 
+clean: SOURCES += main.c
 clean:
 	@rm -f $(OBJECTS)
 	@echo "$(CYAN)object files cleaned$(CLEAR)"
@@ -63,3 +64,5 @@ clone_mlx:
 		git clone https://github.com/codam-coding-college/MLX42.git; \
 	fi
 
+testing: $(OBJECTS)
+	cc $(OBJECTS) testing.c $(INCLUDES)
