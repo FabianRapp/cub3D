@@ -6,11 +6,25 @@
 /*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:30:36 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/04 19:01:22 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/05 14:50:06 by fabian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
+
+
+	// t_fixed	fixed_nb;
+	// float	float_nb;
+
+	// float_nb = -55.123123;
+	// fixed_nb = float_to_fixed(float_nb);
+	// printf("float: %f\n", float_nb);
+	// printf("expected fixed with * 1024: %d\n", (int)(float_nb * 1024));
+	// printf("actual fixed: %d\n", fixed_nb);
+	// printf("ideal fixed: %d\n", (int)(float_nb * 1000));
+	// float_nb = fixed_to_float(fixed_nb);
+	// printf("float after: %f\n", float_nb);
+
 
 // needs to be called once during init and then when ever needed
 struct s_fps_textures	get_fps_digit_texture(void)

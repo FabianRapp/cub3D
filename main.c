@@ -6,7 +6,7 @@
 /*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/04 19:00:43 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/05 15:34:17 by fabian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static void ft_error(void)
 	fprintf(stderr, "%s", mlx_strerror(mlx_errno));
 	exit(EXIT_FAILURE);
 }
-
 
 // Print the window width and height.
 static void ft_hook(void* param)

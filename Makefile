@@ -1,6 +1,6 @@
 CC= cc
-CFLAGS= -Wextra -Wall -Werror
-
+CFLAGS=  -O3
+#-Wextra -Wall -Werror
 INCLUDES=-I./includes -I./MLX42/include/MLX42
 MLX=MLX42/build/libmlx42.a
 MLX_FLAGS_LINUX=-Iinclude -ldl -lglfw -pthread -lm
@@ -17,9 +17,11 @@ endif
 NAME=cub3D
 MAIN= main.c
 SOURCES= \
-	utils/fps.c
+	utils/fps.c \
+	utils/fixed_point/fixed_point_float_conv.c
 
 OBJECTS=$(SOURCES:.c=.o)
+MAIN_OB=$(MAIN:.c=.o)
 
 GREEN	=	\033[0;32m
 YELLOW	=	\033[33m
@@ -28,14 +30,15 @@ CLEAR	=	\033[0m
 
 .PHONY: clone_mlx42 all clean fclean ffclean
 
-all: SOURCES += main.c
-all: mlx $(OBJECTS)
+all: SOURCES += $(MAIN)
+all: mlx $(OBJECTS) $(MAIN_OB)
 	@$(CC) $(CFLAGS) $(OBJECTS) $(INCLUDES) -o $(NAME) $(MLX_FLAGS)
 	@echo "$(GREEN)$(NAME) compiled!$(CLEAR)"
 
 %.o: %.c mlx
-	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
+	@$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
 
+#clean: OBJECTS += MAIN_OB
 clean: SOURCES += main.c
 clean:
 	@rm -f $(OBJECTS)
@@ -64,5 +67,8 @@ clone_mlx:
 		git clone https://github.com/codam-coding-college/MLX42.git; \
 	fi
 
-testing: $(OBJECTS)
-	cc $(OBJECTS) testing.c $(INCLUDES)
+testing: SOURCES += testing.c
+testing: mlx $(OBJECTS) testing.o
+	@$(CC) $(CFLAGS) $(OBJECTS) $(INCLUDES) $(MLX_FLAGS)
+	@echo "$(GREEN) testing compiled!$(CLEAR)"
+

@@ -1,71 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fixed_point_float_conv.c                           :+:      :+:    :+:   */
+/*   s_split_float.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 18:26:50 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/04 19:03:48 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/04 19:50:51 by fabian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 
-struct fixed_point_float_conv
+inline t_fixed	float_to_fixed(float nb)
 {
-	unsigned	sign:1;
-	unsigned	expo:8;
-	unsigned	fraction:23;
-};
+	return ((t_fixed)(nb * F_FIXED_MULTI));
+}
 
-struct fixed_point_double_conv
+inline t_fixed	int_to_fixed(int nb)
 {
-	unsigned	sign:1;
-	unsigned	expo:11;
-	unsigned	fraction:52;
-};
-
-t_fixed	float_to_fixed(float nb)
-{
-	struct fixed_point_float_conv	*conv;
-
-	conv = (struct fixed_point_float_conv *)&nb;
-	conv->expo << 10;
-	return (nb);
+	return (nb << FRACTION_BITS);
 }
 
 float	fixed_to_float(t_fixed nb)
 {
-	struct fixed_point_float_conv	*conv;
-	conv = (struct fixed_point_float_conv *)&nb;
-	conv->expo >> 10;
-	return (nb);
-}
-
-t_fixed	dobule_to_fixed(double nb)
-{
-	struct fixed_point_double_conv	*conv;
-
-	conv = (struct fixed_point_double_conv *)&nb;
-	conv->expo << 10;
-	return (nb);
-}
-
-float	fixed_to_double(t_fixed nb)
-{
-	struct fixed_point_double_conv	*conv;
-	conv = (struct fixed_point_double_conv *)&nb;
-	conv->expo >> 10;
-	return (nb);
-}
-
-t_fixed	int_to_fixed(int nb)
-{
-	return (nb << 10);
+	return (((float)nb) / F_FIXED_MULTI);
 }
 
 int	fixed_to_int(t_fixed nb)
 {
-	return (nb >> 10);
+	return (nb >> FRACTION_BITS);
+}
+
+inline t_fixed	fixed_mult(t_fixed a, t_fixed b)
+{
+	return (t_fixed)(((int64_t)a * (int64_t)b) >> FRACTION_BITS);
+}
+
+// for performence reason abc(a) with a huge value is not supported
+inline t_fixed	fixed_dev(t_fixed a, t_fixed b)
+{
+	if (b)
+		return ((a << FRACTION_BITS) / b);
+	return (INT_MAX);
+}
+
+inline t_fixed	fixed_2dlerp(t_fixed point_a, t_fixed point_b, t_fixed progress)
+{
+	return (point_a + fixed_mult(point_b - point_a, progress));
 }
