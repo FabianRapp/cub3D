@@ -21,7 +21,7 @@ SRCS	=	ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 			get_next_line_utils.c get_next_line.c ft_printf.c ft_printf_handle_c.c \
 			ft_printf_handle_di.c ft_printf_handle_u.c ft_printf_handle_p.c \
 			ft_printf_handle_percent.c ft_printf_handle_s.c ft_printf_handle_x.c \
-			ft_printf_handle_xx.c ft_expo.c ft_realloc_copy_until_zeroed.c \
+			ft_printf_handle_xx.c ft_powint.c ft_realloc_copy_until_zeroed.c \
 			ft_strarr_size.c ft_free_2darr.c ft_strjoin_free_s1.c ft_strjoin_free_both.c \
 			ft_split_wildcards.c ft_split_fn.c ft_iswhitespace.c
 

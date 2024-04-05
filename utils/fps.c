@@ -6,7 +6,7 @@
 /*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:30:36 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/05 23:29:17 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/05 23:49:16 by fabian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ mlx_image_t	*display_digit(mlx_t *mlx, int digit, mlx_instance_t instance)
 		digit_im = mlx_texture_to_image(mlx, digits.eight);
 	else if (digit == 9)
 		digit_im = mlx_texture_to_image(mlx, digits.nine);
-
 	mlx_image_to_window(mlx, digit_im, instance.x, instance.y);
 	mlx_set_instance_depth(digit_im->instances, instance.z);
 	// free(digit_im->instances);
@@ -145,9 +144,8 @@ void	display_fps(mlx_t *mlx, int fps, mlx_instance_t instance, int i)
 	digit_count = ft_u_nb_len(fps);
 	digit_width = mlx->width / digit_count / 10;
 	digit_hight = mlx->height / digit_count / 10;
-	if (instance.enabled == false)
+	if (!i)
 	{
-		i = 0;
 		while (digit_imges[i])
 		{
 			mlx_delete_image(mlx, digit_imges[i]);
@@ -155,21 +153,17 @@ void	display_fps(mlx_t *mlx, int fps, mlx_instance_t instance, int i)
 			i++;
 		}
 		i = 0;
-		//disable
-		instance.enabled = true;
 		// printf("digit width: %d\ndigit height: %d\n", digit_width, digit_hight);
 		instance.x = mlx->width - (digit_width * digit_count);//digit_width;
 		instance.y = digit_hight / 2;//digit_hight;
 		instance.z = HIGHEST_IMG_DEPTH;
 	}
-	else
-	{
-		instance.x -= digit_width;
-		instance.z--;
-	}
-	print_instance(&instance);
-	display_fps(mlx, fps / 10, instance, i + 1);
-	digit_imges[i] = display_digit(mlx, fps % 10, instance);
+	//print_instance(&instance);
+
+	digit_imges[i++] = display_digit(mlx, fps % 10, instance);
+	instance.x -= digit_width;
+	instance.z--;
+	display_fps(mlx, fps / 10, instance, i);
 }
 
 void	display_fps_hook(void *param)

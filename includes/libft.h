@@ -6,7 +6,7 @@
 /*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 22:22:26 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/05 22:33:11 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/06 00:21:31 by fabian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
-int		ft_expo(int base, int expo);
+int		ft_powint(int base, int expo);
 // char	*get_next_line(int fd);
 char	*get_next_line(int fd, bool cleanup);
 

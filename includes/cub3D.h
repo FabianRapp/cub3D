@@ -6,12 +6,21 @@
 /*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/05 23:26:53 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/06 01:10:54 by fabian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
+
+/*
+/todo:
+	- init postion
+	- add basic button input to change postion
+
+
+*/
+
 
 # include <stdio.h>
 # include <MLX42.h>
@@ -31,7 +40,9 @@
 
 */
 typedef int64_t	t_fixed;
-
+#define X 0
+#define Y 1
+#define Z 2
 #define HIGHEST_IMG_DEPTH 30	//?? somehow big numbers add a huge delay from the mlx lib
 								// HIGHEST_IMG_DEPTH to HIGHEST_IMG_DEPTH-4: fps_counter
 # define LOWEST_IMG_DEPTH 0
@@ -46,6 +57,12 @@ int			fixed_to_int(t_fixed nb);
 t_fixed		fixed_dev(t_fixed a, t_fixed b);
 t_fixed		fixed_mult(t_fixed a, t_fixed b);
 t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
+
+typedef struct s_cub
+{
+	int		pos[3];
+	mlx_t	*mlx;
+}	t_cub;
 
 struct s_fps_textures
 {

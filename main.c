@@ -6,7 +6,7 @@
 /*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/05 22:30:11 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/06 01:09:03 by fabian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,28 +54,83 @@ bool	init(void)
 }
 
 
+
+void	circular_mask(mlx_image_t *img)
+{
+	uint32_t	*casted_pixels;
+	int			radius;
+	int			radius_sq;
+	int			x;
+	int			y;
+	int			center[2];
+	int			y_sq;
+
+	if (!img || !img->width || !img->height || !img->pixels)
+		return ;
+	if (img->width < img->height)
+		radius = img->width / 2;
+	else
+		radius = img->height / 2;
+	center[X] = img->width / 2;
+	center[Y] = img->height / 2;
+	y = 0;
+	casted_pixels = (uint32_t*) (img->pixels);
+	radius_sq = ft_powint(radius, 2);
+	while (y < img->height)
+	{
+		x = 0;
+		y_sq = ft_powint(y - center[Y], 2);
+		while (x < img->width)
+		{
+			if (y_sq + ft_powint(x - center[X], 2) > radius_sq)
+			{
+				casted_pixels[x + y * img->width] &= 0x00111111; //correct for this pixel format
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
+mlx_image_t	*first_ob_ball(mlx_t *mlx)
+{
+	mlx_texture_t	*texture;
+	mlx_image_t		*img;
+
+	texture = mlx_load_png("textures/brick_wall/BricksReclaimedWhitewashedOffset001_COL_1K_METALNESS.png");
+	img = mlx_texture_to_image(mlx, texture);
+	mlx_resize_image(img, 400, 400);
+	circular_mask(img);
+	mlx_image_to_window(mlx, img, 0, 0);
+	mlx_set_instance_depth(img->instances, 0);
+	return (img);
+}
+
 int32_t	main(void)
 {
+	mlx_image_t	*ob;
+	t_cub		cub;
+
 	if (!init())
 		return (1);
-
-
 	// MLX allows you to define its core behaviour before startup.
 	mlx_set_setting(0, true);
-	mlx_t* mlx = mlx_init(WIDTH, HEIGHT, "test", true);
-	if (!mlx)
+	cub.mlx = mlx_init(WIDTH, HEIGHT, "test", true);
+	if (!cub.mlx)
 		ft_error();
 
 	// Create and display the image.
-	mlx_image_t* img = mlx_new_image(mlx, WIDTH, HEIGHT);
-	if (!img || (mlx_image_to_window(mlx, img, 0, 0) < 0))
+	mlx_image_t* img = mlx_new_image(cub.mlx, WIDTH, HEIGHT);
+	if (!img || (mlx_image_to_window(cub.mlx, img, 0, 0) < 0))
 		ft_error();
+	mlx_set_instance_depth(img->instances, 1);
+	first_ob_ball(cub.mlx);
 	// Register a hook and pass mlx as an optional param.
 	// NOTE: Do this before calling mlx_loop!
-	mlx_loop_hook(mlx, ft_hook, img);
-	mlx_loop_hook(mlx, display_fps_hook, mlx);
-	mlx_loop(mlx);
-	mlx_terminate(mlx);
+	mlx_loop_hook(cub.mlx, ft_hook, img);
+	mlx_loop_hook(cub.mlx, display_fps_hook, cub.mlx);
+	mlx_loop(cub.mlx);
+	mlx_terminate(cub.mlx);
 	return (EXIT_SUCCESS);
 }
 
