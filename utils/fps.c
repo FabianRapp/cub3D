@@ -6,30 +6,34 @@
 /*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:30:36 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/05 14:50:06 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/05 23:29:17 by fabian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 
-
-	// t_fixed	fixed_nb;
-	// float	float_nb;
-
-	// float_nb = -55.123123;
-	// fixed_nb = float_to_fixed(float_nb);
-	// printf("float: %f\n", float_nb);
-	// printf("expected fixed with * 1024: %d\n", (int)(float_nb * 1024));
-	// printf("actual fixed: %d\n", fixed_nb);
-	// printf("ideal fixed: %d\n", (int)(float_nb * 1000));
-	// float_nb = fixed_to_float(fixed_nb);
-	// printf("float after: %f\n", float_nb);
-
+void	print_instance(mlx_instance_t *instance)
+{
+	printf("--------------Instance---------------\n");
+	if (!instance)
+	{
+		printf("no instance!!\n");
+		return ;
+	}
+	printf("x: %d\n", instance->x);
+	printf("y: %d\n", instance->y);
+	printf("z: %d\n", instance->z);
+	if (instance->enabled)
+		printf("enabled\n");
+	else
+		printf("disabled\n");
+	printf("-------------------------------------\n");
+}
 
 // needs to be called once during init and then when ever needed
 struct s_fps_textures	get_fps_digit_texture(void)
 {
-	static struct s_fps_textures	fps_digits_textures = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	static struct s_fps_textures	fps_digits_textures = {0};
 
 	if (fps_digits_textures.zero)
 		return (fps_digits_textures);
@@ -43,7 +47,6 @@ struct s_fps_textures	get_fps_digit_texture(void)
 	fps_digits_textures.seven = mlx_load_png("pngs/fps_counter/7.png");
 	fps_digits_textures.eight = mlx_load_png("pngs/fps_counter/8.png");
 	fps_digits_textures.nine = mlx_load_png("pngs/fps_counter/9.png");
-	fps_digits_textures.dot = mlx_load_png("pngs/fps_counter/dot.png");
 	return (fps_digits_textures);
 }
 
@@ -75,30 +78,119 @@ void	free_fps_digit_textures(void)
 		mlx_delete_texture(fps_digits_textures.eight);
 	if (fps_digits_textures.nine)
 		mlx_delete_texture(fps_digits_textures.nine);
-	if (fps_digits_textures.dot)
-		mlx_delete_texture(fps_digits_textures.dot);
+}
+
+mlx_image_t	*display_digit(mlx_t *mlx, int digit, mlx_instance_t instance)
+{
+
+	static struct s_fps_textures	digits = {0};
+	mlx_image_t						*digit_im;
+
+	if (!digits.zero)
+		digits = get_fps_digit_texture();
+	if (digit == 0)
+		digit_im = mlx_texture_to_image(mlx, digits.zero);
+	else if (digit == 1)
+		digit_im = mlx_texture_to_image(mlx, digits.one);
+	else if (digit == 2)
+		digit_im = mlx_texture_to_image(mlx, digits.two);
+	else if (digit == 3)
+		digit_im = mlx_texture_to_image(mlx, digits.three);
+	else if (digit == 4)
+		digit_im = mlx_texture_to_image(mlx, digits.four);
+	else if (digit == 5)
+		digit_im = mlx_texture_to_image(mlx, digits.five);
+	else if (digit == 6)
+		digit_im = mlx_texture_to_image(mlx, digits.six);
+	else if (digit == 7)
+		digit_im = mlx_texture_to_image(mlx, digits.seven);
+	else if (digit == 8)
+		digit_im = mlx_texture_to_image(mlx, digits.eight);
+	else if (digit == 9)
+		digit_im = mlx_texture_to_image(mlx, digits.nine);
+
+	mlx_image_to_window(mlx, digit_im, instance.x, instance.y);
+	mlx_set_instance_depth(digit_im->instances, instance.z);
+	// free(digit_im->instances);
+	// digit_im->instances = NULL;
+	// digit_im->instances = ft_memdup(&instance, sizeof(instance));
+	// *(digit_im->instances) = instance;
+	return (digit_im);
+}
+
+int	ft_u_nb_len(unsigned nb)
+{
+	int count;
+
+	if (!nb)
+		return (1);
+	count = 0;
+	while (nb)
+	{
+		nb /= 10;
+		count++;
+	}
+	return (count);
+}
+
+void	display_fps(mlx_t *mlx, int fps, mlx_instance_t instance, int i)
+{
+	int								digit_count;
+	int								digit_width;
+	int								digit_hight;
+	static mlx_image_t				*digit_imges[1024] = {NULL};
+
+	if (!fps || i >= 1024)
+		return ;
+	digit_count = ft_u_nb_len(fps);
+	digit_width = mlx->width / digit_count / 10;
+	digit_hight = mlx->height / digit_count / 10;
+	if (instance.enabled == false)
+	{
+		i = 0;
+		while (digit_imges[i])
+		{
+			mlx_delete_image(mlx, digit_imges[i]);
+			digit_imges[i] = NULL;
+			i++;
+		}
+		i = 0;
+		//disable
+		instance.enabled = true;
+		// printf("digit width: %d\ndigit height: %d\n", digit_width, digit_hight);
+		instance.x = mlx->width - (digit_width * digit_count);//digit_width;
+		instance.y = digit_hight / 2;//digit_hight;
+		instance.z = HIGHEST_IMG_DEPTH;
+	}
+	else
+	{
+		instance.x -= digit_width;
+		instance.z--;
+	}
+	print_instance(&instance);
+	display_fps(mlx, fps / 10, instance, i + 1);
+	digit_imges[i] = display_digit(mlx, fps % 10, instance);
 }
 
 void	display_fps_hook(void *param)
 {
-	static double	sum_delta_time = 0.001f;
-	static int16_t	frames = 0;
-	mlx_t			*mlx;
+	static double				sum_delta_time = 0.001f;
+	static int16_t				frames = 0;
+	mlx_t						*mlx;
+	int							fps;
+	static const mlx_instance_t	instance = {-1, -1, -1, false};
 
 	mlx = param;
 	sum_delta_time += mlx->delta_time;
 	frames++;
-	if (sum_delta_time > 1)
+	if (sum_delta_time > 0.3)
 	{
-		printf("fps: %.2f\n", frames / sum_delta_time);
+		fps = (int)(frames / sum_delta_time);
+		display_fps(mlx, fps, instance, 0);
+		printf("%d\n", fps);
 		sum_delta_time = 0.001f;
 		frames = 0;
 	}
 
-	struct s_fps_textures digits = get_fps_digit_texture();
-	mlx_image_t *digit_im = mlx_texture_to_image(mlx, digits.one);
-	if (!digit_im || (mlx_image_to_window(mlx, digit_im, 0, 0) < 0))
-	{
-		//error
-	}
+
 }

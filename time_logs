@@ -4,6 +4,7 @@ int the end the return value is converted to the correct return value
 (to reduce factors each test was compiled at it's own, the last col is
 the runtime of the programms test in microsec)
 --------------------------------------------------------
+this first 'field' of entries might be more off duo to bad logging
 1-5 opperations + conversion for each loop iteration for 20000000 loop iterations
 fixed subtraction (float - float): 95944
 fixed subtraction (float - float): 97017

@@ -1,6 +1,7 @@
 CC= cc
 CFLAGS=  -O3
 #-Wextra -Wall -Werror
+LIBFT 	=	libft/libft.a
 INCLUDES=-I./includes -I./MLX42/include/MLX42
 MLX=MLX42/build/libmlx42.a
 MLX_FLAGS_LINUX=-Iinclude -ldl -lglfw -pthread -lm
@@ -32,7 +33,8 @@ CLEAR	=	\033[0m
 
 all: SOURCES += $(MAIN)
 all: mlx $(OBJECTS) $(MAIN_OB)
-	@$(CC) $(CFLAGS) $(OBJECTS) $(INCLUDES) -o $(NAME) $(MLX_FLAGS)
+	@cd libft && make
+	@$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) $(INCLUDES) -o $(NAME) $(MLX_FLAGS)
 	@echo "$(GREEN)$(NAME) compiled!$(CLEAR)"
 
 %.o: %.c mlx

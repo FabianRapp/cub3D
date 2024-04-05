@@ -19,7 +19,7 @@ inline t_fixed	float_to_fixed(float nb)
 
 inline t_fixed	int_to_fixed(int nb)
 {
-	return (nb << FRACTION_BITS);
+	return (((t_fixed)nb) << FRACTION_BITS);
 }
 
 float	fixed_to_float(t_fixed nb)
@@ -34,10 +34,9 @@ int	fixed_to_int(t_fixed nb)
 
 inline t_fixed	fixed_mult(t_fixed a, t_fixed b)
 {
-	return (t_fixed)(((int64_t)a * (int64_t)b) >> FRACTION_BITS);
+	return (t_fixed)((a * b) >> FRACTION_BITS);
 }
 
-// for performence reason abc(a) with a huge value is not supported
 inline t_fixed	fixed_dev(t_fixed a, t_fixed b)
 {
 	if (b)
@@ -45,7 +44,7 @@ inline t_fixed	fixed_dev(t_fixed a, t_fixed b)
 	return (INT_MAX);
 }
 
-inline t_fixed	fixed_2dlerp(t_fixed point_a, t_fixed point_b, t_fixed progress)
+inline t_fixed	fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress)
 {
 	return (point_a + fixed_mult(point_b - point_a, progress));
 }

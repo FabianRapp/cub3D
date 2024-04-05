@@ -6,13 +6,12 @@
 /*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/05 15:34:17 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/05 22:30:11 by fabian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 #include <MLX42.h>
-
 
 #define WIDTH 1024
 #define HEIGHT 1024
@@ -66,8 +65,6 @@ int32_t	main(void)
 	mlx_t* mlx = mlx_init(WIDTH, HEIGHT, "test", true);
 	if (!mlx)
 		ft_error();
-
-	/* Do stuff */
 
 	// Create and display the image.
 	mlx_image_t* img = mlx_new_image(mlx, WIDTH, HEIGHT);

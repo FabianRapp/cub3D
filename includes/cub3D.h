@@ -6,7 +6,7 @@
 /*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/05 20:49:43 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/05 23:26:53 by fabian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdbool.h>
 # include <math.h>
 # include <limits.h>
+# include <libft.h>
 
 /*
 	inlining these functions helps alot with performence!
@@ -29,10 +30,14 @@
 	-performce logs in "time_logs"
 
 */
-typedef int32_t	t_fixed;
+typedef int64_t	t_fixed;
 
-#define FRACTION_BITS 10
-#define F_FIXED_MULTI 1024
+#define HIGHEST_IMG_DEPTH 30	//?? somehow big numbers add a huge delay from the mlx lib
+								// HIGHEST_IMG_DEPTH to HIGHEST_IMG_DEPTH-4: fps_counter
+# define LOWEST_IMG_DEPTH 0
+
+#define FRACTION_BITS 32
+#define F_FIXED_MULTI 4294967296
 
 t_fixed		float_to_fixed(float nb);
 t_fixed		int_to_fixed(int nb);
@@ -40,7 +45,7 @@ float		fixed_to_float(t_fixed nb);
 int			fixed_to_int(t_fixed nb);
 t_fixed		fixed_dev(t_fixed a, t_fixed b);
 t_fixed		fixed_mult(t_fixed a, t_fixed b);
-t_fixed		fixed_2dlerp(t_fixed point_a, t_fixed point_b, t_fixed progress);
+t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 
 struct s_fps_textures
 {
@@ -54,7 +59,6 @@ struct s_fps_textures
 	mlx_texture_t	*seven;
 	mlx_texture_t	*eight;
 	mlx_texture_t	*nine;
-	mlx_texture_t	*dot;
 };
 
 

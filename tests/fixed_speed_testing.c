@@ -428,8 +428,6 @@ float fixed_linear_comb_test_fn(float a, float b)
 	return fixed_to_float1(fe);
 }
 
-
-
 int64_t	ff_test_loop(float f(float, float), char *timer_msg, int64_t time_sofar)
 {
 	struct timeval	start_time;
@@ -471,8 +469,6 @@ int main(void)
 {
 	int64_t	total_float_time = 0;
 	int64_t	total_fixed_time = 0;
-
-
 
 	//subraction (float - float)
 	//total_float_time = ff_test_loop(fixed_test_subtraction, "fixed subtraction (float - float)", total_float_time);
