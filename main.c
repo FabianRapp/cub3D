@@ -6,7 +6,7 @@
 /*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/06 01:09:03 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/06 01:20:15 by fabian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ mlx_image_t	*first_ob_ball(mlx_t *mlx)
 	circular_mask(img);
 	mlx_image_to_window(mlx, img, 0, 0);
 	mlx_set_instance_depth(img->instances, 0);
+	img->
 	return (img);
 }
 
