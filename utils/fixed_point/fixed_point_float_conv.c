@@ -22,12 +22,12 @@ inline t_fixed	int_to_fixed(int nb)
 	return (((t_fixed)nb) << FRACTION_BITS);
 }
 
-float	fixed_to_float(t_fixed nb)
+inline float	fixed_to_float(t_fixed nb)
 {
 	return (((float)nb) / F_FIXED_MULTI);
 }
 
-int	fixed_to_int(t_fixed nb)
+inline int	fixed_to_int(t_fixed nb)
 {
 	return (nb >> FRACTION_BITS);
 }

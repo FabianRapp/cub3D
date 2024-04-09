@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/06 01:20:15 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/09 19:44:38 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ bool	init(void)
 	get_fps_digit_texture();
 	return (true);
 }
-
-
 
 void	circular_mask(mlx_image_t *img)
 {
@@ -103,7 +101,7 @@ mlx_image_t	*first_ob_ball(mlx_t *mlx)
 	circular_mask(img);
 	mlx_image_to_window(mlx, img, 0, 0);
 	mlx_set_instance_depth(img->instances, 0);
-	img->
+	//img->
 	return (img);
 }
 

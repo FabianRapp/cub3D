@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/06 01:10:54 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/09 19:58:04 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 	-performce logs in "time_logs"
 
 */
-typedef int64_t	t_fixed;
+
 #define X 0
 #define Y 1
 #define Z 2
@@ -47,9 +47,10 @@ typedef int64_t	t_fixed;
 								// HIGHEST_IMG_DEPTH to HIGHEST_IMG_DEPTH-4: fps_counter
 # define LOWEST_IMG_DEPTH 0
 
+
+typedef int64_t	t_fixed;
 #define FRACTION_BITS 32
 #define F_FIXED_MULTI 4294967296
-
 t_fixed		float_to_fixed(float nb);
 t_fixed		int_to_fixed(int nb);
 float		fixed_to_float(t_fixed nb);

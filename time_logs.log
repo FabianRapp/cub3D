@@ -1,0 +1,50 @@
+in each loop iterations a function is called that exectutes certain opperations
+for the fixed point calles the given values are first converted to fixed and
+int the end the return value is converted to the correct return value
+(to reduce factors each test was compiled at it's own, the last col is
+the runtime of the programms test in microsec)
+--------------------------------------------------------
+this first 'field' of entries might be more off duo to bad logging
+1-5 opperations + conversion for each loop iteration for 20000000 loop iterations
+fixed subtraction (float - float): 95944
+fixed subtraction (float - float): 97017
+float subtraction (float - float): 89442
+float subtraction (float - float): 90233
+fixed additon (float + float): 91845
+fixed additon (float + float): 93413
+float additon (float + float): 89326
+float additon (float + float): 89536
+fixed multiplication (float * float): 89669
+fixed multiplication (float * float): 88531
+float multiplication (float  * float): 92199
+float multiplication (float * float): 93126
+fixed devision (float / float): 90350
+fixed devision (float / float): 89685
+float devision (float / float): 205589
+float devision (float / float): 229360
+====================================
+20 opperations + conversion for each loop iteration for 20000000 loop iterations
+fixed subtraction (float - float): 130485
+fixed subtraction (float - float): 135745
+float subtraction (float - float): 156982
+float subtraction (float - float): 159210
+fixed additon (float + float): 93173
+fixed additon (float + float): 91381
+float additon (float + float): 159535
+float additon (float + float): 158616
+fixed multiplication (float * float): 84677
+fixed multiplication (float * float): 80023
+float multiplication (float * float): 145658
+float multiplication (float * float): 164885
+fixed devision (float / float): 87605
+fixed devision (float / float): 89751
+float devision (float / float): 2359145
+float devision (float / float): 2365569
+fixed devision (float / int): 89548
+fixed devision (float / int): 89064
+float devision (float / int): 587675
+float devision (float / int): 592838
+fixed additon (float / int): 90570
+fixed additon (float / int): 89450
+float additon (float / int): 159084
+float additon (float / int): 160677
