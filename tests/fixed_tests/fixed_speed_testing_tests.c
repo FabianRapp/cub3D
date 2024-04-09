@@ -64,9 +64,9 @@ struct timeval	timer(char *msg)
 
 void	log_diff(struct timeval diff, char *title)
 {
-	FILE *fd = fopen("time_logs", "a");
+	FILE *fd = fopen("time_logs.log", "a");
 	int64_t	micro_diff = diff.tv_sec * 1000000 + diff.tv_usec;
-	///fprintf(fd, "%s: %ld\n", title, micro_diff);
+	fprintf(fd, "%s: %ld\n", title, micro_diff);
 	printf("%s: %lld\n", title, micro_diff);
 	fclose(fd);
 }
