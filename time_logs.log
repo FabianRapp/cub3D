@@ -1,0 +1,199 @@
+---------------------------------------
+04/09: 23:48
+-------------test 0-------------
+speed flags:
+total iterations: 4000000 with 20 calcs each
+not using inline
+fixed additon (float + float): 124401
+fixed additon (float + float): 124284
+float additon (float + float): 121027
+float additon (float + float): 121575
+fixed additon (float / int): 125351
+fixed additon (float / int): 123441
+float additon (float / int): 112819
+float additon (float / int): 113453
+fixed subtraction (float - float): 122321
+fixed subtraction (float - float): 123294
+float subtraction (float - float): 120469
+float subtraction (float - float): 119382
+fixed multiplication (float * float): 152441
+fixed multiplication (float * float): 149296
+float multiplication (float * float): 115594
+float multiplication (float * float): 115678
+fixed devision (float / float): 792525
+fixed devision (float / float): 789240
+float devision (float / float): 699950
+float devision (float / float): 701295
+fixed devision (float / int): 803271
+fixed devision (float / int): 821722
+float devision (float / int): 173095
+float devision (float / int): 175598
+-------------test 1-------------
+speed flags:
+total iterations: 4000000 with 20 calcs each
+using inline
+fixed additon (float + float): 113186
+fixed additon (float + float): 114892
+float additon (float + float): 115796
+float additon (float + float): 118153
+fixed additon (float / int): 113348
+fixed additon (float / int): 110670
+float additon (float / int): 112577
+float additon (float / int): 113805
+fixed subtraction (float - float): 115279
+fixed subtraction (float - float): 113659
+float subtraction (float - float): 118081
+float subtraction (float - float): 119293
+fixed multiplication (float * float): 185249
+fixed multiplication (float * float): 185092
+float multiplication (float * float): 116148
+float multiplication (float * float): 115822
+fixed devision (float / float): 947290
+fixed devision (float / float): 944827
+float devision (float / float): 689853
+float devision (float / float): 692431
+fixed devision (float / int): 798956
+fixed devision (float / int): 802324
+float devision (float / int): 181882
+float devision (float / int): 179091
+-------------test 2-------------
+speed flags: -march=native
+total iterations: 4000000 with 20 calcs each
+using inline
+fixed additon (float + float): 112457
+fixed additon (float + float): 112469
+float additon (float + float): 115194
+float additon (float + float): 116941
+fixed additon (float / int): 110917
+fixed additon (float / int): 109497
+float additon (float / int): 113626
+float additon (float / int): 112562
+fixed subtraction (float - float): 112434
+fixed subtraction (float - float): 112514
+float subtraction (float - float): 116027
+float subtraction (float - float): 118812
+fixed multiplication (float * float): 187636
+fixed multiplication (float * float): 190368
+float multiplication (float * float): 115776
+float multiplication (float * float): 115752
+fixed devision (float / float): 923426
+fixed devision (float / float): 940311
+float devision (float / float): 697327
+float devision (float / float): 684585
+fixed devision (float / int): 807647
+fixed devision (float / int): 801821
+float devision (float / int): 175477
+float devision (float / int): 174012
+-------------test 3-------------
+speed flags: -O3 -march=native
+total iterations: 4000000 with 20 calcs each
+not using inline
+fixed additon (float + float): 16849
+fixed additon (float + float): 16688
+float additon (float + float): 15798
+float additon (float + float): 16921
+fixed additon (float / int): 12209
+fixed additon (float / int): 12211
+float additon (float / int): 23232
+float additon (float / int): 24040
+fixed subtraction (float - float): 17423
+fixed subtraction (float - float): 17616
+float subtraction (float - float): 17030
+float subtraction (float - float): 17454
+fixed multiplication (float * float): 108038
+fixed multiplication (float * float): 108083
+float multiplication (float * float): 16970
+float multiplication (float * float): 16946
+fixed devision (float / float): 734935
+fixed devision (float / float): 730420
+float devision (float / float): 576221
+float devision (float / float): 572885
+fixed devision (float / int): 12791
+fixed devision (float / int): 13100
+float devision (float / int): 48143
+float devision (float / int): 48493
+-------------test 4-------------
+speed flags: -Ofast -march=native
+total iterations: 4000000 with 20 calcs each
+not using inline
+fixed additon (float + float): 16958
+fixed additon (float + float): 16753
+float additon (float + float): 17941
+float additon (float + float): 17875
+fixed additon (float / int): 11898
+fixed additon (float / int): 11964
+float additon (float / int): 6364
+float additon (float / int): 6441
+fixed subtraction (float - float): 18430
+fixed subtraction (float - float): 18551
+float subtraction (float - float): 17188
+float subtraction (float - float): 16976
+fixed multiplication (float * float): 106359
+fixed multiplication (float * float): 109522
+float multiplication (float * float): 7214
+float multiplication (float * float): 7224
+fixed devision (float / float): 739101
+fixed devision (float / float): 731118
+float devision (float / float): 23507
+float devision (float / float): 23573
+fixed devision (float / int): 13040
+fixed devision (float / int): 13081
+float devision (float / int): 6452
+float devision (float / int): 6454
+-------------test 5-------------
+speed flags: -O3 -march=native
+total iterations: 4000000 with 20 calcs each
+using inline
+fixed additon (float + float): 8299
+fixed additon (float + float): 8273
+float additon (float + float): 17183
+float additon (float + float): 16995
+fixed additon (float / int): 8584
+fixed additon (float / int): 8241
+float additon (float / int): 24307
+float additon (float / int): 23963
+fixed subtraction (float - float): 8559
+fixed subtraction (float - float): 8429
+float subtraction (float - float): 17094
+float subtraction (float - float): 17028
+fixed multiplication (float * float): 37153
+fixed multiplication (float * float): 37531
+float multiplication (float * float): 17068
+float multiplication (float * float): 17198
+fixed devision (float / float): 738058
+fixed devision (float / float): 731145
+float devision (float / float): 573352
+float devision (float / float): 580759
+fixed devision (float / int): 8259
+fixed devision (float / int): 8293
+float devision (float / int): 48244
+float devision (float / int): 48226
+-------------test 6-------------
+speed flags: -Ofast -march=native
+total iterations: 4000000 with 20 calcs each
+using inline
+fixed additon (float + float): 8255
+fixed additon (float + float): 8268
+float additon (float + float): 18310
+float additon (float + float): 17866
+fixed additon (float / int): 5385
+fixed additon (float / int): 6982
+float additon (float / int): 6453
+float additon (float / int): 6451
+fixed subtraction (float - float): 8436
+fixed subtraction (float - float): 8438
+float subtraction (float - float): 16920
+float subtraction (float - float): 16968
+fixed multiplication (float * float): 37010
+fixed multiplication (float * float): 37538
+float multiplication (float * float): 8236
+float multiplication (float * float): 8242
+fixed devision (float / float): 731332
+fixed devision (float / float): 731224
+float devision (float / float): 23762
+float devision (float / float): 23408
+fixed devision (float / int): 8365
+fixed devision (float / int): 8255
+float devision (float / int): 6439
+float devision (float / int): 6453
+---------------------------------------

@@ -4,12 +4,11 @@ MLX42
 */*.o
 */*/*.o
 *.a
-*/*.a
-*/*/*.a
+*a.out
 .vscode
 MLX42.h
 x/*
 fdf
 testing.c
-a.out
 stuff
+*fixed_testing.h.gch
