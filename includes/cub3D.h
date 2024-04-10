@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/09 19:58:04 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/10 02:41:39 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,48 @@ t_fixed		fixed_dev(t_fixed a, t_fixed b);
 t_fixed		fixed_mult(t_fixed a, t_fixed b);
 t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 
-typedef struct s_cub
+#define WIDTH 1024
+#define HEIGHT 1024
+
+#define ASPECT_RATIO 2.0f / 2 // ??
+//((float)HEIGHT) / ((float)WIDTH)
+
+#define FOV 90.0f
+#define X_Y_SCALAR 1 / tan(((double)FOV) / 2)
+#define Z_FAR 10.0f
+#define Z_NEAR 1.0f
+#define Z_SCALAR (float)((((double)-Z_FAR )* Z_NEAR) / (Z_FAR - Z_NEAR))
+
+typedef struct s_vec3
 {
-	int		pos[3];
+	float	p[3];
+}	t_vec3;
+
+typedef struct s_triangle
+{
+	t_vec3	p[3];
+}	t_triangle;
+
+typedef struct s_mesh
+{
+	t_triangle	*triangles;
+	int			count;
+}	t_mesh;
+
+typedef struct s_main
+{
+	t_vec3	pos[3];
+	t_vec3	direct[3];
 	mlx_t	*mlx;
-}	t_cub;
+	t_mesh	cube;
+}	t_main;
+
+
+
+
+
+
+
 
 struct s_fps_textures
 {

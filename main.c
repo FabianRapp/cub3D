@@ -6,15 +6,13 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/09 19:44:38 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/10 02:34:32 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 #include <MLX42.h>
 
-#define WIDTH 1024
-#define HEIGHT 1024
 #define RED 0xFF0000FF
 #define GREEN 0xFF0000FF
 #define BLUE 0xFF0000FF
@@ -105,31 +103,121 @@ mlx_image_t	*first_ob_ball(mlx_t *mlx)
 	return (img);
 }
 
+
+void	draw_triangles(t_mesh *mesh)
+{
+	int	tri_nb;
+
+	tri_nb = 0;
+	while (tri_nb < mesh->count)
+	{
+
+		
+		tri_nb++;
+	}
+}
+
+int	lerp_int(int start, int end, float pos)
+{
+	return (((int)((end - start) * pos)) + start);
+}
+
+// for given x range of -1 to 1
+int	x_pos_x_index(float x_pos)
+{
+	if (x_pos > 0)
+		return (lerp_int(WIDTH / 2, WIDTH, x_pos));
+	else
+		return (lerp_int(WIDTH / 2, 0, fabs(x_pos)));
+}
+
+// for given y ange of -1 to 1
+int	y_pos_y_index(float y_pos)
+{
+	if (y_pos > 0)
+		return(lerp_int(HEIGHT / 2, HEIGHT, y_pos));
+	else
+		return(lerp_int(HEIGHT / 2, 0, fabs(y_pos)));
+}
+
+t_vec3	transform_vec3d(t_vec3 *vec3d)
+{
+	t_vec3	transformed;
+
+	transformed.p[X] = vec3d->p[X] * X_Y_SCALAR / vec3d->p[Z];
+	transformed.p[Y] = vec3d->p[Y] * X_Y_SCALAR / vec3d->p[Z];
+	transformed.p[Z] = vec3d->p[Z] * Z_SCALAR;
+	return (transformed);
+}
+
+void	fill_cube_mesh(t_main *main)
+{
+	// t_vec3		cube_cornors[8] = {
+	// 	{0, 0, 0},
+	// 	{1, 0, 0},
+	// 	{0, 1, 0},
+	// 	{1, 1, 0},
+	// 	{0, 0, 1},
+	// 	{1, 0, 1},
+	// 	{0, 1, 1},
+	// 	{1, 1, 1},
+	// };
+	t_mesh	*cube;
+	const t_triangle init_triangles[] = {
+		// SOUTH triangles
+		{{{0, 0, 0}, {0, 1, 0}, {1, 1, 0}}},
+		{{{0, 0, 0}, {1, 1, 0}, {1, 0, 0}}},
+		// EAST triangles
+		{{{1, 0, 0}, {1, 1, 0}, {1, 1, 1}}},
+		{{{1, 0, 0}, {1, 1, 1}, {1, 0, 1}}},
+		// NORTH triangles
+		{{{1, 0, 1}, {1, 1, 1}, {0, 1, 1}}},
+		{{{1, 0, 1}, {0, 1, 1}, {0, 0, 1}}},
+		// WEST triangles
+		{{{0, 0, 1}, {0, 1, 1}, {0, 1, 0}}},
+		{{{0, 0, 1}, {0, 1, 0}, {0, 0, 0}}},
+		// TOP triangles
+		{{{0, 1, 0}, {0, 1, 1}, {1, 1, 1}}},
+		{{{0, 1, 0}, {1, 1, 1}, {1, 1, 0}}},
+		// BOTTOM triangles
+		{{{1, 0, 1}, {0, 0, 1}, {0, 0, 0}}},
+		{{{1, 0, 1}, {0, 0, 0}, {1, 0, 0}}}
+	};
+	cube = &(main->cube);
+	cube->triangles = ft_memdup(&init_triangles, sizeof(init_triangles));
+	cube->count = sizeof(init_triangles) / sizeof(t_triangle);
+}
+
 int32_t	main(void)
 {
 	mlx_image_t	*ob;
-	t_cub		cub;
+	t_main		m_data;
+
+
+
+	fill_cube_mesh(&m_data);
+
 
 	if (!init())
 		return (1);
 	// MLX allows you to define its core behaviour before startup.
 	mlx_set_setting(0, true);
-	cub.mlx = mlx_init(WIDTH, HEIGHT, "test", true);
-	if (!cub.mlx)
+	m_data.mlx = mlx_init(WIDTH, HEIGHT, "test", true);
+	if (!m_data.mlx)
 		ft_error();
 
 	// Create and display the image.
-	mlx_image_t* img = mlx_new_image(cub.mlx, WIDTH, HEIGHT);
-	if (!img || (mlx_image_to_window(cub.mlx, img, 0, 0) < 0))
+	mlx_image_t* img = mlx_new_image(m_data.mlx, WIDTH, HEIGHT);
+	if (!img || (mlx_image_to_window(m_data.mlx, img, 0, 0) < 0))
 		ft_error();
 	mlx_set_instance_depth(img->instances, 1);
-	first_ob_ball(cub.mlx);
+	first_ob_ball(m_data.mlx);
 	// Register a hook and pass mlx as an optional param.
 	// NOTE: Do this before calling mlx_loop!
-	mlx_loop_hook(cub.mlx, ft_hook, img);
-	mlx_loop_hook(cub.mlx, display_fps_hook, cub.mlx);
-	mlx_loop(cub.mlx);
-	mlx_terminate(cub.mlx);
+	mlx_loop_hook(m_data.mlx, ft_hook, img);
+	mlx_loop_hook(m_data.mlx, display_fps_hook, m_data.mlx);
+	mlx_loop(m_data.mlx);
+	mlx_terminate(m_data.mlx);
 	return (EXIT_SUCCESS);
 }
 
