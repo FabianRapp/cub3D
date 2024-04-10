@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/10 02:41:39 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/10 04:33:02 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,23 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 #define WIDTH 1024
 #define HEIGHT 1024
 
-#define ASPECT_RATIO 2.0f / 2 // ??
-//((float)HEIGHT) / ((float)WIDTH)
+#define ASPECT_RATIO ((float)HEIGHT) / ((float)WIDTH)
 
 #define FOV 90.0f
 #define X_Y_SCALAR 1 / tan(((double)FOV) / 2)
-#define Z_FAR 10.0f
-#define Z_NEAR 1.0f
-#define Z_SCALAR (float)((((double)-Z_FAR )* Z_NEAR) / (Z_FAR - Z_NEAR))
+#define Z_FAR 1000.0f
+#define Z_NEAR 0.1f
+#define Z_NORM ((double)Z_FAR) / (Z_FAR - Z_NEAR)
+#define Z_OFFSET -Z_NORM * Z_NEAR
+
+// not no functions supporting this yet
+#define PROJECTION_MATRIX { \
+	ASPECT_RATIO, 0, 0, 0, \
+	0, X_Y_SCALAR, 0, 0, \
+	0, 0, Z_NORM, 1, \
+	0, 0, Z_OFFSET, 0 \
+}
+
 
 typedef struct s_vec3
 {

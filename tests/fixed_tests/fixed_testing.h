@@ -15,6 +15,7 @@
 struct timeval	time_diff(struct timeval start, struct timeval end);
 struct timeval	timer(char *msg);
 void	log_diff(struct timeval diff, char *title);
+float	ref_int_int_add(float a, float b);
 float	float_test_additon(float a, float b);
 float	fixed_test_additon(float a, float b);
 float	float_test_subtraction(float a, float b);

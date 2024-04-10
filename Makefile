@@ -112,7 +112,8 @@ SOURCES_FIXED_TESTS = \
 	fixed_test_subtraction.c	float_test_subtraction.c \
 	fixed_test_multiplication.c	float_test_multiplication.c \
 	fixed_test_devision.c		float_test_devision.c \
-	fixed_test_devision_fi.c	float_test_devision_fi.c
+	fixed_test_devision_fi.c	float_test_devision_fi.c \
+	ref_int_int_add.c
 
 
 DIR_FIXED_TESTS = tests/fixed_tests/

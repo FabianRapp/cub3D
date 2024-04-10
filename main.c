@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/10 02:34:32 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/10 05:01:00 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,17 +140,50 @@ int	y_pos_y_index(float y_pos)
 		return(lerp_int(HEIGHT / 2, 0, fabs(y_pos)));
 }
 
+void	draw_line(mlx_image_t *image, int start_pixel[2], int target_pixel[2])
+{
+	int	x;
+	int	y;
+	int	disance;
+	int	counter;
+
+
+	while (x != target_pixel[X] || y != target_pixel[Y])
+	{
+		
+		mlx_put_pixel(image, x, y, RED);
+	}
+}
+
+void	draw_triangle()
+{
+	
+}
+
+void	matrix_mult_1x3_3x3(float ma[3], float mb[3][3], float m_result[3])
+{
+	m_result[0] = ma[0] * mb[0][0];
+	m_result[0] += ma[1] * mb[1][0];
+	m_result[0] += ma[2] * mb[2][0];
+	m_result[1] = ma[0] * mb[0][1];
+	m_result[1] += ma[1] * mb[1][1];
+	m_result[1] += ma[2] * mb[2][1];
+	m_result[2] = ma[0] * mb[0][2];
+	m_result[2] += ma[1] * mb[1][2];
+	m_result[2] += ma[2] * mb[2][2];
+}
+
 t_vec3	transform_vec3d(t_vec3 *vec3d)
 {
 	t_vec3	transformed;
 
-	transformed.p[X] = vec3d->p[X] * X_Y_SCALAR / vec3d->p[Z];
-	transformed.p[Y] = vec3d->p[Y] * X_Y_SCALAR / vec3d->p[Z];
-	transformed.p[Z] = vec3d->p[Z] * Z_SCALAR;
+	transformed.p[X] = vec3d->p[X] * ((float) (X_Y_SCALAR * ASPECT_RATIO)) / vec3d->p[Z];
+	transformed.p[Y] = vec3d->p[Y] * ((float) X_Y_SCALAR) / vec3d->p[Z];
+	transformed.p[Z] = vec3d->p[Z] * ((float) Z_NORM) + ((float) Z_OFFSET);
 	return (transformed);
 }
 
-void	fill_cube_mesh(t_main *main)
+void	fill_cube_mesh(t_mesh *cube)
 {
 	// t_vec3		cube_cornors[8] = {
 	// 	{0, 0, 0},
@@ -162,7 +195,6 @@ void	fill_cube_mesh(t_main *main)
 	// 	{0, 1, 1},
 	// 	{1, 1, 1},
 	// };
-	t_mesh	*cube;
 	const t_triangle init_triangles[] = {
 		// SOUTH triangles
 		{{{0, 0, 0}, {0, 1, 0}, {1, 1, 0}}},
@@ -183,9 +215,26 @@ void	fill_cube_mesh(t_main *main)
 		{{{1, 0, 1}, {0, 0, 1}, {0, 0, 0}}},
 		{{{1, 0, 1}, {0, 0, 0}, {1, 0, 0}}}
 	};
-	cube = &(main->cube);
 	cube->triangles = ft_memdup(&init_triangles, sizeof(init_triangles));
 	cube->count = sizeof(init_triangles) / sizeof(t_triangle);
+}
+
+void	draw_cube(t_mesh *cube_mesh)
+{
+	int			i;
+	t_triangle	*cur_tri;
+	t_triangle	projected;
+
+	i = 0;
+	while (i < cube_mesh->count)
+	{
+		cur_tri = cube_mesh->triangles + i;
+		projected.p[0] = transform_vec3d(cur_tri->p + 0);
+		projected.p[1] = transform_vec3d(cur_tri->p + 1);
+		projected.p[2] = transform_vec3d(cur_tri->p + 2);
+		//draw
+		i++;
+	}
 }
 
 int32_t	main(void)
@@ -195,8 +244,8 @@ int32_t	main(void)
 
 
 
-	fill_cube_mesh(&m_data);
-
+	fill_cube_mesh(&m_data.cube);
+	draw_cube(&m_data.cube);
 
 	if (!init())
 		return (1);

@@ -35,7 +35,7 @@ static inline t_fixed __attribute__((always_inline))	float_to_fixed1(float nb)
 
 static inline t_fixed __attribute__((always_inline))	fixed_mult1(t_fixed a, t_fixed b)
 {
-	return (t_fixed)(((int64_t)a * (int64_t)b) >> FRACTION_BITS);
+	return (t_fixed)((a * b) >> FRACTION_BITS);
 }
 
 // for performence reason abc(a) with a huge value is not supported
@@ -94,6 +94,17 @@ void	log_diff(struct timeval diff, char *title)
 	fprintf(fd, "%s: %lld\n", title, micro_diff);
 	printf("%s: %lld\n", title, micro_diff);
 	fclose(fd);
+}
+
+float	ref_int_int_add(float a, float b)
+{
+	int c = (int)b;
+
+	for (int i = 0; i < CALC_PER_ITER; i++)
+	{
+		c = c + i;
+	}
+	return (a);
 }
 
 float	float_test_additon(float a, float b)
