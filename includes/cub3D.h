@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/10 04:33:02 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/13 21:23:04 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,18 +65,19 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 #define ASPECT_RATIO ((float)HEIGHT) / ((float)WIDTH)
 
 #define FOV 90.0f
-#define X_Y_SCALAR 1 / tan(((double)FOV) / 2)
+#define FOV_RAD 1 / tan((double)FOV * 0.5 / 180.0 * 3.14159)
 #define Z_FAR 1000.0f
 #define Z_NEAR 0.1f
 #define Z_NORM ((double)Z_FAR) / (Z_FAR - Z_NEAR)
-#define Z_OFFSET -Z_NORM * Z_NEAR
+#define Z_OFFSET (-(double)Z_FAR * Z_NEAR) / (Z_FAR - Z_NEAR)
 
 // not no functions supporting this yet
-#define PROJECTION_MATRIX { \
-	ASPECT_RATIO, 0, 0, 0, \
-	0, X_Y_SCALAR, 0, 0, \
-	0, 0, Z_NORM, 1, \
-	0, 0, Z_OFFSET, 0 \
+#define PROJECTION_MATRIX \
+{ \
+	{(float)(ASPECT_RATIO * ((float)FOV_RAD)), 0.0f, 0.0f, 0.0f}, \
+	{0.0f, (float)(FOV_RAD), 0.0f, 0.0f}, \
+	{0.0f, 0.0f, ((float) Z_NORM), 1.0f}, \
+	{0.0f, 0.0f, ((float) Z_OFFSET), 0.0f} \
 }
 
 
@@ -94,20 +95,18 @@ typedef struct s_mesh
 {
 	t_triangle	*triangles;
 	int			count;
+	float		rotation_mat_x[4][4];
+	float		rotation_mat_z[4][4];
+	mlx_image_t	*img;
 }	t_mesh;
 
 typedef struct s_main
 {
-	t_vec3	pos[3];
-	t_vec3	direct[3];
-	mlx_t	*mlx;
-	t_mesh	cube;
+	t_vec3		pos[3];
+	t_vec3		direct[3];
+	mlx_t		*mlx;
+	t_mesh		cube;
 }	t_main;
-
-
-
-
-
 
 
 
@@ -125,10 +124,15 @@ struct s_fps_textures
 	mlx_texture_t	*nine;
 };
 
+void	draw_cube(t_mesh *cube_mesh);
 
 //utils/fps.c
 struct s_fps_textures	get_fps_digit_texture(void);
 void					free_fps_digit_textures(void);
 void					display_fps_hook(void *param);
 
+
+
+
+mlx_image_t	*first_ob_ball(mlx_t *mlx);
 #endif

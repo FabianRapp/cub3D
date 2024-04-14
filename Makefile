@@ -1,5 +1,6 @@
-CC= cc
-FLAGS_SPEED = -O3
+CC= cc 
+FLAGS_SPEED = -fsanitize=address -g
+#-O3
 CFLAGS= $(FLAGS_SPEED)
 #-Wextra -Wall -Werror
 LIBFT 	=	libft/libft.a
@@ -21,7 +22,8 @@ NAME=cub3D
 MAIN= main.c
 SOURCES= \
 	utils/fps.c \
-	utils/fixed_point/fixed_point_float_conv.c
+	utils/fixed_point/fixed_point_float_conv.c \
+	stuff.c
 
 OBJECTS=$(SOURCES:.c=.o)
 MAIN_OB=$(MAIN:.c=.o)
