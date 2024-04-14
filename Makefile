@@ -24,7 +24,10 @@ SOURCES= \
 	utils/fps.c \
 	utils/fixed_point/fixed_point_float_conv.c \
 	stuff.c \
+	draw.c \
+	vec3.c \
 	init_mesh.c \
+	mesh_rotation.c \
 	utils1.c
 
 OBJECTS=$(SOURCES:.c=.o)

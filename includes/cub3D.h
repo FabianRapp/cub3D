@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/14 06:08:01 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/14 06:34:27 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@
 
 */
 
+//#define ROT_X
+//#define ROT_Y
+//#define ROT_Z
 #define GRAV_CONST 0.5f
 
 #define RED 0xFF0000FF
@@ -93,12 +96,7 @@ typedef struct s_vec3
 {
 	float	p[3];
 }	t_vec3;
-void zero_vec3(t_vec3 *v);
-void add_vec3(t_vec3 *v, t_vec3 *a);
-void reverse_vec3(t_vec3 *v);
-void multiply_vec3(t_vec3 *v, t_vec3 *a);
-t_vec3 scale_vec3(t_vec3 *v, float k);
-float length_vec3(t_vec3 *v);
+
 
 typedef struct s_triangle
 {
@@ -154,6 +152,45 @@ struct s_fps_textures	get_fps_digit_texture(void);
 void					free_fps_digit_textures(void);
 void					display_fps_hook(void *param);
 
-
+// mesh_rotation.c
+void	mod_cube_rotation(t_mesh *mesh, float delta_time);
+void	mod_cube_rotation2(t_mesh *mesh, float delta_time);
+void	mesh_rotate_x_axis(t_mesh *mesh);
+void	mesh_rotate_y_axis(t_mesh *mesh);
+void	mesh_rotate_z_axis(t_mesh *mesh);
 mlx_image_t	*first_ob_ball(mlx_t *mlx);
+
+void	translate_mesh_3d(t_mesh *mesh, t_vec3 v);
+
+// utils.c
+void	ft_error(void);
+bool	out_of_bound(int p[2]);
+void	matrix_mult_3x1_4x4(t_vec3 *m_a, const float m_b[4][4], t_vec3 *re);
+void	ft_put_pixel(uint8_t *pixel_buffer, int x, int y, int color);
+
+// draw.c
+void	draw_line(mlx_image_t *image, int start_pos[2], int target_pixel[2], int color);
+void	draw_triangle(mlx_image_t *img, int p1[2], int p2[2], int p3[2], uint32_t color);
+void	draw_cube(t_mesh *mesh);
+
+// main.c
+void	ft_hook(void* param);
+void	translate_triangle_3d(t_triangle *tri_a, t_vec3 v);
+void	translate_mesh_3d(t_mesh *mesh, t_vec3 v);
+void	determine_centroid(t_triangle *tri);
+
+// init_mesh.c
+void	fill_tetra_mesh(t_mesh *cube);
+void	fill_cube_mesh(t_mesh *cube);
+void	fill_cube_mesh2(t_mesh *cube);
+
+// vec3.c
+void	zero_vec3(t_vec3 *v);
+void	add_vec3(t_vec3 *v, t_vec3 *a);
+void	reverse_vec3(t_vec3 *v);
+void	multiply_vec3(t_vec3 *v, t_vec3 *a);
+t_vec3	scale_vec3(t_vec3 *v, float k);
+float	length_vec3(t_vec3 *v);
+void	print_vec3(t_vec3 *v, char *msg);
+
 #endif

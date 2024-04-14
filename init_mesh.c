@@ -6,14 +6,12 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 06:07:42 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/14 06:07:47 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/14 06:28:34 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
- #include <cub3D.h>
+#include <cub3D.h>
 #include <MLX42.h>
-
-
 
 void	fill_tetra_mesh(t_mesh *cube)
 {
