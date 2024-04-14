@@ -60,16 +60,16 @@ void	draw_line(mlx_image_t *image, int start_pos[2], int target_pixel[2], int co
 				if (pos[X] >= 0 && pos[X] < WIDTH && pos[Y] >= 0 && pos[Y] < HEIGHT)
 					ft_put_pixel(image->pixels, pos[X], pos[Y], color);
 					//mlx_put_pixel(image, pos[X], pos[Y], color);
-				else
-					printf("error: xpos: %d ypos: %d\n", pos[X], pos[Y]);
+				//else
+				//	printf("error: xpos: %d ypos: %d\n", pos[X], pos[Y]);
 				pos[X] += direct_x;
 			}
 		}
 		if (pos[X] >= 0 && pos[X] < WIDTH && pos[Y] >= 0 && pos[Y] < HEIGHT)
 			ft_put_pixel(image->pixels, pos[X], pos[Y], color);
 			//mlx_put_pixel(image, pos[X], pos[Y], color);
-		else
-			printf("error: xpos: %d ypos: %d\n", pos[X], pos[Y]);
+		//else
+			//printf("error: xpos: %d ypos: %d\n", pos[X], pos[Y]);
 		return ;
 	}
 
@@ -79,8 +79,8 @@ void	draw_line(mlx_image_t *image, int start_pos[2], int target_pixel[2], int co
 		if (pos[X] >= 0 && pos[X] < WIDTH && pos[Y] >= 0 && pos[Y] < HEIGHT)
 			ft_put_pixel(image->pixels, pos[X], pos[Y], color);
 			//mlx_put_pixel(image, pos[X], pos[Y], color);
-		else
-			printf("error: xpos: %d ypos: %d\n", pos[X], pos[Y]);
+	//	else
+			//printf("error: xpos: %d ypos: %d\n", pos[X], pos[Y]);
 		cur_error = 2 * last_error;
 		if (cur_error >= -dist_y)
 		{
@@ -96,8 +96,9 @@ void	draw_line(mlx_image_t *image, int start_pos[2], int target_pixel[2], int co
 	if (pos[X] >= 0 && pos[X] < WIDTH && pos[Y] >= 0 && pos[Y] < HEIGHT)
 		ft_put_pixel(image->pixels, pos[X], pos[Y], color);
 		//mlx_put_pixel(image, pos[X], pos[Y], color);
-	else
-		printf("error: xpos: %d ypos: %d\n", pos[X], pos[Y]);
+	else {
+		//printf("error: xpos: %d ypos: %d\n", pos[X], pos[Y]);
+	}
 }
 
 void	draw_triangle(mlx_image_t *img, int p1[2], int p2[2], int p3[2], uint32_t color)
@@ -117,18 +118,19 @@ void	draw_cube(t_mesh *mesh)
 	t_triangle	translated;
 	t_triangle	projected;
 	
+	if (mesh->triangles->col != COL2)
+		return ;
 	int			p_2d[3][2];
 	const float	project_mat[4][4] = PROJECTION_MATRIX;
-
 	i = 0;
 	ft_bzero(mesh->img->pixels, 4 * mesh->img->height * mesh->img->width);
 	// static double	theta = 0;
 	// 	theta += *mesh->d_time;
-	t_vec3	traveled_dist;
-	traveled_dist.p[X] = mesh->momentum.p[X] * *mesh->d_time;
-	traveled_dist.p[Y] = mesh->momentum.p[Y] * *mesh->d_time;
-	traveled_dist.p[Z] = mesh->momentum.p[Z] * *mesh->d_time;
-	translate_mesh_3d(mesh, traveled_dist);
+	// t_vec3	traveled_dist;
+	// traveled_dist.p[X] = mesh->momentum.p[X] * *mesh->d_time * 20.0;
+	// traveled_dist.p[Y] = mesh->momentum.p[Y] * *mesh->d_time * 20.0;
+	// traveled_dist.p[Z] = mesh->momentum.p[Z] * *mesh->d_time * 20.0;
+	// translate_mesh_3d(mesh, traveled_dist);
 	bool done = false;
 	mesh->center.p[X] = 0;
 	mesh->center.p[Y] = 0;
@@ -158,10 +160,10 @@ void	draw_cube(t_mesh *mesh)
 		// printf("p3 x: %f, y: %f z: %f\n\n", rotated_xz.p[2].p[X], rotated_z.p[2].p[Y], rotated_z.p[2].p[Z]);
 	
 		//translated = mesh->triangles[i];
-		translated = rotated_xz;
-		translated.p[0].p[Z] += 3.0f;
-		translated.p[1].p[Z] += 3.0f;
-		translated.p[2].p[Z] += 3.0f;
+		translated = rotated_xyz;
+		translated.p[0].p[Z] += 5.0f;
+		translated.p[1].p[Z] += 5.0f;
+		translated.p[2].p[Z] += 5.0f;
 
 		determine_centroid(&translated);
 		add_vec3(&mesh->center, &translated.centroid);
@@ -195,17 +197,31 @@ void	draw_cube(t_mesh *mesh)
 		p_2d[1][Y] = (int)round(projected.p[1].p[Y]);
 		p_2d[2][X] = (int)round(projected.p[2].p[X]);
 		p_2d[2][Y] = (int)round(projected.p[2].p[Y]);
-		if (!done && (out_of_bound) (p_2d[0]) || out_of_bound(p_2d[1]) || out_of_bound(p_2d[2]))
+		if (!done && out_of_bound(p_2d[0]) || out_of_bound(p_2d[1]) || out_of_bound(p_2d[2]))
 		{
 			//mesh->
 			done = true;
-			mesh->momentum.p[X] *= -1;
-			mesh->momentum.p[Y] *= -1;
-			mesh->momentum.p[Z] *= -1;
+			// mesh->momentum.p[X] *= -1;
+			// mesh->momentum.p[Y] *= -1;
+			// mesh->momentum.p[Z] *= -1;
 		}
 		draw_triangle(mesh->img, p_2d[0], p_2d[1], p_2d[2], (mesh->triangles + i)->col);
 		i++;
 	}
-	mesh->center_pull = scale_vec3(&mesh->center, 1.0f / (float) mesh->count);
-	// length_vec3(&mesh->center) / mesh->count;
+	mesh->center = v3_scale(mesh->center, 1.0f / (float) mesh->count);
+	// mesh->center = length_vec3(&mesh->center) / mesh->count;
+	if (done)
+	{
+		// float len = length_vec3(&mesh->center);
+		// t_vec3 normalized = v3_scale(mesh->center, 1.0f / (float) len);
+		// // mesh->momentum = v3_add(mesh->momentum, v3_reverse(normalized));
+		// mesh->momentum = v3_reverse(normalized);
+		// mesh->momentum.p[Z] += 1.0f;
+		// double a = 10.0;
+		// mesh->momentum.p[Z] = modf(50.0, (double *)(mesh->momentum.p + Z));
+		//scale_vec3(&mesh->momentum, 1);
+	}
+	//if (mesh->triangles->col == GREEN)
+		//print_vec3(mesh->center, "\n");
+	
 }

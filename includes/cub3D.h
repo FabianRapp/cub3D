@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/14 06:34:27 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/14 11:31:49 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@
 # include <math.h>
 # include <limits.h>
 # include <libft.h>
-
+# include <time.h>
+// # include <iomanip>
 /*
 	inlining these functions helps alot with performence!
 	- saves alot performence for mixed type opperations and devison,
@@ -40,9 +41,9 @@
 
 */
 
-//#define ROT_X
-//#define ROT_Y
-//#define ROT_Z
+#define ROT_X 0
+#define ROT_Y 0
+#define ROT_Z 0
 #define GRAV_CONST 0.5f
 
 #define RED 0xFF0000FF
@@ -76,13 +77,14 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 #define ASPECT_RATIO ((float)HEIGHT) / ((float)WIDTH)
 
 #define FOV 90.0f
-#define FOV_RAD 1 / tan((double)FOV * 0.5 / 180.0 * 3.14159)
+// #define FOV_RAD 1 / tan((double)FOV * 0.5 / 180.0 * 3.14159)
+#define FOV_RAD 1.0 / tan(M_PI_4)
 #define Z_FAR 1000.0f
 #define Z_NEAR 0.1f
 #define Z_NORM ((double)Z_FAR) / (Z_FAR - Z_NEAR)
 #define Z_OFFSET (-(double)Z_FAR * Z_NEAR) / (Z_FAR - Z_NEAR)
 
-// not no functions supporting this yet
+
 #define PROJECTION_MATRIX \
 { \
 	{(float)(ASPECT_RATIO * ((float)FOV_RAD)), 0.0f, 0.0f, 0.0f}, \
@@ -95,6 +97,9 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 typedef struct s_vec3
 {
 	float	p[3];
+	// float	x;
+	// float	y;
+	// float	z;
 }	t_vec3;
 
 
@@ -115,6 +120,7 @@ typedef struct s_mesh
 	t_vec3		momentum;
 	t_vec3		center_pull;
 	t_vec3		center;
+	double		a;
 	double		*d_time;
 	mlx_image_t	*img;
 }	t_mesh;
@@ -124,6 +130,8 @@ typedef struct s_main
 	t_vec3		pos[3];
 	t_vec3		direct[3];
 	mlx_t		*mlx;
+	t_mesh		*objs;
+	int			nb;
 	t_mesh		cube;
 	t_mesh		cube2;
 	t_mesh		tetra;
@@ -185,12 +193,18 @@ void	fill_cube_mesh(t_mesh *cube);
 void	fill_cube_mesh2(t_mesh *cube);
 
 // vec3.c
+t_vec3	v3_zero(void);
+t_vec3	v3_add(t_vec3 a, t_vec3 b);
+t_vec3	v3_reverse(t_vec3 a);
+t_vec3	v3_multiply(t_vec3 a, t_vec3 b);
+t_vec3	v3_scale(t_vec3 a, float k);
+t_vec3	v3_random(void);
 void	zero_vec3(t_vec3 *v);
 void	add_vec3(t_vec3 *v, t_vec3 *a);
 void	reverse_vec3(t_vec3 *v);
 void	multiply_vec3(t_vec3 *v, t_vec3 *a);
-t_vec3	scale_vec3(t_vec3 *v, float k);
+void	scale_vec3(t_vec3 *v, float k);
 float	length_vec3(t_vec3 *v);
-void	print_vec3(t_vec3 *v, char *msg);
+void	print_vec3(t_vec3 v, char *msg);
 
 #endif

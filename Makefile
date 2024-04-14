@@ -28,7 +28,8 @@ SOURCES= \
 	vec3.c \
 	init_mesh.c \
 	mesh_rotation.c \
-	utils1.c
+	utils1.c \
+	triangle.c
 
 OBJECTS=$(SOURCES:.c=.o)
 MAIN_OB=$(MAIN:.c=.o)

@@ -8,7 +8,7 @@ void	mod_cube_rotation(t_mesh *mesh, float delta_time)
 
 	theta += delta_time;
 
-	#ifndef ROT_Z
+	#ifdef ROT_Z
 	float rotation_mat_z[4][4] = {
 		{1.0f, 0.0f, 0.0f, 0.0f},
 		{0.0f, 1.0f, 0.0f, 0.0f},
@@ -31,7 +31,7 @@ void	mod_cube_rotation(t_mesh *mesh, float delta_time)
 
 	#endif
 	ft_memcpy(mesh->rotation_mat_z, rotation_mat_z, sizeof(rotation_mat_z));
-	#ifdef ROT_X
+	#ifndef ROT_X
 	float rotation_mat_x[4][4] = {
 		{1.0f, 0.0f, 0.0f, 0.0f},
 		{0.0f, cosf(theta * 0.5f), sinf(theta * 0.5f), 0.0f},
@@ -47,7 +47,7 @@ void	mod_cube_rotation(t_mesh *mesh, float delta_time)
 	};
 	#endif
 	ft_memcpy(mesh->rotation_mat_x, rotation_mat_x, sizeof(rotation_mat_x));
-	#ifndef ROT_Y
+	#ifdef ROT_Y
 	float rotation_mat_y[4][4] = {
 		{1.0f, 0.0f, 0.0f, 0.0f},
 		{0.0f, 1.0f, 0.0f, 0.0f},
@@ -92,7 +92,7 @@ void	mod_cube_rotation2(t_mesh *mesh, float delta_time)
 	};
 	#endif
 	ft_memcpy(mesh->rotation_mat_z, rotation_mat_z, sizeof(rotation_mat_z));
-	#ifdef ROT_X
+	#ifndef ROT_X
 	float rotation_mat_x[4][4] = {
 		{1.0f, 0.0f, 0.0f, 0.0f},
 		{0.0f, cosf(theta * 0.5f), sinf(theta * 0.5f), 0.0f},
@@ -108,7 +108,7 @@ void	mod_cube_rotation2(t_mesh *mesh, float delta_time)
 	};
 	#endif
 	ft_memcpy(mesh->rotation_mat_x, rotation_mat_x, sizeof(rotation_mat_x));
-	#ifndef ROT_Y
+	#ifdef ROT_Y
 	float rotation_mat_y[4][4] = {
 		{1.0f, 0.0f, 0.0f, 0.0f},
 		{0.0f, 1.0f, 0.0f, 0.0f},

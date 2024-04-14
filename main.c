@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/14 06:31:52 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/14 11:33:36 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,16 @@ void ft_hook(void* param)
 	mod_cube_rotation(&main_data->tetra, main_data->mlx->delta_time);
 	draw_cube(&main_data->tetra);
 	mod_cube_rotation2(&main_data->cube2, main_data->mlx->delta_time);
+	for (int i = 0; i < main_data->nb; i++)
+	{
+		mod_cube_rotation(&main_data->objs[0], main_data->mlx->delta_time);
+		draw_cube(&main_data->objs[0]);
+	}
 	static bool first = true;
 	// t_triangle shift = {{{-0.5f,-0.5f,-0.5f}, {-0.5f,-0.5f,-0.5f}, {-0.5f,-0.5f,-0.5f}}, 1};
 	t_vec3 shift = {-0.5f,-0.5f,-0.5f};
 	if (first) {
-		//translate_mesh_3d(&main_data->cube, shift);
+		translate_mesh_3d(&main_data->cube, shift);
 		translate_mesh_3d(&main_data->cube2, shift);
 	}
 	draw_cube(&main_data->cube2);
@@ -93,12 +98,86 @@ void	determine_centroid(t_triangle *tri)
 		tri->centroid.p[i] = s.p[i] / 3.0;
 	}
 }
+void	draw_objects(int nb, t_main *m_data)
+{
+	const float max_edge_size = 0.1;
+	const float min_edge_szie = 0.01;
+	t_vec3	tetrahedron[4] = {
+        {1.71, 1.41, 2.22},  // Vertex A
+        {1.71, 2.22, 1.00},  // Vertex B
+        {2.41, 1.00, 1.00},  // Vertex C
+        {1.00, 1.00, 1.00}   // Vertex D
+    };
+	m_data->objs =  malloc(sizeof(t_mesh) * nb);
+	m_data->nb = nb;
+	// t_vec3 points[4]
+	// int indexes[24][3] = {{1,3,2}, {1,2,4}, {1,4,2}, {1,3,4}, {1,4,3}, {2,1,3}, {2,3,1}, {2,1,4}, {2,4,1}, {2,3,4}, {2,4,3}, {3,1,2}, {3,2,1}, {3,1,4}, {3,4,1}, {3,2,4}, {3,4,2}, {4,1,2}, {4,2,1}, {4,1,3}, {4,3,1}, {4,2,3}, {4,3,2}};
+	
+	for (int i = 0; i < nb; i++)
+	{
+		srand(i);
+		t_vec3	v = v3_random();
+		// mesh_arr[i].triangles = (t_triangle *) malloc(sizeof(t_triangle) * 4);
+		// mesh_arr[i].triangles->p[0] = v3_random();
+		// t_triangle tmp = {
+		// 	.p = {{v.p[0] * 1.71, v.p[1] * 1.41, v.p[2] * 2.22},  // Vertex A
+		// 	 {v.p[0] * 1.71, v.p[1] * 2.22, v.p[2] * 1.00},  // Vertex B
+		// 	 {v.p[0] * 2.41, v.p[1] * 1.00, v.p[2] * 1.00},  // Vertex C
+		// 	 {{v.p[0] * 1.00, v.p[1] * 1.00, v.p[2] * 1.00}}   // Vertex D
+		// };
+		//mesh_arr[i].triangles;
+		t_vec3	vertex[4] = {
+			{v.p[0] * 1.71f, v.p[1] * 1.41f, v.p[2] * 2.22f},// Vertex A
+			{v.p[0] * 1.71f, v.p[1] * 2.22f, v.p[2] * 1.00f},// Vertex B
+			{v.p[0] * 2.41f, v.p[1] * 1.00f, v.p[2] * 1.00f},// Vertex C
+			{v.p[0] * 1.00f, v.p[1] * 1.00f, v.p[2] * 1.00f}
+		};// Vertex D
+		for (int j = 0; j < 4; j++) {
+			print_vec3(j[vertex], "[0]");
+		}
+		// mesh_arr[i].triangles = (t_triangle *) malloc(sizeof(t_triangle) * 24);
+		t_triangle trians[4] = {
+			{{vertex[0], vertex[1], vertex[2]}, COL2, 0},
+			{{vertex[0], vertex[1], vertex[3]}, COL2, 0},
+			{{vertex[1], vertex[2], vertex[3]}, COL2, 0},
+			{{vertex[2], vertex[3], vertex[0]}, COL2, 0},
+		};
+		// for (int j = 0; j < 4; j++) {
+		// 	print_vec3(trians->p[j], "0");
+		// }
+		// print_vec3(trians[0].p[0], "tr[0]");
+		// print_vec3(trians[1].p[0], "tr[1]");
+		// print_vec3(trians[2].p[0], "tr[2]");
+		// print_vec3(trians[3].p[0], "tr[3]");
+		printf("\n");
+		m_data->objs [i].triangles = ft_memdup(&trians, sizeof(trians));
+		m_data->objs [i].img = mlx_new_image(m_data->mlx, WIDTH, HEIGHT);
+		if (!m_data->objs [i].img || (mlx_image_to_window(m_data->mlx, m_data->objs [i].img, 0, 0) < 0))
+			ft_error();
+		mlx_set_instance_depth(m_data->objs [i].img->instances, 2*nb - i);
+		m_data->objs [i].momentum = v3_zero();
+		m_data->objs [i].count = 4;
+		m_data->objs [i].d_time = &m_data->mlx->delta_time;
+		// for (int j = 0; j < 24; j++) {
+		// 	for (int k = 0; k < 3; k++) {
+		// 		t_vec3 tmp = vertex[indexes[j][k]];
+		// 		for (int L = 0; L < 3; L++) {
+		// 			mesh_arr[i].triangles->p[k].p[L] = tmp[L];
+		// 		}
+		// 	}
+		// }
+	}
+}
+#include <sys/time.h>
 
 int32_t	main(void)
 {
 	mlx_image_t	*ob;
 	t_main		m_data;
+	struct timeval			asd;
 
+	gettimeofday(&asd, NULL);
+srand(asd.tv_usec);
 	if (!init())
 		return (1);
 	// MLX allows you to define its core behaviour before startup.
@@ -126,7 +205,7 @@ int32_t	main(void)
 	fill_tetra_mesh(&m_data.tetra);
 	fill_cube_mesh2(&m_data.cube2);
 	//draw_cube(&m_data.cube);
-	
+	draw_objects(3, &m_data);
 	mlx_set_instance_depth(cube_img->instances, 2);
 	mlx_set_instance_depth(cube_img2->instances, 1);
 	mlx_set_instance_depth(tetra_img->instances, 3);

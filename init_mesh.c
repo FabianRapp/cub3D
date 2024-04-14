@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 06:07:42 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/14 06:28:34 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/14 11:03:45 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	fill_tetra_mesh(t_mesh *cube)
 
 void	fill_cube_mesh(t_mesh *cube)
 {
+	u_int32_t color = RED;
 	const t_triangle init_triangles[] = {
 		// SOUTH triangles
 		{{{0, 0, 0}, {0, 1, 0}, {1, 1, 0}}, RED, 0},
@@ -96,6 +97,8 @@ void	fill_cube_mesh(t_mesh *cube)
 		// {{{2, 2, 0}, {2, 2, 1}, {1, 1, 0}}},
 
 	};
+	t_vec3 momentum = {0.0, 0.5, 0.0};
+	ft_memcpy(&cube->momentum, &momentum, sizeof(momentum));
 	cube->triangles = ft_memdup(&init_triangles, sizeof(init_triangles));
 	cube->count = sizeof(init_triangles) / sizeof(t_triangle);
 }
@@ -122,13 +125,8 @@ void	fill_cube_mesh2(t_mesh *cube)
 		{{{0/2.0+0.25, 0/2.0+0.25, 0/2.0+0.25}, {0/2.0+0.25, 0/2.0+0.25, 1/2.0+0.25}, {1/2.0+0.25, 0/2.0+0.25, 1/2.0+0.25}}, GREEN, 0},
 		{{{1/2.0+0.25, 0/2.0+0.25, 0/2.0+0.25}, {1/2.0+0.25, 0/2.0+0.25, 1/2.0+0.25}, {0/2.0+0.25, 0/2.0+0.25, 0/2.0+0.25}}, GREEN, 0},
 
-
-		// TOP triangles
-		// {{{0, 2, 0}, {0, 2, 1}, {1, 1, 1}}},
-		// {{{2, 2, 0}, {2, 2, 1}, {1, 1, 0}}},
-
 	};
-	t_vec3 momentum = {1, 0, 0};
+	t_vec3 momentum = {0.5, 0, 0};
 	// static double	theta = 0;
 	// theta += *cube->d_time * 0.000000001;
 	//t_vec3 momentum = {cos(theta), sin(theta), 0};
