@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/13 21:23:04 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/14 06:08:01 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@
 	-performce logs in "time_logs"
 
 */
+
+#define GRAV_CONST 0.5f
+
+#define RED 0xFF0000FF
+#define GREEN 0xFF00FF00
+#define BLUE 0xFFFF0000
+#define COL2 0xFFFF00FF
+#define YELLOW 0xFF00FFFF
 
 #define X 0
 #define Y 1
@@ -85,10 +93,18 @@ typedef struct s_vec3
 {
 	float	p[3];
 }	t_vec3;
+void zero_vec3(t_vec3 *v);
+void add_vec3(t_vec3 *v, t_vec3 *a);
+void reverse_vec3(t_vec3 *v);
+void multiply_vec3(t_vec3 *v, t_vec3 *a);
+t_vec3 scale_vec3(t_vec3 *v, float k);
+float length_vec3(t_vec3 *v);
 
 typedef struct s_triangle
 {
-	t_vec3	p[3];
+	t_vec3		p[3];
+	uint32_t	col;
+	t_vec3		centroid;
 }	t_triangle;
 
 typedef struct s_mesh
@@ -96,7 +112,12 @@ typedef struct s_mesh
 	t_triangle	*triangles;
 	int			count;
 	float		rotation_mat_x[4][4];
+	float		rotation_mat_y[4][4];
 	float		rotation_mat_z[4][4];
+	t_vec3		momentum;
+	t_vec3		center_pull;
+	t_vec3		center;
+	double		*d_time;
 	mlx_image_t	*img;
 }	t_mesh;
 
@@ -106,6 +127,8 @@ typedef struct s_main
 	t_vec3		direct[3];
 	mlx_t		*mlx;
 	t_mesh		cube;
+	t_mesh		cube2;
+	t_mesh		tetra;
 }	t_main;
 
 
@@ -130,8 +153,6 @@ void	draw_cube(t_mesh *cube_mesh);
 struct s_fps_textures	get_fps_digit_texture(void);
 void					free_fps_digit_textures(void);
 void					display_fps_hook(void *param);
-
-
 
 
 mlx_image_t	*first_ob_ball(mlx_t *mlx);

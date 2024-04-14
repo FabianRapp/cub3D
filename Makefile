@@ -1,5 +1,5 @@
 CC= cc 
-FLAGS_SPEED = -fsanitize=address -g
+FLAGS_SPEED = -Ofast -march=native
 #-O3
 CFLAGS= $(FLAGS_SPEED)
 #-Wextra -Wall -Werror
@@ -23,7 +23,9 @@ MAIN= main.c
 SOURCES= \
 	utils/fps.c \
 	utils/fixed_point/fixed_point_float_conv.c \
-	stuff.c
+	stuff.c \
+	init_mesh.c \
+	utils1.c
 
 OBJECTS=$(SOURCES:.c=.o)
 MAIN_OB=$(MAIN:.c=.o)
