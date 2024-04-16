@@ -6,14 +6,12 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/14 11:33:36 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/16 14:13:54 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 #include <MLX42.h>
-
-
 
 // Print the window width and height.
 void ft_hook(void* param)
@@ -72,8 +70,7 @@ void	translate_triangle_3d(t_triangle *tri_a, t_vec3 v)
 {
 	for (int i = 0; i < 3; i++)
 	{
-		for (int j = 0; j < 3; j++)
-			tri_a->p[i].p[j] += v.p[j];
+		add_vec3(tri_a->p + i, &v);
 	}
 }
 
@@ -90,24 +87,22 @@ void	determine_centroid(t_triangle *tri)
 {
 	t_vec3 s = {0,0,0};
 	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++) {
-			s.p[j] += tri->p[i].p[j];
-		}
+		add_vec3(&s, tri->p + i);
 	}
-	for (int i = 0; i < 3; i++) {
-		tri->centroid.p[i] = s.p[i] / 3.0;
-	}
+	tri->centroid.x = s.x / 3.0;
+	tri->centroid.y = s.y / 3.0;
+	tri->centroid.z = s.z / 3.0;
 }
 void	draw_objects(int nb, t_main *m_data)
 {
 	const float max_edge_size = 0.1;
 	const float min_edge_szie = 0.01;
 	t_vec3	tetrahedron[4] = {
-        {1.71, 1.41, 2.22},  // Vertex A
-        {1.71, 2.22, 1.00},  // Vertex B
-        {2.41, 1.00, 1.00},  // Vertex C
-        {1.00, 1.00, 1.00}   // Vertex D
-    };
+		{1.71, 1.41, 2.22},  // Vertex A
+		{1.71, 2.22, 1.00},  // Vertex B
+		{2.41, 1.00, 1.00},  // Vertex C
+		{1.00, 1.00, 1.00}   // Vertex D
+	};
 	m_data->objs =  malloc(sizeof(t_mesh) * nb);
 	m_data->nb = nb;
 	// t_vec3 points[4]
@@ -120,17 +115,17 @@ void	draw_objects(int nb, t_main *m_data)
 		// mesh_arr[i].triangles = (t_triangle *) malloc(sizeof(t_triangle) * 4);
 		// mesh_arr[i].triangles->p[0] = v3_random();
 		// t_triangle tmp = {
-		// 	.p = {{v.p[0] * 1.71, v.p[1] * 1.41, v.p[2] * 2.22},  // Vertex A
-		// 	 {v.p[0] * 1.71, v.p[1] * 2.22, v.p[2] * 1.00},  // Vertex B
-		// 	 {v.p[0] * 2.41, v.p[1] * 1.00, v.p[2] * 1.00},  // Vertex C
-		// 	 {{v.p[0] * 1.00, v.p[1] * 1.00, v.p[2] * 1.00}}   // Vertex D
+		// 	.p = {{v.x * 1.71, v.y * 1.41, v.z * 2.22},  // Vertex A
+		// 	 {v.x * 1.71, v.y * 2.22, v.z * 1.00},  // Vertex B
+		// 	 {v.x * 2.41, v.y * 1.00, v.z * 1.00},  // Vertex C
+		// 	 {{v.x * 1.00, v.y * 1.00, v.z * 1.00}}   // Vertex D
 		// };
 		//mesh_arr[i].triangles;
 		t_vec3	vertex[4] = {
-			{v.p[0] * 1.71f, v.p[1] * 1.41f, v.p[2] * 2.22f},// Vertex A
-			{v.p[0] * 1.71f, v.p[1] * 2.22f, v.p[2] * 1.00f},// Vertex B
-			{v.p[0] * 2.41f, v.p[1] * 1.00f, v.p[2] * 1.00f},// Vertex C
-			{v.p[0] * 1.00f, v.p[1] * 1.00f, v.p[2] * 1.00f}
+			{v.x * 1.71f, v.y * 1.41f, v.z * 2.22f},// Vertex A
+			{v.x * 1.71f, v.y * 2.22f, v.z * 1.00f},// Vertex B
+			{v.x * 2.41f, v.y * 1.00f, v.z * 1.00f},// Vertex C
+			{v.x * 1.00f, v.y * 1.00f, v.z * 1.00f}
 		};// Vertex D
 		for (int j = 0; j < 4; j++) {
 			print_vec3(j[vertex], "[0]");
@@ -185,7 +180,6 @@ srand(asd.tv_usec);
 	m_data.mlx = mlx_init(WIDTH, HEIGHT, "test", true);
 	if (!m_data.mlx)
 		ft_error();
-
 	mlx_image_t* cube_img = mlx_new_image(m_data.mlx, WIDTH, HEIGHT);
 	if (!cube_img || (mlx_image_to_window(m_data.mlx, cube_img, 0, 0) < 0))
 		ft_error();
@@ -205,7 +199,7 @@ srand(asd.tv_usec);
 	fill_tetra_mesh(&m_data.tetra);
 	fill_cube_mesh2(&m_data.cube2);
 	//draw_cube(&m_data.cube);
-	draw_objects(3, &m_data);
+	draw_objects(0, &m_data);
 	mlx_set_instance_depth(cube_img->instances, 2);
 	mlx_set_instance_depth(cube_img2->instances, 1);
 	mlx_set_instance_depth(tetra_img->instances, 3);
@@ -213,7 +207,6 @@ srand(asd.tv_usec);
 	// Register a hook and pass mlx as an optional param.
 	// NOTE: Do this before calling mlx_loop!
 	mlx_loop_hook(m_data.mlx, ft_hook, &m_data);
-	
 	int	pos_a[2] = {200, 200};
 	int	pos_b[2] = {100, 100};
 	mlx_loop_hook(m_data.mlx, display_fps_hook, m_data.mlx);

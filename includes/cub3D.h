@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/14 11:31:49 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/16 14:04:30 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@
 
 */
 
-#define ROT_X 0
-#define ROT_Y 0
-#define ROT_Z 0
+#define ROT_X
+#define ROT_Y
+#define ROT_Z
 #define GRAV_CONST 0.5f
 
 #define RED 0xFF0000FF
@@ -96,10 +96,9 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 
 typedef struct s_vec3
 {
-	float	p[3];
-	// float	x;
-	// float	y;
-	// float	z;
+	float	x;
+	float	y;
+	float	z;
 }	t_vec3;
 
 
@@ -197,13 +196,13 @@ t_vec3	v3_zero(void);
 t_vec3	v3_add(t_vec3 a, t_vec3 b);
 t_vec3	v3_reverse(t_vec3 a);
 t_vec3	v3_multiply(t_vec3 a, t_vec3 b);
-t_vec3	v3_scale(t_vec3 a, float k);
+t_vec3	v3_scale(t_vec3 a, float scalar);
 t_vec3	v3_random(void);
 void	zero_vec3(t_vec3 *v);
 void	add_vec3(t_vec3 *v, t_vec3 *a);
 void	reverse_vec3(t_vec3 *v);
 void	multiply_vec3(t_vec3 *v, t_vec3 *a);
-void	scale_vec3(t_vec3 *v, float k);
+void	scale_vec3(t_vec3 *v, float scalar);
 float	length_vec3(t_vec3 *v);
 void	print_vec3(t_vec3 v, char *msg);
 

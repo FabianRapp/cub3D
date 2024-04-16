@@ -12,6 +12,11 @@ void	draw_line(mlx_image_t *image, int start_pos[2], int target_pixel[2], int co
 	int	last_error;
 	int	cur_error;
 
+	if ((start_pos[X] < 0 && target_pixel[X] < 0) || (start_pos[X] >= WIDTH && target_pixel[X] >= WIDTH)
+		|| (start_pos[Y] < 0 && target_pixel[Y] < 0) || start_pos[Y] >= HEIGHT && target_pixel[Y] >= HEIGHT)
+	{
+		return ;
+	}
 	pos[X] = start_pos[X];
 	pos[Y] = start_pos[Y];
 	direct_x = (pos[X] > target_pixel[X]) * -1;
@@ -117,9 +122,7 @@ void	draw_cube(t_mesh *mesh)
 	t_triangle	rotated_z;
 	t_triangle	translated;
 	t_triangle	projected;
-	
-	if (mesh->triangles->col != COL2)
-		return ;
+
 	int			p_2d[3][2];
 	const float	project_mat[4][4] = PROJECTION_MATRIX;
 	i = 0;
@@ -132,9 +135,9 @@ void	draw_cube(t_mesh *mesh)
 	// traveled_dist.p[Z] = mesh->momentum.p[Z] * *mesh->d_time * 20.0;
 	// translate_mesh_3d(mesh, traveled_dist);
 	bool done = false;
-	mesh->center.p[X] = 0;
-	mesh->center.p[Y] = 0;
-	mesh->center.p[Z] = 0;
+	mesh->center.x = 0;
+	mesh->center.y = 0;
+	mesh->center.z = 0;
 	while (i < mesh->count)
 	{
 		// printf("p1 x: %f, y: %f z: %f\n", mesh->triangles[i].p[0].p[X], mesh->triangles[i].p[0].p[Y], mesh->triangles[i].p[0].p[Z]);
@@ -161,9 +164,9 @@ void	draw_cube(t_mesh *mesh)
 	
 		//translated = mesh->triangles[i];
 		translated = rotated_xyz;
-		translated.p[0].p[Z] += 5.0f;
-		translated.p[1].p[Z] += 5.0f;
-		translated.p[2].p[Z] += 5.0f;
+		translated.p[0].z += 5.0f;
+		translated.p[1].z += 5.0f;
+		translated.p[2].z += 5.0f;
 
 		determine_centroid(&translated);
 		add_vec3(&mesh->center, &translated.centroid);
@@ -177,26 +180,26 @@ void	draw_cube(t_mesh *mesh)
 		// printf("p3 x: %f, y: %f z: %f\n\n", projected.p[2].p[X], rotated_z.p[2].p[Y], rotated_z.p[2].p[Z]);
 
 		// scale the points
-		projected.p[0].p[X] += 1.0f;
-		projected.p[0].p[Y] += 1.0f;
-		projected.p[1].p[X] += 1.0f;
-		projected.p[1].p[Y] += 1.0f;
-		projected.p[2].p[X] += 1.0f;
-		projected.p[2].p[Y] += 1.0f;
+		projected.p[0].x += 1.0f;
+		projected.p[0].y += 1.0f;
+		projected.p[1].x += 1.0f;
+		projected.p[1].y += 1.0f;
+		projected.p[2].x += 1.0f;
+		projected.p[2].y += 1.0f;
 
-		projected.p[0].p[X] *= 0.5f * (float)WIDTH;
-		projected.p[0].p[Y] *= 0.5f * (float)HEIGHT;
-		projected.p[1].p[X] *= 0.5f * (float)WIDTH;
-		projected.p[1].p[Y] *= 0.5f * (float)HEIGHT;
-		projected.p[2].p[X] *= 0.5f * (float)WIDTH;
-		projected.p[2].p[Y] *= 0.5f * (float)HEIGHT;
+		projected.p[0].x *= 0.5f * (float)WIDTH;
+		projected.p[0].y *= 0.5f * (float)HEIGHT;
+		projected.p[1].x *= 0.5f * (float)WIDTH;
+		projected.p[1].y *= 0.5f * (float)HEIGHT;
+		projected.p[2].x *= 0.5f * (float)WIDTH;
+		projected.p[2].y *= 0.5f * (float)HEIGHT;
 
-		p_2d[0][X] = (int)round(projected.p[0].p[X]);
-		p_2d[0][Y] = (int)round(projected.p[0].p[Y]);
-		p_2d[1][X] = (int)round(projected.p[1].p[X]);
-		p_2d[1][Y] = (int)round(projected.p[1].p[Y]);
-		p_2d[2][X] = (int)round(projected.p[2].p[X]);
-		p_2d[2][Y] = (int)round(projected.p[2].p[Y]);
+		p_2d[0][X] = (int)round(projected.p[0].x);
+		p_2d[0][Y] = (int)round(projected.p[0].y);
+		p_2d[1][X] = (int)round(projected.p[1].x);
+		p_2d[1][Y] = (int)round(projected.p[1].y);
+		p_2d[2][X] = (int)round(projected.p[2].x);
+		p_2d[2][Y] = (int)round(projected.p[2].y);
 		if (!done && out_of_bound(p_2d[0]) || out_of_bound(p_2d[1]) || out_of_bound(p_2d[2]))
 		{
 			//mesh->
