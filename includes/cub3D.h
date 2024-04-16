@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/16 14:04:30 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/17 00:41:50 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,23 @@
 #define ROT_X
 #define ROT_Y
 #define ROT_Z
+#define MOVEMENT
+
 #define GRAV_CONST 0.5f
 
 #define RED 0xFF0000FF
 #define GREEN 0xFF00FF00
 #define BLUE 0xFFFF0000
-#define COL2 0xFFFF00FF
+#define MAGENTA 0xFFFF00FF
 #define YELLOW 0xFF00FFFF
+#define WHITE 0xFFFFFFFF
+#define CYAN 0xFF00FFFF
+#define PURPLE 0xFFFF00A0
+#define ORANGE 0xFF0080FF
+#define TEAL 0xFF808000
+#define PINK 0xFFFF80FF
+#define LIME 0xFF80FF00
+
 
 #define X 0
 #define Y 1
@@ -59,6 +69,7 @@
 								// HIGHEST_IMG_DEPTH to HIGHEST_IMG_DEPTH-4: fps_counter
 # define LOWEST_IMG_DEPTH 0
 
+typedef struct s_main	t_main;
 
 typedef int64_t	t_fixed;
 #define FRACTION_BITS 32
@@ -71,7 +82,7 @@ t_fixed		fixed_dev(t_fixed a, t_fixed b);
 t_fixed		fixed_mult(t_fixed a, t_fixed b);
 t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 
-#define WIDTH 1024
+#define WIDTH 1250
 #define HEIGHT 1024
 
 #define ASPECT_RATIO ((float)HEIGHT) / ((float)WIDTH)
@@ -107,6 +118,7 @@ typedef struct s_triangle
 	t_vec3		p[3];
 	uint32_t	col;
 	t_vec3		centroid;
+	t_vec3		normal;
 }	t_triangle;
 
 typedef struct s_mesh
@@ -122,11 +134,12 @@ typedef struct s_mesh
 	double		a;
 	double		*d_time;
 	mlx_image_t	*img;
+	t_main		*main;
 }	t_mesh;
 
 typedef struct s_main
 {
-	t_vec3		pos[3];
+	t_vec3		camera;
 	t_vec3		direct[3];
 	mlx_t		*mlx;
 	t_mesh		*objs;
@@ -135,7 +148,6 @@ typedef struct s_main
 	t_mesh		cube2;
 	t_mesh		tetra;
 }	t_main;
-
 
 
 struct s_fps_textures
@@ -171,25 +183,28 @@ void	translate_mesh_3d(t_mesh *mesh, t_vec3 v);
 
 // utils.c
 void	ft_error(void);
-bool	out_of_bound(int p[2]);
+//t_vec3	out_of_bound(t_vec3 *v);
+t_vec3	out_of_bound_triangle(t_triangle *projected);
 void	matrix_mult_3x1_4x4(t_vec3 *m_a, const float m_b[4][4], t_vec3 *re);
 void	ft_put_pixel(uint8_t *pixel_buffer, int x, int y, int color);
 
 // draw.c
-void	draw_line(mlx_image_t *image, int start_pos[2], int target_pixel[2], int color);
-void	draw_triangle(mlx_image_t *img, int p1[2], int p2[2], int p3[2], uint32_t color);
+void	draw_line(mlx_image_t *image, int x1, int x2, int y1, int y2, int color);
+void	draw_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color);
 void	draw_cube(t_mesh *mesh);
 
 // main.c
 void	ft_hook(void* param);
 void	translate_triangle_3d(t_triangle *tri_a, t_vec3 v);
 void	translate_mesh_3d(t_mesh *mesh, t_vec3 v);
+void	scale_triangle_3d(t_triangle *tri_a, float scalar);
+void	scale_mesh_3d(t_mesh *mesh, float scalar);
 void	determine_centroid(t_triangle *tri);
 
 // init_mesh.c
-void	fill_tetra_mesh(t_mesh *cube);
-void	fill_cube_mesh(t_mesh *cube);
-void	fill_cube_mesh2(t_mesh *cube);
+void	fill_tetra_mesh(t_mesh *cube, t_main *main_data);
+void	fill_cube_mesh(t_mesh *cube, t_main *main_data);
+void	fill_cube_mesh2(t_mesh *cube, t_main *main_data);
 
 // vec3.c
 t_vec3	v3_zero(void);
@@ -198,6 +213,7 @@ t_vec3	v3_reverse(t_vec3 a);
 t_vec3	v3_multiply(t_vec3 a, t_vec3 b);
 t_vec3	v3_scale(t_vec3 a, float scalar);
 t_vec3	v3_random(void);
+t_vec3	v3_sub(t_vec3 a, t_vec3 b);
 void	zero_vec3(t_vec3 *v);
 void	add_vec3(t_vec3 *v, t_vec3 *a);
 void	reverse_vec3(t_vec3 *v);
@@ -205,5 +221,9 @@ void	multiply_vec3(t_vec3 *v, t_vec3 *a);
 void	scale_vec3(t_vec3 *v, float scalar);
 float	length_vec3(t_vec3 *v);
 void	print_vec3(t_vec3 v, char *msg);
+t_vec3	cross_product(t_vec3 a, t_vec3 b);
+float	dot_prod(t_vec3 a, t_vec3 b);
+//to_replace.c
+float	generate_random_float();
 
 #endif

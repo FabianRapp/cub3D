@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 05:43:13 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/16 14:07:30 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/17 00:50:01 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,58 @@
 
 bool	print = true;
 
+
+
 void ft_error(void)
 {
 	fprintf(stderr, "%s", mlx_strerror(mlx_errno));
 	exit(EXIT_FAILURE);
 }
 
-bool	out_of_bound(int p[2])
+t_vec3	out_of_bound(t_vec3 *v, bool print)
 {
-	int padding;
+	t_vec3	bounds_result;
 
-	padding = WIDTH * 0.1;
-	if (p[X] < padding || p[X] >= WIDTH - padding || p[Y] < padding || p[Y] >= HEIGHT - padding)
-		return (true);
-	return (false);
+	zero_vec3(&bounds_result);
+	if (v->x < 0)
+		bounds_result.x = -1;
+	else if (v->x >= WIDTH)
+		bounds_result.x = 1;
+	if (v->y < 0)
+		bounds_result.y = -1;
+	else if (v->y >= HEIGHT)
+		bounds_result.y = 1;
+	//printf("%f\n", v->z);
+	if (v->z >= 0.98)
+	{
+		bounds_result.z = -1;
+		//usleep(10000000);
+		//exit(0);
+	}
+	else if (v->z >= 1)
+	{
+		bounds_result.z = 1;
+	}
+	
+	return (bounds_result);
+	// if (v->x < 0 || v->x >= WIDTH || v->y < 0 || v->y >= HEIGHT)
+	// 	return (true);
+	// if (check_z && (v->z < Z_NEAR || v->z >= Z_FAR))
+	// 	return (true);
+	// return (false);
 }
+
+t_vec3	out_of_bound_triangle(t_triangle *projected)
+{
+	t_vec3	bounds_result = out_of_bound(projected->p, projected->col = YELLOW);
+	t_vec3	tmp =  out_of_bound(projected->p + 1, projected->col = YELLOW);
+	add_vec3(&bounds_result, &tmp);
+	tmp =  out_of_bound(projected->p + 1, projected->col = YELLOW);
+	add_vec3(&bounds_result, &tmp);
+	return (bounds_result);
+}
+
+
 /*
 for
 	{x1,x2,x3}

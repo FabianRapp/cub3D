@@ -3,7 +3,7 @@
 #include <MLX42.h>
 
 
-t_vec3 v3_zero(void)
+t_vec3	v3_zero(void)
 {
 	t_vec3	v;
 
@@ -13,7 +13,22 @@ t_vec3 v3_zero(void)
 	return (v);
 }
 
-t_vec3 v3_add(t_vec3 a, t_vec3 b)
+t_vec3	cross_product(t_vec3 a, t_vec3 b)
+{
+	t_vec3	result;
+
+	result.x = a.y * b.z - a.z * b.y;
+	result.y = a.z * b.x - a.x * b.z;
+	result.z = a.x * b.y - a.y * b.x;
+	return (result);
+}
+
+float	dot_prod(t_vec3 a, t_vec3 b)
+{
+	return (a.x * b.x + a.y * b.y + a.z * b.z);
+}
+
+t_vec3	v3_add(t_vec3 a, t_vec3 b)
 {
 	t_vec3	v;
 
@@ -21,8 +36,18 @@ t_vec3 v3_add(t_vec3 a, t_vec3 b)
 	v.y = a.y + b.y;
 	v.z = a.z + b.z;
 	return (v);
-
 }
+
+t_vec3	v3_sub(t_vec3 a, t_vec3 b)
+{
+	t_vec3	v;
+
+	v.x = a.x - b.x;
+	v.y = a.y - b.y;
+	v.z = a.z - b.z;
+	return (v);
+}
+
 t_vec3 v3_reverse(t_vec3 a)
 {
 	t_vec3	v;
@@ -52,17 +77,27 @@ t_vec3 v3_scale(t_vec3 a, float scalar)
 	return v;
 }
 
+
+
 t_vec3 v3_random(void)
 {
 	t_vec3	v;
-
-	v.x = (double)rand() / (double) RAND_MAX;
-	v.x *= 4.0;
-	v.x -= 1.0;
-	v.y = (double)rand() / (double) RAND_MAX;
-	v.y *= 4.0;
-	v.y -= 1.0;
-	v.z = (double)rand() / (double) RAND_MAX;
+	static int i = 1;
+	static int a;
+	
+	v.x = generate_random_float();
+	//((float)rand()) / RAND_MAX;
+	printf("%f\n", v.x);
+	//v.x -= 0.5;
+	//v.x *= 2;
+	// v.x *= 4.0;
+	// v.x -= 1.0;
+	v.y = generate_random_float();
+	//((double)rand()) / (double) RAND_MAX;
+	// v.y *= 4.0;
+	// v.y -= 1.0;
+	//v.z = generate_random_float();
+	//((double)rand()) / (double) RAND_MAX;
 	// v.z += 1;
 	// v.z *= 6;
 	v.z = 1;

@@ -1,5 +1,7 @@
 CC= cc 
 FLAGS_SPEED = -Ofast -march=native
+ 
+#-fsanitize=address -g
 #-O3
 CFLAGS= $(FLAGS_SPEED)
 #-Wextra -Wall -Werror
@@ -29,7 +31,8 @@ SOURCES= \
 	init_mesh.c \
 	mesh_rotation.c \
 	utils1.c \
-	triangle.c
+	triangle.c \
+	to_replace.c
 
 OBJECTS=$(SOURCES:.c=.o)
 MAIN_OB=$(MAIN:.c=.o)

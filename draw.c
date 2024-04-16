@@ -2,7 +2,7 @@
 #include <cub3D.h>
 #include <MLX42.h>
 
-void	draw_line(mlx_image_t *image, int start_pos[2], int target_pixel[2], int color)
+void	draw_line(mlx_image_t *image, int x1, int x2, int y1, int y2, int color)
 {
 	int	pos[2];
 	int	dist_x;
@@ -12,22 +12,22 @@ void	draw_line(mlx_image_t *image, int start_pos[2], int target_pixel[2], int co
 	int	last_error;
 	int	cur_error;
 
-	if ((start_pos[X] < 0 && target_pixel[X] < 0) || (start_pos[X] >= WIDTH && target_pixel[X] >= WIDTH)
-		|| (start_pos[Y] < 0 && target_pixel[Y] < 0) || start_pos[Y] >= HEIGHT && target_pixel[Y] >= HEIGHT)
+	if ((x1 < 0 && x2 < 0) || (x1 >= WIDTH && x2 >= WIDTH)
+		|| (y1 < 0 && y2 < 0) || y1 >= HEIGHT && y2 >= HEIGHT)
 	{
 		return ;
 	}
-	pos[X] = start_pos[X];
-	pos[Y] = start_pos[Y];
-	direct_x = (pos[X] > target_pixel[X]) * -1;
-	direct_y = (pos[Y] > target_pixel[Y]) * -1;
+	pos[X] = x1;
+	pos[Y] = y1;
+	direct_x = (pos[X] > x2) * -1;
+	direct_y = (pos[Y] > y2) * -1;
 	if (!direct_x)
 		direct_x++;
 	if (!direct_y)
 		direct_y++;
 	// handle vert/hor lines extra
-	dist_x = abs(target_pixel[X] - pos[X]);
-	dist_y = abs(target_pixel[Y] - pos[Y]);
+	dist_x = abs(x2 - pos[X]);
+	dist_y = abs(y2 - pos[Y]);
 	// if (!dist_x + dist_y)
 	// {
 	// 	printf("error no dist\n");
@@ -42,15 +42,15 @@ void	draw_line(mlx_image_t *image, int start_pos[2], int target_pixel[2], int co
 	//}
 	// if (color == RED)// && dist_x + dist_y)
 	// {
-	// 	printf("target x: %d target y: %d\n", target_pixel[X], target_pixel[Y]);
+	// 	printf("target x: %d target y: %d\n", x2, y2);
 	// 	printf("pos x: %d pos y: %d\n", pos[X], pos[Y]);
 	// 	//printf("red dist: %d\n", dist_x + dist_y);
 	// }
-	if (pos[X] == target_pixel[X] || pos[Y] == target_pixel[Y])
+	if (pos[X] == x2 || pos[Y] == y2)
 	{
-		if (pos[X] == target_pixel[X])
+		if (pos[X] == x2)
 		{
-			while (pos[Y] != target_pixel[Y])
+			while (pos[Y] != y2)
 			{
 				if (pos[X] >= 0 && pos[X] < WIDTH && pos[Y] >= 0 && pos[Y] < HEIGHT)
 					ft_put_pixel(image->pixels, pos[X], pos[Y], color);
@@ -58,9 +58,9 @@ void	draw_line(mlx_image_t *image, int start_pos[2], int target_pixel[2], int co
 				pos[Y] += direct_y;
 			}
 		}
-		if (pos[Y] == target_pixel[Y])
+		if (pos[Y] == y2)
 		{
-			while (pos[X] != target_pixel[X])
+			while (pos[X] != x2)
 			{
 				if (pos[X] >= 0 && pos[X] < WIDTH && pos[Y] >= 0 && pos[Y] < HEIGHT)
 					ft_put_pixel(image->pixels, pos[X], pos[Y], color);
@@ -79,7 +79,7 @@ void	draw_line(mlx_image_t *image, int start_pos[2], int target_pixel[2], int co
 	}
 
 	last_error = dist_x - dist_y;
-	while (pos[X] != target_pixel[X] || pos[Y] != target_pixel[Y])
+	while (pos[X] != x2 || pos[Y] != y2)
 	{
 		if (pos[X] >= 0 && pos[X] < WIDTH && pos[Y] >= 0 && pos[Y] < HEIGHT)
 			ft_put_pixel(image->pixels, pos[X], pos[Y], color);
@@ -106,13 +106,133 @@ void	draw_line(mlx_image_t *image, int start_pos[2], int target_pixel[2], int co
 	}
 }
 
-void	draw_triangle(mlx_image_t *img, int p1[2], int p2[2], int p3[2], uint32_t color)
+void	sort_vertexes_for_y(t_vec3 p[3])
 {
-	draw_line(img, p2, p3, color);
-	draw_line(img, p3, p1, color);
-	draw_line(img, p1, p2, color);
+	t_vec3	tmp;
+
+	if (p[0].y > p[1].y)
+	{
+		tmp = p[0];
+		p[0] = p[1];
+		p[1] = tmp;
+	}
+	if (p[1].y > p[2].y)
+	{
+		tmp = p[1];
+		p[1] = p[2];
+		p[2] = tmp;
+		if (p[0].y > p[1].y)
+		{
+			tmp = p[0];
+			p[0] = p[1];
+			p[1] = tmp;
+		}
+	}
 }
 
+float	slope_2d_x_per_y(t_vec3 p1, t_vec3 p2)
+{
+	if (p1.y == p2.y)
+		return (0.0f);
+	return ((p2.x - p1.x) / (p2.y - p1.y));
+}
+
+void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color)
+{
+	t_vec3	*p = projected->p;
+	
+	sort_vertexes_for_y(p);
+	if (!(p[0].y <= p[1].y && p[1].y <= p[2].y))
+	{
+		printf("error sort_vertexes_for_y 1: %f 2: %f 3: %f\n", p[0].y, p[1].y, p[2].y);
+		exit(1);
+	}
+	
+	float	m1 = slope_2d_x_per_y(p[0], p[1]);
+	float	m2 = slope_2d_x_per_y(p[0], p[2]);
+	float	m3 = slope_2d_x_per_y(p[1], p[2]);
+	float	y_dist1 = p[1].y - p[0].y;
+	float	cur_y = p[0].y;
+	float	cur_max_y = p[1].y;
+	float	total_y_progress;
+	int	cur_x;
+	int	y_index;
+	static int i = 0;
+	if (cur_y < 0)
+		cur_y = 0;
+	y_index = (int)(roundf(cur_y));
+	while (cur_y < cur_max_y && y_index < HEIGHT)
+	{
+		total_y_progress = (cur_y - p[0].y) / (p[2].y - p[0].y);
+		cur_x = (int)(roundf((p[2].x - p[0].x) * total_y_progress + p[0].x));
+		float	y_progress =  (cur_y - p[0].y) / (cur_max_y - p[0].y);
+		int	x_max = (int)roundf((p[1].x - p[0].x) * y_progress + p[0].x);
+		
+		if (cur_x <= x_max)
+		{
+			if (cur_x < 0)
+				cur_x = 0;
+			while (cur_x <= x_max && cur_x < WIDTH)
+			{
+				ft_put_pixel(img->pixels, cur_x, y_index, color);
+				cur_x++;
+			}
+		}
+		else if (cur_x > x_max)
+		{
+			if (cur_x >= WIDTH)
+				cur_x = WIDTH - 1;
+			while (cur_x >= x_max && cur_x > 0)
+			{
+				ft_put_pixel(img->pixels, cur_x, y_index, color);
+				cur_x--;
+			}
+		}
+		cur_y += 1;
+		y_index = (int)(roundf(cur_y));
+	}
+	
+	int x_max;
+	y_index = (int)(roundf(cur_y));
+	while (cur_y <= p[2].y && y_index < HEIGHT)
+	{
+		
+		float	y_progress =  (cur_y - p[1].y) / (p[2].y - p[1].y);
+		cur_x = m3 *  (cur_y - p[1].y) + p[1].x;
+		x_max = m2 * (cur_y - p[0].y) + p[0].x;
+		y_progress = (cur_y - p[1].y) / (p[2].y - p[1].y);
+		total_y_progress = (cur_y - p[0].y) / (p[2].y - p[0].y);
+		if (cur_x <= x_max)
+		{
+			//printf("cur_x : %d x_max: %d target x: %f y_progress: %f\n", cur_x, x_max, p[1].x, y_progress);
+			while(cur_x < x_max)
+			{
+				if (cur_x >= 0 && cur_x < WIDTH && y_index >= 0 && y_index < HEIGHT)
+					ft_put_pixel(img->pixels, cur_x, y_index, color);
+				cur_x++;
+			}
+		}
+		else if (cur_x > x_max)
+		{
+			//printf("cur_x : %d x_max: %d target x: %f y_progress: %f\n", cur_x, x_max, p[1].x, y_progress);
+			while (cur_x >= x_max)
+			{
+				if (cur_x >= 0 && cur_x < WIDTH && y_index >= 0 && y_index < HEIGHT)
+					ft_put_pixel(img->pixels, cur_x, y_index, color);
+				cur_x--;
+			}
+		}
+		cur_y += 1;
+		y_index = (int)(roundf(cur_y));
+	}
+}
+
+void	draw_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color)
+{
+	draw_line(img, (int)roundf(projected->p->x), (int)roundf(projected->p[1].x), (int)roundf(projected->p->y), (int)roundf(projected->p[1].y), color);
+	draw_line(img, (int)roundf(projected->p[1].x), (int)roundf(projected->p[2].x), (int)roundf(projected->p[1].y), (int)roundf(projected->p[2].y), color);
+	draw_line(img, (int)roundf(projected->p[2].x), (int)roundf(projected->p->x), (int)roundf(projected->p[2].y), (int)roundf(projected->p->y), color);
+}
 
 void	draw_cube(t_mesh *mesh)
 {
@@ -127,29 +247,34 @@ void	draw_cube(t_mesh *mesh)
 	const float	project_mat[4][4] = PROJECTION_MATRIX;
 	i = 0;
 	ft_bzero(mesh->img->pixels, 4 * mesh->img->height * mesh->img->width);
-	// static double	theta = 0;
-	// 	theta += *mesh->d_time;
-	// t_vec3	traveled_dist;
-	// traveled_dist.p[X] = mesh->momentum.p[X] * *mesh->d_time * 20.0;
-	// traveled_dist.p[Y] = mesh->momentum.p[Y] * *mesh->d_time * 20.0;
-	// traveled_dist.p[Z] = mesh->momentum.p[Z] * *mesh->d_time * 20.0;
-	// translate_mesh_3d(mesh, traveled_dist);
-	bool done = false;
-	mesh->center.x = 0;
-	mesh->center.y = 0;
-	mesh->center.z = 0;
+	static double	theta = 0;
+		theta += *mesh->d_time;
+	t_vec3	traveled_dist;
+	traveled_dist.x = mesh->momentum.x * *mesh->d_time;
+	traveled_dist.y = mesh->momentum.y * *mesh->d_time;
+	traveled_dist.z = mesh->momentum.z * *mesh->d_time;
+	#ifdef MOVEMENT
+		translate_mesh_3d(mesh, traveled_dist);
+	#endif
+	//print_vec3(traveled_dist, "traveled_dist: ");
+	bool flipped_x = false;
+	bool flipped_y = false;
+	bool flipped_z = false;
+	// mesh->center.x = 0;
+	// mesh->center.y = 0;
+	// mesh->center.z = 0;
 	while (i < mesh->count)
 	{
-		// printf("p1 x: %f, y: %f z: %f\n", mesh->triangles[i].p[0].p[X], mesh->triangles[i].p[0].p[Y], mesh->triangles[i].p[0].p[Z]);
-		// printf("p2 x: %f, y: %f z: %f\n", mesh->triangles[i].p[1].p[X], mesh->triangles[i].p[1].p[Y], mesh->triangles[i].p[1].p[Z]);
-		// printf("p3 x: %f, y: %f z: %f\n\n", mesh->triangles[i].p[2].p[X], mesh->triangles[i].p[2].p[Y], mesh->triangles[i].p[2].p[Z]);
+		// printf("p1 x: %f, y: %f z: %f\n", mesh->triangles[i].p[0].x, mesh->triangles[i].p[0].y, mesh->triangles[i].p[0].z);
+		// printf("p2 x: %f, y: %f z: %f\n", mesh->triangles[i].p[1].x, mesh->triangles[i].p[1].y, mesh->triangles[i].p[1].z);
+		//printf("p3 x: %f, y: %f z: %f\n\n", mesh->triangles[i].p[2].x, mesh->triangles[i].p[2].y, mesh->triangles[i].p[2].z);
 		matrix_mult_3x1_4x4((mesh->triangles + i)->p + 0, mesh->rotation_mat_z, &rotated_z.p[0]);
 		matrix_mult_3x1_4x4((mesh->triangles + i)->p + 1, mesh->rotation_mat_z, &rotated_z.p[1]);
 		matrix_mult_3x1_4x4((mesh->triangles + i)->p + 2, mesh->rotation_mat_z, &rotated_z.p[2]);
 
-		// printf("p1 x: %f, y: %f z: %f\n", rotated_z.p[0].p[X], rotated_z.p[0].p[Y], rotated_z.p[0].p[Z]);
-		// printf("p2 x: %f, y: %f z: %f\n", rotated_z.p[1].p[X], rotated_z.p[1].p[Y], rotated_z.p[1].p[Z]);
-		// printf("p3 x: %f, y: %f z: %f\n\n", rotated_z.p[2].p[X], rotated_z.p[2].p[Y], rotated_z.p[2].p[Z]);
+		// printf("p1 x: %f, y: %f z: %f\n", rotated_z.p[0].x, rotated_z.p[0].y, rotated_z.p[0].z);
+		// printf("p2 x: %f, y: %f z: %f\n", rotated_z.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
+		// printf("p3 x: %f, y: %f z: %f\n\n", rotated_z.p[2].x, rotated_z.p[2].y, rotated_z.p[2].z);
 
 		matrix_mult_3x1_4x4(rotated_z.p + 0, mesh->rotation_mat_x, &rotated_xz.p[0]);
 		matrix_mult_3x1_4x4(rotated_z.p + 1, mesh->rotation_mat_x, &rotated_xz.p[1]);
@@ -158,26 +283,45 @@ void	draw_cube(t_mesh *mesh)
 		matrix_mult_3x1_4x4(rotated_xz.p + 0, mesh->rotation_mat_x, &rotated_xyz.p[0]);
 		matrix_mult_3x1_4x4(rotated_xz.p + 1, mesh->rotation_mat_x, &rotated_xyz.p[1]);
 		matrix_mult_3x1_4x4(rotated_xz.p + 2, mesh->rotation_mat_x, &rotated_xyz.p[2]);
-		// printf("p1 x: %f, y: %f z: %f\n", rotated_xz.p[0].p[X], rotated_z.p[0].p[Y], rotated_z.p[0].p[Z]);
-		// printf("p2 x: %f, y: %f z: %f\n", rotated_xz.p[1].p[X], rotated_z.p[1].p[Y], rotated_z.p[1].p[Z]);
-		// printf("p3 x: %f, y: %f z: %f\n\n", rotated_xz.p[2].p[X], rotated_z.p[2].p[Y], rotated_z.p[2].p[Z]);
+		// printf("p1 x: %f, y: %f z: %f\n", rotated_xz.p[0].x, rotated_z.p[0].y, rotated_z.p[0].z);
+		// printf("p2 x: %f, y: %f z: %f\n", rotated_xz.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
+		// printf("p3 x: %f, y: %f z: %f\n\n", rotated_xz.p[2].x, rotated_z.p[2].y, rotated_z.p[2].z);
 	
+	
+
+
 		//translated = mesh->triangles[i];
 		translated = rotated_xyz;
-		translated.p[0].z += 5.0f;
-		translated.p[1].z += 5.0f;
-		translated.p[2].z += 5.0f;
+		translated.p[0].z += 3.0f;
+		translated.p[1].z += 3.0f;
+		translated.p[2].z += 3.0f;
 
-		determine_centroid(&translated);
-		add_vec3(&mesh->center, &translated.centroid);
+
+		translated.normal = cross_product(v3_sub(translated.p[1], translated.p[0]), v3_sub(translated.p[2], translated.p[0]));
+
+		float normal_len = sqrtf(translated.normal.x * translated.normal.x + translated.normal.y * translated.normal.y + translated.normal.z * translated.normal.z);
+		scale_vec3(&translated.normal, 1 / normal_len);
+		if (dot_prod(translated.normal, v3_sub(translated.p[0], mesh->main->camera)) >= 0)
+		//if (translated.normal.z > 0)
+		{
+			i++;
+			continue ;
+		}
+		//translate_triangle_3d(&translated, traveled_dist);
+		// add_vec3(translated.p + 0, &traveled_dist);
+		// add_vec3(translated.p + 1, &traveled_dist);
+		// add_vec3(translated.p + 2, &traveled_dist);
+		//determine_centroid(&translated);
+		//add_vec3(&mesh->center, &translated.centroid);
+
 
 		matrix_mult_3x1_4x4(translated.p + 0, project_mat, &projected.p[0]);
 		matrix_mult_3x1_4x4(translated.p + 1, project_mat, &projected.p[1]);
 		matrix_mult_3x1_4x4(translated.p + 2, project_mat, &projected.p[2]);
 
-		// printf("p1 x: %f, y: %f z: %f\n", projected.p[0].p[X], rotated_z.p[0].p[Y], rotated_z.p[0].p[Z]);
-		// printf("p2 x: %f, y: %f z: %f\n", projected.p[1].p[X], rotated_z.p[1].p[Y], rotated_z.p[1].p[Z]);
-		// printf("p3 x: %f, y: %f z: %f\n\n", projected.p[2].p[X], rotated_z.p[2].p[Y], rotated_z.p[2].p[Z]);
+		printf("p1 x: %f, y: %f z: %f\n", projected.p[0].x, rotated_z.p[0].y, rotated_z.p[0].z);
+		// printf("p2 x: %f, y: %f z: %f\n", projected.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
+		// printf("p3 x: %f, y: %f z: %f\n\n", projected.p[2].x, rotated_z.p[2].y, rotated_z.p[2].z);
 
 		// scale the points
 		projected.p[0].x += 1.0f;
@@ -194,37 +338,65 @@ void	draw_cube(t_mesh *mesh)
 		projected.p[2].x *= 0.5f * (float)WIDTH;
 		projected.p[2].y *= 0.5f * (float)HEIGHT;
 
-		p_2d[0][X] = (int)round(projected.p[0].x);
-		p_2d[0][Y] = (int)round(projected.p[0].y);
-		p_2d[1][X] = (int)round(projected.p[1].x);
-		p_2d[1][Y] = (int)round(projected.p[1].y);
-		p_2d[2][X] = (int)round(projected.p[2].x);
-		p_2d[2][Y] = (int)round(projected.p[2].y);
-		if (!done && out_of_bound(p_2d[0]) || out_of_bound(p_2d[1]) || out_of_bound(p_2d[2]))
+		p_2d[0][X] = (int)roundf(projected.p[0].x);
+		p_2d[0][Y] = (int)roundf(projected.p[0].y);
+		p_2d[1][X] = (int)roundf(projected.p[1].x);
+		p_2d[1][Y] = (int)roundf(projected.p[1].y);
+		p_2d[2][X] = (int)roundf(projected.p[2].x);
+		p_2d[2][Y] = (int)roundf(projected.p[2].y);
+		t_vec3	bounds_result = out_of_bound_triangle(&projected);
+		if (!flipped_x && bounds_result.x < 0 && mesh->momentum.x < 0)
 		{
-			//mesh->
-			done = true;
-			// mesh->momentum.p[X] *= -1;
-			// mesh->momentum.p[Y] *= -1;
-			// mesh->momentum.p[Z] *= -1;
+			mesh->momentum.x *= -1;
+			flipped_x = true;
 		}
-		draw_triangle(mesh->img, p_2d[0], p_2d[1], p_2d[2], (mesh->triangles + i)->col);
+		if (!flipped_x && bounds_result.x > 0 && mesh->momentum.x > 0)
+		{
+			mesh->momentum.x *= -1;
+			flipped_x = true;
+		}
+
+		if (!flipped_y && bounds_result.y < 0 && mesh->momentum.y < 0)
+		{
+			mesh->momentum.y *= -1;
+			flipped_y = true;
+		}
+		if (!flipped_y && bounds_result.y > 0 && mesh->momentum.y > 0)
+		{
+			mesh->momentum.y *= -1;
+			flipped_y = true;
+		}
+
+		// if (!flipped_z && bounds_result.z < 0 && mesh->momentum.z < 0)
+		// {
+		// 	mesh->momentum.z *= -1;
+		// 	flipped_z = true;
+		// }
+		// if (!flipped_z && bounds_result.z > 0 && mesh->momentum.z > 0)
+		// {
+		// 	mesh->momentum.z *= -1;
+		// 	flipped_z = true;
+		// }
+		//draw_triangle(mesh->img, &projected, (mesh->triangles + i)->col);
+		fill_triangle(mesh->img, &projected, (mesh->triangles + i)->col);
+		
 		i++;
 	}
-	mesh->center = v3_scale(mesh->center, 1.0f / (float) mesh->count);
+	//mesh->center = v3_scale(mesh->center, 1.0f / (float) mesh->count);
 	// mesh->center = length_vec3(&mesh->center) / mesh->count;
-	if (done)
-	{
+	// if (done)
+	// {
 		// float len = length_vec3(&mesh->center);
 		// t_vec3 normalized = v3_scale(mesh->center, 1.0f / (float) len);
 		// // mesh->momentum = v3_add(mesh->momentum, v3_reverse(normalized));
 		// mesh->momentum = v3_reverse(normalized);
-		// mesh->momentum.p[Z] += 1.0f;
+		// mesh->momentum.z += 1.0f;
 		// double a = 10.0;
-		// mesh->momentum.p[Z] = modf(50.0, (double *)(mesh->momentum.p + Z));
+		// mesh->momentum.z = modf(50.0, (double *)(mesh->momentum.p + Z));
 		//scale_vec3(&mesh->momentum, 1);
-	}
+//	}
 	//if (mesh->triangles->col == GREEN)
 		//print_vec3(mesh->center, "\n");
 	
 }
+

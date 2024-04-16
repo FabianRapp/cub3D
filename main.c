@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/16 14:13:54 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/16 20:17:12 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,31 @@ void ft_hook(void* param)
 
 	mod_cube_rotation(&main_data->cube, main_data->mlx->delta_time);
 	draw_cube(&main_data->cube);
-	mod_cube_rotation(&main_data->tetra, main_data->mlx->delta_time);
-	draw_cube(&main_data->tetra);
-	mod_cube_rotation2(&main_data->cube2, main_data->mlx->delta_time);
+	// mod_cube_rotation(&main_data->tetra, main_data->mlx->delta_time);
+	// draw_cube(&main_data->tetra);
+	// mod_cube_rotation2(&main_data->cube2, main_data->mlx->delta_time);
 	for (int i = 0; i < main_data->nb; i++)
 	{
-		mod_cube_rotation(&main_data->objs[0], main_data->mlx->delta_time);
-		draw_cube(&main_data->objs[0]);
+		const float rotation_mat[4][4] = {
+			{1.0f, 0.0f, 0.0f, 0.0f},
+			{0.0f,1.0f, 0.0f, 0.0f},
+			{0.0f, 0.0f, 1.0f, 0.0f},
+			{0.0f, 0.0f, 0.0f, 1.0f},
+		};
+		ft_memcpy(main_data->objs[i].rotation_mat_x, rotation_mat, sizeof(rotation_mat));
+		ft_memcpy(main_data->objs[i].rotation_mat_y, rotation_mat, sizeof(rotation_mat));
+		ft_memcpy(main_data->objs[i].rotation_mat_z, rotation_mat, sizeof(rotation_mat));
+		//mod_cube_rotation(&main_data->objs[0], main_data->mlx->delta_time);
+		draw_cube(&main_data->objs[i]);
 	}
 	static bool first = true;
 	// t_triangle shift = {{{-0.5f,-0.5f,-0.5f}, {-0.5f,-0.5f,-0.5f}, {-0.5f,-0.5f,-0.5f}}, 1};
 	t_vec3 shift = {-0.5f,-0.5f,-0.5f};
 	if (first) {
 		translate_mesh_3d(&main_data->cube, shift);
-		translate_mesh_3d(&main_data->cube2, shift);
+		//translate_mesh_3d(&main_data->cube2, shift);
 	}
-	draw_cube(&main_data->cube2);
+	//draw_cube(&main_data->cube2);
 	first = false;
 	// mlx_put_pixel(img, x, y, color);
 	// pixel++;
@@ -74,6 +83,15 @@ void	translate_triangle_3d(t_triangle *tri_a, t_vec3 v)
 	}
 }
 
+void	scale_triangle_3d(t_triangle *tri_a, float scalar)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		
+		scale_vec3(tri_a->p + i, scalar);
+	}
+}
+
 void	translate_mesh_3d(t_mesh *mesh, t_vec3 v)
 {
 	for (int i = 0; i < mesh->count; i++)
@@ -82,6 +100,13 @@ void	translate_mesh_3d(t_mesh *mesh, t_vec3 v)
 	}
 }
 
+void	scale_mesh_3d(t_mesh *mesh, float scalar)
+{
+	for (int i = 0; i < mesh->count; i++)
+	{
+		scale_triangle_3d(mesh->triangles + i, scalar);
+	}
+}
 
 void	determine_centroid(t_triangle *tri)
 {
@@ -110,7 +135,6 @@ void	draw_objects(int nb, t_main *m_data)
 	
 	for (int i = 0; i < nb; i++)
 	{
-		srand(i);
 		t_vec3	v = v3_random();
 		// mesh_arr[i].triangles = (t_triangle *) malloc(sizeof(t_triangle) * 4);
 		// mesh_arr[i].triangles->p[0] = v3_random();
@@ -128,14 +152,14 @@ void	draw_objects(int nb, t_main *m_data)
 			{v.x * 1.00f, v.y * 1.00f, v.z * 1.00f}
 		};// Vertex D
 		for (int j = 0; j < 4; j++) {
-			print_vec3(j[vertex], "[0]");
+			//print_vec3(j[vertex], "[0]");
 		}
 		// mesh_arr[i].triangles = (t_triangle *) malloc(sizeof(t_triangle) * 24);
 		t_triangle trians[4] = {
-			{{vertex[0], vertex[1], vertex[2]}, COL2, 0},
-			{{vertex[0], vertex[1], vertex[3]}, COL2, 0},
-			{{vertex[1], vertex[2], vertex[3]}, COL2, 0},
-			{{vertex[2], vertex[3], vertex[0]}, COL2, 0},
+			{{vertex[0], vertex[1], vertex[2]}, MAGENTA, 0},
+			{{vertex[0], vertex[1], vertex[3]}, MAGENTA, 0},
+			{{vertex[1], vertex[2], vertex[3]}, MAGENTA, 0},
+			{{vertex[2], vertex[3], vertex[0]}, MAGENTA, 0},
 		};
 		// for (int j = 0; j < 4; j++) {
 		// 	print_vec3(trians->p[j], "0");
@@ -144,15 +168,17 @@ void	draw_objects(int nb, t_main *m_data)
 		// print_vec3(trians[1].p[0], "tr[1]");
 		// print_vec3(trians[2].p[0], "tr[2]");
 		// print_vec3(trians[3].p[0], "tr[3]");
-		printf("\n");
-		m_data->objs [i].triangles = ft_memdup(&trians, sizeof(trians));
-		m_data->objs [i].img = mlx_new_image(m_data->mlx, WIDTH, HEIGHT);
-		if (!m_data->objs [i].img || (mlx_image_to_window(m_data->mlx, m_data->objs [i].img, 0, 0) < 0))
+		//printf("\n");
+		m_data->objs[i].triangles = ft_memdup(&trians, sizeof(trians));
+		m_data->objs[i].img = mlx_new_image(m_data->mlx, WIDTH, HEIGHT);
+		if (!m_data->objs[i].img || (mlx_image_to_window(m_data->mlx, m_data->objs[i].img, 0, 0) < 0))
 			ft_error();
-		mlx_set_instance_depth(m_data->objs [i].img->instances, 2*nb - i);
-		m_data->objs [i].momentum = v3_zero();
-		m_data->objs [i].count = 4;
-		m_data->objs [i].d_time = &m_data->mlx->delta_time;
+		mlx_set_instance_depth(m_data->objs[i].img->instances, 2*nb - i);
+		m_data->objs[i].momentum = v3_zero();
+		m_data->objs[i].momentum.x = generate_random_float();
+		m_data->objs[i].momentum.y = generate_random_float();
+		m_data->objs[i].count = 4;
+		m_data->objs[i].d_time = &m_data->mlx->delta_time;
 		// for (int j = 0; j < 24; j++) {
 		// 	for (int k = 0; k < 3; k++) {
 		// 		t_vec3 tmp = vertex[indexes[j][k]];
@@ -165,14 +191,36 @@ void	draw_objects(int nb, t_main *m_data)
 }
 #include <sys/time.h>
 
+// pauses the loop while key is held
+void	pause_key_hook(void *param)
+{
+	t_main	*data;
+
+	usleep(100000);
+	//data->mlx->delta_time = d_time;
+}
+
+void	ft_key_hook(mlx_key_data_t keydata, void *param)
+{
+	if (keydata.key == MLX_KEY_SPACE)
+		pause_key_hook(param);
+}
+
+
+void	init_key_hooks(t_main *main_data)
+{
+	mlx_key_hook(main_data->mlx, &ft_key_hook, &main_data);
+}
+
+
 int32_t	main(void)
 {
 	mlx_image_t	*ob;
 	t_main		m_data;
-	struct timeval			asd;
+	const t_vec3	init_cam = {0, 0, 0};
 
-	gettimeofday(&asd, NULL);
-srand(asd.tv_usec);
+	ft_memcpy(&m_data.camera, &init_cam, sizeof(init_cam));
+	srand(time(NULL));
 	if (!init())
 		return (1);
 	// MLX allows you to define its core behaviour before startup.
@@ -180,6 +228,7 @@ srand(asd.tv_usec);
 	m_data.mlx = mlx_init(WIDTH, HEIGHT, "test", true);
 	if (!m_data.mlx)
 		ft_error();
+	
 	mlx_image_t* cube_img = mlx_new_image(m_data.mlx, WIDTH, HEIGHT);
 	if (!cube_img || (mlx_image_to_window(m_data.mlx, cube_img, 0, 0) < 0))
 		ft_error();
@@ -195,17 +244,18 @@ srand(asd.tv_usec);
 	m_data.cube.d_time = &m_data.mlx->delta_time;
 	m_data.cube2.d_time = &m_data.mlx->delta_time;
 	m_data.tetra.d_time = &m_data.mlx->delta_time;
-	fill_cube_mesh(&m_data.cube);
-	fill_tetra_mesh(&m_data.tetra);
-	fill_cube_mesh2(&m_data.cube2);
+	fill_cube_mesh(&m_data.cube, &m_data);
+	//fill_tetra_mesh(&m_data.tetra, &m_data);
+	//fill_cube_mesh2(&m_data.cube2, &m_data);
 	//draw_cube(&m_data.cube);
 	draw_objects(0, &m_data);
 	mlx_set_instance_depth(cube_img->instances, 2);
 	mlx_set_instance_depth(cube_img2->instances, 1);
 	mlx_set_instance_depth(tetra_img->instances, 3);
-	first_ob_ball(m_data.mlx);
+	//first_ob_ball(m_data.mlx);
 	// Register a hook and pass mlx as an optional param.
 	// NOTE: Do this before calling mlx_loop!
+	init_key_hooks(&m_data);
 	mlx_loop_hook(m_data.mlx, ft_hook, &m_data);
 	int	pos_a[2] = {200, 200};
 	int	pos_b[2] = {100, 100};
