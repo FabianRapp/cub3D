@@ -13,6 +13,16 @@ t_vec3	v3_zero(void)
 	return (v);
 }
 
+void	norm_vec3(t_vec3 *v)
+{
+	float len;
+	
+	len = sqrtf(v->x * v->x + v->y * v->y + v->z * v->z);
+	v->x /= len;
+	v->y /= len;
+	v->z /= len;
+}
+
 t_vec3	cross_product(t_vec3 a, t_vec3 b)
 {
 	t_vec3	result;

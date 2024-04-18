@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/18 03:25:32 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/18 05:48:55 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,17 @@ void ft_hook(void* param)
 	int x = pixel - (y * WIDTH);
 
 	ft_bzero(main_data->img->pixels, sizeof(uint32_t) * WIDTH * HEIGHT);
+	draw_skybox(&main_data->skybox);
 	//ft_bzero(main_data->depth, sizeof(float) * WIDTH * HEIGHT);
 	for (int i = 0; i < WIDTH * HEIGHT; i++)
 	{
 		main_data->depth[i] = Z_FAR + 1;
 	}
 	mod_cube_rotation(&main_data->cube, main_data->mlx->delta_time);
-	draw_cube(&main_data->cube);
+	draw_mesh(&main_data->cube);
+	
 	// mod_cube_rotation(&main_data->tetra, main_data->mlx->delta_time);
-	//draw_cube(&main_data->tetra);
+	//draw_mesh(&main_data->tetra);
 	mod_cube_rotation2(&main_data->cube2, main_data->mlx->delta_time);
 	for (int i = 0; i < main_data->nb; i++)
 	{
@@ -45,7 +47,7 @@ void ft_hook(void* param)
 		ft_memcpy(main_data->objs[i].rotation_mat_y, rotation_mat, sizeof(rotation_mat));
 		ft_memcpy(main_data->objs[i].rotation_mat_z, rotation_mat, sizeof(rotation_mat));
 		//mod_cube_rotation(&main_data->objs[0], main_data->mlx->delta_time);
-		draw_cube(&main_data->objs[i]);
+		draw_mesh(&main_data->objs[i]);
 	}
 	static bool first = true;
 	// t_triangle shift = {{{-0.5f,-0.5f,-0.5f}, {-0.5f,-0.5f,-0.5f}, {-0.5f,-0.5f,-0.5f}}, 1};
@@ -54,7 +56,7 @@ void ft_hook(void* param)
 		translate_mesh_3d(&main_data->cube, shift);
 		//translate_mesh_3d(&main_data->cube2, shift);
 	}
-	draw_cube(&main_data->cube2);
+	draw_mesh(&main_data->cube2);
 	first = false;
 	// mlx_put_pixel(img, x, y, color);
 	// pixel++;
@@ -253,9 +255,10 @@ int32_t	main(void)
 	m_data.cube2.d_time = &m_data.mlx->delta_time;
 	m_data.tetra.d_time = &m_data.mlx->delta_time;
 	fill_cube_mesh(&m_data.cube, &m_data);
+	fill_skybox_mesh(&m_data.skybox, &m_data);
 	//fill_tetra_mesh(&m_data.tetra, &m_data);
 	fill_cube_mesh2(&m_data.cube2, &m_data);
-	//draw_cube(&m_data.cube);
+	//draw_mesh(&m_data.cube);
 	draw_objects(0, &m_data);
 	mlx_set_instance_depth(cube_img->instances, 2);
 	mlx_set_instance_depth(cube_img2->instances, 1);

@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/18 01:55:41 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/18 06:07:40 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ t_fixed		fixed_dev(t_fixed a, t_fixed b);
 t_fixed		fixed_mult(t_fixed a, t_fixed b);
 t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 
-#define WIDTH 1250
-#define HEIGHT 1024
+#define WIDTH 1500
+#define HEIGHT 700
 
 #define ASPECT_RATIO ((float)HEIGHT) / ((float)WIDTH)
 
@@ -149,6 +149,7 @@ typedef struct s_main
 	t_mesh		cube;
 	t_mesh		cube2;
 	t_mesh		tetra;
+	t_mesh		skybox;
 	mlx_image_t	*img;
 	float		depth[WIDTH * HEIGHT];
 }	t_main;
@@ -168,7 +169,7 @@ struct s_fps_textures
 	mlx_texture_t	*nine;
 };
 
-void	draw_cube(t_mesh *cube_mesh);
+void	draw_mesh(t_mesh *cube_mesh);
 
 //utils/fps.c
 struct s_fps_textures	get_fps_digit_texture(void);
@@ -195,7 +196,8 @@ void	ft_put_pixel(uint8_t *pixel_buffer, int x, int y, int color);
 // draw.c
 void	draw_line(mlx_image_t *image, int x1, int x2, int y1, int y2, int color);
 void	draw_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color);
-void	draw_cube(t_mesh *mesh);
+void	draw_mesh(t_mesh *mesh);
+void	draw_skybox(t_mesh *mesh);
 
 // main.c
 void	ft_hook(void* param);
@@ -209,6 +211,7 @@ void	determine_centroid(t_triangle *tri);
 void	fill_tetra_mesh(t_mesh *cube, t_main *main_data);
 void	fill_cube_mesh(t_mesh *cube, t_main *main_data);
 void	fill_cube_mesh2(t_mesh *cube, t_main *main_data);
+void	fill_skybox_mesh(t_mesh *cube, t_main *main_data);
 
 // vec3.c
 t_vec3	v3_zero(void);
@@ -227,6 +230,8 @@ float	length_vec3(t_vec3 *v);
 void	print_vec3(t_vec3 v, char *msg);
 t_vec3	cross_product(t_vec3 a, t_vec3 b);
 float	dot_prod(t_vec3 a, t_vec3 b);
+void	norm_vec3(t_vec3 *v);
+
 //to_replace.c
 float	generate_random_float();
 
