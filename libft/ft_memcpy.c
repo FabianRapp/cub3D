@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 14:30:35 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/05 22:32:56 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/18 10:34:54 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 
 	if (!dst)
 		return (NULL);
+	if (!src)
+		return (dst);
 	if (!dst && !src && n)
 		return (dst);
 	d = (char *restrict)dst;

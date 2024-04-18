@@ -398,9 +398,9 @@ void	draw_mesh(t_mesh *mesh)
 
 		//translated = mesh->triangles[i];
 		translated = rotated_xyz;
-		translated.p[0].z += 5.0f;
-		translated.p[1].z += 5.0f;
-		translated.p[2].z += 5.0f;
+		translated.p[0].z += 10.0f;
+		translated.p[1].z += 10.0f;
+		translated.p[2].z += 10.0f;
 
 
 		translated.normal = cross_product(v3_sub(translated.p[1], translated.p[0]), v3_sub(translated.p[2], translated.p[0]));
@@ -437,9 +437,9 @@ void	draw_mesh(t_mesh *mesh)
 		color_scalars.v[G] = fmin(color_scalars.v[G], 1.0f);
 		color_scalars.v[B] = fmin(color_scalars.v[B], 1.0f);
 
-		color.argb[R] *= color_scalars.v[R];
-		color.argb[G] *= color_scalars.v[G];
-		color.argb[B] *= color_scalars.v[B];
+		// color.argb[R] *= color_scalars.v[R];
+		// color.argb[G] *= color_scalars.v[G];
+		// color.argb[B] *= color_scalars.v[B];
 
 		matrix_mult_3x1_4x4(translated.p + 0, project_mat, &projected.p[0]);
 		matrix_mult_3x1_4x4(translated.p + 1, project_mat, &projected.p[1]);
@@ -544,12 +544,12 @@ void	draw_skybox(t_mesh *mesh)
 	
 		float normal_len = sqrtf(base->normal.x * base->normal.x + base->normal.y * base->normal.y + base->normal.z * base->normal.z);
 		scale_vec3(&base->normal, 1 / normal_len);
-		if (dot_prod(base->normal, v3_sub(base->p[0], mesh->main->camera)) < 0)
-		//if (base->normal.z > 0)
-		{
-			i++;
-			continue ;
-		}
+		// if (dot_prod(base->normal, v3_sub(base->p[0], mesh->main->camera)) < 0)
+		// //if (base->normal.z > 0)
+		// {
+		// 	i++;
+		// 	continue ;
+		// }
 		matrix_mult_3x1_4x4(base->p + 0, project_mat, &projected.p[0]);
 		matrix_mult_3x1_4x4(base->p + 1, project_mat, &projected.p[1]);
 		matrix_mult_3x1_4x4(base->p + 2, project_mat, &projected.p[2]);

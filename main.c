@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/18 08:05:16 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/18 12:48:38 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void ft_hook(void* param)
 	int	y = pixel / WIDTH;
 	int x = pixel - (y * WIDTH);
 
-	
 	zero_pixel_buffer(main_data->img->pixels);
 	//draw_skybox(&main_data->skybox);
 	//ft_bzero(main_data->depth, sizeof(float) * WIDTH * HEIGHT);
@@ -40,9 +39,10 @@ void ft_hook(void* param)
 	{
 		main_data->depth[i] = Z_FAR + 1;
 	}
-	mod_cube_rotation(&main_data->cube, main_data->mlx->delta_time);
-	draw_mesh(&main_data->cube);
-	
+	//mod_cube_rotation(&main_data->cube, main_data->mlx->delta_time);
+	mod_cube_rotation(&main_data->custom, main_data->mlx->delta_time);
+	//draw_mesh(&main_data->cube);
+	draw_mesh(&main_data->custom);
 	//mod_cube_rotation(&main_data->tetra, main_data->mlx->delta_time);
 	//draw_mesh(&main_data->tetra);
 	mod_cube_rotation2(&main_data->cube2, main_data->mlx->delta_time);
@@ -67,7 +67,7 @@ void ft_hook(void* param)
 		translate_mesh_3d(&main_data->cube, shift);
 		//translate_mesh_3d(&main_data->cube2, shift);
 	}
-	draw_mesh(&main_data->cube2);
+	//draw_mesh(&main_data->cube2);
 	first = false;
 	// mlx_put_pixel(img, x, y, color);
 	// pixel++;
@@ -238,6 +238,7 @@ int32_t	main(void)
 	t_main		m_data;
 	const t_vec3	init_cam = {0, 0, 0};
 
+	
 	ft_memcpy(&m_data.camera, &init_cam, sizeof(init_cam));
 	srand(time(NULL));
 	if (!init())
@@ -265,6 +266,7 @@ int32_t	main(void)
 	m_data.cube.d_time = &m_data.mlx->delta_time;
 	m_data.cube2.d_time = &m_data.mlx->delta_time;
 	m_data.tetra.d_time = &m_data.mlx->delta_time;
+	load_obj_file("objs/HorseArmor.obj", &m_data.custom, &m_data);
 	fill_cube_mesh(&m_data.cube, &m_data);
 	fill_skybox_mesh(&m_data.skybox, &m_data);
 	//fill_tetra_mesh(&m_data.tetra, &m_data);

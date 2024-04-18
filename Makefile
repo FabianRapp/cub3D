@@ -32,7 +32,8 @@ SOURCES= \
 	mesh_rotation.c \
 	utils1.c \
 	triangle.c \
-	to_replace.c
+	to_replace.c \
+	obj_parser.c
 
 OBJECTS=$(SOURCES:.c=.o)
 MAIN_OB=$(MAIN:.c=.o)

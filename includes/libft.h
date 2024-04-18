@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 22:22:26 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/06 00:21:31 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/18 10:29:05 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	ft_putnbr_fd(int n, int fd);
 int		ft_powint(int base, int expo);
 // char	*get_next_line(int fd);
 char	*get_next_line(int fd, bool cleanup);
+void	*ft_memjoin(void *src1, void *src2, int size1, int size2);
 
 /**********************   LINKED LISTS' FUNCTIONS   *************************/
 typedef struct s_list

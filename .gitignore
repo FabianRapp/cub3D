@@ -13,3 +13,7 @@ testing.c
 stuff
 *fixed_testing.h.gch
 to_replace.c
+lego_obj
+objs
+.DS_Store
+includes/libft.h.gch

@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/18 08:25:13 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/18 12:52:46 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 */
 
-
+# include <fcntl.h>
 # include <stdio.h>
 # include <MLX42.h>
 # include <unistd.h>
@@ -33,6 +33,7 @@
 # include <libft.h>
 # include <time.h>
 # include <float.h>
+
 // # include <iomanip>
 /*
 	inlining these functions helps alot with performence!
@@ -45,7 +46,7 @@
 #define ROT_X
 #define ROT_Y
 #define ROT_Z
-#define MOVEMENT
+//#define MOVEMENT
 
 #define GRAV_CONST 0.5f
 
@@ -106,7 +107,6 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 	{0.0f, 0.0f, ((float) Z_OFFSET), 0.0f} \
 }
 
-
 typedef struct s_vec3
 {
 	float	x;
@@ -147,10 +147,6 @@ typedef struct s_light
 	t_color_split		color;
 }	t_light;
 
-
-
-
-
 typedef struct s_mesh
 {
 	t_triangle	*triangles;
@@ -167,7 +163,6 @@ typedef struct s_mesh
 	t_main		*main;
 }	t_mesh;
 
-
 typedef struct s_main
 {
 	t_vec3		camera;
@@ -179,6 +174,7 @@ typedef struct s_main
 	t_mesh		cube2;
 	t_mesh		tetra;
 	t_mesh		skybox;
+	t_mesh		custom;
 	mlx_image_t	*img;
 	float		depth[WIDTH * HEIGHT];
 }	t_main;
@@ -263,6 +259,9 @@ void	print_vec3(t_vec3 v, char *msg);
 t_vec3	cross_product(t_vec3 a, t_vec3 b);
 float	dot_prod(t_vec3 a, t_vec3 b);
 void	norm_vec3(t_vec3 *v);
+
+// obj_parser.c
+void	load_obj_file(char *path, t_mesh *mesh, t_main *main_data);
 
 //to_replace.c
 float	generate_random_float();
