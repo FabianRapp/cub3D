@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/17 00:41:50 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/18 01:55:41 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # include <limits.h>
 # include <libft.h>
 # include <time.h>
+# include <float.h>
 // # include <iomanip>
 /*
 	inlining these functions helps alot with performence!
@@ -116,6 +117,7 @@ typedef struct s_vec3
 typedef struct s_triangle
 {
 	t_vec3		p[3];
+	float		unprojected_z[3];
 	uint32_t	col;
 	t_vec3		centroid;
 	t_vec3		normal;
@@ -147,6 +149,8 @@ typedef struct s_main
 	t_mesh		cube;
 	t_mesh		cube2;
 	t_mesh		tetra;
+	mlx_image_t	*img;
+	float		depth[WIDTH * HEIGHT];
 }	t_main;
 
 

@@ -106,26 +106,38 @@ void	draw_line(mlx_image_t *image, int x1, int x2, int y1, int y2, int color)
 	}
 }
 
-void	sort_vertexes_for_y(t_vec3 p[3])
+void	sort_vertexes_for_y(t_triangle *tri)
 {
 	t_vec3	tmp;
+	float	tmp_z;
+	t_vec3	*p;
 
+	p = tri->p;
 	if (p[0].y > p[1].y)
 	{
 		tmp = p[0];
+		tmp_z = tri->unprojected_z[0];
 		p[0] = p[1];
+		tri->unprojected_z[0] = tri->unprojected_z[1];
 		p[1] = tmp;
+		tri->unprojected_z[1] = tmp_z;
 	}
 	if (p[1].y > p[2].y)
 	{
 		tmp = p[1];
+		tmp_z = tri->unprojected_z[1];
 		p[1] = p[2];
+		tri->unprojected_z[1] = tri->unprojected_z[2];
 		p[2] = tmp;
+		tri->unprojected_z[2] = tmp_z;
 		if (p[0].y > p[1].y)
 		{
 			tmp = p[0];
+			tmp_z = tri->unprojected_z[0];
 			p[0] = p[1];
+			tri->unprojected_z[0] = tri->unprojected_z[1];
 			p[1] = tmp;
+			tri->unprojected_z[1] = tmp_z;
 		}
 	}
 }
@@ -137,11 +149,31 @@ float	slope_2d_x_per_y(t_vec3 p1, t_vec3 p2)
 	return ((p2.x - p1.x) / (p2.y - p1.y));
 }
 
+
+// void	calc_xy_progress(t_vec3 *a, t_vec3 *b, float cur_y, )
+// {
+
+// }
+
+
+bool	zero_f(float f)
+{
+	if (fabs(f) < 0.01)
+	{
+		printf("zero\n");
+		exit(1);
+		return (true);
+	}
+	return (false);
+}
+
 void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color)
 {
 	t_vec3	*p = projected->p;
-	
-	sort_vertexes_for_y(p);
+	int32_t		*depth;
+
+	//depth = mesh->main->depth;
+	sort_vertexes_for_y(projected);
 	if (!(p[0].y <= p[1].y && p[1].y <= p[2].y))
 	{
 		printf("error sort_vertexes_for_y 1: %f 2: %f 3: %f\n", p[0].y, p[1].y, p[2].y);
@@ -152,79 +184,95 @@ void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color)
 	float	m2 = slope_2d_x_per_y(p[0], p[2]);
 	float	m3 = slope_2d_x_per_y(p[1], p[2]);
 	float	y_dist1 = p[1].y - p[0].y;
-	float	cur_y = p[0].y;
+	int	cur_y = (int)p[0].y;
 	float	cur_max_y = p[1].y;
 	float	total_y_progress;
 	int	cur_x;
-	int	y_index;
+	//int	y_index;
 	static int i = 0;
 	if (cur_y < 0)
 		cur_y = 0;
-	y_index = (int)(roundf(cur_y));
-	while (cur_y < cur_max_y && y_index < HEIGHT)
+	//y_index = (int)(roundf(cur_y));
+	//while (cur_y < (int)cur_max_y && cur_y < HEIGHT)
 	{
 		total_y_progress = (cur_y - p[0].y) / (p[2].y - p[0].y);
 		cur_x = (int)(roundf((p[2].x - p[0].x) * total_y_progress + p[0].x));
 		float	y_progress =  (cur_y - p[0].y) / (cur_max_y - p[0].y);
 		int	x_max = (int)roundf((p[1].x - p[0].x) * y_progress + p[0].x);
-		
+		float cur_z = y_progress * (projected->unprojected_z[1] - projected->unprojected_z[0]) + projected->unprojected_z[0];
+		if (cur_z < Z_NEAR || cur_z > Z_FAR)// || cur_z > depth[cur_x + WIDTH * y_index])
+		{
+			cur_y ++;
+			return ;
+			//continue ;
+		}
+		depth[cur_x + WIDTH * cur_y] = cur_z;
 		if (cur_x <= x_max)
 		{
 			if (cur_x < 0)
 				cur_x = 0;
 			while (cur_x <= x_max && cur_x < WIDTH)
 			{
-				ft_put_pixel(img->pixels, cur_x, y_index, color);
+				ft_put_pixel(img->pixels, cur_x, cur_y, color);
 				cur_x++;
 			}
 		}
-		else if (cur_x > x_max)
+		else if (cur_x > x_max && )
 		{
 			if (cur_x >= WIDTH)
 				cur_x = WIDTH - 1;
 			while (cur_x >= x_max && cur_x > 0)
 			{
-				ft_put_pixel(img->pixels, cur_x, y_index, color);
+				ft_put_pixel(img->pixels, cur_x, cur_y, color);
 				cur_x--;
 			}
 		}
 		cur_y += 1;
-		y_index = (int)(roundf(cur_y));
+	//	y_index = (int)(roundf(cur_y));
 	}
 	
-	int x_max;
-	y_index = (int)(roundf(cur_y));
-	while (cur_y <= p[2].y && y_index < HEIGHT)
-	{
-		
-		float	y_progress =  (cur_y - p[1].y) / (p[2].y - p[1].y);
-		cur_x = m3 *  (cur_y - p[1].y) + p[1].x;
-		x_max = m2 * (cur_y - p[0].y) + p[0].x;
-		y_progress = (cur_y - p[1].y) / (p[2].y - p[1].y);
-		total_y_progress = (cur_y - p[0].y) / (p[2].y - p[0].y);
-		if (cur_x <= x_max)
-		{
-			//printf("cur_x : %d x_max: %d target x: %f y_progress: %f\n", cur_x, x_max, p[1].x, y_progress);
-			while(cur_x < x_max)
-			{
-				if (cur_x >= 0 && cur_x < WIDTH && y_index >= 0 && y_index < HEIGHT)
-					ft_put_pixel(img->pixels, cur_x, y_index, color);
-				cur_x++;
-			}
-		}
-		else if (cur_x > x_max)
-		{
-			//printf("cur_x : %d x_max: %d target x: %f y_progress: %f\n", cur_x, x_max, p[1].x, y_progress);
-			while (cur_x >= x_max)
-			{
-				if (cur_x >= 0 && cur_x < WIDTH && y_index >= 0 && y_index < HEIGHT)
-					ft_put_pixel(img->pixels, cur_x, y_index, color);
-				cur_x--;
-			}
-		}
-		cur_y += 1;
-		y_index = (int)(roundf(cur_y));
-	}
+// 	int x_max;
+// //	y_index = (int)(roundf(cur_y));
+// 	cur_y = (int)p[1].y;
+// 	//while (cur_y <= (int)p[2].y && cur_y < HEIGHT)
+// 	{
+// 		float	y_progress =  (cur_y - p[1].y) / (p[2].y - p[1].y);
+// 		cur_x = m3 *  (cur_y - p[1].y) + p[1].x;
+// 		x_max = m2 * (cur_y - p[0].y) + p[0].x;
+// 		y_progress = (cur_y - p[1].y) / (p[2].y - p[1].y);
+// 		total_y_progress = (cur_y - p[0].y) / (p[2].y - p[0].y);
+// 		float cur_z = y_progress * (projected->unprojected_z[2] - projected->unprojected_z[1]) + projected->unprojected_z[1];
+// 		if (cur_z < Z_NEAR || cur_z > Z_FAR)// || cur_z > depth[cur_x + WIDTH * y_index])
+// 		{
+// 			cur_y ++;
+// 			return ;
+// 			//continue ;
+// 		}
+// 		depth[cur_x + WIDTH * cur_y] = cur_z;
+// 		//printf("cur_z: %f\n", cur_z);
+// 		if (cur_x <= x_max)
+// 		{
+// 			//printf("cur_x : %d x_max: %d target x: %f y_progress: %f\n", cur_x, x_max, p[1].x, y_progress);
+// 			while(cur_x < x_max)
+// 			{
+// 				if (cur_x >= 0 && cur_x < WIDTH && cur_y >= 0 && cur_y < HEIGHT)
+// 					ft_put_pixel(img->pixels, cur_x, cur_y, color);
+// 				cur_x++;
+// 			}
+// 		}
+// 		else if (cur_x > x_max)
+// 		{
+// 			//printf("cur_x : %d x_max: %d target x: %f y_progress: %f\n", cur_x, x_max, p[1].x, y_progress);
+// 			while (cur_x >= x_max)
+// 			{
+// 				if (cur_x >= 0 && cur_x < WIDTH && cur_y >= 0 && cur_y < HEIGHT)
+// 					ft_put_pixel(img->pixels, cur_x, cur_y, color);
+// 				cur_x--;
+// 			}
+// 		}
+// 		cur_y += 1;
+// 		//y_index = (int)(roundf(cur_y));
+// 	}
 }
 
 void	draw_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color)
@@ -237,6 +285,7 @@ void	draw_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color)
 void	draw_cube(t_mesh *mesh)
 {
 	int			i;
+	
 	t_triangle	rotated_xz;
 	t_triangle	rotated_xyz;
 	t_triangle	rotated_z;
@@ -246,7 +295,6 @@ void	draw_cube(t_mesh *mesh)
 	int			p_2d[3][2];
 	const float	project_mat[4][4] = PROJECTION_MATRIX;
 	i = 0;
-	ft_bzero(mesh->img->pixels, 4 * mesh->img->height * mesh->img->width);
 	static double	theta = 0;
 		theta += *mesh->d_time;
 	t_vec3	traveled_dist;
@@ -292,9 +340,9 @@ void	draw_cube(t_mesh *mesh)
 
 		//translated = mesh->triangles[i];
 		translated = rotated_xyz;
-		translated.p[0].z += 3.0f;
-		translated.p[1].z += 3.0f;
-		translated.p[2].z += 3.0f;
+		translated.p[0].z += 5.0f;
+		translated.p[1].z += 5.0f;
+		translated.p[2].z += 5.0f;
 
 
 		translated.normal = cross_product(v3_sub(translated.p[1], translated.p[0]), v3_sub(translated.p[2], translated.p[0]));
@@ -319,7 +367,7 @@ void	draw_cube(t_mesh *mesh)
 		matrix_mult_3x1_4x4(translated.p + 1, project_mat, &projected.p[1]);
 		matrix_mult_3x1_4x4(translated.p + 2, project_mat, &projected.p[2]);
 
-		printf("p1 x: %f, y: %f z: %f\n", projected.p[0].x, rotated_z.p[0].y, rotated_z.p[0].z);
+		printf("p1 x: %f, y: %f z: %f\n", translated.p[0].x, translated.p[0].y, translated.p[0].z);
 		// printf("p2 x: %f, y: %f z: %f\n", projected.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
 		// printf("p3 x: %f, y: %f z: %f\n\n", projected.p[2].x, rotated_z.p[2].y, rotated_z.p[2].z);
 
@@ -344,6 +392,9 @@ void	draw_cube(t_mesh *mesh)
 		p_2d[1][Y] = (int)roundf(projected.p[1].y);
 		p_2d[2][X] = (int)roundf(projected.p[2].x);
 		p_2d[2][Y] = (int)roundf(projected.p[2].y);
+		projected.unprojected_z[0] = translated.p[0].z;
+		projected.unprojected_z[1] = translated.p[1].z;
+		projected.unprojected_z[2] = translated.p[2].z;
 		t_vec3	bounds_result = out_of_bound_triangle(&projected);
 		if (!flipped_x && bounds_result.x < 0 && mesh->momentum.x < 0)
 		{

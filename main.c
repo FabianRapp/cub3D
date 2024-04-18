@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/16 20:17:12 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/18 03:25:32 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,17 @@ void ft_hook(void* param)
 	int	y = pixel / WIDTH;
 	int x = pixel - (y * WIDTH);
 
+	ft_bzero(main_data->img->pixels, sizeof(uint32_t) * WIDTH * HEIGHT);
+	//ft_bzero(main_data->depth, sizeof(float) * WIDTH * HEIGHT);
+	for (int i = 0; i < WIDTH * HEIGHT; i++)
+	{
+		main_data->depth[i] = Z_FAR + 1;
+	}
 	mod_cube_rotation(&main_data->cube, main_data->mlx->delta_time);
 	draw_cube(&main_data->cube);
 	// mod_cube_rotation(&main_data->tetra, main_data->mlx->delta_time);
-	// draw_cube(&main_data->tetra);
-	// mod_cube_rotation2(&main_data->cube2, main_data->mlx->delta_time);
+	//draw_cube(&main_data->tetra);
+	mod_cube_rotation2(&main_data->cube2, main_data->mlx->delta_time);
 	for (int i = 0; i < main_data->nb; i++)
 	{
 		const float rotation_mat[4][4] = {
@@ -48,7 +54,7 @@ void ft_hook(void* param)
 		translate_mesh_3d(&main_data->cube, shift);
 		//translate_mesh_3d(&main_data->cube2, shift);
 	}
-	//draw_cube(&main_data->cube2);
+	draw_cube(&main_data->cube2);
 	first = false;
 	// mlx_put_pixel(img, x, y, color);
 	// pixel++;
@@ -228,16 +234,18 @@ int32_t	main(void)
 	m_data.mlx = mlx_init(WIDTH, HEIGHT, "test", true);
 	if (!m_data.mlx)
 		ft_error();
-	
 	mlx_image_t* cube_img = mlx_new_image(m_data.mlx, WIDTH, HEIGHT);
 	if (!cube_img || (mlx_image_to_window(m_data.mlx, cube_img, 0, 0) < 0))
 		ft_error();
-	mlx_image_t* cube_img2 = mlx_new_image(m_data.mlx, WIDTH, HEIGHT);
-	if (!cube_img2 || (mlx_image_to_window(m_data.mlx, cube_img2, 0, 0) < 0))
-		ft_error();
-	mlx_image_t* tetra_img = mlx_new_image(m_data.mlx, WIDTH, HEIGHT);
-	if (!tetra_img || (mlx_image_to_window(m_data.mlx, tetra_img, 0, 0) < 0))
-		ft_error();
+	mlx_image_t* cube_img2 = cube_img;
+	mlx_image_t* tetra_img = cube_img;
+	m_data.img = cube_img;
+	// mlx_image_t* cube_img2 = mlx_new_image(m_data.mlx, WIDTH, HEIGHT);
+	// if (!cube_img2 || (mlx_image_to_window(m_data.mlx, cube_img2, 0, 0) < 0))
+	// 	ft_error();
+	// mlx_image_t* tetra_img = mlx_new_image(m_data.mlx, WIDTH, HEIGHT);
+	// if (!tetra_img || (mlx_image_to_window(m_data.mlx, tetra_img, 0, 0) < 0))
+	// 	ft_error();
 	m_data.cube.img = cube_img;
 	m_data.tetra.img = tetra_img;
 	m_data.cube2.img = cube_img2;
@@ -246,7 +254,7 @@ int32_t	main(void)
 	m_data.tetra.d_time = &m_data.mlx->delta_time;
 	fill_cube_mesh(&m_data.cube, &m_data);
 	//fill_tetra_mesh(&m_data.tetra, &m_data);
-	//fill_cube_mesh2(&m_data.cube2, &m_data);
+	fill_cube_mesh2(&m_data.cube2, &m_data);
 	//draw_cube(&m_data.cube);
 	draw_objects(0, &m_data);
 	mlx_set_instance_depth(cube_img->instances, 2);

@@ -1,7 +1,7 @@
 CC= cc 
-FLAGS_SPEED = -Ofast -march=native
+FLAGS_SPEED =  -fsanitize=address -g
  
-#-fsanitize=address -g
+#-Ofast -march=native
 #-O3
 CFLAGS= $(FLAGS_SPEED)
 #-Wextra -Wall -Werror
