@@ -303,15 +303,53 @@ void	draw_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color)
 	draw_line(img, (int)roundf(projected->p[2].x), (int)roundf(projected->p->x), (int)roundf(projected->p[2].y), (int)roundf(projected->p->y), color);
 }
 
+float	norm_float(float val, float min, float max)
+{
+	return (val / (max - min));
+}
+
+void	print_color(t_color_split color)
+{
+	t_color_split	col;
+
+	//col.col = color;
+	col = color;
+	printf("total color: %x\n", col.col);
+	printf("a: %x r: %x g: %x b: %x\n", col.argb[A], col.argb[R], col.argb[G], col.argb[B]);
+}
+
+void	init_light(t_light *light, t_vec3 direct, uint32_t color, float base_stren)
+{
+	light->direct = direct;
+	norm_vec3(&light->direct);
+	light->color.col = color;
+	//light->strength.v[A] = light->color.argb[A] / (0xFF * base_stren);
+	light->strength.v[R] = light->color.argb[R] / (0xFF * base_stren);
+	light->strength.v[G] = light->color.argb[G] / (0xFF * base_stren);
+	light->strength.v[B] = light->color.argb[B] / (0xFF * base_stren);
+}
+
 void	draw_mesh(t_mesh *mesh)
 {
 	int			i;
-	
-	t_triangle	rotated_xz;
-	t_triangle	rotated_xyz;
-	t_triangle	rotated_z;
-	t_triangle	translated;
-	t_triangle	projected;
+	t_triangle		rotated_xz;
+	t_triangle		rotated_xyz;
+	t_triangle		rotated_z;
+	t_triangle		translated;
+	t_triangle		projected;
+	t_color_split	color;
+
+	t_light			ambient_light1;
+	const t_vec3	light_direct1 =  {-1.0f, 1.0f, -1.0f};
+	init_light(&ambient_light1, light_direct1, WHITE, 1.0);
+
+	t_light			ambient_light2;
+	const t_vec3	light_direct2 =  {1.0f, -1.0f, -1.0f};
+	init_light(&ambient_light2, light_direct2, WHITE, 1.0);
+
+	// t_light			ambient_light3;
+	// const t_vec3	light_direct3 =  {-1.0f, 1.0f, -1.0f};
+	// init_light(&ambient_light3, light_direct3, WHITE);
 
 	int			p_2d[3][2];
 	const float	project_mat[4][4] = PROJECTION_MATRIX;
@@ -334,6 +372,7 @@ void	draw_mesh(t_mesh *mesh)
 	// mesh->center.z = 0;
 	while (i < mesh->count)
 	{
+		color.col = (mesh->triangles + i)->col;
 		// printf("p1 x: %f, y: %f z: %f\n", mesh->triangles[i].p[0].x, mesh->triangles[i].p[0].y, mesh->triangles[i].p[0].z);
 		// printf("p2 x: %f, y: %f z: %f\n", mesh->triangles[i].p[1].x, mesh->triangles[i].p[1].y, mesh->triangles[i].p[1].z);
 		//printf("p3 x: %f, y: %f z: %f\n\n", mesh->triangles[i].p[2].x, mesh->triangles[i].p[2].y, mesh->triangles[i].p[2].z);
@@ -355,8 +394,6 @@ void	draw_mesh(t_mesh *mesh)
 		// printf("p1 x: %f, y: %f z: %f\n", rotated_xz.p[0].x, rotated_z.p[0].y, rotated_z.p[0].z);
 		// printf("p2 x: %f, y: %f z: %f\n", rotated_xz.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
 		// printf("p3 x: %f, y: %f z: %f\n\n", rotated_xz.p[2].x, rotated_z.p[2].y, rotated_z.p[2].z);
-	
-	
 
 
 		//translated = mesh->triangles[i];
@@ -376,14 +413,33 @@ void	draw_mesh(t_mesh *mesh)
 			i++;
 			continue ;
 		}
-		t_vec3	light_direct = {0.0f, 0.0f, -1.0f};
-		//translate_triangle_3d(&translated, traveled_dist);
-		// add_vec3(translated.p + 0, &traveled_dist);
-		// add_vec3(translated.p + 1, &traveled_dist);
-		// add_vec3(translated.p + 2, &traveled_dist);
-		//determine_centroid(&translated);
-		//add_vec3(&mesh->center, &translated.centroid);
+		t_light_argb_stren	color_scalars = {0};
+	
+		float light_dp = dot_prod(translated.normal, ambient_light1.direct);
+		light_dp = fmaxf(light_dp, 0.0f);
+		color_scalars.v[R] += ambient_light1.strength.v[R] *  light_dp;
+		color_scalars.v[G] += ambient_light1.strength.v[G] *  light_dp;
+		color_scalars.v[B] += ambient_light1.strength.v[B] *  light_dp;
 
+		light_dp = dot_prod(translated.normal, ambient_light2.direct);
+		light_dp = fmaxf(light_dp, 0.0f);
+		color_scalars.v[R] += ambient_light2.strength.v[R] *  light_dp;
+		color_scalars.v[G] += ambient_light2.strength.v[G] *  light_dp;
+		color_scalars.v[B] += ambient_light2.strength.v[B] *  light_dp;
+
+		// light_dp = dot_prod(translated.normal, ambient_light3.direct);
+		// light_dp = fmaxf(light_dp, 0.0f);
+		// color_scalars.v[R] += ambient_light3.strength.v[R] *  light_dp;
+		// color_scalars.v[G] += ambient_light3.strength.v[G] *  light_dp;
+		// color_scalars.v[B] += ambient_light3.strength.v[B] *  light_dp;
+
+		color_scalars.v[R] = fmin(color_scalars.v[R], 1.0f);
+		color_scalars.v[G] = fmin(color_scalars.v[G], 1.0f);
+		color_scalars.v[B] = fmin(color_scalars.v[B], 1.0f);
+
+		color.argb[R] *= color_scalars.v[R];
+		color.argb[G] *= color_scalars.v[G];
+		color.argb[B] *= color_scalars.v[B];
 
 		matrix_mult_3x1_4x4(translated.p + 0, project_mat, &projected.p[0]);
 		matrix_mult_3x1_4x4(translated.p + 1, project_mat, &projected.p[1]);
@@ -451,7 +507,7 @@ void	draw_mesh(t_mesh *mesh)
 		// 	flipped_z = true;
 		// }
 		//draw_triangle(mesh->img, &projected, (mesh->triangles + i)->col);
-		fill_triangle(mesh->img, &projected, (mesh->triangles + i)->col);
+		fill_triangle(mesh->img, &projected, color.col);
 		
 		i++;
 	}

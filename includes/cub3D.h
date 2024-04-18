@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/18 06:07:40 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/18 08:25:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 
 #define GRAV_CONST 0.5f
 
+#define BLACK 0xFF000000
 #define RED 0xFF0000FF
 #define GREEN 0xFF00FF00
 #define BLUE 0xFFFF0000
@@ -113,6 +114,16 @@ typedef struct s_vec3
 	float	z;
 }	t_vec3;
 
+#define A 3
+#define R 0
+#define G 1
+#define B 2
+
+typedef union u_color_split
+{
+	uint32_t	col;
+	uint8_t		argb[4];
+}	t_color_split;
 
 typedef struct s_triangle
 {
@@ -122,6 +133,23 @@ typedef struct s_triangle
 	t_vec3		centroid;
 	t_vec3		normal;
 }	t_triangle;
+
+typedef struct s_light_argb_stren
+{
+	float	v[4];
+}	t_light_argb_stren;
+
+typedef struct s_light
+{
+	t_vec3				direct;
+	t_vec3				position;
+	t_light_argb_stren	strength;
+	t_color_split		color;
+}	t_light;
+
+
+
+
 
 typedef struct s_mesh
 {
@@ -138,6 +166,7 @@ typedef struct s_mesh
 	mlx_image_t	*img;
 	t_main		*main;
 }	t_mesh;
+
 
 typedef struct s_main
 {
@@ -186,6 +215,9 @@ mlx_image_t	*first_ob_ball(mlx_t *mlx);
 
 void	translate_mesh_3d(t_mesh *mesh, t_vec3 v);
 
+uint32_t	lerp_color(uint32_t max_col, float strength);
+
+int	lerp_int(int start, int end, float pos);
 // utils.c
 void	ft_error(void);
 //t_vec3	out_of_bound(t_vec3 *v);

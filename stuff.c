@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 21:22:14 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/13 21:22:45 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/18 07:39:39 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,22 @@ void	matrix_mult_1x3_3x3(float ma[3], float mb[3][3], float m_result[3])
 // 	printf("base: {%f, %f, %f} transformed: {%f, %f, %f}\n", vec3d->p[X], vec3d->p[Y], vec3d->p[Z], transformed.p[X], transformed.p[Y], transformed.p[Z]);
 // 	return (transformed);
 // }
+
+uint32_t	lerp_color(uint32_t max_col, float strength)
+{
+	uint32_t	result;
+
+	if (strength < 0.0 || strength > 1.0)
+	{
+		printf("error lerp color\n");
+		exit (1);
+	}
+	result = (uint32_t)roundf(((max_col & 0xFF) * strength));
+	result |= (uint32_t)roundf((((max_col & 0xFF00) >> 8) * strength)) << 8;
+	result |= (uint32_t)roundf((((max_col & 0xFF0000) >> 16) * strength)) << 16;
+	result |= (uint32_t)roundf((((max_col & 0xFF000000) >> 24) * strength)) << 24;
+	return (result);
+}
 
 int	lerp_int(int start, int end, float pos)
 {

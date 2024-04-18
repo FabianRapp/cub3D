@@ -6,12 +6,22 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/18 05:48:55 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/18 08:05:16 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 #include <MLX42.h>
+
+void	zero_pixel_buffer(uint8_t *pixels)
+{
+	uint32_t	*buffer = (uint32_t *)pixels;
+
+	for (int i = 0; i < WIDTH * HEIGHT; i++)
+	{
+		buffer[i] = BLACK;
+	}
+}
 
 // Print the window width and height.
 void ft_hook(void* param)
@@ -22,8 +32,9 @@ void ft_hook(void* param)
 	int	y = pixel / WIDTH;
 	int x = pixel - (y * WIDTH);
 
-	ft_bzero(main_data->img->pixels, sizeof(uint32_t) * WIDTH * HEIGHT);
-	draw_skybox(&main_data->skybox);
+	
+	zero_pixel_buffer(main_data->img->pixels);
+	//draw_skybox(&main_data->skybox);
 	//ft_bzero(main_data->depth, sizeof(float) * WIDTH * HEIGHT);
 	for (int i = 0; i < WIDTH * HEIGHT; i++)
 	{
@@ -32,7 +43,7 @@ void ft_hook(void* param)
 	mod_cube_rotation(&main_data->cube, main_data->mlx->delta_time);
 	draw_mesh(&main_data->cube);
 	
-	// mod_cube_rotation(&main_data->tetra, main_data->mlx->delta_time);
+	//mod_cube_rotation(&main_data->tetra, main_data->mlx->delta_time);
 	//draw_mesh(&main_data->tetra);
 	mod_cube_rotation2(&main_data->cube2, main_data->mlx->delta_time);
 	for (int i = 0; i < main_data->nb; i++)
