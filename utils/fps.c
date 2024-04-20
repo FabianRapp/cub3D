@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fps.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:30:36 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/05 23:49:16 by fabian           ###   ########.fr       */
+/*   Updated: 2024/04/20 05:51:48 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ void	display_fps_hook(void *param)
 	{
 		fps = (int)(frames / sum_delta_time);
 		display_fps(mlx, fps, instance, 0);
-		printf("%d\n", fps);
+		//printf("%d\n", fps);
 		sum_delta_time = 0.001f;
 		frames = 0;
 	}

@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 06:07:42 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/18 07:56:23 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/20 01:08:51 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	fill_tetra_mesh(t_mesh *cube, t_main *main_data)
 	t_vec3 momentum = {0.3, -1, 0};
 	ft_memcpy(&cube->momentum, &momentum, sizeof(momentum));
 	cube->main = main_data;
+	cube->obj_file = false;
 }
 
 
@@ -62,6 +63,7 @@ void	fill_cube_mesh(t_mesh *cube, t_main *main_data)
 	cube->triangles = ft_memdup(&init_triangles, sizeof(init_triangles));
 	cube->count = sizeof(init_triangles) / sizeof(t_triangle);
 	cube->main = main_data;
+	cube->obj_file = false;
 }
 
 
@@ -103,6 +105,7 @@ void	fill_skybox_mesh(t_mesh *mesh, t_main *main_data)
 	mesh->main = main_data;
 	mesh->d_time = &main_data->mlx->delta_time;
 	mesh->img = main_data->img;
+	mesh->obj_file = false;
 }
 
 
@@ -152,4 +155,5 @@ void	fill_cube_mesh2(t_mesh *cube, t_main *main_data)
 	cube->triangles = ft_memdup(&init_triangles, sizeof(init_triangles));
 	cube->count = sizeof(init_triangles) / sizeof(t_triangle);
 	cube->main = main_data;
+	cube->obj_file = false;
 }

@@ -6,12 +6,27 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 08:36:34 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/18 12:52:35 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/20 05:11:35 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 #include <MLX42.h>
+
+typedef struct s_mtl
+{
+	char	*lib_name;
+	char	*name;
+	float	ns;
+	float	ka[3];
+	float	ks[3];
+	float	ke[3];
+	float	ni;
+	float	d;
+	float	illum;
+	char	*map_kd;
+	int		index;
+}	t_mtl;
 
 typedef	struct s_obj_parser
 {
@@ -28,6 +43,9 @@ typedef	struct s_obj_parser
 	t_triangle	*tris;
 	int			tris_count;
 	int			tris_size;
+	t_mtl		**mtl_libs;
+	int			mtl_libs_count;
+	uint32_t	colors[OBJ_PARSER_COLOR_COUNT];
 }	t_obj_parser;
 
 void	obj_parser_count(t_obj_parser *vars)
@@ -40,6 +58,8 @@ void	obj_parser_count(t_obj_parser *vars)
 			vars->vertex_count++;
 		else if (!ft_strncmp(vars->line, "vn ", 3))
 			vars->normal_count++;
+		else if (!ft_strncmp(vars->line, "mtllib ", ft_strlen("mtllib ")))
+			vars->mtl_libs_count++;
 		free(vars->line);
 		vars->line = get_next_line(vars->fd, false);
 	}
@@ -52,7 +72,11 @@ float	str_to_float(char *str)
 	int		integer;
 	float	fraction;
 	float	return_val;
+	int		sign;
 
+	sign = 1;
+	if (*str == '-')
+		sign = -1;
 	char *new = ft_strtrim(str, "\n");
 	integer = ft_atoi(new);
 	char *new2 = ft_strchr(new, '.');
@@ -64,6 +88,7 @@ float	str_to_float(char *str)
 	fraction /= ft_powint(10, ft_strlen(new2));
 	return_val = fraction + integer;
 	free(new);
+	return_val *= sign;
 	return (return_val);
 }
 
@@ -75,8 +100,8 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 
 	vars->fd = open(vars->path, O_RDONLY);
 	vars->line = get_next_line(vars->fd, false);
-	vertex_i = 0;
-	normal_i = 0;
+	vertex_i = 1;
+	normal_i = 1;
 	while (vars->line)
 	{
 		if (!ft_strncmp(vars->line, "v ", 2))
@@ -118,7 +143,18 @@ t_vec3	parse_face_vertex(t_obj_parser *vars, char *sub_face)
 	return(return_vec);
 }
 
-void	triangulation(t_obj_parser *vars, t_vec3 *vertexes, int vertex_count)
+t_vec3	parse_face_normals(t_obj_parser *vars, char *sub_face)
+{
+	t_vec3	return_vec;
+	char	**split;
+
+	split = ft_split(sub_face, '/');
+	ft_memcpy(&return_vec, vars->normals + ft_atoi(split[1]), sizeof(t_vec3));
+	ft_free_2darr(split);
+	return(return_vec);
+}
+
+void	triangulation(t_obj_parser *vars, t_vec3 *vertexes, int vertex_count, t_vec3 *normals)
 {
 	t_triangle	*tris;
 	int			tris_count;
@@ -134,7 +170,16 @@ void	triangulation(t_obj_parser *vars, t_vec3 *vertexes, int vertex_count)
 		tris[tris_i].p[0] = vertexes[0];
 		tris[tris_i].p[1] = vertexes[tris_i + 1];
 		tris[tris_i].p[2] = vertexes[tris_i + 2];
-		tris[tris_i].col = RED;
+
+		tris[tris_i].obj_normal[0] = normals[0];
+		tris[tris_i].obj_normal[1] = normals[tris_i + 1];
+		tris[tris_i].obj_normal[2] = normals[tris_i + 2];
+
+		tris[tris_i].normal = normals[0];
+		// t_vec3	norms_sum = v3_add(v3_add(normals[0], normals[tris_i + 1]), normals[tris_i + 2]);
+		// tris[tris_i].normal = v3_scale(norms_sum, 1 / length_vec3(&norms_sum));
+	
+		tris[tris_i].col = vars->colors[(vars->tris_count + tris_i) % OBJ_PARSER_COLOR_COUNT];
 		tris_i++;
 	}
 	t_triangle	*tmp123;
@@ -157,6 +202,7 @@ void	obj_parser_handle_faces(t_obj_parser *vars)
 	char		**split;
 	int			count;
 	t_vec3		tmp_v[100];
+	t_vec3		tmp_v_norm[100];
 	t_triangle	tmp_tri[10];
 	int			i;
 
@@ -167,7 +213,7 @@ void	obj_parser_handle_faces(t_obj_parser *vars)
 	int nb = 0;
 	while (vars->line)
 	{
-		printf("faces loop %d\n", nb++);
+		//printf("faces loop %d\n", nb++);
 		if (!ft_strncmp(vars->line, "f ", 2))
 		{
 			split = ft_split(vars->line, ' ');
@@ -180,7 +226,8 @@ void	obj_parser_handle_faces(t_obj_parser *vars)
 			i = 1;
 			while (i < count)
 			{
-				tmp_v[i] = parse_face_vertex(vars, split[i]);
+				tmp_v[i - 1] = parse_face_vertex(vars, split[i]);
+				tmp_v_norm[i - 1] = parse_face_normals(vars, split[i]);
 				i++;
 			}
 			ft_free_2darr(split);
@@ -191,16 +238,20 @@ void	obj_parser_handle_faces(t_obj_parser *vars)
 				ft_memcpy(tmp_tri[0].p + 0, tmp_v + 0, sizeof(t_vec3));
 				ft_memcpy(tmp_tri[0].p + 1, tmp_v + 1, sizeof(t_vec3));
 				ft_memcpy(tmp_tri[0].p + 2, tmp_v + 2, sizeof(t_vec3));
+				ft_memcpy(&tmp_tri[0].obj_normal + 0, tmp_v_norm + 0, sizeof(t_vec3));
+				ft_memcpy(&tmp_tri[0].obj_normal + 1, tmp_v_norm + 1, sizeof(t_vec3));
+				ft_memcpy(&tmp_tri[0].obj_normal + 2, tmp_v_norm + 2, sizeof(t_vec3));
+				ft_memcpy(&tmp_tri[0].normal, tmp_v_norm, sizeof(t_vec3));
 				t_triangle	*tmp123;
 				tmp123 = ft_memjoin(vars->tris, tmp_tri, sizeof(t_triangle) * (vars->tris_count + 1), sizeof(t_triangle));
 				free(vars->tris);
 				vars->tris = tmp123;
-				vars->tris[vars->tris_count].col = RED;
+				vars->tris[vars->tris_count].col = vars->colors[vars->tris_count % OBJ_PARSER_COLOR_COUNT];
 				vars->tris_count++;
 			}
 			else
 			{
-				triangulation(vars, tmp_v, count);
+				triangulation(vars, tmp_v, count, tmp_v_norm);
 			}
 		}
 		free(vars->line);
@@ -211,21 +262,194 @@ void	obj_parser_handle_faces(t_obj_parser *vars)
 	close(vars->fd);
 }
 
-void	load_obj_file(char *path, t_mesh *mesh, t_main *main_data)
+void	sacle_vecs(t_obj_parser *vars)
+{
+	int		i;
+	t_vec3	scalar = {100.0, 100.0, 100.0};
+	t_vec3	translate = {0, 0, 0};
+	// t_vec3	rotation = {3.0f, 3.2f, 0.0f}; // horse
+	t_vec3	rotation = {0, 0, 0};
+	i = 0;
+	while (i < vars->vertex_count)
+	{
+		rotate_vec3(vars->vertexes + i, rotation.y, rotation.x, rotation.z);
+		multiply_vec3(vars->vertexes + i, &scalar);
+		add_vec3(vars->vertexes + i, &translate);
+
+		i++;
+	}
+	i = 0;
+	while (i < vars->normal_count)
+	{
+		rotate_vec3(vars->normals + i, rotation.y, rotation.x, rotation.z);
+		i++;
+	}
+}
+
+void	init_obj_file_colors(t_obj_parser *vars)
+{
+	vars->colors[0] = RED;
+	vars->colors[1] = GREEN;
+	vars->colors[2] = BLUE;
+	vars->colors[3] = MAGENTA;
+	vars->colors[4] = YELLOW;
+	vars->colors[5] = WHITE;
+	vars->colors[6] = CYAN;
+	vars->colors[7] = PURPLE;
+	vars->colors[8] = ORANGE;
+	vars->colors[9] = TEAL;
+	vars->colors[10] = PINK;
+	vars->colors[11] = LIME;
+}
+
+
+
+int	mtl_len(char *file_path)
+{
+	int		fd;
+	char	*line;
+	int		len;
+
+	fd = open(file_path, O_RDONLY);
+	line = get_next_line(fd, false);
+	len = 0;
+	while (line)
+	{
+		while (line && ft_strncmp(line, "newmtl ", ft_strlen("newmtl ")))
+		{
+			free(line);
+			line = get_next_line(fd, false);
+		}
+		if (line)
+			len++;
+		free(line);
+		line = get_next_line(fd, false);
+	}
+	close(fd);
+	return (len);
+}
+
+void	fill_3_floats(char *str, float arr[3])
+{
+	int	i;
+
+	i = 0;
+	while (i < 3)
+	{
+		arr[i] = str_to_float(str);
+		while (ft_isdigit(*str))
+		{
+			str++;
+		}
+		if (*str == '.')
+		{
+			str++;
+			while (ft_isdigit(*str))
+			{
+				str++;
+			}
+		}
+		str++;
+		i++;
+	}
+}
+
+t_mtl	*parse_mtl(char *dir, char *file_name)
+{
+	t_mtl	*arr;
+	char	*file_path;
+	int		fd;
+	char	*line;
+	int		i;
+	int		count;
+
+	file_path = ft_strjoin(dir, file_name);
+	count = mtl_len(file_path);
+	arr = ft_calloc(count + 1, sizeof(t_mtl));
+	fd = open(file_path, O_RDONLY);
+	line = get_next_line(fd, false);
+
+	i = 0;
+	while (line)
+	{
+		while (line && ft_strncmp(line, "newmtl ", ft_strlen("newmtl ")))
+		{
+			free(line);
+			line = get_next_line(fd, false);
+		}
+		arr[i].index = i;
+		arr[i].lib_name = ft_strdup(file_name);
+		arr[i].name = ft_strtrim(line + ft_strlen("newmtl "), "\n");
+		free(line);
+		line = get_next_line(fd, false);
+		while (line && ft_strncmp(line, "newmtl ", ft_strlen("newmtl ")))
+		{
+			if (!ft_strncmp(line, "Ns ", ft_strlen("Ns ")))
+				arr[i].ns = str_to_float(line + ft_strlen("Ns "));
+			else if (!ft_strncmp(line, "Ni ", ft_strlen("Ni ")))
+				arr[i].ni = str_to_float(line + ft_strlen("Ni "));
+			else if (!ft_strncmp(line, "d ", ft_strlen("d ")))
+				arr[i].d = str_to_float(line + ft_strlen("d "));
+			else if (!ft_strncmp(line, "illum ", ft_strlen("illum ")))
+				arr[i].illum = str_to_float(line + ft_strlen("illum "));
+			else if (!ft_strncmp(line, "Ka ", ft_strlen("Ka ")))
+				fill_3_floats(line + ft_strlen("Ka "), arr[i].ka);
+			else if (!ft_strncmp(line, "Ks ", ft_strlen("Ks ")))
+				fill_3_floats(line + ft_strlen("Ks "), arr[i].ks);
+			else if (!ft_strncmp(line, "Ke ", ft_strlen("Ke ")))
+				fill_3_floats(line + ft_strlen("Ke "), arr[i].ke);
+			free(line);
+			line = get_next_line(fd, false);
+		}
+		i++;
+	}
+	return (arr);
+}
+
+void	obj_parser_parse_mtl_libs(t_obj_parser *vars, char *dir, char *path)
+{
+	int		fd;
+	char	*line;
+	int		i;
+
+	fd = open(path, O_RDONLY);
+	line = get_next_line(fd, false);
+	while (line && i < vars->mtl_libs_count)
+	{
+		while (line && ft_strncmp(line, "mtllib ", ft_strlen("mtllib ")))
+		{
+			free(line);
+			line = get_next_line(fd, false);
+		}
+		if (!line)
+			break ;
+		vars->mtl_libs[i] = parse_mtl(dir, line +  ft_strlen("mtllib "));
+		i++;
+		free(line);
+		line = get_next_line(fd, false);
+	}
+	close(fd);
+	free(line);
+}
+
+void	load_obj_file(char *dir, char *path, t_mesh *mesh, t_main *main_data)
 {
 	t_obj_parser	vars;
 
+	t_mtl	*mtl_arr = parse_mtl(dir, "HorseArmor.mtl");
 	vars.path = path;
 	vars.mesh = mesh;
 	vars.tris = NULL;
 	vars.tris_count = 0;
 	vars.vertexes = NULL;
-	vars.vertex_count = 0;
+	vars.vertex_count = 1;
 	vars.normals = NULL;
-	vars.normal_count = 0;
+	vars.normal_count = 1;
+	mesh->obj_file = true;
+	vars.mtl_libs = NULL;
+	vars.mtl_libs_count = 0;
+	init_obj_file_colors(&vars);
 	obj_parser_count(&vars);
-	printf("vertex count: %d\n", vars.vertex_count);
-	printf("normal count: %d\n", vars.normal_count);
 	vars.vertexes = ft_calloc(vars.vertex_count, sizeof(t_vec3));
 	vars.normals = malloc(vars.normal_count * sizeof(t_vec3));
 	if (!vars.vertexes || (!vars.normals && vars.normal_count))
@@ -233,15 +457,16 @@ void	load_obj_file(char *path, t_mesh *mesh, t_main *main_data)
 		printf("mall err\n");
 		exit(1);
 	}
+	obj_parser_parse_mtl_libs(&vars, dir, path);
 	vars.vertex_count = obj_parser_fill_vertexes(&vars);
+	sacle_vecs(&vars);
 	printf("parsed vertexes\n");
 	obj_parser_handle_faces(&vars);
 	printf("parsed faces\n");
-	free(vars.vertexes);
-	free(vars.normals);
+
 	mesh->triangles = vars.tris;
 	mesh->count = vars.tris_count;
-	t_vec3	momentum = {0, 0, 10.0};
+	t_vec3	momentum = {0.5, 0.3, 0.0};
 	mesh->momentum = momentum;
 	float rotation_mat[4][4] = {
 		{1.0f, 0.0f, 0.0f, 0.0f},
@@ -255,6 +480,22 @@ void	load_obj_file(char *path, t_mesh *mesh, t_main *main_data)
 	mesh->main = main_data;
 	mesh->d_time = &main_data->mlx->delta_time;
 	mesh->img = main_data->img;
+	for (int i = 1; i < vars.vertex_count; i++)
+	{
+		printf("vec %d: ", i);
+		print_vec3(vars.vertexes[i], 0);
+	}
+	for (int i = 0; i < vars.tris_count; i++)
+	{
+		printf("========\ntri %d:\n", i);
+		print_vec3(vars.tris[i].obj_normal[0], "1 :");
+		print_vec3(vars.tris[i].obj_normal[1], "2 :");
+		print_vec3(vars.tris[i].obj_normal[2], "3 :");
+	}
+	printf("vert count: %d\n", vars.vertex_count);
 	printf("tri count: %d\n", mesh->count);
+
+	free(vars.vertexes);
+	free(vars.normals);
 }
 

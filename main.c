@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/18 12:48:38 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/20 05:08:28 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,7 @@ void ft_hook(void* param)
 		//mod_cube_rotation(&main_data->objs[0], main_data->mlx->delta_time);
 		draw_mesh(&main_data->objs[i]);
 	}
-	static bool first = true;
-	// t_triangle shift = {{{-0.5f,-0.5f,-0.5f}, {-0.5f,-0.5f,-0.5f}, {-0.5f,-0.5f,-0.5f}}, 1};
-	t_vec3 shift = {-0.5f,-0.5f,-0.5f};
-	if (first) {
-		translate_mesh_3d(&main_data->cube, shift);
-		//translate_mesh_3d(&main_data->cube2, shift);
-	}
-	//draw_mesh(&main_data->cube2);
-	first = false;
+	draw_mesh(&main_data->cube2);
 	// mlx_put_pixel(img, x, y, color);
 	// pixel++;
 	// if (pixel >= WIDTH * HEIGHT)
@@ -266,7 +258,8 @@ int32_t	main(void)
 	m_data.cube.d_time = &m_data.mlx->delta_time;
 	m_data.cube2.d_time = &m_data.mlx->delta_time;
 	m_data.tetra.d_time = &m_data.mlx->delta_time;
-	load_obj_file("objs/HorseArmor.obj", &m_data.custom, &m_data);
+	//	load_obj_file("lego_obj/", "lego_obj/lego obj.obj", &m_data.custom, &m_data);
+	load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj", &m_data.custom, &m_data);
 	fill_cube_mesh(&m_data.cube, &m_data);
 	fill_skybox_mesh(&m_data.skybox, &m_data);
 	//fill_tetra_mesh(&m_data.tetra, &m_data);

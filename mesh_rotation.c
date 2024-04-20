@@ -6,9 +6,10 @@ void	mod_cube_rotation(t_mesh *mesh, float delta_time)
 {
 	static float	theta = 0;
 
-	theta += delta_time;
+	theta += (delta_time / 4);
 
 	#ifndef ROT_Z
+
 	float rotation_mat_z[4][4] = {
 		{1.0f, 0.0f, 0.0f, 0.0f},
 		{0.0f, 1.0f, 0.0f, 0.0f},
@@ -16,18 +17,18 @@ void	mod_cube_rotation(t_mesh *mesh, float delta_time)
 		{0.0f, 0.0f, 0.0f, 1.0f}
 	};
 	#else
-	// float rotation_mat_z[4][4] = {
-	// 	{cosf(theta), sinf(theta), 0.0f, 0.0f},
-	// 	{-sinf(theta), cosf(theta), 0.0f, 0.0f},
-	// 	{0.0f, 0.0f, 1.0f, 0.0f},
-	// 	{0.0f, 0.0f, 0.0f, 1.0f},
-	// };
 	float rotation_mat_z[4][4] = {
-		{cosf(theta), -sinf(theta), 0.0f, 0.0f},
-		{sinf(theta), cosf(theta), 0.0f, 0.0f},
+		{cosf(theta), sinf(theta), 0.0f, 0.0f},
+		{-sinf(theta), cosf(theta), 0.0f, 0.0f},
 		{0.0f, 0.0f, 1.0f, 0.0f},
 		{0.0f, 0.0f, 0.0f, 1.0f},
 	};
+	// float rotation_mat_z[4][4] = {
+	// 	{cosf(theta), -sinf(theta), 0.0f, 0.0f},
+	// 	{sinf(theta), cosf(theta), 0.0f, 0.0f},
+	// 	{0.0f, 0.0f, 1.0f, 0.0f},
+	// 	{0.0f, 0.0f, 0.0f, 1.0f},
+	// };
 
 	#endif
 	ft_memcpy(mesh->rotation_mat_z, rotation_mat_z, sizeof(rotation_mat_z));
@@ -56,9 +57,9 @@ void	mod_cube_rotation(t_mesh *mesh, float delta_time)
 	};
 	#else
 	float rotation_mat_y[4][4]  = {
-		{cosf(theta), 0.0f, sinf(theta), 0.0f},
+		{cosf(theta * 0.1f), 0.0f, sinf(theta * 0.1f), 0.0f},
 		{0.0f, 1.0f, 0.0f, 0.0f},
-		{-sinf(theta), 0.0f, cosf(theta * 0.5f), 1.0f},
+		{-sinf(theta * 0.1f), 0.0f, cosf(theta * 0.1f), 0.0f},
 	 	{0.0f, 0.0f, 0.0f, 1.0f}
 		// {1.0f, 0.0f, 0.0f, 0.0f},
 		// {0.0f, 1.0f, 0.0f, 0.0f},

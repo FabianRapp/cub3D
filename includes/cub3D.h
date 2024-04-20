@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/18 12:52:46 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/20 05:23:17 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,14 @@
 */
 
 #define ROT_X
-#define ROT_Y
+//#define ROT_Y
 #define ROT_Z
-//#define MOVEMENT
+#define MOVEMENT
 
 #define GRAV_CONST 0.5f
+
+#define COLOR_COUNT 12
+#define OBJ_PARSER_COLOR_COUNT 12
 
 #define BLACK 0xFF000000
 #define RED 0xFF0000FF
@@ -132,6 +135,7 @@ typedef struct s_triangle
 	uint32_t	col;
 	t_vec3		centroid;
 	t_vec3		normal;
+	t_vec3		obj_normal[3];
 }	t_triangle;
 
 typedef struct s_light_argb_stren
@@ -157,6 +161,7 @@ typedef struct s_mesh
 	t_vec3		momentum;
 	t_vec3		center_pull;
 	t_vec3		center;
+	bool		obj_file;
 	double		a;
 	double		*d_time;
 	mlx_image_t	*img;
@@ -216,10 +221,12 @@ uint32_t	lerp_color(uint32_t max_col, float strength);
 int	lerp_int(int start, int end, float pos);
 // utils.c
 void	ft_error(void);
+t_vec3	vec3_matrix_mult_vec3_3x3(t_vec3 *m_a, const float m_b[3][3]);
 //t_vec3	out_of_bound(t_vec3 *v);
 t_vec3	out_of_bound_triangle(t_triangle *projected);
-void	matrix_mult_3x1_4x4(t_vec3 *m_a, const float m_b[4][4], t_vec3 *re);
+void	matrix_mult_vec3_4x4(t_vec3 *m_a, const float m_b[4][4], t_vec3 *re);
 void	ft_put_pixel(uint8_t *pixel_buffer, int x, int y, int color);
+void	ft_put_pixel_fin_index(uint8_t *pixel_buffer, int x, int y, int color);
 
 // draw.c
 void	draw_line(mlx_image_t *image, int x1, int x2, int y1, int y2, int color);
@@ -259,9 +266,10 @@ void	print_vec3(t_vec3 v, char *msg);
 t_vec3	cross_product(t_vec3 a, t_vec3 b);
 float	dot_prod(t_vec3 a, t_vec3 b);
 void	norm_vec3(t_vec3 *v);
+void	rotate_vec3(t_vec3 *to_rotate, float first_z_rot, float x_rot, float second_z_rot);
 
 // obj_parser.c
-void	load_obj_file(char *path, t_mesh *mesh, t_main *main_data);
+void	load_obj_file(char *dir, char *path, t_mesh *mesh, t_main *main_data);
 
 //to_replace.c
 float	generate_random_float();

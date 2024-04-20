@@ -17,6 +17,27 @@ void	draw_line(mlx_image_t *image, int x1, int x2, int y1, int y2, int color)
 	{
 		return ;
 	}
+	if (x1 < 0)
+		x1 = 0;
+	if (x1 >= WIDTH)
+		x1 = WIDTH - 1;
+	if (x2 < 0)
+		x2 = 0;
+	if (x2 >= WIDTH)
+		x2 = WIDTH - 1;
+	if (y1 < 0)
+		y1 = 0;
+	if (y1 >= WIDTH)
+		y1 = WIDTH - 1;
+	if (y2 < 0)
+		y2 = 0;
+	if (y2 >= WIDTH)
+		y2 = WIDTH - 1;
+	if (x1 == x2 && y1 == y2)
+	{
+		ft_put_pixel(image->pixels, x1, y1, color);
+		return ;
+	}
 	pos[X] = x1;
 	pos[Y] = y1;
 	direct_x = (pos[X] > x2) * -1;
@@ -25,7 +46,6 @@ void	draw_line(mlx_image_t *image, int x1, int x2, int y1, int y2, int color)
 		direct_x++;
 	if (!direct_y)
 		direct_y++;
-	// handle vert/hor lines extra
 	dist_x = abs(x2 - pos[X]);
 	dist_y = abs(y2 - pos[Y]);
 	// if (!dist_x + dist_y)
@@ -81,6 +101,7 @@ void	draw_line(mlx_image_t *image, int x1, int x2, int y1, int y2, int color)
 	last_error = dist_x - dist_y;
 	while (pos[X] != x2 || pos[Y] != y2)
 	{
+		printf("x: %d y: %d\n", pos[X], pos[Y]);
 		if (pos[X] >= 0 && pos[X] < WIDTH && pos[Y] >= 0 && pos[Y] < HEIGHT)
 			ft_put_pixel(image->pixels, pos[X], pos[Y], color);
 			//mlx_put_pixel(image, pos[X], pos[Y], color);
@@ -166,12 +187,12 @@ bool	zero_f(float f)
 	return (false);
 }
 
-void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color)
+void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color, t_mesh *mesh)
 {
 	t_vec3	*p = projected->p;
-	int32_t		*depth;
+	float		*depth;
 
-	//depth = mesh->main->depth;
+	depth = mesh->main->depth;
 	sort_vertexes_for_y(projected);
 	if (!(p[0].y <= p[1].y && p[1].y <= p[2].y))
 	{
@@ -197,13 +218,26 @@ void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color)
 		cur_x = (int)(roundf((p[2].x - p[0].x) * total_y_progress + p[0].x));
 		float	y_progress =  ((float)(cur_y - (int)p[0].y)) / (cur_max_y - p[0].y);
 		int	x_max = (int)roundf((p[1].x - p[0].x) * y_progress + p[0].x);
-		float cur_z = y_progress * (projected->unprojected_z[1] - projected->unprojected_z[0]) + projected->unprojected_z[0];
-		if (cur_z < Z_NEAR || cur_z > Z_FAR)// || cur_z > depth[cur_x + WIDTH * y_index])
+		float cur_z;
+		float start_z = y_progress * (projected->unprojected_z[1] - projected->unprojected_z[0]) + projected->unprojected_z[0];
+		float end_z = total_y_progress * (projected->unprojected_z[2] - projected->unprojected_z[0]) + projected->unprojected_z[0];
+		if (p[1].x > p[2].x)
 		{
-			cur_y ++;
-			continue ;
+			float tmp;
+			tmp = start_z;
+			start_z = end_z;
+			end_z = start_z;
 		}
+		// if (cur_z < Z_NEAR || cur_z > Z_FAR)// || cur_z > depth[cur_x + WIDTH * y_index])
+		// {
+		// 	cur_y ++;
+		// 	continue ;
+		// }
 		//depth[cur_x + WIDTH * cur_y] = cur_z;
+		int	len_x = x_max - cur_x;
+		float	start_x = cur_x;
+		float	z_dist = end_z - start_z;
+		int y_index = WIDTH * cur_y;
 		if (cur_x <= x_max)
 		{
 			//x_max = min(x_max, WIDTH - 1);
@@ -211,7 +245,13 @@ void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color)
 				cur_x = 0;
 			while (cur_x <= x_max && cur_x < WIDTH)
 			{
-				ft_put_pixel(img->pixels, cur_x, cur_y, color);
+				float x_progress = (cur_x - start_x) / len_x;
+				cur_z = x_progress * z_dist + start_z;
+				if (!(cur_z < Z_NEAR || cur_z > Z_FAR || cur_z > depth[cur_x + y_index]))
+				{
+					depth[cur_x + y_index] = cur_z;
+					ft_put_pixel_fin_index(img->pixels, cur_x, y_index, color);
+				}
 				cur_x++;
 			}
 		}
@@ -221,7 +261,14 @@ void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color)
 				cur_x = WIDTH - 1;
 			while (cur_x >= x_max && cur_x > 0)
 			{
-				ft_put_pixel(img->pixels, cur_x, cur_y, color);
+				float x_progress = (cur_x - start_x) / len_x;
+				cur_z = x_progress * z_dist + start_z;
+				if (!(cur_z < Z_NEAR || cur_z > Z_FAR || cur_z > depth[cur_x + y_index]))
+				{
+					depth[cur_x + y_index] = cur_z;
+					ft_put_pixel_fin_index(img->pixels, cur_x, y_index, color);
+				}
+				ft_put_pixel_fin_index(img->pixels, cur_x, y_index, color);
 				cur_x--;
 			}
 		}
@@ -245,36 +292,53 @@ void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color)
 		y_index2 = (int)cur_y2;
 		while (cur_y2 <= p[2].y && y_index2 < HEIGHT)
 		{
-			//y_index2 = (int)(cur_y2);
+
 			float	y_progress =  (cur_y2 - p[1].y) / (p[2].y - p[1].y);
 			total_y_progress = (cur_y2 - p[0].y) / (p[2].y - p[0].y);
-		//	if (y_index2 != (int)p[1].y)
-				cur_x = (int)(m3 * (cur_y2 - p[1].y) + p[1].x);
-			// else
-			// 	cur_x = (int)(p[1].x);
-			//if (y_index2 != (int)p[2].y)
-				x_max =  (int)((m2 * (cur_y2 - p[2].y) + p[2].x));
-			//else
-			//	x_max =  (int)(p[2].x);
-			// cur_x = (int)roundf((p[2].x - p[1].x) * total_y_progress + p[1].x);
-			// x_max =  (int)roundf(((p[0].x - p[1].x) * y_progress + p[1].x));
-			//y_progress =  ((float)(cur_y - (int)p[1].y)) / (p[2].y - p[1].y);
-			float cur_z = y_progress * (projected->unprojected_z[2] - projected->unprojected_z[1]) + projected->unprojected_z[1];
-			if (cur_z < Z_NEAR || cur_z > Z_FAR)// || cur_z > depth[cur_x + WIDTH * y_index])
+			cur_x = (int)(m3 * (cur_y2 - p[1].y) + p[1].x);
+			x_max =  (int)((m2 * (cur_y2 - p[2].y) + p[2].x));
+			// if (cur_z < Z_NEAR || cur_z > Z_FAR)
+			// {
+			// 	cur_y2 += 1.0;
+			// 	y_index2++;
+			// 	continue ;
+			// }
+			float cur_z;
+			float start_z = y_progress * (projected->unprojected_z[2] - projected->unprojected_z[1]) + projected->unprojected_z[1];
+			float end_z = y_progress * (projected->unprojected_z[2] - projected->unprojected_z[0]) + projected->unprojected_z[0];
+			if (p[1].x > p[2].x)
 			{
-				cur_y2 += 1.0;
+				float tmp;
+				tmp = start_z;
+				start_z = end_z;
+				end_z = start_z;
+			}
+			int	len_x = x_max - cur_x;
+			float	start_x = cur_x;
+			float	z_dist = end_z - start_z;
+			int y_index = WIDTH * y_index2;
+			if (y_index + WIDTH < 0 || y_index - WIDTH >= WIDTH * HEIGHT)
+			{
+				cur_y2 += 1.0f;
 				y_index2++;
 				continue ;
 			}
-			//depth[cur_x + WIDTH * y_index2] = cur_z;
 			if (cur_x <= x_max)
 			{
 				if (cur_x < 0)
 					cur_x = 0;
 				while(cur_x < x_max)
 				{
+					float x_progress = (cur_x - start_x) / len_x;
+					cur_z = x_progress * z_dist + start_z;
 					if (cur_x >= 0 && cur_x < WIDTH && y_index2 >= 0 && y_index2 < HEIGHT)
-						ft_put_pixel(img->pixels, cur_x, y_index2, color);
+					{
+						if (!(cur_z < Z_NEAR || cur_z > Z_FAR || cur_z > depth[cur_x + y_index]))
+						{
+							depth[cur_x + y_index] = cur_z;
+							ft_put_pixel_fin_index(img->pixels, cur_x, y_index, color);
+						}
+					}
 					cur_x++;
 				}
 			}
@@ -284,8 +348,16 @@ void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color)
 					cur_x = WIDTH - 1;
 				while (cur_x >= x_max)
 				{
+					float x_progress = (cur_x - start_x) / len_x;
+					cur_z = x_progress * z_dist + start_z;
 					if (cur_x >= 0 && cur_x < WIDTH && y_index2 >= 0 && y_index2 < HEIGHT)
-						ft_put_pixel(img->pixels, cur_x, y_index2, color);
+					{
+						if (!(cur_z < Z_NEAR || cur_z > Z_FAR || cur_z > depth[cur_x + y_index]))
+						{
+							depth[cur_x + y_index] = cur_z;
+							ft_put_pixel_fin_index(img->pixels, cur_x, y_index, color);
+						}
+					}
 					cur_x--;
 				}
 			}
@@ -329,27 +401,72 @@ void	init_light(t_light *light, t_vec3 direct, uint32_t color, float base_stren)
 	light->strength.v[B] = light->color.argb[B] / (0xFF * base_stren);
 }
 
-void	draw_mesh(t_mesh *mesh)
+t_triangle	apply_rotation_addtiononal_translation(t_mesh *mesh, int i)
 {
-	int			i;
 	t_triangle		rotated_xz;
 	t_triangle		rotated_xyz;
 	t_triangle		rotated_z;
 	t_triangle		translated;
+
+	// printf("p1 x: %f, y: %f z: %f\n", mesh->triangles[i].p[0].x, mesh->triangles[i].p[0].y, mesh->triangles[i].p[0].z);
+	// printf("p2 x: %f, y: %f z: %f\n", mesh->triangles[i].p[1].x, mesh->triangles[i].p[1].y, mesh->triangles[i].p[1].z);
+	//printf("p3 x: %f, y: %f z: %f\n\n", mesh->triangles[i].p[2].x, mesh->triangles[i].p[2].y, mesh->triangles[i].p[2].z);
+	matrix_mult_vec3_4x4((mesh->triangles + i)->p + 0, mesh->rotation_mat_z, &rotated_z.p[0]);
+	matrix_mult_vec3_4x4((mesh->triangles + i)->p + 1, mesh->rotation_mat_z, &rotated_z.p[1]);
+	matrix_mult_vec3_4x4((mesh->triangles + i)->p + 2, mesh->rotation_mat_z, &rotated_z.p[2]);
+	if (mesh->obj_file)
+	{
+		matrix_mult_vec3_4x4(&(mesh->triangles + i)->normal, mesh->rotation_mat_z, &rotated_z.normal);
+		//matrix_mult_vec3_4x4((mesh->triangles + i)->obj_normal + 0, mesh->rotation_mat_z, &rotated_z.obj_normal[0]);
+		//matrix_mult_vec3_4x4((mesh->triangles + i)->obj_normal + 1, mesh->rotation_mat_z, &rotated_z.obj_normal[1]);
+		//matrix_mult_vec3_4x4((mesh->triangles + i)->obj_normal + 2, mesh->rotation_mat_z, &rotated_z.obj_normal[2]);
+	}
+	// printf("p1 x: %f, y: %f z: %f\n", rotated_z.p[0].x, rotated_z.p[0].y, rotated_z.p[0].z);
+	// printf("p2 x: %f, y: %f z: %f\n", rotated_z.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
+	// printf("p3 x: %f, y: %f z: %f\n\n", rotated_z.p[2].x, rotated_z.p[2].y, rotated_z.p[2].z);
+	matrix_mult_vec3_4x4(rotated_z.p + 0, mesh->rotation_mat_x, &rotated_xz.p[0]);
+	matrix_mult_vec3_4x4(rotated_z.p + 1, mesh->rotation_mat_x, &rotated_xz.p[1]);
+	matrix_mult_vec3_4x4(rotated_z.p + 2, mesh->rotation_mat_x, &rotated_xz.p[2]);
+	if (mesh->obj_file)
+	{
+		matrix_mult_vec3_4x4(&rotated_z.normal, mesh->rotation_mat_x, &rotated_xz.normal);
+		//matrix_mult_vec3_4x4(rotated_z.obj_normal + 0, mesh->rotation_mat_x, &rotated_xz.obj_normal[0]);
+		//matrix_mult_vec3_4x4(rotated_z.obj_normal + 1, mesh->rotation_mat_x, &rotated_xz.obj_normal[1]);
+		//matrix_mult_vec3_4x4(rotated_z.obj_normal + 2, mesh->rotation_mat_x, &rotated_xz.obj_normal[2]);
+	}
+	matrix_mult_vec3_4x4(rotated_xz.p + 0, mesh->rotation_mat_y, &rotated_xyz.p[0]);
+	matrix_mult_vec3_4x4(rotated_xz.p + 1, mesh->rotation_mat_y, &rotated_xyz.p[1]);
+	matrix_mult_vec3_4x4(rotated_xz.p + 2, mesh->rotation_mat_y, &rotated_xyz.p[2]);
+	if (mesh->obj_file)
+	{
+		matrix_mult_vec3_4x4(&rotated_xz.normal, mesh->rotation_mat_y, &rotated_xyz.normal);
+		//matrix_mult_vec3_4x4(rotated_xz.obj_normal + 0, mesh->rotation_mat_y, &rotated_xyz.obj_normal[0]);
+		//matrix_mult_vec3_4x4(rotated_xz.obj_normal + 1, mesh->rotation_mat_y, &rotated_xyz.obj_normal[1]);
+		//matrix_mult_vec3_4x4(rotated_xz.obj_normal + 2, mesh->rotation_mat_y, &rotated_xyz.obj_normal[2]);
+	}
+	// printf("p1 x: %f, y: %f z: %f\n", rotated_xz.p[0].x, rotated_z.p[0].y, rotated_z.p[0].z);
+	// printf("p2 x: %f, y: %f z: %f\n", rotated_xz.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
+	// printf("p3 x: %f, y: %f z: %f\n\n", rotated_xz.p[2].x, rotated_z.p[2].y, rotated_z.p[2].z);
+	translated = rotated_xyz;
+	translated.p[0].z += 10.0f;
+	translated.p[1].z += 10.0f;
+	translated.p[2].z += 10.0f;
+
+
+
+	return (translated);
+
+}
+
+void	draw_mesh(t_mesh *mesh)
+{
+	int			i;
+
+	t_triangle		translated;
 	t_triangle		projected;
 	t_color_split	color;
 
-	t_light			ambient_light1;
-	const t_vec3	light_direct1 =  {-1.0f, 1.0f, -1.0f};
-	init_light(&ambient_light1, light_direct1, WHITE, 1.0);
 
-	t_light			ambient_light2;
-	const t_vec3	light_direct2 =  {1.0f, -1.0f, -1.0f};
-	init_light(&ambient_light2, light_direct2, WHITE, 1.0);
-
-	// t_light			ambient_light3;
-	// const t_vec3	light_direct3 =  {-1.0f, 1.0f, -1.0f};
-	// init_light(&ambient_light3, light_direct3, WHITE);
 
 	int			p_2d[3][2];
 	const float	project_mat[4][4] = PROJECTION_MATRIX;
@@ -370,49 +487,66 @@ void	draw_mesh(t_mesh *mesh)
 	// mesh->center.x = 0;
 	// mesh->center.y = 0;
 	// mesh->center.z = 0;
+	t_light			ambient_light1;
+	static t_vec3	light_direct1 =  {1.0f, 1.0f, -1.0f};
+	if (light_direct1.x < -1)
+		light_direct1.x = 1;
+	light_direct1.x += *mesh->d_time * -1 / 50;
+	float day_progress = (light_direct1.x + 1) / 2;
+	static float timer = 0;
+	timer += *mesh->d_time;
+	if (timer > 1)
+	{
+		printf("day time: %f\n", 24 * day_progress);
+		timer = 0;
+	}
+	float	light_intens = 1 - fabs(0.5 - day_progress);
+	t_color_split light_col;
+	light_col.col = WHITE;
+	light_col.argb[R] *= 1 - 0.3 * fabs(0.5 - day_progress);
+	light_col.argb[G] *= 1 - 0.6 * fabs(0.5 - day_progress);
+	light_col.argb[B] *= 1 - fabs(0.5 - day_progress);
+	init_light(&ambient_light1, light_direct1, light_col.col, 1 - fabs(0.5 - day_progress));
+
+
+	t_light			ambient_light2;
+	const t_vec3	light_direct2 =  {1.0f, -1.0f, -1.0f};
+	init_light(&ambient_light2, light_direct2, WHITE, 0.0f);
+
+	// t_light			ambient_light3;
+	// const t_vec3	light_direct3 =  {-1.0f, 1.0f, -1.0f};
+	// init_light(&ambient_light3, light_direct3, WHITE);
 	while (i < mesh->count)
 	{
 		color.col = (mesh->triangles + i)->col;
-		// printf("p1 x: %f, y: %f z: %f\n", mesh->triangles[i].p[0].x, mesh->triangles[i].p[0].y, mesh->triangles[i].p[0].z);
-		// printf("p2 x: %f, y: %f z: %f\n", mesh->triangles[i].p[1].x, mesh->triangles[i].p[1].y, mesh->triangles[i].p[1].z);
-		//printf("p3 x: %f, y: %f z: %f\n\n", mesh->triangles[i].p[2].x, mesh->triangles[i].p[2].y, mesh->triangles[i].p[2].z);
-		matrix_mult_3x1_4x4((mesh->triangles + i)->p + 0, mesh->rotation_mat_z, &rotated_z.p[0]);
-		matrix_mult_3x1_4x4((mesh->triangles + i)->p + 1, mesh->rotation_mat_z, &rotated_z.p[1]);
-		matrix_mult_3x1_4x4((mesh->triangles + i)->p + 2, mesh->rotation_mat_z, &rotated_z.p[2]);
-
-		// printf("p1 x: %f, y: %f z: %f\n", rotated_z.p[0].x, rotated_z.p[0].y, rotated_z.p[0].z);
-		// printf("p2 x: %f, y: %f z: %f\n", rotated_z.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
-		// printf("p3 x: %f, y: %f z: %f\n\n", rotated_z.p[2].x, rotated_z.p[2].y, rotated_z.p[2].z);
-
-		matrix_mult_3x1_4x4(rotated_z.p + 0, mesh->rotation_mat_x, &rotated_xz.p[0]);
-		matrix_mult_3x1_4x4(rotated_z.p + 1, mesh->rotation_mat_x, &rotated_xz.p[1]);
-		matrix_mult_3x1_4x4(rotated_z.p + 2, mesh->rotation_mat_x, &rotated_xz.p[2]);
-
-		matrix_mult_3x1_4x4(rotated_xz.p + 0, mesh->rotation_mat_x, &rotated_xyz.p[0]);
-		matrix_mult_3x1_4x4(rotated_xz.p + 1, mesh->rotation_mat_x, &rotated_xyz.p[1]);
-		matrix_mult_3x1_4x4(rotated_xz.p + 2, mesh->rotation_mat_x, &rotated_xyz.p[2]);
-		// printf("p1 x: %f, y: %f z: %f\n", rotated_xz.p[0].x, rotated_z.p[0].y, rotated_z.p[0].z);
-		// printf("p2 x: %f, y: %f z: %f\n", rotated_xz.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
-		// printf("p3 x: %f, y: %f z: %f\n\n", rotated_xz.p[2].x, rotated_z.p[2].y, rotated_z.p[2].z);
 
 
-		//translated = mesh->triangles[i];
-		translated = rotated_xyz;
-		translated.p[0].z += 10.0f;
-		translated.p[1].z += 10.0f;
-		translated.p[2].z += 10.0f;
-
-
-		translated.normal = cross_product(v3_sub(translated.p[1], translated.p[0]), v3_sub(translated.p[2], translated.p[0]));
-
-		float normal_len = sqrtf(translated.normal.x * translated.normal.x + translated.normal.y * translated.normal.y + translated.normal.z * translated.normal.z);
-		scale_vec3(&translated.normal, 1 / normal_len);
-		if (dot_prod(translated.normal, v3_sub(translated.p[0], mesh->main->camera)) >= 0)
-		//if (translated.normal.z > 0)
+		translated = apply_rotation_addtiononal_translation(mesh, i);
+		//if (!mesh->obj_file)
 		{
-			i++;
-			continue ;
+			translated.normal = cross_product(v3_sub(translated.p[1], translated.p[0]), v3_sub(translated.p[2], translated.p[0]));
 		}
+			float normal_len = sqrtf(translated.normal.x * translated.normal.x + translated.normal.y * translated.normal.y + translated.normal.z * translated.normal.z);
+			scale_vec3(&translated.normal, 1 / normal_len);
+	
+			if (dot_prod(translated.normal, v3_sub(translated.p[0], mesh->main->camera)) >= 0)
+			//if (translated.normal.z > 0)
+			{
+				i++;
+				continue ;
+			}
+		//}
+		// else
+		// {
+		// 	translated.normal = translated.obj_normal[0];
+		// 	if (dot_prod(translated.normal, v3_sub(translated.p[0], mesh->main->camera)) >= 0)
+		// 	//if (translated.normal.z > 0)
+		// 	{
+		// 		i++;
+		// 		continue ;
+		// 	}
+		// }
+	
 		t_light_argb_stren	color_scalars = {0};
 	
 		float light_dp = dot_prod(translated.normal, ambient_light1.direct);
@@ -421,11 +555,11 @@ void	draw_mesh(t_mesh *mesh)
 		color_scalars.v[G] += ambient_light1.strength.v[G] *  light_dp;
 		color_scalars.v[B] += ambient_light1.strength.v[B] *  light_dp;
 
-		light_dp = dot_prod(translated.normal, ambient_light2.direct);
-		light_dp = fmaxf(light_dp, 0.0f);
-		color_scalars.v[R] += ambient_light2.strength.v[R] *  light_dp;
-		color_scalars.v[G] += ambient_light2.strength.v[G] *  light_dp;
-		color_scalars.v[B] += ambient_light2.strength.v[B] *  light_dp;
+		// light_dp = dot_prod(translated.normal, ambient_light2.direct);
+		// light_dp = fmaxf(light_dp, 0.0f);
+		// color_scalars.v[R] += ambient_light2.strength.v[R] *  light_dp;
+		// color_scalars.v[G] += ambient_light2.strength.v[G] *  light_dp;
+		// color_scalars.v[B] += ambient_light2.strength.v[B] *  light_dp;
 
 		// light_dp = dot_prod(translated.normal, ambient_light3.direct);
 		// light_dp = fmaxf(light_dp, 0.0f);
@@ -437,13 +571,14 @@ void	draw_mesh(t_mesh *mesh)
 		color_scalars.v[G] = fmin(color_scalars.v[G], 1.0f);
 		color_scalars.v[B] = fmin(color_scalars.v[B], 1.0f);
 
-		// color.argb[R] *= color_scalars.v[R];
-		// color.argb[G] *= color_scalars.v[G];
-		// color.argb[B] *= color_scalars.v[B];
+		color.argb[R] *= color_scalars.v[R];
+		color.argb[G] *= color_scalars.v[G];
+		color.argb[B] *= color_scalars.v[B];
 
-		matrix_mult_3x1_4x4(translated.p + 0, project_mat, &projected.p[0]);
-		matrix_mult_3x1_4x4(translated.p + 1, project_mat, &projected.p[1]);
-		matrix_mult_3x1_4x4(translated.p + 2, project_mat, &projected.p[2]);
+
+		matrix_mult_vec3_4x4(translated.p + 0, project_mat, &projected.p[0]);
+		matrix_mult_vec3_4x4(translated.p + 1, project_mat, &projected.p[1]);
+		matrix_mult_vec3_4x4(translated.p + 2, project_mat, &projected.p[2]);
 
 		// printf("p1 x: %f, y: %f z: %f\n", translated.p[0].x, translated.p[0].y, translated.p[0].z);
 		// printf("p2 x: %f, y: %f z: %f\n", projected.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
@@ -507,8 +642,7 @@ void	draw_mesh(t_mesh *mesh)
 		// 	flipped_z = true;
 		// }
 		//draw_triangle(mesh->img, &projected, (mesh->triangles + i)->col);
-		fill_triangle(mesh->img, &projected, color.col);
-		
+		fill_triangle(mesh->img, &projected, color.col, mesh);
 		i++;
 	}
 	//mesh->center = v3_scale(mesh->center, 1.0f / (float) mesh->count);
@@ -550,9 +684,9 @@ void	draw_skybox(t_mesh *mesh)
 		// 	i++;
 		// 	continue ;
 		// }
-		matrix_mult_3x1_4x4(base->p + 0, project_mat, &projected.p[0]);
-		matrix_mult_3x1_4x4(base->p + 1, project_mat, &projected.p[1]);
-		matrix_mult_3x1_4x4(base->p + 2, project_mat, &projected.p[2]);
+		matrix_mult_vec3_4x4(base->p + 0, project_mat, &projected.p[0]);
+		matrix_mult_vec3_4x4(base->p + 1, project_mat, &projected.p[1]);
+		matrix_mult_vec3_4x4(base->p + 2, project_mat, &projected.p[2]);
 
 		// scale the points
 		projected.p[0].x += 1.0f;
@@ -573,8 +707,7 @@ void	draw_skybox(t_mesh *mesh)
 		projected.unprojected_z[1] = base->p[1].z;
 		projected.unprojected_z[2] = base->p[2].z;
 		//draw_triangle(mesh->img, &projected, (mesh->triangles + i)->col);
-		fill_triangle(mesh->img, &projected, (mesh->triangles + i)->col);
-		
+		fill_triangle(mesh->img, &projected, (mesh->triangles + i)->col, mesh);
 		i++;
 	}
 	//mesh->center = v3_scale(mesh->center, 1.0f / (float) mesh->count);

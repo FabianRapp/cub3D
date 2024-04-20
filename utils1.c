@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 05:43:13 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/18 06:11:45 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/20 05:23:23 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ t_vec3	out_of_bound_triangle(t_triangle *projected)
 }
 
 
+
 /*
 for
 	{x1,x2,x3}
@@ -76,7 +77,7 @@ for
 	x31,x32,x33,x34
 	x41,x42,x43,x44}
 */
-void	matrix_mult_3x1_4x4(t_vec3 *m_a, const float m_b[4][4], t_vec3 *re)
+void	matrix_mult_vec3_4x4(t_vec3 *m_a, const float m_b[4][4], t_vec3 *re)
 {
 	float	w;
 
@@ -93,7 +94,7 @@ void	matrix_mult_3x1_4x4(t_vec3 *m_a, const float m_b[4][4], t_vec3 *re)
 }
 
 
-// t_vec3	matrix_mult_3x1_4x4(t_vec3 *m_a, const float m_b[4][4], t_vec3 *re)
+// t_vec3	matrix_mult_vec3_4x4(t_vec3 *m_a, const float m_b[4][4], t_vec3 *re)
 // {
 // 	t_vec3	v;
 // 	float	w;
@@ -114,4 +115,10 @@ void	ft_put_pixel(uint8_t *pixel_buffer, int x, int y, int color)
 {
 	//const int	index_mult = sizeof(int32_t);
 	((uint32_t *) pixel_buffer)[x + y * WIDTH] = color;
+}
+
+void	ft_put_pixel_fin_index(uint8_t *pixel_buffer, int x, int y, int color)
+{
+	//const int	index_mult = sizeof(int32_t);
+	((uint32_t *) pixel_buffer)[x + y] = color;
 }

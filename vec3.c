@@ -23,6 +23,68 @@ void	norm_vec3(t_vec3 *v)
 	v->z /= len;
 }
 
+// rotation_matrix_x
+//         [1, 0, 0],
+//         [0, np.cos(theta), -np.sin(theta)],
+//         [0, np.sin(theta), np.cos(theta)]
+
+
+// rotation_matrix_y
+//         [np.cos(phi), 0, np.sin(phi)],
+//         [0, 1, 0],
+//         [-np.sin(phi), 0, np.cos(phi)]
+
+
+// rotation_matrix_z
+//         [np.cos(psi), -np.sin(psi), 0],
+//         [np.sin(psi), np.cos(psi), 0],
+//         [0, 0, 1]
+
+
+
+//{
+// {cos α cos β cos γ − sin α sin γ, − cos α cos β sin γ − sin α cos γ, cos α sin β },
+// {sin α cos β cos γ + cos α sin γ, − sin α cos β sin γ + cos α cos γ, sin α sin β },
+// {− sin β cos γ, sin β sin γ, cos β }
+//}
+
+
+// angle in rad
+void	rotate_vec3(t_vec3 *to_rotate, float first_z_rot, float x_rot, float second_z_rot)
+{
+	float cx = cosf(x_rot);
+	float sx = sinf(x_rot);
+	float cz1 = cosf(first_z_rot);
+	float sz1 = sinf(first_z_rot);
+	float cz2 = cosf(second_z_rot);
+	float sz2 = sinf(second_z_rot);
+
+	t_vec3	re;
+	float	rotation_matrix[3][3] = {
+		{cz1 * cx * cz2 - sz1 * sz2, -cz1 * cx * sz2 - sz1 * cz2, cz1 * sx},
+		{sz1 * cx * cz2 + cz1 * sz2, -sz1 * cx * sz2 + cz1 * cz2, sz1 * sx},
+		{-sx * cz2, sx * sz2, cx}
+	};
+	re.x = to_rotate->x *  rotation_matrix[0][0] + to_rotate->y * rotation_matrix[1][0] + to_rotate->z * rotation_matrix[2][0];
+	re.y = to_rotate->x *  rotation_matrix[0][1] + to_rotate->y * rotation_matrix[1][1] + to_rotate->z * rotation_matrix[2][1];
+	re.z = to_rotate->x *  rotation_matrix[0][2] + to_rotate->y * rotation_matrix[1][2] + to_rotate->z * rotation_matrix[2][2];
+	*to_rotate = re;
+	// // Apply Z-axis rotation
+	// float xy = cz * to_rotate->x - sz * to_rotate->y;
+	// float yy = sz * to_rotate->x + cz * to_rotate->y;
+	// float zy = to_rotate->z;
+
+	// // Apply Y-axis rotation
+	// float xz = cy * xy + sy * zy;
+	// float yz = yy;
+	// float zz = -sy * xy + cy * zy;
+
+	// // Apply X-axis rotation
+	// to_rotate->x = xz;
+	// to_rotate->y = cx * yz - sx * zz;
+	// to_rotate->z = sx * yz + cx * zz;
+}
+
 t_vec3	cross_product(t_vec3 a, t_vec3 b)
 {
 	t_vec3	result;
