@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/20 05:08:28 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/21 23:37:22 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void ft_hook(void* param)
 	//ft_bzero(main_data->depth, sizeof(float) * WIDTH * HEIGHT);
 	for (int i = 0; i < WIDTH * HEIGHT; i++)
 	{
-		main_data->depth[i] = Z_FAR + 1;
+		main_data->depth[i] = Z_FAR;
 	}
 	//mod_cube_rotation(&main_data->cube, main_data->mlx->delta_time);
 	mod_cube_rotation(&main_data->custom, main_data->mlx->delta_time);
@@ -260,6 +260,7 @@ int32_t	main(void)
 	m_data.tetra.d_time = &m_data.mlx->delta_time;
 	//	load_obj_file("lego_obj/", "lego_obj/lego obj.obj", &m_data.custom, &m_data);
 	load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj", &m_data.custom, &m_data);
+	//load_obj_file("objs/", "objs/HorseArmor.obj", &m_data.custom, &m_data);
 	fill_cube_mesh(&m_data.cube, &m_data);
 	fill_skybox_mesh(&m_data.skybox, &m_data);
 	//fill_tetra_mesh(&m_data.tetra, &m_data);

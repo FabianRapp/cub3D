@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/20 05:23:17 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/21 23:38:51 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 
 #define ASPECT_RATIO ((float)HEIGHT) / ((float)WIDTH)
 
-#define FOV 90.0f
+#define FOV 60.0f
 // #define FOV_RAD 1 / tan((double)FOV * 0.5 / 180.0 * 3.14159)
 #define FOV_RAD 1.0 / tan(M_PI_4)
 #define Z_FAR 1000.0f
@@ -226,7 +226,7 @@ t_vec3	vec3_matrix_mult_vec3_3x3(t_vec3 *m_a, const float m_b[3][3]);
 t_vec3	out_of_bound_triangle(t_triangle *projected);
 void	matrix_mult_vec3_4x4(t_vec3 *m_a, const float m_b[4][4], t_vec3 *re);
 void	ft_put_pixel(uint8_t *pixel_buffer, int x, int y, int color);
-void	ft_put_pixel_fin_index(uint8_t *pixel_buffer, int x, int y, int color);
+void	ft_put_pixel_fin_index(uint8_t *pixel_buffer, int index, int color);
 
 // draw.c
 void	draw_line(mlx_image_t *image, int x1, int x2, int y1, int y2, int color);

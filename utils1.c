@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 05:43:13 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/20 05:23:23 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/21 23:38:55 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ void	ft_put_pixel(uint8_t *pixel_buffer, int x, int y, int color)
 	((uint32_t *) pixel_buffer)[x + y * WIDTH] = color;
 }
 
-void	ft_put_pixel_fin_index(uint8_t *pixel_buffer, int x, int y, int color)
+void	ft_put_pixel_fin_index(uint8_t *pixel_buffer, int index, int color)
 {
 	//const int	index_mult = sizeof(int32_t);
-	((uint32_t *) pixel_buffer)[x + y] = color;
+	((uint32_t *) pixel_buffer)[index] = color;
 }

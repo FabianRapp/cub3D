@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 08:36:34 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/20 05:11:35 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/21 18:36:36 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,7 +267,7 @@ void	sacle_vecs(t_obj_parser *vars)
 	int		i;
 	t_vec3	scalar = {100.0, 100.0, 100.0};
 	t_vec3	translate = {0, 0, 0};
-	// t_vec3	rotation = {3.0f, 3.2f, 0.0f}; // horse
+	//t_vec3	rotation = {1.5f, 3.2f, 0.0f}; // horse
 	t_vec3	rotation = {0, 0, 0};
 	i = 0;
 	while (i < vars->vertex_count)
