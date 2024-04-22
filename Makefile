@@ -33,7 +33,10 @@ SOURCES= \
 	utils1.c \
 	triangle.c \
 	to_replace.c \
-	obj_parser.c
+	obj_parser.c \
+	matrix/init_matrix.c \
+	matrix/matrix_math1.c \
+	matrix/matrix_mult.c
 
 OBJECTS=$(SOURCES:.c=.o)
 MAIN_OB=$(MAIN:.c=.o)

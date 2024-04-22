@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 08:36:34 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/21 18:36:36 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/22 04:48:02 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,27 +232,7 @@ void	obj_parser_handle_faces(t_obj_parser *vars)
 			}
 			ft_free_2darr(split);
 			count--;
-			if (count == 3)
-			{
-				ft_bzero(tmp_tri, sizeof(tmp_tri));
-				ft_memcpy(tmp_tri[0].p + 0, tmp_v + 0, sizeof(t_vec3));
-				ft_memcpy(tmp_tri[0].p + 1, tmp_v + 1, sizeof(t_vec3));
-				ft_memcpy(tmp_tri[0].p + 2, tmp_v + 2, sizeof(t_vec3));
-				ft_memcpy(&tmp_tri[0].obj_normal + 0, tmp_v_norm + 0, sizeof(t_vec3));
-				ft_memcpy(&tmp_tri[0].obj_normal + 1, tmp_v_norm + 1, sizeof(t_vec3));
-				ft_memcpy(&tmp_tri[0].obj_normal + 2, tmp_v_norm + 2, sizeof(t_vec3));
-				ft_memcpy(&tmp_tri[0].normal, tmp_v_norm, sizeof(t_vec3));
-				t_triangle	*tmp123;
-				tmp123 = ft_memjoin(vars->tris, tmp_tri, sizeof(t_triangle) * (vars->tris_count + 1), sizeof(t_triangle));
-				free(vars->tris);
-				vars->tris = tmp123;
-				vars->tris[vars->tris_count].col = vars->colors[vars->tris_count % OBJ_PARSER_COLOR_COUNT];
-				vars->tris_count++;
-			}
-			else
-			{
-				triangulation(vars, tmp_v, count, tmp_v_norm);
-			}
+			triangulation(vars, tmp_v, count, tmp_v_norm);
 		}
 		free(vars->line);
 		vars->line = get_next_line(vars->fd, false);
@@ -265,10 +245,11 @@ void	obj_parser_handle_faces(t_obj_parser *vars)
 void	sacle_vecs(t_obj_parser *vars)
 {
 	int		i;
-	t_vec3	scalar = {100.0, 100.0, 100.0};
-	t_vec3	translate = {0, 0, 0};
-	//t_vec3	rotation = {1.5f, 3.2f, 0.0f}; // horse
-	t_vec3	rotation = {0, 0, 0};
+	// t_vec3	scalar = {100.0, 100.0, 100.0};
+	t_vec3	scalar = {5.0, 5.0, 5.0};
+	t_vec3	translate = {0, 0, 1};
+	t_vec3	rotation = {1.5f, 3.2f, 0.0f}; // horse
+	//t_vec3	rotation = {0, 0, 0};
 	i = 0;
 	while (i < vars->vertex_count)
 	{

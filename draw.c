@@ -184,6 +184,7 @@ void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color, t_me
 {
 	t_vec3	*p = projected->p;
 	float		*depth;
+	uint32_t	*pixels = (uint32_t *)img->pixels;
 
 	depth = mesh->main->depth;
 	sort_vertexes_for_y(projected);
@@ -203,7 +204,7 @@ void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color, t_me
 	{
 		cur_y_float = 0.0f;
 	}
-	if (!((p[0].x < 0 && p[1].x < 0) || (p[0].x >= WIDTH && p[1].x >= WIDTH) || (p[0].y < 0 && p[1].y < 0) || (p[0].y >= HEIGHT && p[1].y >= HEIGHT) || (p[0].z < Z_NEAR && p[1].z < Z_NEAR) || (projected->unprojected_z[0] >= Z_FAR && projected->unprojected_z[1] >= Z_FAR)))
+	//if ((p[0].x >= 0 || p[1].x >= 0) && (p[0].x < WIDTH || p[1].x < WIDTH) && (p[0].y >= 0 || p[1].y >= 0) && (p[0].y < HEIGHT || p[1].y < HEIGHT) && (p[0].z > Z_NEAR || p[1].z > Z_NEAR) && (projected->unprojected_z[0] < Z_FAR || projected->unprojected_z[1] < Z_FAR))
 	{
 		int y_index =  (int)roundf(cur_y_float);
 		while (cur_y_float < cur_max_y && y_index < HEIGHT)
@@ -232,7 +233,7 @@ void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color, t_me
 				y_index =  (int)roundf(cur_y_float);
 				continue ;
 			}
-			if (cur_x <= x_max)
+			if (cur_x < x_max)
 			{
 				if (cur_x < 0)
 					cur_x = 0;
@@ -244,7 +245,7 @@ void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color, t_me
 					if (cur_z > Z_NEAR && cur_z < depth[fin_index])
 					{
 						depth[fin_index] = cur_z;
-						ft_put_pixel_fin_index(img->pixels, fin_index, color);
+						pixels[fin_index] = color;
 					}
 					cur_x++;
 				}
@@ -261,7 +262,7 @@ void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color, t_me
 					if (cur_z > Z_NEAR && cur_z < depth[fin_index])
 					{
 						depth[fin_index] = cur_z;
-						ft_put_pixel_fin_index(img->pixels, fin_index, color);
+						pixels[fin_index] = color;
 					}
 					cur_x--;
 				}
@@ -278,7 +279,7 @@ void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color, t_me
 	{
 		cur_y_float = 0.0f;
 	}
-	if (!((p[1].x < 0 && p[2].x < 0) || (p[1].x >= WIDTH && p[2].x >= WIDTH) || (p[1].y < 0 && p[2].y < 0) || (p[1].y >= HEIGHT && p[2].y >= HEIGHT) || (p[1].z < Z_NEAR && p[2].z < Z_NEAR) || (projected->unprojected_z[1] >= Z_FAR && projected->unprojected_z[2] >= Z_FAR)))
+	//if ((p[2].x >= 0 || p[1].x >= 0) && (p[2].x < WIDTH || p[1].x < WIDTH) && (p[2].y >= 0 || p[1].y >= 0) && (p[2].y < HEIGHT || p[1].y < HEIGHT) && (p[2].z > Z_NEAR || p[1].z > Z_NEAR) && (projected->unprojected_z[2] < Z_FAR || projected->unprojected_z[1] < Z_FAR))
 	{
 		int y_index = (int)roundf(cur_y_float);
 		while (cur_y_float <= p[2].y && y_index < HEIGHT)
@@ -307,22 +308,20 @@ void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color, t_me
 				y_index =  (int)roundf(cur_y_float);
 				continue ;
 			}
-			if (cur_x <= x_max)
+			if (cur_x < x_max)
 			{
 				if (cur_x < 0)
 					cur_x = 0;
-				while(cur_x <= x_max)
+				
+				while(cur_x <= x_max && cur_x < WIDTH)
 				{
 					float x_progress = (cur_x - start_x) / len_x;
 					cur_z = x_progress * z_dist + start_z;
-					if (cur_x >= 0 && cur_x < WIDTH)
+					int fin_index = cur_x + row_index;
+					if (cur_z > Z_NEAR && cur_z < depth[fin_index])
 					{
-						int fin_index = cur_x + row_index;
-						if (cur_z > Z_NEAR && cur_z < depth[fin_index])
-						{
-							depth[fin_index] = cur_z;
-							ft_put_pixel_fin_index(img->pixels, fin_index, color);
-						}
+						depth[fin_index] = cur_z;
+						pixels[fin_index] = color;
 					}
 					cur_x++;
 				}
@@ -331,18 +330,15 @@ void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color, t_me
 			{
 				if (cur_x >= WIDTH)
 					cur_x = WIDTH - 1;
-				while (cur_x >= x_max)
+				while (cur_x >= x_max && cur_x >= 0)
 				{
 					float x_progress = (cur_x - start_x) / len_x;
 					cur_z = x_progress * z_dist + start_z;
-					if (cur_x >= 0 && cur_x < WIDTH && y_index >= 0 && y_index < HEIGHT)
+					int fin_index = cur_x + row_index;
+					if (cur_z > Z_NEAR && cur_z < depth[fin_index])
 					{
-						int fin_index = cur_x + row_index;
-						if (cur_z > Z_NEAR && cur_z < depth[fin_index])
-						{
-							depth[fin_index] = cur_z;
-							ft_put_pixel_fin_index(img->pixels, fin_index, color);
-						}
+						depth[fin_index] = cur_z;
+						pixels[fin_index] = color;
 					}
 					cur_x--;
 				}
@@ -443,6 +439,23 @@ t_triangle	apply_rotation_addtiononal_translation(t_mesh *mesh, int i)
 
 }
 
+void	scale_to_screen(t_triangle *projected)
+{
+	projected->p[0].x += 1.0f;
+	projected->p[1].x += 1.0f;
+	projected->p[0].y += 1.0f;
+	projected->p[1].y += 1.0f;
+	projected->p[2].x += 1.0f;
+	projected->p[2].y += 1.0f;
+
+	projected->p[0].x *= 0.5f * (float)WIDTH;
+	projected->p[0].y *= 0.5f * (float)HEIGHT;
+	projected->p[1].x *= 0.5f * (float)WIDTH;
+	projected->p[1].y *= 0.5f * (float)HEIGHT;
+	projected->p[2].x *= 0.5f * (float)WIDTH;
+	projected->p[2].y *= 0.5f * (float)HEIGHT;
+}
+
 void	draw_mesh(t_mesh *mesh)
 {
 	int			i;
@@ -451,9 +464,6 @@ void	draw_mesh(t_mesh *mesh)
 	t_triangle		projected;
 	t_color_split	color;
 
-
-
-	int			p_2d[3][2];
 	const float	project_mat[4][4] = PROJECTION_MATRIX;
 	i = 0;
 	static double	theta = 0;
@@ -504,17 +514,26 @@ void	draw_mesh(t_mesh *mesh)
 	// t_light			ambient_light3;
 	// const t_vec3	light_direct3 =  {-1.0f, 1.0f, -1.0f};
 	// init_light(&ambient_light3, light_direct3, WHITE);
+	t_vec3	bounds_result;
 	while (i < mesh->count)
 	{
 		color.col = (mesh->triangles + i)->col;
 
 
 		translated = apply_rotation_addtiononal_translation(mesh, i);
+	
+		bounds_result = out_of_bound_triangle(&translated);
+		if (bounds_result.z == -3 || bounds_result.z == 3)
+		{
+			i++;
+			continue ;
+		}
 
 		translated.normal = cross_product(v3_sub(translated.p[1], translated.p[0]), v3_sub(translated.p[2], translated.p[0]));
 		float normal_len = sqrtf(translated.normal.x * translated.normal.x + translated.normal.y * translated.normal.y + translated.normal.z * translated.normal.z);
 		scale_vec3(&translated.normal, 1 / normal_len);
 		if (dot_prod(translated.normal, v3_sub(translated.p[0], mesh->main->camera)) >= 0)
+		//if (dot_prod(translated.normal, v3_sub(translated.p[0], mesh->main->camera)) < 0)
 		{
 			i++;
 			continue ;
@@ -544,10 +563,9 @@ void	draw_mesh(t_mesh *mesh)
 		color_scalars.v[G] = fmin(color_scalars.v[G], 1.0f);
 		color_scalars.v[B] = fmin(color_scalars.v[B], 1.0f);
 
-		color.argb[R] *= color_scalars.v[R];
-		color.argb[G] *= color_scalars.v[G];
-		color.argb[B] *= color_scalars.v[B];
-
+		// color.argb[R] *= color_scalars.v[R];
+		// color.argb[G] *= color_scalars.v[G];
+		// color.argb[B] *= color_scalars.v[B];
 
 		matrix_mult_vec3_4x4(translated.p + 0, project_mat, &projected.p[0]);
 		matrix_mult_vec3_4x4(translated.p + 1, project_mat, &projected.p[1]);
@@ -557,31 +575,12 @@ void	draw_mesh(t_mesh *mesh)
 		// printf("p2 x: %f, y: %f z: %f\n", projected.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
 		// printf("p3 x: %f, y: %f z: %f\n\n", projected.p[2].x, rotated_z.p[2].y, rotated_z.p[2].z);
 
-		// scale the points
-		projected.p[0].x += 1.0f;
-		projected.p[0].y += 1.0f;
-		projected.p[1].x += 1.0f;
-		projected.p[1].y += 1.0f;
-		projected.p[2].x += 1.0f;
-		projected.p[2].y += 1.0f;
+		scale_to_screen(&projected);
 
-		projected.p[0].x *= 0.5f * (float)WIDTH;
-		projected.p[0].y *= 0.5f * (float)HEIGHT;
-		projected.p[1].x *= 0.5f * (float)WIDTH;
-		projected.p[1].y *= 0.5f * (float)HEIGHT;
-		projected.p[2].x *= 0.5f * (float)WIDTH;
-		projected.p[2].y *= 0.5f * (float)HEIGHT;
-
-		p_2d[0][X] = (int)roundf(projected.p[0].x);
-		p_2d[0][Y] = (int)roundf(projected.p[0].y);
-		p_2d[1][X] = (int)roundf(projected.p[1].x);
-		p_2d[1][Y] = (int)roundf(projected.p[1].y);
-		p_2d[2][X] = (int)roundf(projected.p[2].x);
-		p_2d[2][Y] = (int)roundf(projected.p[2].y);
 		projected.unprojected_z[0] = translated.p[0].z;
 		projected.unprojected_z[1] = translated.p[1].z;
 		projected.unprojected_z[2] = translated.p[2].z;
-		t_vec3	bounds_result = out_of_bound_triangle(&projected);
+		bounds_result = out_of_bound_triangle_projeceted(&projected);
 		if (!flipped_x && bounds_result.x < 0 && mesh->momentum.x < 0)
 		{
 			mesh->momentum.x *= -1;
@@ -615,7 +614,8 @@ void	draw_mesh(t_mesh *mesh)
 		// 	flipped_z = true;
 		// }
 		//draw_triangle(mesh->img, &projected, (mesh->triangles + i)->col);
-		fill_triangle(mesh->img, &projected, color.col, mesh);
+		if (bounds_result.x < 3 && bounds_result.x > -3 && bounds_result.y < 3 && bounds_result.y > -3)
+			fill_triangle(mesh->img, &projected, color.col, mesh);
 		i++;
 	}
 	//mesh->center = v3_scale(mesh->center, 1.0f / (float) mesh->count);
@@ -649,32 +649,24 @@ void	draw_skybox(t_mesh *mesh)
 		base = mesh->triangles + i;
 		base->normal = cross_product(v3_sub(base->p[1], base->p[0]), v3_sub(base->p[2], base->p[0]));
 	
-		float normal_len = sqrtf(base->normal.x * base->normal.x + base->normal.y * base->normal.y + base->normal.z * base->normal.z);
-		scale_vec3(&base->normal, 1 / normal_len);
-		if (dot_prod(base->normal, v3_sub(base->p[0], mesh->main->camera)) < 0)
-		//if (base->normal.z > 0)
-		{
-			i++;
-			continue ;
-		}
+
+		
+		// norm_vec3(&base->normal);
+		// if (dot_prod(base->normal, v3_sub(base->p[0], mesh->main->camera)) <= 0)
+
+		//float normal_len = sqrtf(base->normal.x * base->normal.x + base->normal.y * base->normal.y + base->normal.z * base->normal.z);
+		//scale_vec3(&base->normal, 1 / normal_len);
+		// if (dot_prod(base->normal, v3_sub(base->p[0], mesh->main->camera)) >= 0)
+		// //if (base->normal.z > 0)
+		// {
+		// 	i++;
+		// 	continue ;
+		// }
 		matrix_mult_vec3_4x4(base->p + 0, project_mat, &projected.p[0]);
 		matrix_mult_vec3_4x4(base->p + 1, project_mat, &projected.p[1]);
 		matrix_mult_vec3_4x4(base->p + 2, project_mat, &projected.p[2]);
 
-		// scale the points
-		projected.p[0].x += 1.0f;
-		projected.p[0].y += 1.0f;
-		projected.p[1].x += 1.0f;
-		projected.p[1].y += 1.0f;
-		projected.p[2].x += 1.0f;
-		projected.p[2].y += 1.0f;
-
-		projected.p[0].x *= 0.5f * (float)WIDTH;
-		projected.p[0].y *= 0.5f * (float)HEIGHT;
-		projected.p[1].x *= 0.5f * (float)WIDTH;
-		projected.p[1].y *= 0.5f * (float)HEIGHT;
-		projected.p[2].x *= 0.5f * (float)WIDTH;
-		projected.p[2].y *= 0.5f * (float)HEIGHT;
+		scale_to_screen(&projected);
 
 		projected.unprojected_z[0] = base->p[0].z;
 		projected.unprojected_z[1] = base->p[1].z;

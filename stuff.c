@@ -6,25 +6,14 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 21:22:14 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/18 07:39:39 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/22 02:17:03 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 #include <MLX42.h>
 
-void	matrix_mult_1x3_3x3(float ma[3], float mb[3][3], float m_result[3])
-{
-	m_result[0] = ma[0] * mb[0][0];
-	m_result[0] += ma[1] * mb[1][0];
-	m_result[0] += ma[2] * mb[2][0];
-	m_result[1] = ma[0] * mb[0][1];
-	m_result[1] += ma[1] * mb[1][1];
-	m_result[1] += ma[2] * mb[2][1];
-	m_result[2] = ma[0] * mb[0][2];
-	m_result[2] += ma[1] * mb[1][2];
-	m_result[2] += ma[2] * mb[2][2];
-}
+
 
 // t_vec3	transform_vec3d(t_vec3 *vec3d)
 // {

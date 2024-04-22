@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/21 23:37:22 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/22 02:40:43 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,7 @@ int32_t	main(void)
 	t_main		m_data;
 	const t_vec3	init_cam = {0, 0, 0};
 
-	
+	ident_mat_4x4(m_data.world_mat);
 	ft_memcpy(&m_data.camera, &init_cam, sizeof(init_cam));
 	srand(time(NULL));
 	if (!init())
@@ -259,8 +259,8 @@ int32_t	main(void)
 	m_data.cube2.d_time = &m_data.mlx->delta_time;
 	m_data.tetra.d_time = &m_data.mlx->delta_time;
 	//	load_obj_file("lego_obj/", "lego_obj/lego obj.obj", &m_data.custom, &m_data);
-	load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj", &m_data.custom, &m_data);
-	//load_obj_file("objs/", "objs/HorseArmor.obj", &m_data.custom, &m_data);
+	//load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj", &m_data.custom, &m_data);
+	load_obj_file("objs/", "objs/HorseArmor.obj", &m_data.custom, &m_data);
 	fill_cube_mesh(&m_data.cube, &m_data);
 	fill_skybox_mesh(&m_data.skybox, &m_data);
 	//fill_tetra_mesh(&m_data.tetra, &m_data);

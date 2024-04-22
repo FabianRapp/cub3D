@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/21 23:38:51 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/22 02:29:57 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ t_fixed		fixed_mult(t_fixed a, t_fixed b);
 t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 
 #define WIDTH 1500
-#define HEIGHT 700
+#define HEIGHT 1300
 
 #define ASPECT_RATIO ((float)HEIGHT) / ((float)WIDTH)
 
@@ -115,12 +115,15 @@ typedef struct s_vec3
 	float	x;
 	float	y;
 	float	z;
+	float	w;
 }	t_vec3;
 
 #define A 3
 #define R 0
 #define G 1
 #define B 2
+
+typedef float t_mat_4x4[4][4];
 
 typedef union u_color_split
 {
@@ -172,6 +175,7 @@ typedef struct s_main
 {
 	t_vec3		camera;
 	t_vec3		direct[3];
+	float		world_mat[4][4];
 	mlx_t		*mlx;
 	t_mesh		*objs;
 	int			nb;
@@ -209,9 +213,6 @@ void					display_fps_hook(void *param);
 // mesh_rotation.c
 void	mod_cube_rotation(t_mesh *mesh, float delta_time);
 void	mod_cube_rotation2(t_mesh *mesh, float delta_time);
-void	mesh_rotate_x_axis(t_mesh *mesh);
-void	mesh_rotate_y_axis(t_mesh *mesh);
-void	mesh_rotate_z_axis(t_mesh *mesh);
 mlx_image_t	*first_ob_ball(mlx_t *mlx);
 
 void	translate_mesh_3d(t_mesh *mesh, t_vec3 v);
@@ -219,12 +220,13 @@ void	translate_mesh_3d(t_mesh *mesh, t_vec3 v);
 uint32_t	lerp_color(uint32_t max_col, float strength);
 
 int	lerp_int(int start, int end, float pos);
+
 // utils.c
 void	ft_error(void);
-t_vec3	vec3_matrix_mult_vec3_3x3(t_vec3 *m_a, const float m_b[3][3]);
-//t_vec3	out_of_bound(t_vec3 *v);
-t_vec3	out_of_bound_triangle(t_triangle *projected);
-void	matrix_mult_vec3_4x4(t_vec3 *m_a, const float m_b[4][4], t_vec3 *re);
+t_vec3	out_of_bound(t_vec3 *v);
+t_vec3	out_of_bound_triangle(t_triangle *tri);
+t_vec3	out_of_bound_triangle_projeceted(t_triangle *projected);
+
 void	ft_put_pixel(uint8_t *pixel_buffer, int x, int y, int color);
 void	ft_put_pixel_fin_index(uint8_t *pixel_buffer, int index, int color);
 
@@ -270,6 +272,18 @@ void	rotate_vec3(t_vec3 *to_rotate, float first_z_rot, float x_rot, float second
 
 // obj_parser.c
 void	load_obj_file(char *dir, char *path, t_mesh *mesh, t_main *main_data);
+
+//matrix/matrix_math1.c
+
+//matrix/matrix_mult.c
+void	matrix_mult_vec3_4x4(t_vec3 *m_a, const float m_b[4][4], t_vec3 *re);
+void	matrix_mult_1x3_3x3(float ma[3], float mb[3][3], float m_result[3]);
+
+//matrix/init_matrix.c
+void	ident_mat_4x4(float mat[4][4]);
+void	rot_matx_4x4(float mat[4][4], float theta);
+void	rot_maty_4x4(float mat[4][4], float theta);
+void	rot_matz_4x4(float mat[4][4], float theta);
 
 //to_replace.c
 float	generate_random_float();
