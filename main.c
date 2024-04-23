@@ -6,21 +6,23 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/22 02:40:43 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/24 00:09:00 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 #include <MLX42.h>
 
-void	zero_pixel_buffer(uint8_t *pixels)
+void	reset_pixel_buffer(uint8_t *pixels, float *depth)
 {
 	uint32_t	*buffer = (uint32_t *)pixels;
 
 	for (int i = 0; i < WIDTH * HEIGHT; i++)
 	{
 		buffer[i] = BLACK;
+		depth[i] = Z_FAR;
 	}
+	
 }
 
 // Print the window width and height.
@@ -32,13 +34,14 @@ void ft_hook(void* param)
 	int	y = pixel / WIDTH;
 	int x = pixel - (y * WIDTH);
 
-	zero_pixel_buffer(main_data->img->pixels);
+	ident_mat_4x4(main_data->world_mat);
+	// rot_matz_4x4()
+	// rot_matx_4x4()
+	// rot_maty_4x4()
+	// mat4x4_mult_mat4x4( , ,main_data->world_mat);
+	reset_pixel_buffer(main_data->img->pixels, main_data->depth);
 	//draw_skybox(&main_data->skybox);
 	//ft_bzero(main_data->depth, sizeof(float) * WIDTH * HEIGHT);
-	for (int i = 0; i < WIDTH * HEIGHT; i++)
-	{
-		main_data->depth[i] = Z_FAR;
-	}
 	//mod_cube_rotation(&main_data->cube, main_data->mlx->delta_time);
 	mod_cube_rotation(&main_data->custom, main_data->mlx->delta_time);
 	//draw_mesh(&main_data->cube);
@@ -230,7 +233,6 @@ int32_t	main(void)
 	t_main		m_data;
 	const t_vec3	init_cam = {0, 0, 0};
 
-	ident_mat_4x4(m_data.world_mat);
 	ft_memcpy(&m_data.camera, &init_cam, sizeof(init_cam));
 	srand(time(NULL));
 	if (!init())
@@ -261,7 +263,7 @@ int32_t	main(void)
 	//	load_obj_file("lego_obj/", "lego_obj/lego obj.obj", &m_data.custom, &m_data);
 	//load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj", &m_data.custom, &m_data);
 	load_obj_file("objs/", "objs/HorseArmor.obj", &m_data.custom, &m_data);
-	fill_cube_mesh(&m_data.cube, &m_data);
+	//fill_cube_mesh(&m_data.cube, &m_data);
 	fill_skybox_mesh(&m_data.skybox, &m_data);
 	//fill_tetra_mesh(&m_data.tetra, &m_data);
 	fill_cube_mesh2(&m_data.cube2, &m_data);

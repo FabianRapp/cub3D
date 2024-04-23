@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 06:07:42 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/20 01:08:51 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/24 00:40:47 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	fill_tetra_mesh(t_mesh *cube, t_main *main_data)
 	ft_memcpy(&cube->momentum, &momentum, sizeof(momentum));
 	cube->main = main_data;
 	cube->obj_file = false;
+	cube->texture = NULL;
 }
 
 
@@ -64,6 +65,7 @@ void	fill_cube_mesh(t_mesh *cube, t_main *main_data)
 	cube->count = sizeof(init_triangles) / sizeof(t_triangle);
 	cube->main = main_data;
 	cube->obj_file = false;
+	cube->texture = NULL;
 }
 
 
@@ -106,29 +108,30 @@ void	fill_skybox_mesh(t_mesh *mesh, t_main *main_data)
 	mesh->d_time = &main_data->mlx->delta_time;
 	mesh->img = main_data->img;
 	mesh->obj_file = false;
+	mesh->texture = NULL;
 }
 
 
 void	fill_cube_mesh2(t_mesh *cube, t_main *main_data)
 {
 	const t_triangle init_triangles[] = {
-		{.p={{0, 0, 0}, {0, 1, 0}, {1, 1, 0}}, .col=RED},
-		{.p={{0, 0, 0}, {1, 1, 0}, {1, 0, 0}}, .col=GREEN},
+		{.p={{0, 0, 0, .w = 1}, {0, 1, 0, .w = 1}, {1, 1, 0, .w = 1}}, .col=RED},
+		{.p={{0, 0, 0, .w = 1}, {1, 1, 0, .w = 1}, {1, 0, 0, .w = 1}}, .col=GREEN},
 		// EAST triangles
-		{.p={{1, 0, 0}, {1, 1, 0}, {1, 1, 1}}, .col=BLUE},
-		{.p={{1, 0, 0}, {1, 1, 1}, {1, 0, 1}}, .col=MAGENTA},
+		{.p={{1, 0, 0, .w = 1}, {1, 1, 0, .w = 1}, {1, 1, 1, .w = 1}}, .col=BLUE},
+		{.p={{1, 0, 0, .w = 1}, {1, 1, 1, .w = 1}, {1, 0, 1, .w = 1}}, .col=MAGENTA},
 		// NORTH triangles
-		{.p={{1, 0, 1}, {1, 1, 1}, {0, 1, 1}}, .col=YELLOW},
-		{.p={{1, 0, 1}, {0, 1, 1}, {0, 0, 1}}, .col=WHITE},
+		{.p={{1, 0, 1, .w = 1}, {1, 1, 1, .w = 1}, {0, 1, 1, .w = 1}}, .col=YELLOW},
+		{.p={{1, 0, 1, .w = 1}, {0, 1, 1, .w = 1}, {0, 0, 1, .w = 1}}, .col=WHITE},
 		// WEST triangles
-		{.p={{0, 0, 1}, {0, 1, 1}, {0, 1, 0}}, .col=CYAN},
-		{.p={{0, 0, 1}, {0, 1, 0}, {0, 0, 0}}, .col=PURPLE},
+		{.p={{0, 0, 1, .w = 1}, {0, 1, 1, .w = 1}, {0, 1, 0, .w = 1}}, .col=CYAN},
+		{.p={{0, 0, 1, .w = 1}, {0, 1, 0, .w = 1}, {0, 0, 0, .w = 1}}, .col=PURPLE},
 		// TOP triangles
-		{.p={{0, 1, 0}, {0, 1, 1}, {1, 1, 1}}, .col=TEAL},
-		{.p={{0, 1, 0}, {1, 1, 1}, {1, 1, 0}}, .col=PINK},
+		{.p={{0, 1, 0, .w = 1}, {0, 1, 1, .w = 1}, {1, 1, 1, .w = 1}}, .col=TEAL},
+		{.p={{0, 1, 0, .w = 1}, {1, 1, 1, .w = 1}, {1, 1, 0, .w = 1}}, .col=PINK},
 		// BOTTOM triangles
-		{.p={{1, 0, 1}, {0, 0, 1}, {0, 0, 0}}, .col=ORANGE},
-		{.p={{1, 0, 1}, {0, 0, 0}, {1, 0, 0}}, .col=LIME},
+		{.p={{1, 0, 1, .w = 1}, {0, 0, 1, .w = 1}, {0, 0, 0, .w = 1}}, .col=ORANGE},
+		{.p={{1, 0, 1, .w = 1}, {0, 0, 0, .w = 1}, {1, 0, 0, .w = 1}}, .col=LIME},
 	};
 
 	// const t_triangle init_triangles[] = {
@@ -156,4 +159,5 @@ void	fill_cube_mesh2(t_mesh *cube, t_main *main_data)
 	cube->count = sizeof(init_triangles) / sizeof(t_triangle);
 	cube->main = main_data;
 	cube->obj_file = false;
+	cube->texture = NULL;
 }

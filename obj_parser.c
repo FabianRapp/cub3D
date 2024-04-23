@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 08:36:34 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/22 04:48:02 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/24 01:13:01 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,18 @@
 
 typedef struct s_mtl
 {
-	char	*lib_name;
-	char	*name;
-	float	ns;
-	float	ka[3];
-	float	ks[3];
-	float	ke[3];
-	float	ni;
-	float	d;
-	float	illum;
-	char	*map_kd;
-	int		index;
+	char			*lib_name;
+	char			*name;
+	float			ns;
+	float			ka[3];
+	float			ks[3];
+	float			ke[3];
+	float			ni;
+	float			d;
+	float			illum;
+	char			*map_kd;
+	mlx_texture_t	*texture;
+	int				index;
 }	t_mtl;
 
 typedef	struct s_obj_parser
@@ -35,6 +36,8 @@ typedef	struct s_obj_parser
 	char		*line;
 	int			vertex_count;
 	int			normal_count;
+	int			texture_cords_count;
+	t_vec3		*texture_cords;
 	t_vec3		max;
 	t_vec3		min;
 	t_mesh		*mesh;
@@ -48,6 +51,26 @@ typedef	struct s_obj_parser
 	uint32_t	colors[OBJ_PARSER_COLOR_COUNT];
 }	t_obj_parser;
 
+t_mtl	*get_mtl(t_obj_parser *vars, char *name)
+{
+	int	lib_i;
+	int	i;
+
+	lib_i = 0;
+	while (lib_i < vars->mtl_libs_count)
+	{
+		i = 0;
+		while (!is_buffer_all_zeros(vars->mtl_libs[lib_i] + i, sizeof(t_mtl)))
+		{
+			if (!ft_strcmp(vars->mtl_libs[lib_i][i].name, name))
+				return (vars->mtl_libs[lib_i] + i);
+			i++;
+		}
+		lib_i++;
+	}
+	return (NULL);
+}
+
 void	obj_parser_count(t_obj_parser *vars)
 {
 	vars->fd = open(vars->path, O_RDONLY);
@@ -60,6 +83,8 @@ void	obj_parser_count(t_obj_parser *vars)
 			vars->normal_count++;
 		else if (!ft_strncmp(vars->line, "mtllib ", ft_strlen("mtllib ")))
 			vars->mtl_libs_count++;
+		else if (!ft_strncmp(vars->line, "vt ", ft_strlen("vt ")))
+			vars->texture_cords_count++;
 		free(vars->line);
 		vars->line = get_next_line(vars->fd, false);
 	}
@@ -96,12 +121,14 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 {
 	int		vertex_i;
 	int		normal_i;
+	int		texture_cords_i;
 	char	**split;
 
 	vars->fd = open(vars->path, O_RDONLY);
 	vars->line = get_next_line(vars->fd, false);
 	vertex_i = 1;
 	normal_i = 1;
+	texture_cords_i = 1;
 	while (vars->line)
 	{
 		if (!ft_strncmp(vars->line, "v ", 2))
@@ -110,6 +137,7 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 			vars->vertexes[vertex_i].x = str_to_float(split[1]);
 			vars->vertexes[vertex_i].y = str_to_float(split[2]);
 			vars->vertexes[vertex_i].z = str_to_float(split[3]);
+			vars->vertexes[vertex_i].w = 1;
 			//print_vec3(vars->vertexes[vertex_i], NULL);
 			ft_free_2darr(split);
 			vertex_i++;
@@ -120,6 +148,20 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 			vars->normals[normal_i].x = str_to_float(split[1]);
 			vars->normals[normal_i].y = str_to_float(split[2]);
 			vars->normals[normal_i].z = str_to_float(split[3]);
+			vars->normals[normal_i].w = 1;
+			ft_free_2darr(split);
+			printf("normal_i: %d; normal_count: %d\n", normal_i, vars->normal_count);
+			normal_i++;
+		}
+		else if (!ft_strncmp(vars->line, "vt ", 3))
+		{
+			split = ft_split(vars->line, ' ');
+			vars->texture_cords[texture_cords_i].x = str_to_float(split[1]);
+			vars->texture_cords[texture_cords_i].y = str_to_float(split[2]);
+			vars->texture_cords[texture_cords_i].z = 0;
+			vars->texture_cords[texture_cords_i].w = 1;
+			if (split[3])
+				vars->texture_cords[texture_cords_i].w = str_to_float(split[3]);
 			ft_free_2darr(split);
 			printf("normal_i: %d; normal_count: %d\n", normal_i, vars->normal_count);
 			normal_i++;
@@ -178,7 +220,7 @@ void	triangulation(t_obj_parser *vars, t_vec3 *vertexes, int vertex_count, t_vec
 		tris[tris_i].normal = normals[0];
 		// t_vec3	norms_sum = v3_add(v3_add(normals[0], normals[tris_i + 1]), normals[tris_i + 2]);
 		// tris[tris_i].normal = v3_scale(norms_sum, 1 / length_vec3(&norms_sum));
-	
+
 		tris[tris_i].col = vars->colors[(vars->tris_count + tris_i) % OBJ_PARSER_COLOR_COUNT];
 		tris_i++;
 	}
@@ -205,7 +247,10 @@ void	obj_parser_handle_faces(t_obj_parser *vars)
 	t_vec3		tmp_v_norm[100];
 	t_triangle	tmp_tri[10];
 	int			i;
+	t_mtl		*cur_mtl;
+	char		*tmp;
 
+	cur_mtl = NULL;
 	vars->tris = malloc(sizeof(t_triangle));
 	vars->tris_size = sizeof(t_triangle);
 	vars->fd = open(vars->path, O_RDONLY);
@@ -213,7 +258,12 @@ void	obj_parser_handle_faces(t_obj_parser *vars)
 	int nb = 0;
 	while (vars->line)
 	{
-		//printf("faces loop %d\n", nb++);
+		if (!ft_strncmp(vars->line, "usemtl ", ft_strlen("usemtl ")))
+		{
+			tmp = ft_strtrim(vars->line + ft_strlen("usemtl "), "\n");
+			cur_mtl = get_mtl(vars, tmp);
+			free(tmp);
+		}
 		if (!ft_strncmp(vars->line, "f ", 2))
 		{
 			split = ft_split(vars->line, ' ');
@@ -245,24 +295,39 @@ void	obj_parser_handle_faces(t_obj_parser *vars)
 void	sacle_vecs(t_obj_parser *vars)
 {
 	int		i;
-	// t_vec3	scalar = {100.0, 100.0, 100.0};
-	t_vec3	scalar = {5.0, 5.0, 5.0};
-	t_vec3	translate = {0, 0, 1};
-	t_vec3	rotation = {1.5f, 3.2f, 0.0f}; // horse
-	//t_vec3	rotation = {0, 0, 0};
+	t_vec3	scalar;
+	t_vec3	translate;
+	t_vec3	rotation;
+	if (!ft_strcmp(vars->path, "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj"))
+	{
+		init_vec3(&scalar, 100.0f, 100.0f, 100.0f, 1);
+		init_vec3(&translate, 0.0f, 5.0f, -5.0f, 0.0f);
+		init_vec3(&rotation, 0.0f, M_PI_2 , 0.0f, 0);
+	}
+	else if (!ft_strcmp(vars->path, "objs/HorseArmor.obj"))
+	{
+		init_vec3(&scalar, 5.0f, 5.0f, 5.0f, 5.0f);
+		init_vec3(&translate, 0.0f, 0.0f, 1.0f, 0.0f);
+		init_vec3(&rotation, 1.5f, 3.2f, 0.0f, 0.0f);
+	}
+	else
+	{
+		init_vec3(&scalar, 1.0f, 1.0f, 1.0f, 1.0f);
+		init_vec3(&translate, 0.0f, 0.0f, 1.0f, 0.0f);
+		init_vec3(&rotation, 1.5f, 3.2f, 0.0f, 0.0f);
+	}
 	i = 0;
 	while (i < vars->vertex_count)
 	{
-		rotate_vec3(vars->vertexes + i, rotation.y, rotation.x, rotation.z);
+		rotate_vec3(vars->vertexes + i, rotation.x, rotation.y, rotation.z);
 		multiply_vec3(vars->vertexes + i, &scalar);
 		add_vec3(vars->vertexes + i, &translate);
-
 		i++;
 	}
 	i = 0;
 	while (i < vars->normal_count)
 	{
-		rotate_vec3(vars->normals + i, rotation.y, rotation.x, rotation.z);
+		rotate_vec3(vars->normals + i, rotation.x, rotation.y, rotation.z);
 		i++;
 	}
 }
@@ -282,8 +347,6 @@ void	init_obj_file_colors(t_obj_parser *vars)
 	vars->colors[10] = PINK;
 	vars->colors[11] = LIME;
 }
-
-
 
 int	mtl_len(char *file_path)
 {
@@ -335,6 +398,7 @@ void	fill_3_floats(char *str, float arr[3])
 	}
 }
 
+// file_name has to be alloacted without \n
 t_mtl	*parse_mtl(char *dir, char *file_name)
 {
 	t_mtl	*arr;
@@ -343,6 +407,7 @@ t_mtl	*parse_mtl(char *dir, char *file_name)
 	char	*line;
 	int		i;
 	int		count;
+	char	*tmp;
 
 	file_path = ft_strjoin(dir, file_name);
 	count = mtl_len(file_path);
@@ -359,7 +424,7 @@ t_mtl	*parse_mtl(char *dir, char *file_name)
 			line = get_next_line(fd, false);
 		}
 		arr[i].index = i;
-		arr[i].lib_name = ft_strdup(file_name);
+		arr[i].lib_name = file_name;
 		arr[i].name = ft_strtrim(line + ft_strlen("newmtl "), "\n");
 		free(line);
 		line = get_next_line(fd, false);
@@ -379,8 +444,16 @@ t_mtl	*parse_mtl(char *dir, char *file_name)
 				fill_3_floats(line + ft_strlen("Ks "), arr[i].ks);
 			else if (!ft_strncmp(line, "Ke ", ft_strlen("Ke ")))
 				fill_3_floats(line + ft_strlen("Ke "), arr[i].ke);
+			else if (!ft_strncmp(line, "map_Kd ", ft_strlen("map_Kd ")))
+				arr[i].map_kd = ft_strtrim(line + ft_strlen("map_Kd "), "\n");
 			free(line);
 			line = get_next_line(fd, false);
+		}
+		if (arr[i].map_kd)
+		{
+			tmp = ft_strjoin(dir, arr[i].map_kd);
+			arr[i].texture = mlx_load_png(tmp);
+			free(tmp);
 		}
 		i++;
 	}
@@ -395,6 +468,7 @@ void	obj_parser_parse_mtl_libs(t_obj_parser *vars, char *dir, char *path)
 
 	fd = open(path, O_RDONLY);
 	line = get_next_line(fd, false);
+	i = 0;
 	while (line && i < vars->mtl_libs_count)
 	{
 		while (line && ft_strncmp(line, "mtllib ", ft_strlen("mtllib ")))
@@ -404,7 +478,7 @@ void	obj_parser_parse_mtl_libs(t_obj_parser *vars, char *dir, char *path)
 		}
 		if (!line)
 			break ;
-		vars->mtl_libs[i] = parse_mtl(dir, line +  ft_strlen("mtllib "));
+		vars->mtl_libs[i] = parse_mtl(dir, ft_strtrim(line + ft_strlen("mtllib "), "\n"));
 		i++;
 		free(line);
 		line = get_next_line(fd, false);
@@ -417,7 +491,6 @@ void	load_obj_file(char *dir, char *path, t_mesh *mesh, t_main *main_data)
 {
 	t_obj_parser	vars;
 
-	t_mtl	*mtl_arr = parse_mtl(dir, "HorseArmor.mtl");
 	vars.path = path;
 	vars.mesh = mesh;
 	vars.tris = NULL;
@@ -426,13 +499,17 @@ void	load_obj_file(char *dir, char *path, t_mesh *mesh, t_main *main_data)
 	vars.vertex_count = 1;
 	vars.normals = NULL;
 	vars.normal_count = 1;
+	vars.texture_cords_count = 1;
+	vars.texture_cords = NULL;
 	mesh->obj_file = true;
 	vars.mtl_libs = NULL;
 	vars.mtl_libs_count = 0;
 	init_obj_file_colors(&vars);
 	obj_parser_count(&vars);
 	vars.vertexes = ft_calloc(vars.vertex_count, sizeof(t_vec3));
-	vars.normals = malloc(vars.normal_count * sizeof(t_vec3));
+	vars.normals = ft_calloc(vars.normal_count, sizeof(t_vec3));
+	vars.texture_cords = ft_calloc(vars.texture_cords_count, sizeof(t_vec3));
+	vars.mtl_libs = ft_calloc(vars.mtl_libs_count + 1, sizeof(t_mtl));
 	if (!vars.vertexes || (!vars.normals && vars.normal_count))
 	{
 		printf("mall err\n");

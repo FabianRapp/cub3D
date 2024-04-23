@@ -196,22 +196,21 @@ void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color, t_me
 	//float	m1 = slope_2d_x_per_y(p[0], p[1]);
 	float	y_dist1 = p[1].y - p[0].y;
 	float	cur_y_float = p[0].y;
-	float	cur_max_y = p[1].y;
 	float	total_y_progress;
 	int		cur_x;
 	static int i = 0;
 	if (cur_y_float < 0.0f)
 	{
 		cur_y_float = 0.0f;
-	}
+	}//todo: fix condtion for when objects leave the screen to the left and right
 	//if ((p[0].x >= 0 || p[1].x >= 0) && (p[0].x < WIDTH || p[1].x < WIDTH) && (p[0].y >= 0 || p[1].y >= 0) && (p[0].y < HEIGHT || p[1].y < HEIGHT) && (p[0].z > Z_NEAR || p[1].z > Z_NEAR) && (projected->unprojected_z[0] < Z_FAR || projected->unprojected_z[1] < Z_FAR))
 	{
 		int y_index =  (int)roundf(cur_y_float);
-		while (cur_y_float < cur_max_y && y_index < HEIGHT)
+		while (cur_y_float <= p[1].y && y_index < HEIGHT)
 		{
 			total_y_progress = (cur_y_float - p[0].y) / (p[2].y - p[0].y);
 			cur_x = (int)roundf((p[2].x - p[0].x) * total_y_progress + p[0].x);
-			float	y_progress =  (cur_y_float - p[0].y) / (cur_max_y - p[0].y);
+			float	y_progress =  (cur_y_float - p[0].y) / (p[1].y - p[0].y);
 			int	x_max = (int)roundf((p[1].x - p[0].x) * y_progress + p[0].x);
 			float cur_z;
 			float start_z = y_progress * (projected->unprojected_z[1] - projected->unprojected_z[0]) + projected->unprojected_z[0];
@@ -278,7 +277,7 @@ void	fill_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color, t_me
 	if (cur_y_float < 0.0f)
 	{
 		cur_y_float = 0.0f;
-	}
+	}//todo: fix condtion for when objects leave the screen to the left and right
 	//if ((p[2].x >= 0 || p[1].x >= 0) && (p[2].x < WIDTH || p[1].x < WIDTH) && (p[2].y >= 0 || p[1].y >= 0) && (p[2].y < HEIGHT || p[1].y < HEIGHT) && (p[2].z > Z_NEAR || p[1].z > Z_NEAR) && (projected->unprojected_z[2] < Z_FAR || projected->unprojected_z[1] < Z_FAR))
 	{
 		int y_index = (int)roundf(cur_y_float);
@@ -382,62 +381,7 @@ void	init_light(t_light *light, t_vec3 direct, uint32_t color, float base_stren)
 	light->strength.v[B] = light->color.argb[B] / (0xFF * base_stren);
 }
 
-t_triangle	apply_rotation_addtiononal_translation(t_mesh *mesh, int i)
-{
-	t_triangle		rotated_xz;
-	t_triangle		rotated_xyz;
-	t_triangle		rotated_z;
-	t_triangle		translated;
 
-	// printf("p1 x: %f, y: %f z: %f\n", mesh->triangles[i].p[0].x, mesh->triangles[i].p[0].y, mesh->triangles[i].p[0].z);
-	// printf("p2 x: %f, y: %f z: %f\n", mesh->triangles[i].p[1].x, mesh->triangles[i].p[1].y, mesh->triangles[i].p[1].z);
-	//printf("p3 x: %f, y: %f z: %f\n\n", mesh->triangles[i].p[2].x, mesh->triangles[i].p[2].y, mesh->triangles[i].p[2].z);
-	matrix_mult_vec3_4x4((mesh->triangles + i)->p + 0, mesh->rotation_mat_z, &rotated_z.p[0]);
-	matrix_mult_vec3_4x4((mesh->triangles + i)->p + 1, mesh->rotation_mat_z, &rotated_z.p[1]);
-	matrix_mult_vec3_4x4((mesh->triangles + i)->p + 2, mesh->rotation_mat_z, &rotated_z.p[2]);
-	if (mesh->obj_file)
-	{
-		matrix_mult_vec3_4x4(&(mesh->triangles + i)->normal, mesh->rotation_mat_z, &rotated_z.normal);
-		//matrix_mult_vec3_4x4((mesh->triangles + i)->obj_normal + 0, mesh->rotation_mat_z, &rotated_z.obj_normal[0]);
-		//matrix_mult_vec3_4x4((mesh->triangles + i)->obj_normal + 1, mesh->rotation_mat_z, &rotated_z.obj_normal[1]);
-		//matrix_mult_vec3_4x4((mesh->triangles + i)->obj_normal + 2, mesh->rotation_mat_z, &rotated_z.obj_normal[2]);
-	}
-	// printf("p1 x: %f, y: %f z: %f\n", rotated_z.p[0].x, rotated_z.p[0].y, rotated_z.p[0].z);
-	// printf("p2 x: %f, y: %f z: %f\n", rotated_z.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
-	// printf("p3 x: %f, y: %f z: %f\n\n", rotated_z.p[2].x, rotated_z.p[2].y, rotated_z.p[2].z);
-	matrix_mult_vec3_4x4(rotated_z.p + 0, mesh->rotation_mat_x, &rotated_xz.p[0]);
-	matrix_mult_vec3_4x4(rotated_z.p + 1, mesh->rotation_mat_x, &rotated_xz.p[1]);
-	matrix_mult_vec3_4x4(rotated_z.p + 2, mesh->rotation_mat_x, &rotated_xz.p[2]);
-	if (mesh->obj_file)
-	{
-		matrix_mult_vec3_4x4(&rotated_z.normal, mesh->rotation_mat_x, &rotated_xz.normal);
-		//matrix_mult_vec3_4x4(rotated_z.obj_normal + 0, mesh->rotation_mat_x, &rotated_xz.obj_normal[0]);
-		//matrix_mult_vec3_4x4(rotated_z.obj_normal + 1, mesh->rotation_mat_x, &rotated_xz.obj_normal[1]);
-		//matrix_mult_vec3_4x4(rotated_z.obj_normal + 2, mesh->rotation_mat_x, &rotated_xz.obj_normal[2]);
-	}
-	matrix_mult_vec3_4x4(rotated_xz.p + 0, mesh->rotation_mat_y, &rotated_xyz.p[0]);
-	matrix_mult_vec3_4x4(rotated_xz.p + 1, mesh->rotation_mat_y, &rotated_xyz.p[1]);
-	matrix_mult_vec3_4x4(rotated_xz.p + 2, mesh->rotation_mat_y, &rotated_xyz.p[2]);
-	if (mesh->obj_file)
-	{
-		matrix_mult_vec3_4x4(&rotated_xz.normal, mesh->rotation_mat_y, &rotated_xyz.normal);
-		//matrix_mult_vec3_4x4(rotated_xz.obj_normal + 0, mesh->rotation_mat_y, &rotated_xyz.obj_normal[0]);
-		//matrix_mult_vec3_4x4(rotated_xz.obj_normal + 1, mesh->rotation_mat_y, &rotated_xyz.obj_normal[1]);
-		//matrix_mult_vec3_4x4(rotated_xz.obj_normal + 2, mesh->rotation_mat_y, &rotated_xyz.obj_normal[2]);
-	}
-	// printf("p1 x: %f, y: %f z: %f\n", rotated_xz.p[0].x, rotated_z.p[0].y, rotated_z.p[0].z);
-	// printf("p2 x: %f, y: %f z: %f\n", rotated_xz.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
-	// printf("p3 x: %f, y: %f z: %f\n\n", rotated_xz.p[2].x, rotated_z.p[2].y, rotated_z.p[2].z);
-	translated = rotated_xyz;
-	translated.p[0].z += 10.0f;
-	translated.p[1].z += 10.0f;
-	translated.p[2].z += 10.0f;
-
-
-
-	return (translated);
-
-}
 
 void	scale_to_screen(t_triangle *projected)
 {
@@ -456,11 +400,49 @@ void	scale_to_screen(t_triangle *projected)
 	projected->p[2].y *= 0.5f * (float)HEIGHT;
 }
 
+void	fill_mesh_matrix(t_mesh *mesh)
+{
+	float	translation_mat[4][4];
+	float	tmp[4][4];
+
+	mat4x4_mult_mat4x4(mesh->rotation_mat_z, mesh->rotation_mat_x, tmp);
+	translation_matrix(translation_mat, 0, 0, 10);
+	mat4x4_mult_mat4x4(tmp, translation_mat, mesh->mesh_matrix);
+}
+
+t_light	init_day_light(double d_time)
+{
+	t_light			day_light;
+	static t_vec3	direct =  {.x = 1.0f, .y = -1.0f, .z = -1.0f, .w = 0};
+	static float light_direct = -1;
+
+	if (direct.x < -1)
+		light_direct = 1;
+	if (direct.x > 1)
+		light_direct = -1;
+	direct.x += d_time * light_direct / 50;
+	float day_progress = (direct.x + 1) / 2;
+	static float timer = 0;
+	timer += d_time;
+	if (timer > 1)
+	{
+		printf("day time: %f\n", 24 * day_progress);
+		timer = 0;
+	}
+	float	light_intens = 1 - fabs(0.5 - day_progress);
+	t_color_split light_col;
+	light_col.col = WHITE;
+	light_col.argb[R] *= 1 - 0.3 * fabs(0.5 - day_progress);
+	light_col.argb[G] *= 1 - 0.6 * fabs(0.5 - day_progress);
+	light_col.argb[B] *= 1 - fabs(0.5 - day_progress);
+	init_light(&day_light, direct, light_col.col, 1 - fabs(0.5 - day_progress));
+	return (day_light);
+}
+
 void	draw_mesh(t_mesh *mesh)
 {
 	int			i;
-
-	t_triangle		translated;
+	t_triangle		transformed;
 	t_triangle		projected;
 	t_color_split	color;
 
@@ -475,6 +457,9 @@ void	draw_mesh(t_mesh *mesh)
 	#ifdef MOVEMENT
 		translate_mesh_3d(mesh, traveled_dist);
 	#endif
+	//
+	fill_mesh_matrix(mesh);
+	//mat4x4_mult_mat4x4( , ,main_data->world_mat);
 	//print_vec3(traveled_dist, "traveled_dist: ");
 	bool flipped_x = false;
 	bool flipped_y = false;
@@ -482,29 +467,10 @@ void	draw_mesh(t_mesh *mesh)
 	// mesh->center.x = 0;
 	// mesh->center.y = 0;
 	// mesh->center.z = 0;
-	t_light			ambient_light1;
-	static t_vec3	light_direct1 =  {1.0f, 1.0f, -1.0f};
-	static int light_direct = -1;
-	if (light_direct1.x < -1)
-		light_direct = 1;
-	if (light_direct1.x > 1)
-		light_direct = -1;
-	light_direct1.x += *mesh->d_time * light_direct / 50;
-	float day_progress = (light_direct1.x + 1) / 2;
-	static float timer = 0;
-	timer += *mesh->d_time;
-	if (timer > 1)
-	{
-		printf("day time: %f\n", 24 * day_progress);
-		timer = 0;
-	}
-	float	light_intens = 1 - fabs(0.5 - day_progress);
-	t_color_split light_col;
-	light_col.col = WHITE;
-	light_col.argb[R] *= 1 - 0.3 * fabs(0.5 - day_progress);
-	light_col.argb[G] *= 1 - 0.6 * fabs(0.5 - day_progress);
-	light_col.argb[B] *= 1 - fabs(0.5 - day_progress);
-	init_light(&ambient_light1, light_direct1, light_col.col, 1 - fabs(0.5 - day_progress));
+
+	t_light	day_light;
+
+	day_light = init_day_light(*mesh->d_time);
 
 
 	t_light			ambient_light2;
@@ -520,40 +486,47 @@ void	draw_mesh(t_mesh *mesh)
 		color.col = (mesh->triangles + i)->col;
 
 
-		translated = apply_rotation_addtiononal_translation(mesh, i);
+		//transformed = apply_rotation_addtiononal_translation(mesh, i);
+		matrix_mult_vec3_4x4(mesh->triangles[i].p + 0, mesh->mesh_matrix, transformed.p + 0);
+		matrix_mult_vec3_4x4 (mesh->triangles[i].p + 1, mesh->mesh_matrix, transformed.p + 1);
+		matrix_mult_vec3_4x4(mesh->triangles[i].p + 2, mesh->mesh_matrix, transformed.p + 2);
+
+		div_vec3(transformed.p + 0, transformed.p[0].w);
+		div_vec3(transformed.p + 1, transformed.p[1].w);
+		div_vec3(transformed.p + 2, transformed.p[2].w);
 	
-		bounds_result = out_of_bound_triangle(&translated);
+		bounds_result = out_of_bound_triangle(&transformed);
 		if (bounds_result.z == -3 || bounds_result.z == 3)
 		{
 			i++;
 			continue ;
 		}
 
-		translated.normal = cross_product(v3_sub(translated.p[1], translated.p[0]), v3_sub(translated.p[2], translated.p[0]));
-		float normal_len = sqrtf(translated.normal.x * translated.normal.x + translated.normal.y * translated.normal.y + translated.normal.z * translated.normal.z);
-		scale_vec3(&translated.normal, 1 / normal_len);
-		if (dot_prod(translated.normal, v3_sub(translated.p[0], mesh->main->camera)) >= 0)
-		//if (dot_prod(translated.normal, v3_sub(translated.p[0], mesh->main->camera)) < 0)
+		
+		transformed.normal = cross_product(v3_sub(transformed.p[1], transformed.p[0]), v3_sub(transformed.p[2], transformed.p[0]));
+		norm_vec3(&transformed.normal);
+		if (dot_prod(transformed.normal, v3_sub(transformed.p[0], mesh->main->camera)) >= 0)
+		//if (dot_prod(transformed.normal, v3_sub(transformed.p[0], mesh->main->camera)) < 0)
 		{
 			i++;
 			continue ;
 		}
-	
-		t_light_argb_stren	color_scalars = {0};
-	
-		float light_dp = dot_prod(translated.normal, ambient_light1.direct);
-		light_dp = fmaxf(light_dp, 0.0f);
-		color_scalars.v[R] += ambient_light1.strength.v[R] *  light_dp;
-		color_scalars.v[G] += ambient_light1.strength.v[G] *  light_dp;
-		color_scalars.v[B] += ambient_light1.strength.v[B] *  light_dp;
 
-		// light_dp = dot_prod(translated.normal, ambient_light2.direct);
+		t_light_argb_stren	color_scalars = {0};
+
+		float light_dp = dot_prod(transformed.normal, day_light.direct);
+		light_dp = fmaxf(light_dp, 0.0f);
+		color_scalars.v[R] += day_light.strength.v[R] *  light_dp;
+		color_scalars.v[G] += day_light.strength.v[G] *  light_dp;
+		color_scalars.v[B] += day_light.strength.v[B] *  light_dp;
+
+		// light_dp = dot_prod(transformed.normal, ambient_light2.direct);
 		// light_dp = fmaxf(light_dp, 0.0f);
 		// color_scalars.v[R] += ambient_light2.strength.v[R] *  light_dp;
 		// color_scalars.v[G] += ambient_light2.strength.v[G] *  light_dp;
 		// color_scalars.v[B] += ambient_light2.strength.v[B] *  light_dp;
 
-		// light_dp = dot_prod(translated.normal, ambient_light3.direct);
+		// light_dp = dot_prod(transformed.normal, ambient_light3.direct);
 		// light_dp = fmaxf(light_dp, 0.0f);
 		// color_scalars.v[R] += ambient_light3.strength.v[R] *  light_dp;
 		// color_scalars.v[G] += ambient_light3.strength.v[G] *  light_dp;
@@ -563,23 +536,23 @@ void	draw_mesh(t_mesh *mesh)
 		color_scalars.v[G] = fmin(color_scalars.v[G], 1.0f);
 		color_scalars.v[B] = fmin(color_scalars.v[B], 1.0f);
 
-		// color.argb[R] *= color_scalars.v[R];
-		// color.argb[G] *= color_scalars.v[G];
-		// color.argb[B] *= color_scalars.v[B];
+		color.argb[R] *= color_scalars.v[R];
+		color.argb[G] *= color_scalars.v[G];
+		color.argb[B] *= color_scalars.v[B];
 
-		matrix_mult_vec3_4x4(translated.p + 0, project_mat, &projected.p[0]);
-		matrix_mult_vec3_4x4(translated.p + 1, project_mat, &projected.p[1]);
-		matrix_mult_vec3_4x4(translated.p + 2, project_mat, &projected.p[2]);
+		matrix_mult_vec3_4x4(transformed.p + 0, project_mat, &projected.p[0]);
+		matrix_mult_vec3_4x4(transformed.p + 1, project_mat, &projected.p[1]);
+		matrix_mult_vec3_4x4(transformed.p + 2, project_mat, &projected.p[2]);
 
-		// printf("p1 x: %f, y: %f z: %f\n", translated.p[0].x, translated.p[0].y, translated.p[0].z);
+		// printf("p1 x: %f, y: %f z: %f\n", transformed.p[0].x, transformed.p[0].y, transformed.p[0].z);
 		// printf("p2 x: %f, y: %f z: %f\n", projected.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
 		// printf("p3 x: %f, y: %f z: %f\n\n", projected.p[2].x, rotated_z.p[2].y, rotated_z.p[2].z);
 
 		scale_to_screen(&projected);
 
-		projected.unprojected_z[0] = translated.p[0].z;
-		projected.unprojected_z[1] = translated.p[1].z;
-		projected.unprojected_z[2] = translated.p[2].z;
+		projected.unprojected_z[0] = transformed.p[0].z;
+		projected.unprojected_z[1] = transformed.p[1].z;
+		projected.unprojected_z[2] = transformed.p[2].z;
 		bounds_result = out_of_bound_triangle_projeceted(&projected);
 		if (!flipped_x && bounds_result.x < 0 && mesh->momentum.x < 0)
 		{

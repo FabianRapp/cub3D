@@ -66,7 +66,7 @@ clean:
 	@echo "$(CYAN)object files cleaned$(CLEAR)"
 
 fclean: clean
-	@rm -f $(NAME)
+	@rm -f $(NAME) test
 	@cd libft && make fclean
 	@echo "$(CYAN)cub3D fclean$(CLEAR)"
 
@@ -89,6 +89,10 @@ clone_mlx:
 		git clone https://github.com/codam-coding-college/MLX42.git; \
 	fi
 
+testing: mlx main.o $(OBJECTS) 
+	@cd libft && make
+	@$(CC) $(CFLAGS) $(OBJECTS) main.o testing.c $(LIBFT) $(INCLUDES) -o test $(MLX_FLAGS)
+	@echo "$(GREEN)$(NAME) compiled!$(CLEAR)"
 
 
 # $(CC) $(OBJECTS) $(LIBFT) $(INCLUDES) $(MLX_FLAGS) $(DIR_FIXED_TESTS)fixed_speed_testing_tests.c $(HEADER_FIXED_TESTS) $(DIR_FIXED_TESTS)init.c && ./a.out

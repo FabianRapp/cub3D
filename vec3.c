@@ -50,7 +50,7 @@ void	norm_vec3(t_vec3 *v)
 
 
 // angle in rad
-void	rotate_vec3(t_vec3 *to_rotate, float first_z_rot, float x_rot, float second_z_rot)
+void	rotate_vec3(t_vec3 *to_rotate, float x_rot, float first_z_rot, float second_z_rot)
 {
 	float cx = cosf(x_rot);
 	float sx = sinf(x_rot);
@@ -189,6 +189,7 @@ void add_vec3(t_vec3 *v, t_vec3 *a)
 	v->x += a->x;
 	v->y += a->y;
 	v->z += a->z;
+	v->w += a->w;
 }
 
 void reverse_vec3(t_vec3 *v)
@@ -203,6 +204,13 @@ void multiply_vec3(t_vec3 *v, t_vec3 *a)
 	v->x *= a->x;
 	v->y *= a->y;
 	v->z *= a->z;
+}
+
+void div_vec3(t_vec3 *v, float a)
+{
+	v->x /= a;
+	v->y /= a;
+	v->z /= a;
 }
 
 void scale_vec3(t_vec3 *v, float scalar)
@@ -228,4 +236,12 @@ void	print_vec3(t_vec3 v, char *msg)
 		printf("x: %.2f, y: %.2f z: %.2f\n", v.x, v.y, v.z);
 	else
 		printf("%s x: %.2f, y: %.2f z: %.2f\n", msg, v.x, v.y, v.z);
+}
+
+void	init_vec3(t_vec3 *v, float x, float y, float z, float w)
+{
+	v->x = x;
+	v->y = y;
+	v->z = y;
+	v->w = w;
 }

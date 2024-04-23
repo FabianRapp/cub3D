@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/22 02:29:57 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/24 00:39:53 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,19 +156,21 @@ typedef struct s_light
 
 typedef struct s_mesh
 {
-	t_triangle	*triangles;
-	int			count;
-	float		rotation_mat_x[4][4];
-	float		rotation_mat_y[4][4];
-	float		rotation_mat_z[4][4];
-	t_vec3		momentum;
-	t_vec3		center_pull;
-	t_vec3		center;
-	bool		obj_file;
-	double		a;
-	double		*d_time;
-	mlx_image_t	*img;
-	t_main		*main;
+	t_triangle		*triangles;
+	int				count;
+	float			rotation_mat_x[4][4];
+	float			rotation_mat_y[4][4];
+	float			rotation_mat_z[4][4];
+	float			mesh_matrix[4][4];
+	t_vec3			momentum;
+	t_vec3			center_pull;
+	t_vec3			center;
+	bool			obj_file;
+	double			a;
+	double			*d_time;
+	mlx_texture_t	*texture;
+	mlx_image_t		*img;
+	t_main			*main;
 }	t_mesh;
 
 typedef struct s_main
@@ -268,7 +270,9 @@ void	print_vec3(t_vec3 v, char *msg);
 t_vec3	cross_product(t_vec3 a, t_vec3 b);
 float	dot_prod(t_vec3 a, t_vec3 b);
 void	norm_vec3(t_vec3 *v);
-void	rotate_vec3(t_vec3 *to_rotate, float first_z_rot, float x_rot, float second_z_rot);
+void	rotate_vec3(t_vec3 *to_rotate, float x_rot, float first_z_rot, float second_z_rot);
+void	div_vec3(t_vec3 *v, float a);
+void	init_vec3(t_vec3 *v, float x, float y, float z, float w);
 
 // obj_parser.c
 void	load_obj_file(char *dir, char *path, t_mesh *mesh, t_main *main_data);
@@ -276,14 +280,18 @@ void	load_obj_file(char *dir, char *path, t_mesh *mesh, t_main *main_data);
 //matrix/matrix_math1.c
 
 //matrix/matrix_mult.c
-void	matrix_mult_vec3_4x4(t_vec3 *m_a, const float m_b[4][4], t_vec3 *re);
-void	matrix_mult_1x3_3x3(float ma[3], float mb[3][3], float m_result[3]);
+void	matrix_mult_vec3_4x4(t_vec3 *v, const float m_b[4][4], t_vec3 *re);
+void	matrix_mult_1x3_3x3(t_vec3 v, float mb[3][3], float m_result[3]);
+void	mat4x4_mult_mat4x4(float ma[4][4], float mb[4][4], float result[4][4]);
 
 //matrix/init_matrix.c
 void	ident_mat_4x4(float mat[4][4]);
 void	rot_matx_4x4(float mat[4][4], float theta);
 void	rot_maty_4x4(float mat[4][4], float theta);
 void	rot_matz_4x4(float mat[4][4], float theta);
+void	translation_matrix(float mat[4][4], float x, float y, float z);
+void	projection_matrix(float mat[4][4]);
+void	zero_matrix(float mat[4][4]);
 
 //to_replace.c
 float	generate_random_float();
