@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 08:36:34 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/24 10:28:05 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/24 11:15:56 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -385,10 +385,10 @@ void	sacle_vecs(t_obj_parser *vars)
 	}
 	else
 	{
-		//init_vec3(&scalar, 0.01f, 0.01f, 0.01f, 1.0f);
-		init_vec3(&scalar, 1.1, 1.1, 1.1, 1);
-		init_vec3(&translate, 0.0f, 0.0f, 10.0f, 0.0f);
-		init_vec3(&rotation, 1.0f, 1.0f, 1.0f, 1.0f);
+		//init_vec3(&scalar, 0.1f, 0.1f, 0.1f, 1.0f);
+		init_vec3(&scalar, 0.25, 0.25, 0.25, 1);
+		init_vec3(&translate, 0.0f, 0.0f, 50.0f, 0.0f);
+		init_vec3(&rotation, 0, M_PI_2, 0, 0.0f);
 	}
 	i = 0;
 	t_vec3	max = {0};
@@ -409,7 +409,7 @@ void	sacle_vecs(t_obj_parser *vars)
 			min.y = vars->vertexes[i].y;
 		if (vars->vertexes[i].z < min.z)
 		{
-			printf("min z i: %d\n", i);
+			//printf("min z i: %d\n", i);
 			min.z = vars->vertexes[i].z;
 		}
 		//if (i == 194 || i == 409 || i == 1146)
@@ -633,7 +633,7 @@ void	load_obj_file(char *dir, char *path, t_mesh *mesh, t_main *main_data)
 	printf("mtl parsed\n");
 	//vars.vertex_count = 
 	obj_parser_fill_vertexes(&vars);
-	//sacle_vecs(&vars);
+	sacle_vecs(&vars);
 	printf("parsed vertexes\n");
 	obj_parser_handle_faces(&vars);
 	printf("parsed faces\n");

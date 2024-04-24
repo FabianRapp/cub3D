@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/24 09:23:36 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/24 10:51:41 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	draw_line(mlx_image_t *image, int x1, int x2, int y1, int y2, int color)
 	last_error = dist_x - dist_y;
 	while (pos[X] != x2 || pos[Y] != y2)
 	{
-		printf("x: %d y: %d\n", pos[X], pos[Y]);
+		//printf("x: %d y: %d\n", pos[X], pos[Y]);
 		if (pos[X] >= 0 && pos[X] < WIDTH && pos[Y] >= 0 && pos[Y] < HEIGHT)
 			ft_put_pixel(image->pixels, pos[X], pos[Y], color);
 			//mlx_put_pixel(image, pos[X], pos[Y], color);
@@ -293,7 +293,9 @@ void	draw_mesh(t_mesh *mesh)
 		matrix_mult_vec3_4x4(mesh->triangles[i].p + 2, mesh->mesh_matrix, transformed.p + 2);
 		
 		// t_vec3	tmp = transformed.normal;
-		// matrix_mult_vec3_4x4(&tmp, project_mat, &transformed.normal);
+		// float	tmp_mat[4][4];
+		// mat4x4_mult_mat4x4(mesh->rotation_mat_z, mesh->rotation_mat_x, tmp_mat);
+		// matrix_mult_vec3_4x4(&tmp, tmp_mat, &transformed.normal);
 
 
 		div_vec3(transformed.p + 0, transformed.p[0].w);
@@ -394,10 +396,10 @@ void	draw_mesh(t_mesh *mesh)
 		// 	mesh->momentum.z *= -1;
 		// 	flipped_z = true;
 		// }
-	//	draw_triangle(mesh->img, &projected, (mesh->triangles + i)->col);
+		//draw_triangle(mesh->img, &projected, (mesh->triangles + i)->col);
 		if (bounds_result.x < 3 && bounds_result.x > -3 && bounds_result.y < 3 && bounds_result.y > -3)
 		{
-			if (!projected.p[0].mtl)
+			if (!projected.p[0].mtl || !projected.p[0].mtl->texture)
 				fill_triangle_color(mesh->img, &projected, color.col, mesh);
 			else
 				fill_triangle_texture(mesh->img, &projected, mesh, color_scalars);
