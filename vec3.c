@@ -233,9 +233,29 @@ float length_vec3(t_vec3 *v)
 void	print_vec3(t_vec3 v, char *msg)
 {
 	if (!msg)
-		printf("x: %.2f, y: %.2f z: %.2f\n", v.x, v.y, v.z);
+	{
+		printf("x: %.2f, y: %.2f z: %.2f w: %.2f u: %.2f v: %.2f", v.x, v.y, v.z, v.w, v.u, v.v);
+		if (v.mtl)
+		{
+			printf(" mtl: %s\n", v.mtl->name);
+		}
+		else
+		{
+			printf(" mtl: none\n");
+		}
+	}
 	else
-		printf("%s x: %.2f, y: %.2f z: %.2f\n", msg, v.x, v.y, v.z);
+	{
+		printf("%s x: %.2f, y: %.2f z: %.2f w: %.2f u: %.2f v: %.2f", msg, v.x, v.y, v.z, v.w, v.u, v.v);
+		if (v.mtl)
+		{
+			printf(" mtl: %s\n", v.mtl->name);
+		}
+		else
+		{
+			printf(" mtl: none\n");
+		}
+	}
 }
 
 void	init_vec3(t_vec3 *v, float x, float y, float z, float w)

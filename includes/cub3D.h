@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/24 00:39:53 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/24 09:35:37 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,12 +110,31 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 	{0.0f, 0.0f, ((float) Z_OFFSET), 0.0f} \
 }
 
+typedef struct s_mtl
+{
+	char			*lib_name;
+	char			*name;
+	float			ns;
+	float			ka[3];
+	float			ks[3];
+	float			ke[3];
+	float			ni;
+	float			d;
+	float			illum;
+	char			*map_kd;
+	mlx_texture_t	*texture;
+	int				index;
+}	t_mtl;
+
 typedef struct s_vec3
 {
-	float	x;
-	float	y;
-	float	z;
-	float	w;
+	float			x;
+	float			y;
+	float			z;
+	float			w;
+	t_mtl			*mtl;
+	float			u;
+	float			v;
 }	t_vec3;
 
 #define A 3
@@ -139,6 +158,7 @@ typedef struct s_triangle
 	t_vec3		centroid;
 	t_vec3		normal;
 	t_vec3		obj_normal[3];
+	
 }	t_triangle;
 
 typedef struct s_light_argb_stren
@@ -168,7 +188,6 @@ typedef struct s_mesh
 	bool			obj_file;
 	double			a;
 	double			*d_time;
-	mlx_texture_t	*texture;
 	mlx_image_t		*img;
 	t_main			*main;
 }	t_mesh;
@@ -189,7 +208,7 @@ typedef struct s_main
 	mlx_image_t	*img;
 	float		depth[WIDTH * HEIGHT];
 }	t_main;
-
+//9965 - 3646
 
 struct s_fps_textures
 {
@@ -206,6 +225,12 @@ struct s_fps_textures
 };
 
 void	draw_mesh(t_mesh *cube_mesh);
+
+
+bool	zero_f(float f);
+
+//old.c
+t_triangle	apply_rotation_addtiononal_translation(t_mesh *mesh, int i);
 
 //utils/fps.c
 struct s_fps_textures	get_fps_digit_texture(void);
@@ -292,6 +317,14 @@ void	rot_matz_4x4(float mat[4][4], float theta);
 void	translation_matrix(float mat[4][4], float x, float y, float z);
 void	projection_matrix(float mat[4][4]);
 void	zero_matrix(float mat[4][4]);
+
+// fill_triangle.c
+float	slope_2d_x_per_y(t_vec3 p1, t_vec3 p2);
+void	sort_vertexes_for_y(t_triangle *tri);
+void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh, t_light_argb_stren color_scalars);
+
+// fill_triangle2.c
+void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color, t_mesh *mesh);
 
 //to_replace.c
 float	generate_random_float();

@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 22:22:26 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/18 10:29:05 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/24 10:14:58 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 int		ft_powint(int base, int expo);
 // char	*get_next_line(int fd);
-char	*get_next_line(int fd, bool cleanup);
 void	*ft_memjoin(void *src1, void *src2, int size1, int size2);
 
 /**********************   LINKED LISTS' FUNCTIONS   *************************/
@@ -109,34 +108,7 @@ int		ft_printf_handle_xx(va_list *arg, int *written_bytes, int fd);
 
 /***************************   GET_NEXT_LINE   ******************************/
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
-# endif
-
-typedef struct s_file	t_file;
-
-struct s_file
-{
-	char	buffer[BUFFER_SIZE + 5];
-	char	buffer_copy[BUFFER_SIZE + 5];
-	char	*output;
-	int		fd;
-	int		buffer1_chars;
-	int		output_size;
-	t_file	*first_file;
-	t_file	*next_file;
-	int		cur_all_c;
-	int		buffer1_i;
-	int		return_now;
-}	;
-
-char	*cleanup_libft(t_file *current_file, t_file *first_file);
-t_file	*get_current_file(int fd, t_file *first_file);
-int		my_str_cpy(char *dest, char *src, char *src2);
-void	sort_buffer(t_file *current_file);
-char	*append_buffer(t_file *current_file);
-char	*reading(t_file	*current_file);
-char	*shrink_out(int fd, t_file *first_file);
+char	*get_next_line(int fd);
 
 /**************************   MINISHELL ADDITIONS   **************************/
 bool	contains_non_white_spcace(char *str);

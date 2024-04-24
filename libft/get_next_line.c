@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:12:34 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/05 22:27:51 by fabian           ###   ########.fr       */
+/*   Updated: 2023/10/18 01:19:58 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "get_next_line.h"
 
 char	*reading(t_file	*file)
 {
@@ -50,14 +50,14 @@ char	*shrink_out(int fd, t_file *first_file)
 	output = reading(current_file);
 	size = current_file->output_size;
 	if (current_file->buffer1_chars <= 0)
-		cleanup_libft(current_file, first_file);
+		cleanup(current_file, first_file);
 	if (!output)
 		return (NULL);
 	new_output = (char *)malloc(sizeof(char) * (size + 1));
 	if (!new_output)
 	{
 		free(output);
-		return (cleanup_libft(current_file, first_file));
+		return (cleanup(current_file, first_file));
 	}
 	*new_output = 0;
 	my_str_cpy(new_output, output, NULL);
@@ -65,21 +65,11 @@ char	*shrink_out(int fd, t_file *first_file)
 	return (new_output);
 }
 
-static void	cleanup_all(t_file *cur, t_file *first_file)
+char	*get_next_line(int fd)
 {
-	if (cur->next_file)
-		cleanup_all(cur->next_file, first_file);
-	cleanup_libft(cur, first_file);
-}
-
-char	*get_next_line(int fd, bool cleanup)
-{
-	static t_file	first_file = {{}, {}, 0, -1, 0, 0, 0, 0, 0, 0, 0};
+	static t_file	first_file = {{}, {}, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	t_file			*current_file;
-	char			*line;
 
-	if (cleanup)
-		return (cleanup_all(&first_file, &first_file), NULL);
 	if (BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!(first_file.first_file))
@@ -96,7 +86,5 @@ char	*get_next_line(int fd, bool cleanup)
 			first_file.cur_all_c = 1;
 		}
 	}
-	line = shrink_out(fd, &first_file);
-	cleanup_all(&first_file, &first_file);
-	return (line);
+	return (shrink_out(fd, &first_file));
 }

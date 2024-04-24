@@ -36,7 +36,10 @@ SOURCES= \
 	obj_parser.c \
 	matrix/init_matrix.c \
 	matrix/matrix_math1.c \
-	matrix/matrix_mult.c
+	matrix/matrix_mult.c \
+	fill_triangle.c \
+	fill_triangle2.c \
+	old.c
 
 OBJECTS=$(SOURCES:.c=.o)
 MAIN_OB=$(MAIN:.c=.o)

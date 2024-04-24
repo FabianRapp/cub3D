@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 06:07:42 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/24 00:40:47 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/24 01:37:22 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,13 @@ void	fill_tetra_mesh(t_mesh *cube, t_main *main_data)
 	ft_memcpy(&cube->momentum, &momentum, sizeof(momentum));
 	cube->main = main_data;
 	cube->obj_file = false;
-	cube->texture = NULL;
+	for (int i = 0; i < cube->count; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			cube->triangles[i].p[j].mtl = NULL;
+		}
+	}
 }
 
 
@@ -65,7 +71,13 @@ void	fill_cube_mesh(t_mesh *cube, t_main *main_data)
 	cube->count = sizeof(init_triangles) / sizeof(t_triangle);
 	cube->main = main_data;
 	cube->obj_file = false;
-	cube->texture = NULL;
+	for (int i = 0; i < cube->count; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			cube->triangles[i].p[j].mtl = NULL;
+		}
+	}
 }
 
 
@@ -108,7 +120,13 @@ void	fill_skybox_mesh(t_mesh *mesh, t_main *main_data)
 	mesh->d_time = &main_data->mlx->delta_time;
 	mesh->img = main_data->img;
 	mesh->obj_file = false;
-	mesh->texture = NULL;
+	for (int i = 0; i < mesh->count; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			mesh->triangles[i].p[j].mtl = NULL;
+		}
+	}
 }
 
 
@@ -159,5 +177,11 @@ void	fill_cube_mesh2(t_mesh *cube, t_main *main_data)
 	cube->count = sizeof(init_triangles) / sizeof(t_triangle);
 	cube->main = main_data;
 	cube->obj_file = false;
-	cube->texture = NULL;
+	for (int i = 0; i < cube->count; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			cube->triangles[i].p[j].mtl = NULL;
+		}
+	}
 }
