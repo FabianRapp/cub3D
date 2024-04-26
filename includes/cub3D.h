@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/24 11:17:32 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/26 09:22:53 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,9 +192,32 @@ typedef struct s_mesh
 	t_main			*main;
 }	t_mesh;
 
+typedef struct	s_movement_state
+{
+	uint8_t	up:1;
+	uint8_t	back:1;
+	uint8_t	left:1;
+	uint8_t	right:1;
+	uint8_t	jump:1;
+	uint8_t	negative_jump:1;
+}	t_movement_state;
+
+typedef struct s_controls
+{
+	//t_vec3				movement_speed;
+	float				movement_speed_straight;
+	float				movement_speed_left;
+	float				movement_speed_right;
+	float				movement_speed_back;
+
+	t_movement_state	state;
+	float				jump_height;
+}	t_controls;
+
 typedef struct s_main
 {
 	t_vec3		camera;
+	t_vec3		look_direct;
 	t_vec3		direct[3];
 	float		world_mat[4][4];
 	mlx_t		*mlx;
@@ -205,8 +228,10 @@ typedef struct s_main
 	t_mesh		tetra;
 	t_mesh		skybox;
 	t_mesh		custom;
+	t_mesh		axis;
 	mlx_image_t	*img;
 	float		depth[WIDTH * HEIGHT];
+	t_controls	controls;
 }	t_main;
 //9965 - 3646
 
@@ -226,8 +251,6 @@ struct s_fps_textures
 
 void	draw_mesh(t_mesh *cube_mesh);
 
-
-bool	zero_f(float f);
 
 //old.c
 t_triangle	apply_rotation_addtiononal_translation(t_mesh *mesh, int i);
@@ -253,6 +276,7 @@ void	ft_error(void);
 t_vec3	out_of_bound(t_vec3 *v);
 t_vec3	out_of_bound_triangle(t_triangle *tri);
 t_vec3	out_of_bound_triangle_projeceted(t_triangle *projected);
+bool	zero_f(float f);
 
 void	ft_put_pixel(uint8_t *pixel_buffer, int x, int y, int color);
 void	ft_put_pixel_fin_index(uint8_t *pixel_buffer, int index, int color);
@@ -293,8 +317,8 @@ void	scale_vec3(t_vec3 *v, float scalar);
 float	length_vec3(t_vec3 *v);
 void	print_vec3(t_vec3 v, char *msg);
 t_vec3	cross_product(t_vec3 a, t_vec3 b);
-float	dot_prod(t_vec3 a, t_vec3 b);
-void	norm_vec3(t_vec3 *v);
+float	dot_prod_unit(t_vec3 a, t_vec3 b);
+void	unit_vec3(t_vec3 *v);
 void	rotate_vec3(t_vec3 *to_rotate, float x_rot, float first_z_rot, float second_z_rot);
 void	div_vec3(t_vec3 *v, float a);
 void	init_vec3(t_vec3 *v, float x, float y, float z, float w);
@@ -317,6 +341,8 @@ void	rot_matz_4x4(float mat[4][4], float theta);
 void	translation_matrix(float mat[4][4], float x, float y, float z);
 void	projection_matrix(float mat[4][4]);
 void	zero_matrix(float mat[4][4]);
+void	matrix_point_at(t_vec3 *pos, t_vec3 *target, t_vec3 *up, float result[4][4]);
+void	matrix_look_at(float point_at_mat[4][4], float look_at_mat[4][4]);
 
 // fill_triangle.c
 float	slope_2d_x_per_y(t_vec3 p1, t_vec3 p2);

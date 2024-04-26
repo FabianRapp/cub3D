@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/24 10:51:41 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/26 10:01:24 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,15 +140,6 @@ void	draw_line(mlx_image_t *image, int x1, int x2, int y1, int y2, int color)
 
 
 
-bool	zero_f(float f)
-{
-	if (fabs(f) < 0.001)
-	{
-		printf("zero\n");
-		return (true);
-	}
-	return (false);
-}
 
 
 void	draw_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color)
@@ -176,7 +167,7 @@ void	print_color(t_color_split color)
 void	init_light(t_light *light, t_vec3 direct, uint32_t color, float base_stren)
 {
 	light->direct = direct;
-	norm_vec3(&light->direct);
+	unit_vec3(&light->direct);
 	light->color.col = color;
 	//light->strength.v[A] = light->color.argb[A] / (0xFF * base_stren);
 	light->strength.v[R] = light->color.argb[R] / (0xFF * base_stren);
@@ -207,7 +198,7 @@ void	fill_mesh_matrix(t_mesh *mesh)
 	float	tmp[4][4];
 
 	mat4x4_mult_mat4x4(mesh->rotation_mat_z, mesh->rotation_mat_x, tmp);
-	translation_matrix(translation_mat, 0, 0, 10);
+	translation_matrix(translation_mat, 0, 0, 3);
 	mat4x4_mult_mat4x4(tmp, translation_mat, mesh->mesh_matrix);
 }
 
@@ -227,7 +218,7 @@ t_light	init_day_light(double d_time)
 	timer += d_time;
 	if (timer > 1)
 	{
-		printf("day time: %f\n", 24 * day_progress);
+		//printf("day time: %f\n", 24 * day_progress);
 		timer = 0;
 	}
 	float	light_intens = 1 - fabs(0.5 - day_progress);
@@ -245,6 +236,7 @@ void	draw_mesh(t_mesh *mesh)
 	int			i;
 	t_triangle		transformed;
 	t_triangle		projected;
+	t_triangle		viewed;
 	t_color_split	color;
 
 	const float	project_mat[4][4] = PROJECTION_MATRIX;
@@ -256,10 +248,19 @@ void	draw_mesh(t_mesh *mesh)
 	traveled_dist.y = mesh->momentum.y * *mesh->d_time;
 	traveled_dist.z = mesh->momentum.z * *mesh->d_time;
 	#ifdef MOVEMENT
+	if (mesh->triangles != mesh->main->axis.triangles)
 		translate_mesh_3d(mesh, traveled_dist);
 	#endif
 	//
 	fill_mesh_matrix(mesh);
+
+	t_vec3	vec_up = {.x= 0, .y = 1, .z = 0};
+	t_vec3	vec_target = v3_add(mesh->main->camera, mesh->main->look_direct);
+	float	camera[4][4];
+	matrix_point_at(&mesh->main->camera, &vec_target, &vec_up, camera);
+	float	mat_view[4][4];
+	matrix_look_at(camera, mat_view);
+	
 	//mat4x4_mult_mat4x4( , ,main_data->world_mat);
 	//print_vec3(traveled_dist, "traveled_dist: ");
 	bool flipped_x = false;
@@ -291,16 +292,19 @@ void	draw_mesh(t_mesh *mesh)
 		matrix_mult_vec3_4x4(mesh->triangles[i].p + 0, mesh->mesh_matrix, transformed.p + 0);
 		matrix_mult_vec3_4x4 (mesh->triangles[i].p + 1, mesh->mesh_matrix, transformed.p + 1);
 		matrix_mult_vec3_4x4(mesh->triangles[i].p + 2, mesh->mesh_matrix, transformed.p + 2);
-		
+
+		div_vec3(transformed.p + 0, transformed.p[0].w);
+		div_vec3(transformed.p + 1, transformed.p[1].w);
+		div_vec3(transformed.p + 2, transformed.p[2].w);
+
+
 		// t_vec3	tmp = transformed.normal;
 		// float	tmp_mat[4][4];
 		// mat4x4_mult_mat4x4(mesh->rotation_mat_z, mesh->rotation_mat_x, tmp_mat);
 		// matrix_mult_vec3_4x4(&tmp, tmp_mat, &transformed.normal);
 
 
-		div_vec3(transformed.p + 0, transformed.p[0].w);
-		div_vec3(transformed.p + 1, transformed.p[1].w);
-		div_vec3(transformed.p + 2, transformed.p[2].w);
+
 	
 		bounds_result = out_of_bound_triangle(&transformed);
 		if (bounds_result.z == -3 || bounds_result.z == 3)
@@ -312,9 +316,9 @@ void	draw_mesh(t_mesh *mesh)
 		{
 			transformed.normal = cross_product(v3_sub(transformed.p[1], transformed.p[0]), v3_sub(transformed.p[2], transformed.p[0]));
 		}
-		norm_vec3(&transformed.normal);
-		if (dot_prod(transformed.normal, v3_sub(transformed.p[0], mesh->main->camera)) >= 0)
-		//if (dot_prod(transformed.normal, v3_sub(transformed.p[0], mesh->main->camera)) < 0)
+		unit_vec3(&transformed.normal);
+		if (dot_prod_unit(transformed.normal, v3_sub(transformed.p[0], mesh->main->camera)) >= 0)
+		//if (dot_prod_unit(transformed.normal, v3_sub(transformed.p[0], mesh->main->camera)) < 0)
 		{
 			i++;
 			continue ;
@@ -322,19 +326,19 @@ void	draw_mesh(t_mesh *mesh)
 
 		t_light_argb_stren	color_scalars = {0};
 
-		float light_dp = dot_prod(transformed.normal, day_light.direct);
+		float light_dp = dot_prod_unit(transformed.normal, day_light.direct);
 		light_dp = fmaxf(light_dp, 0.0f);
 		color_scalars.v[R] += day_light.strength.v[R] *  light_dp;
 		color_scalars.v[G] += day_light.strength.v[G] *  light_dp;
 		color_scalars.v[B] += day_light.strength.v[B] *  light_dp;
 
-		// light_dp = dot_prod(transformed.normal, ambient_light2.direct);
+		// light_dp = dot_prod_unit(transformed.normal, ambient_light2.direct);
 		// light_dp = fmaxf(light_dp, 0.0f);
 		// color_scalars.v[R] += ambient_light2.strength.v[R] *  light_dp;
 		// color_scalars.v[G] += ambient_light2.strength.v[G] *  light_dp;
 		// color_scalars.v[B] += ambient_light2.strength.v[B] *  light_dp;
 
-		// light_dp = dot_prod(transformed.normal, ambient_light3.direct);
+		// light_dp = dot_prod_unit(transformed.normal, ambient_light3.direct);
 		// light_dp = fmaxf(light_dp, 0.0f);
 		// color_scalars.v[R] += ambient_light3.strength.v[R] *  light_dp;
 		// color_scalars.v[G] += ambient_light3.strength.v[G] *  light_dp;
@@ -344,15 +348,22 @@ void	draw_mesh(t_mesh *mesh)
 		color_scalars.v[G] = fmin(color_scalars.v[G], 1.0f);
 		color_scalars.v[B] = fmin(color_scalars.v[B], 1.0f);
 
-		color.argb[R] *= color_scalars.v[R];
-		color.argb[G] *= color_scalars.v[G];
-		color.argb[B] *= color_scalars.v[B];
+		// color.argb[R] *= color_scalars.v[R];
+		// color.argb[G] *= color_scalars.v[G];
+		// color.argb[B] *= color_scalars.v[B];
+
+		//viewed = transformed;
+		// enter view space
+		matrix_mult_vec3_4x4(transformed.p + 0, mat_view, viewed.p + 0);
+		matrix_mult_vec3_4x4 (transformed.p + 1, mat_view, viewed.p + 1);
+		matrix_mult_vec3_4x4(transformed.p + 2, mat_view, viewed.p + 2);
 
 
+		// enter projeceted space
 		ft_memcpy(&projected, mesh->triangles + i, sizeof(projected));
-		matrix_mult_vec3_4x4(transformed.p + 0, project_mat, &projected.p[0]);
-		matrix_mult_vec3_4x4(transformed.p + 1, project_mat, &projected.p[1]);
-		matrix_mult_vec3_4x4(transformed.p + 2, project_mat, &projected.p[2]);
+		matrix_mult_vec3_4x4(viewed.p + 0, project_mat, &projected.p[0]);
+		matrix_mult_vec3_4x4(viewed.p + 1, project_mat, &projected.p[1]);
+		matrix_mult_vec3_4x4(viewed.p + 2, project_mat, &projected.p[2]);
 
 		// printf("p1 x: %f, y: %f z: %f\n", transformed.p[0].x, transformed.p[0].y, transformed.p[0].z);
 		// printf("p2 x: %f, y: %f z: %f\n", projected.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
@@ -360,9 +371,9 @@ void	draw_mesh(t_mesh *mesh)
 
 		scale_to_screen(&projected);
 
-		projected.unprojected_z[0] = transformed.p[0].z;
-		projected.unprojected_z[1] = transformed.p[1].z;
-		projected.unprojected_z[2] = transformed.p[2].z;
+		projected.unprojected_z[0] = viewed.p[0].z;
+		projected.unprojected_z[1] = viewed.p[1].z;
+		projected.unprojected_z[2] = viewed.p[2].z;
 		bounds_result = out_of_bound_triangle_projeceted(&projected);
 		if (!flipped_x && bounds_result.x < 0 && mesh->momentum.x < 0)
 		{
@@ -439,12 +450,12 @@ void	draw_skybox(t_mesh *mesh)
 	
 
 		
-		// norm_vec3(&base->normal);
-		// if (dot_prod(base->normal, v3_sub(base->p[0], mesh->main->camera)) <= 0)
+		// unit_vec3(&base->normal);
+		// if (dot_prod_unit(base->normal, v3_sub(base->p[0], mesh->main->camera)) <= 0)
 
 		//float normal_len = sqrtf(base->normal.x * base->normal.x + base->normal.y * base->normal.y + base->normal.z * base->normal.z);
 		//scale_vec3(&base->normal, 1 / normal_len);
-		// if (dot_prod(base->normal, v3_sub(base->p[0], mesh->main->camera)) >= 0)
+		// if (dot_prod_unit(base->normal, v3_sub(base->p[0], mesh->main->camera)) >= 0)
 		// //if (base->normal.z > 0)
 		// {
 		// 	i++;

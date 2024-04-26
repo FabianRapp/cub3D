@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 05:43:13 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/22 02:10:01 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/26 09:11:23 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@
 
 bool	print = true;
 
+bool	zero_f(float f)
+{
+	if (fabs(f) < 0.001)
+	{
+		return (true);
+	}
+	return (false);
+}
 
 void ft_error(void)
 {

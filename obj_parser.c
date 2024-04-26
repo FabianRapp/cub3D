@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 08:36:34 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/24 11:15:56 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/26 10:04:09 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef	struct s_obj_parser
 	int			tris_size;
 	t_mtl		**mtl_libs;
 	int			mtl_libs_count;
+	int			buffer_size;
 	uint32_t	colors[OBJ_PARSER_COLOR_COUNT];
 }	t_obj_parser;
 
@@ -217,7 +218,7 @@ void	triangulation(t_obj_parser *vars, t_vec3 *vertexes, int vertex_count, t_vec
 	int			tris_i;
 	int			vertex_i;
 	t_vec3		*anchor = vertexes;
-	static int	buffer_size = 0;
+	//static int	buffer_size = 0;
 	int			min_buffer_size;
 
 	static float last_z_len = 0;
@@ -227,10 +228,10 @@ void	triangulation(t_obj_parser *vars, t_vec3 *vertexes, int vertex_count, t_vec
 		return ;
 	tris_count = vertex_count - 2;
 	min_buffer_size = (tris_count + vars->tris_count + 1) * sizeof(t_triangle);
-	if (buffer_size < min_buffer_size)
+	if (vars->buffer_size < min_buffer_size)
 	{
-		buffer_size = 2 * min_buffer_size + 1;
-		tris = ft_calloc(buffer_size, 1);
+		vars->buffer_size = 2 * min_buffer_size + 1;
+		tris = ft_calloc(vars->buffer_size, 1);
 		ft_memcpy(tris, vars->tris, sizeof(t_triangle) * vars->tris_count);
 		free(vars->tris);
 		vars->tris = tris;
@@ -258,6 +259,7 @@ void	triangulation(t_obj_parser *vars, t_vec3 *vertexes, int vertex_count, t_vec
 		// tris[tris_i].normal = v3_scale(norms_sum, 1 / length_vec3(&norms_sum));
 
 		tris[tris_i].col = vars->colors[(vars->tris_count + tris_i) % OBJ_PARSER_COLOR_COUNT];
+		//tris[tris_i].col = WHITE;
 		vertex_i++;
 		tris_i++;
 	}
@@ -383,12 +385,18 @@ void	sacle_vecs(t_obj_parser *vars)
 		init_vec3(&translate, 0.0f, 0.0f, 1.0f, 0.0f);
 		init_vec3(&rotation, 1.5f, 3.2f, 0.0f, 0.0f);
 	}
-	else
+	else if (!ft_strcmp(vars->path, "teapot/teapot.obj"))
+	{
+		init_vec3(&scalar, 1, 1, 1, 1);
+		init_vec3(&translate, 0.0f, 0.0f, 50.0f, 0.0f);
+		init_vec3(&rotation, 0, M_PI_2, 0, 0.0f);
+	}
+	else// if (ft_strcmp(vars->path, "axis.obj"))
 	{
 		//init_vec3(&scalar, 0.1f, 0.1f, 0.1f, 1.0f);
 		init_vec3(&scalar, 0.25, 0.25, 0.25, 1);
 		init_vec3(&translate, 0.0f, 0.0f, 50.0f, 0.0f);
-		init_vec3(&rotation, 0, M_PI_2, 0, 0.0f);
+		init_vec3(&rotation, 0, 0, 0, 0.0f);
 	}
 	i = 0;
 	t_vec3	max = {0};
@@ -618,6 +626,7 @@ void	load_obj_file(char *dir, char *path, t_mesh *mesh, t_main *main_data)
 	mesh->obj_file = true;
 	vars.mtl_libs = NULL;
 	vars.mtl_libs_count = 0;
+	vars.buffer_size = 0;
 	init_obj_file_colors(&vars);
 	obj_parser_count(&vars);
 	vars.vertexes = ft_calloc(vars.vertex_count, sizeof(t_vec3));

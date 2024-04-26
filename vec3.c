@@ -10,17 +10,23 @@ t_vec3	v3_zero(void)
 	v.x = 0;
 	v.y = 0;
 	v.z = 0;
+	v.w = 0;
 	return (v);
 }
 
-void	norm_vec3(t_vec3 *v)
+void	unit_vec3(t_vec3 *v)
 {
-	float len;
-	
-	len = sqrtf(v->x * v->x + v->y * v->y + v->z * v->z);
-	v->x /= len;
-	v->y /= len;
-	v->z /= len;
+	float	len;
+	float	sum;
+
+	sum = v->x * v->x + v->y * v->y + v->z * v->z;
+	if (sum > 0.0001 || sum < -0.0001)
+	{
+		len = sqrtf(sum);
+		v->x /= len;
+		v->y /= len;
+		v->z /= len;
+	}
 }
 
 // rotation_matrix_x
@@ -92,10 +98,11 @@ t_vec3	cross_product(t_vec3 a, t_vec3 b)
 	result.x = a.y * b.z - a.z * b.y;
 	result.y = a.z * b.x - a.x * b.z;
 	result.z = a.x * b.y - a.y * b.x;
+	result.w = 1;
 	return (result);
 }
 
-float	dot_prod(t_vec3 a, t_vec3 b)
+float	dot_prod_unit(t_vec3 a, t_vec3 b)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
@@ -107,6 +114,7 @@ t_vec3	v3_add(t_vec3 a, t_vec3 b)
 	v.x = a.x + b.x;
 	v.y = a.y + b.y;
 	v.z = a.z + b.z;
+	//v.w = 1;
 	return (v);
 }
 
@@ -117,6 +125,7 @@ t_vec3	v3_sub(t_vec3 a, t_vec3 b)
 	v.x = a.x - b.x;
 	v.y = a.y - b.y;
 	v.z = a.z - b.z;
+	//v.w = 1;
 	return (v);
 }
 
@@ -127,6 +136,7 @@ t_vec3 v3_reverse(t_vec3 a)
 	v.x = -a.x;
 	v.y = -a.y;
 	v.z = -a.z;
+//	v.w = 1;
 	return (v);
 }
 t_vec3 v3_multiply(t_vec3 a, t_vec3 b)
@@ -136,6 +146,7 @@ t_vec3 v3_multiply(t_vec3 a, t_vec3 b)
 	v.x = a.x * b.x;
 	v.y = a.y * b.y;
 	v.z = a.z * b.z;
+	v.w = 1;
 	return (v);
 }
 
@@ -146,6 +157,7 @@ t_vec3 v3_scale(t_vec3 a, float scalar)
 	v.x = a.x * scalar;
 	v.y = a.y * scalar;
 	v.z = a.z * scalar;
+	//v.w = 1;
 	return v;
 }
 
@@ -174,6 +186,7 @@ t_vec3 v3_random(void)
 	// v.z *= 6;
 	v.z = 1;
 	//print_vec3(v, "a");
+	//v.w = 1;
 	return (v);
 }
 
@@ -182,6 +195,7 @@ void zero_vec3(t_vec3 *v)
 	v->x = 0;
 	v->y = 0;
 	v->z = 0;
+//	v->w = 1;
 }
 
 void add_vec3(t_vec3 *v, t_vec3 *a)
