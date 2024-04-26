@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/26 09:22:53 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/26 14:06:05 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@
 #define LIME 0xFF80FF00
 
 
+#define MOUSE_SENS 0.05f
+
 #define X 0
 #define Y 1
 #define Z 2
@@ -94,8 +96,8 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 #define ASPECT_RATIO ((float)HEIGHT) / ((float)WIDTH)
 
 #define FOV 60.0f
-// #define FOV_RAD 1 / tan((double)FOV * 0.5 / 180.0 * 3.14159)
-#define FOV_RAD 1.0 / tan(M_PI_4)
+#define FOV_RAD 1 / tan((double)FOV * 0.5 / 180.0 * 3.14159)
+//#define FOV_RAD 1.0 / tan(M_PI_4)
 #define Z_FAR 1000.0f
 #define Z_NEAR 0.1f
 #define Z_NORM ((double)Z_FAR) / (Z_FAR - Z_NEAR)
@@ -220,6 +222,9 @@ typedef struct s_main
 	t_vec3		look_direct;
 	t_vec3		direct[3];
 	float		world_mat[4][4];
+	float		yaw;
+	float		pitch;
+	float		roll;
 	mlx_t		*mlx;
 	t_mesh		*objs;
 	int			nb;
@@ -232,6 +237,8 @@ typedef struct s_main
 	mlx_image_t	*img;
 	float		depth[WIDTH * HEIGHT];
 	t_controls	controls;
+	// int32_t		monitor_width;
+	// int32_t		monitor_height;
 }	t_main;
 //9965 - 3646
 
@@ -321,7 +328,9 @@ float	dot_prod_unit(t_vec3 a, t_vec3 b);
 void	unit_vec3(t_vec3 *v);
 void	rotate_vec3(t_vec3 *to_rotate, float x_rot, float first_z_rot, float second_z_rot);
 void	div_vec3(t_vec3 *v, float a);
-void	init_vec3(t_vec3 *v, float x, float y, float z, float w);
+void	init_vec3(t_vec3 *v, float x, float y, float z);
+t_vec3	vec3_init(float x, float y, float z);
+t_vec3	get_direction(float pitch, float yaw, float roll);
 
 // obj_parser.c
 void	load_obj_file(char *dir, char *path, t_mesh *mesh, t_main *main_data);

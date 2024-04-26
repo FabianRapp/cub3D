@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/26 10:03:43 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/26 14:09:12 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	reset_pixel_buffer(uint8_t *pixels, float *depth)
 void	handle_movement_per_frame(t_main *main_data)
 {
 	t_controls			controls;
-	t_vec3				movement = {0, 0, 0};
+	t_vec3				movement = {0, 0, 0, .w = 1};
 	// t_vec3				x_z_unit_look_direct;
 
 	// x_z_unit_look_direct = main_data->look_direct;
@@ -59,16 +59,40 @@ void	handle_movement_per_frame(t_main *main_data)
 	}
 	if (controls.state.left)
 	{
-		main_data->camera.x -= main_data->mlx->delta_time * controls.movement_speed_left;
-		print_vec3(main_data->camera, "new camera: ");
+		t_vec3	no_y;
+		t_vec3	normal;
+		const t_vec3	origin = {.x = 0, .y = 0, .z = 0, .w = 1};
+
+		no_y = main_data->look_direct;
+		no_y.y = 0;
+		normal = cross_product(v3_sub(main_data->look_direct, origin), v3_sub(no_y, origin));
+		unit_vec3(&normal);
+		normal.w = 3;
+		// print_vec3(normal, "normal: ");
+		normal.w = 1;
+		main_data->camera.x += main_data->mlx->delta_time * controls.movement_speed_left * normal.x;
+		main_data->camera.z += main_data->mlx->delta_time * controls.movement_speed_left * normal.z;
+		//print_vec3(main_data->camera, "new camera: ");
 		// movement.x += main_data->look_direct.x * main_data->mlx->delta_time * controls.movement_speed_left;
 		// movement.y += main_data->look_direct.y * main_data->mlx->delta_time * controls.movement_speed_left;
 		// movement.z += main_data->look_direct.z * main_data->mlx->delta_time * controls.movement_speed_left;
 	}
 	if (controls.state.right)
 	{
-		main_data->camera.x += main_data->mlx->delta_time * controls.movement_speed_right;
-		print_vec3(main_data->camera, "new camera: ");
+		t_vec3	no_y;
+		t_vec3	normal;
+		const t_vec3	origin = {.x = 0, .y = 0, .z = 0, .w = 1};
+
+		no_y = main_data->look_direct;
+		no_y.y = 0;
+		normal = cross_product(v3_sub(main_data->look_direct, origin), v3_sub(no_y, origin));
+		unit_vec3(&normal);
+		normal.w = 3;
+		// print_vec3(normal, "normal: ");
+		normal.w = 1;
+		main_data->camera.x -= main_data->mlx->delta_time * controls.movement_speed_left * normal.x;
+		main_data->camera.z -= main_data->mlx->delta_time * controls.movement_speed_left * normal.z;
+		//print_vec3(main_data->camera, "new camera: ");
 		// movement.x += main_data->look_direct.x * main_data->mlx->delta_time * controls.movement_speed_straight;
 		// movement.y += main_data->look_direct.y * main_data->mlx->delta_time * controls.movement_speed_straight;
 		// movement.z += main_data->look_direct.z * main_data->mlx->delta_time * controls.movement_speed_straight;
@@ -82,18 +106,18 @@ void	handle_movement_per_frame(t_main *main_data)
 	//multiply_vec3(&movement, &controls.movement_speed);
 	if (controls.state.jump)
 	{
-		printf("jump\n");
-		movement.y += controls.jump_height * main_data->mlx->delta_time;
+		//printf("jump\n");
+		movement.y -= controls.jump_height * main_data->mlx->delta_time;
 	}
 	if (controls.state.negative_jump)
 	{
-		printf("negative jump\n");
-		movement.y -= controls.jump_height * main_data->mlx->delta_time;
+		//printf("negative jump\n");
+		movement.y += controls.jump_height * main_data->mlx->delta_time;
 	}
 	if (!zero_f(movement.x) || !zero_f(movement.y) || !zero_f(movement.z))
 	{
 		add_vec3(&main_data->camera, &movement);
-		print_vec3(main_data->camera, "new camera: ");
+		//print_vec3(main_data->camera, "new camera: ");
 	}
 	//
 	//unit_vec3(&main_data->camera);
@@ -121,24 +145,10 @@ void ft_hook(void* param)
 	mod_cube_rotation(&main_data->custom, main_data->mlx->delta_time);
 	//draw_mesh(&main_data->cube);
 	draw_mesh(&main_data->axis);
-	//draw_mesh(&main_data->custom);
+	draw_mesh(&main_data->custom);
 	//mod_cube_rotation(&main_data->tetra, main_data->mlx->delta_time);
 	//draw_mesh(&main_data->tetra);
 //	mod_cube_rotation2(&main_data->cube2, main_data->mlx->delta_time);
-	for (int i = 0; i < main_data->nb; i++)
-	{
-		const float rotation_mat[4][4] = {
-			{1.0f, 0.0f, 0.0f, 0.0f},
-			{0.0f,1.0f, 0.0f, 0.0f},
-			{0.0f, 0.0f, 1.0f, 0.0f},
-			{0.0f, 0.0f, 0.0f, 1.0f},
-		};
-		ft_memcpy(main_data->objs[i].rotation_mat_x, rotation_mat, sizeof(rotation_mat));
-		ft_memcpy(main_data->objs[i].rotation_mat_y, rotation_mat, sizeof(rotation_mat));
-		ft_memcpy(main_data->objs[i].rotation_mat_z, rotation_mat, sizeof(rotation_mat));
-		//mod_cube_rotation(&main_data->objs[0], main_data->mlx->delta_time);
-		draw_mesh(&main_data->objs[i]);
-	}
 	//draw_mesh(&main_data->cube2);
 	// mlx_put_pixel(img, x, y, color);
 	// pixel++;
@@ -302,31 +312,31 @@ void	init_key_hooks(t_main *main_data)
 	mlx_key_hook(main_data->mlx, &ft_key_hook, &main_data);
 }
 
-void	arrow_key_handler(mlx_key_data_t keydata, void *param)
+void	wasd_key_handler(mlx_key_data_t keydata, void *param)
 {
 	t_controls	*controls;
 
 	controls = &((t_main *)param)->controls;
 	if (keydata.action == MLX_REPEAT)
 	{
-		if (keydata.key == MLX_KEY_UP)
+		if (keydata.key == MLX_KEY_W)
 			controls->state.up = true;
-		if (keydata.key == MLX_KEY_LEFT)
+		if (keydata.key == MLX_KEY_A)
 			controls->state.left = true;
-		if (keydata.key == MLX_KEY_RIGHT)
+		if (keydata.key == MLX_KEY_D)
 			controls->state.right = true;
-		if (keydata.key == MLX_KEY_DOWN)
+		if (keydata.key == MLX_KEY_S)
 			controls->state.back = true;
 	}
 	else if (keydata.action == MLX_RELEASE)
 	{
-		if (keydata.key == MLX_KEY_UP)
+		if (keydata.key == MLX_KEY_W)
 			controls->state.up = false;
-		if (keydata.key == MLX_KEY_LEFT)
+		if (keydata.key == MLX_KEY_A)
 			controls->state.left = false;
-		if (keydata.key == MLX_KEY_RIGHT)
+		if (keydata.key == MLX_KEY_D)
 			controls->state.right = false;
-		if (keydata.key == MLX_KEY_DOWN)
+		if (keydata.key == MLX_KEY_S)
 			controls->state.back = false;
 	}
 }
@@ -352,27 +362,59 @@ void	jump_key_handler(mlx_key_data_t keydata, void *param)
 
 void	key_hook(mlx_key_data_t keydata, void *param)
 {
-	if (keydata.key >= MLX_KEY_RIGHT && keydata.key <= MLX_KEY_UP)
-		arrow_key_handler(keydata, param);
+	if (keydata.key == MLX_KEY_W || keydata.key == MLX_KEY_A || keydata.key == MLX_KEY_S || keydata.key == MLX_KEY_D)
+		wasd_key_handler(keydata, param);
 	if (keydata.key == MLX_KEY_SPACE || keydata.key == MLX_KEY_Z)
 		jump_key_handler(keydata, param);
 }
 
+#define INIT_DOUBLE_VAL -1000000000000000.0
+void	cursor_hook(double xpos, double ypos, void* param)
+{
+	static double	last_x = INIT_DOUBLE_VAL;
+	static double	last_y = INIT_DOUBLE_VAL;
+	double			x_dist;
+	double			y_dist;
+	t_main			*main_data;
+
+	if (last_x == INIT_DOUBLE_VAL || last_y == INIT_DOUBLE_VAL)
+	{
+		last_x = xpos;
+		last_y = ypos;
+	}
+	main_data = (t_main *)param;
+	x_dist = (xpos - last_x) / 1000;
+	y_dist = (ypos - last_y) / 1000;
+	main_data->pitch += ((float)M_PI * MOUSE_SENS) * y_dist;
+	main_data->yaw += ((float)M_PI * MOUSE_SENS) * x_dist;
+	main_data->look_direct = get_direction(main_data->pitch, main_data->yaw, main_data->roll);
+	//printf("x_dist: %lf y_dist: %lf\n", x_dist, y_dist);
+	
+}
 
 int32_t	main(void)
 {
 	mlx_image_t	*ob;
 	t_main		m_data;
-	const t_vec3	init_cam = {.x = 0, .y = 0, .z = 0};
-	const t_vec3	init_look_direct = {.x = 0, .y = 0, .z = 1};
+	const t_vec3	init_cam = {.x = 0, .y = 0, .z = 0, .w = 1};
+	const t_vec3	init_look_direct = {.x = 0, .y = 0, .z = 1, .w = 1};
 
-
+	int i = 0;
+	// m_data.monitor_width = 0;
+	// while (!m_data.monitor_width)
+	// {
+	// 	mlx_get_monitor_size(i++, &m_data.monitor_width, &m_data.monitor_height);
+	// 	printf("monitor width: %d monitor height: %d\n", m_data.monitor_width, m_data.monitor_height);
+	// }
 	ft_bzero(&m_data, sizeof(m_data));
 	m_data.controls.jump_height = 1;
 	m_data.controls.movement_speed_straight = 1;
 	m_data.controls.movement_speed_left = 1;
 	m_data.controls.movement_speed_right = 1;
 	m_data.controls.movement_speed_back = 1;
+	m_data.pitch = 0;
+	m_data.yaw = 0;
+	m_data.roll = 0;
 	ft_memcpy(&m_data.camera, &init_cam, sizeof(init_cam));
 	ft_memcpy(&m_data.look_direct, &init_look_direct, sizeof(init_look_direct));
 	srand(time(NULL));
@@ -404,10 +446,10 @@ int32_t	main(void)
 	
 	load_obj_file("./", "axis.obj", &m_data.axis, &m_data);
 	
-	load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_Low_Poly.obj", &m_data.custom, &m_data);
+	//load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_Low_Poly.obj", &m_data.custom, &m_data);
 	//load_obj_file("lego_obj/", "lego_obj/lego obj.obj", &m_data.custom, &m_data);
 	//load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj", &m_data.custom, &m_data);
-	//load_obj_file("objs/", "objs/HorseArmor.obj", &m_data.custom, &m_data);
+	load_obj_file("objs/", "objs/HorseArmor.obj", &m_data.custom, &m_data);
 	//load_obj_file("teapot/", "teapot/teapot.obj", &m_data.custom, &m_data);
 	// load_obj_file("obj/", "obj/crates.obj", &m_data.custom, &m_data);
 	//load_obj_file("22-trees_9_obj/", "22-trees_9_obj/trees9.obj", &m_data.custom, &m_data);
@@ -416,7 +458,6 @@ int32_t	main(void)
 	//fill_tetra_mesh(&m_data.tetra, &m_data);
 	fill_cube_mesh2(&m_data.cube2, &m_data);
 	//draw_mesh(&m_data.cube);
-	draw_objects(0, &m_data);
 	mlx_set_instance_depth(cube_img->instances, 2);
 	mlx_set_instance_depth(cube_img2->instances, 1);
 	mlx_set_instance_depth(tetra_img->instances, 3);
@@ -424,11 +465,13 @@ int32_t	main(void)
 	// Register a hook and pass mlx as an optional param.
 	// NOTE: Do this before calling mlx_loop!
 	init_key_hooks(&m_data);
-	mlx_loop_hook(m_data.mlx, ft_hook, &m_data);
+	
 	int	pos_a[2] = {200, 200};
 	int	pos_b[2] = {100, 100};
 	mlx_key_hook(m_data.mlx, &key_hook, &m_data);
 	mlx_loop_hook(m_data.mlx, display_fps_hook, m_data.mlx);
+	mlx_cursor_hook(m_data.mlx, cursor_hook, &m_data);
+	mlx_loop_hook(m_data.mlx, ft_hook, &m_data);
 	mlx_loop(m_data.mlx);
 	mlx_terminate(m_data.mlx);
 	return (EXIT_SUCCESS);

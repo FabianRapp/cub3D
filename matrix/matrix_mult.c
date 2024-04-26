@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 02:11:26 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/23 23:15:30 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/26 11:37:37 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,27 +43,27 @@ void	mat4x4_mult_mat4x4(float ma[4][4], float mb[4][4], float result[4][4])
 	result[3][3] = ma[3][0] * mb[0][3] + ma[3][1] * mb[1][3] + ma[3][2] * mb[2][3] + ma[3][3] * mb[3][3];
 }
 
-void	matrix_mult_vec3_4x4(t_vec3 *v, const float m_b[4][4], t_vec3 *re)
-{
-	re->x = v->x *  m_b[0][0] + v->y * m_b[1][0] + v->z * m_b[2][0] + m_b[3][0];
-	re->y = v->x *  m_b[0][1] + v->y * m_b[1][1] + v->z * m_b[2][1] + m_b[3][1];
-	re->z = v->x *  m_b[0][2] + v->y * m_b[1][2] + v->z * m_b[2][2] + m_b[3][2];
-	re->w = v->x *  m_b[0][3]+ v->y * m_b[1][3] + v->z * m_b[2][3] + m_b[3][3];
-	if (re->w != 0.0f)
-	{
-		re->x /= re->w;
-		re->y /= re->w;
-		re->z /= re->w;
-	}
-}
-
 // void	matrix_mult_vec3_4x4(t_vec3 *v, const float m_b[4][4], t_vec3 *re)
 // {
-// 	re->x = v->x *  m_b[0][0] + v->y * m_b[1][0] + v->z * m_b[2][0] + v->w * m_b[3][0];
-// 	re->y = v->x *  m_b[0][1] + v->y * m_b[1][1] + v->z * m_b[2][1] + v->w * m_b[3][1];
-// 	re->z = v->x *  m_b[0][2] + v->y * m_b[1][2] + v->z * m_b[2][2] + v->w * m_b[3][2];
-// 	re->w = v->x *  m_b[0][3]+ v->y * m_b[1][3] + v->z * m_b[2][3] + v->w * m_b[3][3];
+// 	re->x = v->x *  m_b[0][0] + v->y * m_b[1][0] + v->z * m_b[2][0] + m_b[3][0];
+// 	re->y = v->x *  m_b[0][1] + v->y * m_b[1][1] + v->z * m_b[2][1] + m_b[3][1];
+// 	re->z = v->x *  m_b[0][2] + v->y * m_b[1][2] + v->z * m_b[2][2] + m_b[3][2];
+// 	re->w = v->x *  m_b[0][3]+ v->y * m_b[1][3] + v->z * m_b[2][3] + m_b[3][3];
+// 	if (re->w != 0.0f)
+// 	{
+// 		re->x /= re->w;
+// 		re->y /= re->w;
+// 		re->z /= re->w;
+// 	}
 // }
+
+void	matrix_mult_vec3_4x4(t_vec3 *v, const float m_b[4][4], t_vec3 *re)
+{
+	re->x = v->x *  m_b[0][0] + v->y * m_b[1][0] + v->z * m_b[2][0] + v->w * m_b[3][0];
+	re->y = v->x *  m_b[0][1] + v->y * m_b[1][1] + v->z * m_b[2][1] + v->w * m_b[3][1];
+	re->z = v->x *  m_b[0][2] + v->y * m_b[1][2] + v->z * m_b[2][2] + v->w * m_b[3][2];
+	re->w = v->x *  m_b[0][3]+ v->y * m_b[1][3] + v->z * m_b[2][3] + v->w * m_b[3][3];
+}
 
 void	matrix_mult_1x3_3x3(t_vec3 v, float mb[3][3], float m_result[3])
 {

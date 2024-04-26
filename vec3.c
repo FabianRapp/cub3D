@@ -27,6 +27,8 @@ void	unit_vec3(t_vec3 *v)
 		v->y /= len;
 		v->z /= len;
 	}
+	else if (v->w == 3)
+		printf("unable to make uinit vec: to close to zero: %f\n", sum);
 }
 
 // rotation_matrix_x
@@ -74,7 +76,9 @@ void	rotate_vec3(t_vec3 *to_rotate, float x_rot, float first_z_rot, float second
 	re.x = to_rotate->x *  rotation_matrix[0][0] + to_rotate->y * rotation_matrix[1][0] + to_rotate->z * rotation_matrix[2][0];
 	re.y = to_rotate->x *  rotation_matrix[0][1] + to_rotate->y * rotation_matrix[1][1] + to_rotate->z * rotation_matrix[2][1];
 	re.z = to_rotate->x *  rotation_matrix[0][2] + to_rotate->y * rotation_matrix[1][2] + to_rotate->z * rotation_matrix[2][2];
-	*to_rotate = re;
+	to_rotate->x = re.x;
+	to_rotate->y = re.y;
+	to_rotate->z = re.z;
 	// // Apply Z-axis rotation
 	// float xy = cz * to_rotate->x - sz * to_rotate->y;
 	// float yy = sz * to_rotate->x + cz * to_rotate->y;
@@ -114,7 +118,7 @@ t_vec3	v3_add(t_vec3 a, t_vec3 b)
 	v.x = a.x + b.x;
 	v.y = a.y + b.y;
 	v.z = a.z + b.z;
-	//v.w = 1;
+	v.w = a.w;
 	return (v);
 }
 
@@ -125,7 +129,7 @@ t_vec3	v3_sub(t_vec3 a, t_vec3 b)
 	v.x = a.x - b.x;
 	v.y = a.y - b.y;
 	v.z = a.z - b.z;
-	//v.w = 1;
+	v.w = 1;
 	return (v);
 }
 
@@ -136,7 +140,7 @@ t_vec3 v3_reverse(t_vec3 a)
 	v.x = -a.x;
 	v.y = -a.y;
 	v.z = -a.z;
-//	v.w = 1;
+	v.w = 1;
 	return (v);
 }
 t_vec3 v3_multiply(t_vec3 a, t_vec3 b)
@@ -157,7 +161,7 @@ t_vec3 v3_scale(t_vec3 a, float scalar)
 	v.x = a.x * scalar;
 	v.y = a.y * scalar;
 	v.z = a.z * scalar;
-	//v.w = 1;
+	v.w = 1;
 	return v;
 }
 
@@ -203,7 +207,7 @@ void add_vec3(t_vec3 *v, t_vec3 *a)
 	v->x += a->x;
 	v->y += a->y;
 	v->z += a->z;
-	v->w += a->w;
+	//v->w += a->w;
 }
 
 void reverse_vec3(t_vec3 *v)
@@ -222,6 +226,11 @@ void multiply_vec3(t_vec3 *v, t_vec3 *a)
 
 void div_vec3(t_vec3 *v, float a)
 {
+	if (zero_f(a))
+	{
+		printf("zero div!\n");
+		exit(1);
+	}
 	v->x /= a;
 	v->y /= a;
 	v->z /= a;
@@ -251,7 +260,7 @@ void	print_vec3(t_vec3 v, char *msg)
 		printf("x: %.2f, y: %.2f z: %.2f w: %.2f u: %.2f v: %.2f", v.x, v.y, v.z, v.w, v.u, v.v);
 		if (v.mtl)
 		{
-			printf(" mtl: %s\n", v.mtl->name);
+			//printf(" mtl: %s\n", v.mtl->name);
 		}
 		else
 		{
@@ -263,19 +272,65 @@ void	print_vec3(t_vec3 v, char *msg)
 		printf("%s x: %.2f, y: %.2f z: %.2f w: %.2f u: %.2f v: %.2f", msg, v.x, v.y, v.z, v.w, v.u, v.v);
 		if (v.mtl)
 		{
-			printf(" mtl: %s\n", v.mtl->name);
+			//printf(" mtl: %s\n", v.mtl->name);
 		}
 		else
 		{
 			printf(" mtl: none\n");
 		}
 	}
+	// if (!msg)
+	// {
+	// 	printf("x: %.2f, y: %.2f z: %.2f w: %.2f u: %.2f v: %.2f", v.x, v.y, v.z, v.w, v.u, v.v);
+	// 	if (v.mtl)
+	// 	{
+	// 		printf(" mtl: %s\n", v.mtl->name);
+	// 	}
+	// 	else
+	// 	{
+	// 		printf(" mtl: none\n");
+	// 	}
+	// }
+	// else
+	// {
+	// 	printf("%s x: %.2f, y: %.2f z: %.2f w: %.2f u: %.2f v: %.2f", msg, v.x, v.y, v.z, v.w, v.u, v.v);
+	// 	if (v.mtl)
+	// 	{
+	// 		printf(" mtl: %s\n", v.mtl->name);
+	// 	}
+	// 	else
+	// 	{
+	// 		printf(" mtl: none\n");
+	// 	}
+	// }
 }
 
-void	init_vec3(t_vec3 *v, float x, float y, float z, float w)
+void	init_vec3(t_vec3 *v, float x, float y, float z)
 {
 	v->x = x;
 	v->y = y;
 	v->z = y;
-	v->w = w;
+	v->w = 1;
+}
+
+t_vec3	vec3_init(float x, float y, float z)
+{
+	t_vec3	v;
+
+	v.x = x;
+	v.y = y;
+	v.z = y;
+	v.w = 1;
+	return (v);
+}
+
+t_vec3	get_direction(float pitch, float yaw, float roll)
+{
+	t_vec3	direct;
+
+	direct.w = 1;
+	direct.x = cosf(pitch) * sinf(yaw);
+	direct.y = sin(pitch);
+	direct.z = cos(pitch) * cos(yaw);
+	return (direct);
 }

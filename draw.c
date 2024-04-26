@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/26 10:01:24 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/26 12:32:28 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,9 +197,11 @@ void	fill_mesh_matrix(t_mesh *mesh)
 	float	translation_mat[4][4];
 	float	tmp[4][4];
 
-	mat4x4_mult_mat4x4(mesh->rotation_mat_z, mesh->rotation_mat_x, tmp);
-	translation_matrix(translation_mat, 0, 0, 3);
-	mat4x4_mult_mat4x4(tmp, translation_mat, mesh->mesh_matrix);
+	ident_mat_4x4(mesh->mesh_matrix);
+	// ident_mat_4x4(tmp);
+	// mat4x4_mult_mat4x4(mesh->rotation_mat_z, mesh->rotation_mat_x, tmp);
+//	translation_matrix(translation_mat, 0, 0, 0);
+	//mat4x4_mult_mat4x4(tmp, translation_mat, mesh->mesh_matrix);
 }
 
 t_light	init_day_light(double d_time)
@@ -287,15 +289,14 @@ void	draw_mesh(t_mesh *mesh)
 	{
 		color.col = (mesh->triangles + i)->col;
 
-
-		//transformed = apply_rotation_addtiononal_translation(mesh, i);
+		transformed = mesh->triangles[i];//not neededm, for debugging
 		matrix_mult_vec3_4x4(mesh->triangles[i].p + 0, mesh->mesh_matrix, transformed.p + 0);
 		matrix_mult_vec3_4x4 (mesh->triangles[i].p + 1, mesh->mesh_matrix, transformed.p + 1);
 		matrix_mult_vec3_4x4(mesh->triangles[i].p + 2, mesh->mesh_matrix, transformed.p + 2);
 
-		div_vec3(transformed.p + 0, transformed.p[0].w);
-		div_vec3(transformed.p + 1, transformed.p[1].w);
-		div_vec3(transformed.p + 2, transformed.p[2].w);
+		// div_vec3(transformed.p + 0, transformed.p[0].w);
+		// div_vec3(transformed.p + 1, transformed.p[1].w);
+		// div_vec3(transformed.p + 2, transformed.p[2].w);
 
 
 		// t_vec3	tmp = transformed.normal;
@@ -348,11 +349,11 @@ void	draw_mesh(t_mesh *mesh)
 		color_scalars.v[G] = fmin(color_scalars.v[G], 1.0f);
 		color_scalars.v[B] = fmin(color_scalars.v[B], 1.0f);
 
-		// color.argb[R] *= color_scalars.v[R];
-		// color.argb[G] *= color_scalars.v[G];
-		// color.argb[B] *= color_scalars.v[B];
+		color.argb[R] *= color_scalars.v[R];
+		color.argb[G] *= color_scalars.v[G];
+		color.argb[B] *= color_scalars.v[B];
 
-		//viewed = transformed;
+		viewed = transformed;
 		// enter view space
 		matrix_mult_vec3_4x4(transformed.p + 0, mat_view, viewed.p + 0);
 		matrix_mult_vec3_4x4 (transformed.p + 1, mat_view, viewed.p + 1);
@@ -361,10 +362,20 @@ void	draw_mesh(t_mesh *mesh)
 
 		// enter projeceted space
 		ft_memcpy(&projected, mesh->triangles + i, sizeof(projected));
+		// print_vec3(viewed.p[0], "0: ");
+		// print_vec3(viewed.p[1], "1: ");
+		// print_vec3(viewed.p[2], "2: ");
 		matrix_mult_vec3_4x4(viewed.p + 0, project_mat, &projected.p[0]);
 		matrix_mult_vec3_4x4(viewed.p + 1, project_mat, &projected.p[1]);
 		matrix_mult_vec3_4x4(viewed.p + 2, project_mat, &projected.p[2]);
 
+		if (!zero_f(projected.p[0].w))
+			div_vec3(projected.p + 0, projected.p[0].w);
+		if (!zero_f(projected.p[1].w))
+			div_vec3(projected.p + 1, projected.p[1].w);
+		if (!zero_f(projected.p[2].w))
+			div_vec3(projected.p + 2, projected.p[2].w);
+	
 		// printf("p1 x: %f, y: %f z: %f\n", transformed.p[0].x, transformed.p[0].y, transformed.p[0].z);
 		// printf("p2 x: %f, y: %f z: %f\n", projected.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
 		// printf("p3 x: %f, y: %f z: %f\n\n", projected.p[2].x, rotated_z.p[2].y, rotated_z.p[2].z);
@@ -416,6 +427,9 @@ void	draw_mesh(t_mesh *mesh)
 				fill_triangle_texture(mesh->img, &projected, mesh, color_scalars);
 		}
 		i++;
+	//	if (i == 2640)
+		//	break ;
+		
 	}
 	//mesh->center = v3_scale(mesh->center, 1.0f / (float) mesh->count);
 	// mesh->center = length_vec3(&mesh->center) / mesh->count;

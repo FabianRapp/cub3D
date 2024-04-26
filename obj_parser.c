@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 08:36:34 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/26 10:04:09 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/26 13:23:40 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,28 +375,29 @@ void	sacle_vecs(t_obj_parser *vars)
 	if (!ft_strcmp(vars->path, "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj")
 		|| !ft_strcmp(vars->path, "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_Low_Poly.obj"))
 	{
-		init_vec3(&scalar, 100.0f, 100.0f, 100.0f, 1);
-		init_vec3(&translate, 0.0f, 5.0f, -5.0f, 0.0f);
-		init_vec3(&rotation, 0.0f, M_PI_2 , 0.0f, 0);
+		init_vec3(&scalar, 100.0f, 100.0f, 100.0f);
+		init_vec3(&translate, 0.0f, 5.0f, -5.0f);
+		init_vec3(&rotation, 0.0f, M_PI_2 , 0.0f);
 	}
 	else if (!ft_strcmp(vars->path, "objs/HorseArmor.obj"))
 	{
-		init_vec3(&scalar, 5.0f, 5.0f, 5.0f, 5.0f);
-		init_vec3(&translate, 0.0f, 0.0f, 1.0f, 0.0f);
-		init_vec3(&rotation, 1.5f, 3.2f, 0.0f, 0.0f);
+		init_vec3(&scalar, 5.0f, 5.0f, 5.0f);
+		init_vec3(&translate, 0.0f, 0.0f, 1.0f);
+		init_vec3(&rotation, 0, M_PI_2 , 0.0f);
 	}
 	else if (!ft_strcmp(vars->path, "teapot/teapot.obj"))
 	{
-		init_vec3(&scalar, 1, 1, 1, 1);
-		init_vec3(&translate, 0.0f, 0.0f, 50.0f, 0.0f);
-		init_vec3(&rotation, 0, M_PI_2, 0, 0.0f);
+		init_vec3(&scalar, 1, 1, 1);
+		init_vec3(&translate, 0.0f, 0.0f, 50.0f);
+		init_vec3(&rotation, 0, M_PI_2, 0);
 	}
 	else// if (ft_strcmp(vars->path, "axis.obj"))
 	{
+		//return ;
 		//init_vec3(&scalar, 0.1f, 0.1f, 0.1f, 1.0f);
-		init_vec3(&scalar, 0.25, 0.25, 0.25, 1);
-		init_vec3(&translate, 0.0f, 0.0f, 50.0f, 0.0f);
-		init_vec3(&rotation, 0, 0, 0, 0.0f);
+		init_vec3(&scalar, 0.25, 0.25, 0.25);
+		init_vec3(&translate, 0.0f, 0.0f, 50.0f);
+		init_vec3(&rotation, 0.0f, M_PI_2 , 0.0f);
 	}
 	i = 0;
 	t_vec3	max = {0};
@@ -426,8 +427,8 @@ void	sacle_vecs(t_obj_parser *vars)
 			//print_vec3(vars->vertexes[i], NULL);
 		//}
 		rotate_vec3(vars->vertexes + i, rotation.x, rotation.y, rotation.z);
-		multiply_vec3(vars->vertexes + i, &scalar);
-		add_vec3(vars->vertexes + i, &translate);
+	//	multiply_vec3(vars->vertexes + i, &scalar);
+		//add_vec3(vars->vertexes + i, &translate);
 		i++;
 	}
 	printf("total min max off all vertexes:\nmax: x: %f y: %f z: %f\nmin: x: %f y: %f z: %f\n", max.x, max.y, max.z, min.x, min.y, min.z);
@@ -668,6 +669,11 @@ void	load_obj_file(char *dir, char *path, t_mesh *mesh, t_main *main_data)
 	// {
 	// 	printf("vec %d: ", i);
 	// 	print_vec3(vars.vertexes[i], 0);
+	// 	if (zero_f(vars.vertexes[i].w))
+	// 	{
+	// 		printf("zero found\n");
+	// 		exit(1);
+	// 	}
 	// }
 	// for (int i = 0; i < vars.tris_count; i++)
 	// {
