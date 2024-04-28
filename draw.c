@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/26 12:32:28 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/28 16:02:18 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,9 +226,9 @@ t_light	init_day_light(double d_time)
 	float	light_intens = 1 - fabs(0.5 - day_progress);
 	t_color_split light_col;
 	light_col.col = WHITE;
-	light_col.argb[R] *= 1 - 0.3 * fabs(0.5 - day_progress);
-	light_col.argb[G] *= 1 - 0.6 * fabs(0.5 - day_progress);
-	light_col.argb[B] *= 1 - fabs(0.5 - day_progress);
+	light_col.argb[R] *= 1 - 0.2 * fabs(0.5 - day_progress);
+	light_col.argb[G] *= 1 - 0.4 * fabs(0.5 - day_progress);
+	light_col.argb[B] *= 1 - 0.8 * fabs(0.5 - day_progress);
 	init_light(&day_light, direct, light_col.col, 1 - fabs(0.5 - day_progress));
 	return (day_light);
 }
@@ -256,10 +256,9 @@ void	draw_mesh(t_mesh *mesh)
 	//
 	fill_mesh_matrix(mesh);
 
-	t_vec3	vec_up = {.x= 0, .y = 1, .z = 0};
 	t_vec3	vec_target = v3_add(mesh->main->camera, mesh->main->look_direct);
 	float	camera[4][4];
-	matrix_point_at(&mesh->main->camera, &vec_target, &vec_up, camera);
+	matrix_point_at(&mesh->main->camera, &vec_target, &mesh->main->up, camera);
 	float	mat_view[4][4];
 	matrix_look_at(camera, mat_view);
 	

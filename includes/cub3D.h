@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/26 14:06:05 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/28 15:59:40 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@
 #define LIME 0xFF80FF00
 
 
-#define MOUSE_SENS 0.05f
+#define MOUSE_SENS 1.0f
 
 #define X 0
 #define Y 1
@@ -221,6 +221,7 @@ typedef struct s_main
 	t_vec3		camera;
 	t_vec3		look_direct;
 	t_vec3		direct[3];
+	t_vec3		up;
 	float		world_mat[4][4];
 	float		yaw;
 	float		pitch;

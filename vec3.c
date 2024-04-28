@@ -260,6 +260,7 @@ void	print_vec3(t_vec3 v, char *msg)
 		printf("x: %.2f, y: %.2f z: %.2f w: %.2f u: %.2f v: %.2f", v.x, v.y, v.z, v.w, v.u, v.v);
 		if (v.mtl)
 		{
+			printf("\n");
 			//printf(" mtl: %s\n", v.mtl->name);
 		}
 		else
@@ -272,6 +273,7 @@ void	print_vec3(t_vec3 v, char *msg)
 		printf("%s x: %.2f, y: %.2f z: %.2f w: %.2f u: %.2f v: %.2f", msg, v.x, v.y, v.z, v.w, v.u, v.v);
 		if (v.mtl)
 		{
+			printf("\n");
 			//printf(" mtl: %s\n", v.mtl->name);
 		}
 		else

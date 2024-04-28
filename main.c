@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/26 14:09:12 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/28 16:04:58 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,19 +59,17 @@ void	handle_movement_per_frame(t_main *main_data)
 	}
 	if (controls.state.left)
 	{
-		t_vec3	no_y;
-		t_vec3	normal;
-		const t_vec3	origin = {.x = 0, .y = 0, .z = 0, .w = 1};
+		t_vec3	no_y = {.x = 0.5, .y = 0, .z = 0.5, .w = 1};
 
-		no_y = main_data->look_direct;
-		no_y.y = 0;
-		normal = cross_product(v3_sub(main_data->look_direct, origin), v3_sub(no_y, origin));
-		unit_vec3(&normal);
-		normal.w = 3;
-		// print_vec3(normal, "normal: ");
-		normal.w = 1;
-		main_data->camera.x += main_data->mlx->delta_time * controls.movement_speed_left * normal.x;
-		main_data->camera.z += main_data->mlx->delta_time * controls.movement_speed_left * normal.z;
+		t_vec3	forward = v3_sub(main_data->look_direct, main_data->camera);
+		unit_vec3(&forward);
+		t_vec3 left = cross_product(main_data->up, forward);
+		unit_vec3(&left);
+		print_vec3(left, "left: ");
+		print_vec3(forward, "forward: ");
+		print_vec3(main_data->up, "up: ");
+		main_data->camera.x += main_data->mlx->delta_time * controls.movement_speed_left * left.x;
+		main_data->camera.z += main_data->mlx->delta_time * controls.movement_speed_left * left.z;
 		//print_vec3(main_data->camera, "new camera: ");
 		// movement.x += main_data->look_direct.x * main_data->mlx->delta_time * controls.movement_speed_left;
 		// movement.y += main_data->look_direct.y * main_data->mlx->delta_time * controls.movement_speed_left;
@@ -385,9 +383,14 @@ void	cursor_hook(double xpos, double ypos, void* param)
 	main_data = (t_main *)param;
 	x_dist = (xpos - last_x) / 1000;
 	y_dist = (ypos - last_y) / 1000;
-	main_data->pitch += ((float)M_PI * MOUSE_SENS) * y_dist;
-	main_data->yaw += ((float)M_PI * MOUSE_SENS) * x_dist;
-	main_data->look_direct = get_direction(main_data->pitch, main_data->yaw, main_data->roll);
+	float pitch;
+	float yaw;
+	// main_data->pitch += ((float)M_PI * MOUSE_SENS) * y_dist;
+	// main_data->yaw += ((float)M_PI * MOUSE_SENS) * x_dist;
+	pitch = ((float)M_PI * MOUSE_SENS) * y_dist;
+	yaw = ((float)M_PI * MOUSE_SENS) * x_dist;
+	main_data->look_direct = v3_add(main_data->look_direct, get_direction(pitch, yaw, main_data->roll));
+	unit_vec3(&main_data->look_direct);
 	//printf("x_dist: %lf y_dist: %lf\n", x_dist, y_dist);
 	
 }
@@ -398,6 +401,7 @@ int32_t	main(void)
 	t_main		m_data;
 	const t_vec3	init_cam = {.x = 0, .y = 0, .z = 0, .w = 1};
 	const t_vec3	init_look_direct = {.x = 0, .y = 0, .z = 1, .w = 1};
+	const t_vec3	init_up = {.x = 0, .y = 1, .z = 0, .w = 1};
 
 	int i = 0;
 	// m_data.monitor_width = 0;
@@ -416,6 +420,7 @@ int32_t	main(void)
 	m_data.yaw = 0;
 	m_data.roll = 0;
 	ft_memcpy(&m_data.camera, &init_cam, sizeof(init_cam));
+	ft_memcpy(&m_data.up, &init_up, sizeof(init_up));
 	ft_memcpy(&m_data.look_direct, &init_look_direct, sizeof(init_look_direct));
 	srand(time(NULL));
 	if (!init())
