@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/29 20:33:38 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 21:33:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,16 +106,6 @@ void	ft_hook(void* param)
 	//draw_mesh(&main_data->tetra);
 //	mod_cube_rotation2(&main_data->cube2, main_data->mlx->delta_time);
 	//draw_mesh(&main_data->cube2);
-	// mlx_put_pixel(img, x, y, color);
-	// pixel++;
-	// if (pixel >= WIDTH * HEIGHT)
-	// {
-	// 	fprintf(stderr, "filled !\n");
-	// 	usleep(30000000);
-	// 	pixel = 0;
-	// 	color = ~color;
-	// 	color |= 0xFF;
-	// }
 }
 
 
@@ -189,7 +179,7 @@ void	init_cursor(t_main *main_data)
 	mlx_set_cursor_mode(main_data->mlx, MLX_MOUSE_DISABLED);
 	main_data->settings.cursor_lock = true;
 	main_data->settings.cursor_hide = true;
-	main_data->settings.mouse_sens = 0.5;
+	main_data->settings.mouse_sens = 0.5 * MOUSE_SENS_BASE;
 	//mlx_set_mouse_pos(main_data->mlx, WIDTH / 2, HEIGHT / 2); does not work before loop
 	mlx_set_cursor_mode(main_data->mlx, MLX_MOUSE_HIDDEN);
 }
@@ -218,11 +208,11 @@ int32_t	main(void)
 	// }
 	ft_bzero(&m_data.menu, sizeof(m_data.menu));
 	ft_bzero(&m_data, sizeof(m_data));
-	m_data.controls.jump_height = 3;
-	m_data.controls.movement_speed_straight = 3;
-	m_data.controls.movement_speed_left = 3;
-	m_data.controls.movement_speed_right = 3;
-	m_data.controls.movement_speed_back = 3;
+	m_data.controls.jump_height = 6;
+	m_data.controls.movement_speed_straight = 6;
+	m_data.controls.movement_speed_left = 6;
+	m_data.controls.movement_speed_right = 6;
+	m_data.controls.movement_speed_back = 6;
 	m_data.pitch = 0;
 	m_data.yaw = 0;
 	m_data.roll = 0;

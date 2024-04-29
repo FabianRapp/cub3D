@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 18:49:11 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/29 21:04:45 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 21:12:17 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void	make_mouse_sens_field(t_main *main_data)
 	field->height = HEIGHT / 18;
 	make_entry_field(main_data, field, "Mouse Sensibility", SENS_DEPTH);
 	// 
-	fill_slider(field, main_data->settings.mouse_sens);
+	fill_slider(field, main_data->settings.mouse_sens / MOUSE_SENS_BASE);
 
 
 }

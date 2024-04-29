@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:30:59 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/29 21:02:32 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 22:23:45 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	wasd_key_handler(mlx_key_data_t keydata, void *param)
 	t_controls	*controls;
 
 	controls = &((t_main *)param)->controls;
-	if (keydata.action == MLX_REPEAT)
+	if (keydata.action != MLX_RELEASE)
 	{
 		if (keydata.key == FORWARD_KEY)
 			controls->state.up = true;
@@ -100,6 +100,8 @@ void	toggl_menu_state(t_main *main_data)
 
 void	key_hook_menu(mlx_key_data_t keydata, t_main *main_data)
 {
+	if (main_data->menu.state != MENU_OPEN)
+		return ;
 	if (keydata.key == MENU_KEY && keydata.action == MLX_PRESS)
 	{
 		toggl_menu_state(main_data);
@@ -144,6 +146,8 @@ void	menu_mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, t
 	int				xpos;
 	int				ypos;
 
+	if (main_data->menu.state != MENU_OPEN)
+		return ;
 	mlx_get_mouse_pos(main_data->mlx, &xpos, &ypos);
 	if (action == MLX_PRESS)
 	{
@@ -180,6 +184,8 @@ void	cursor_menu(double xpos, double ypos, t_main *main_data)
 	t_entry_field	*field;
 
 	menu = &main_data->menu;
+	if (menu->state != MENU_OPEN)
+		return ;
 	field = menu->clicked_field;
 	if (field)
 	{
@@ -187,12 +193,10 @@ void	cursor_menu(double xpos, double ypos, t_main *main_data)
 		{
 			if ((int)xpos <= field->xpos)
 			{
-				fprintf(stderr, "1\n");
 				field->val = 0.001f;
 			}
 			else if ((int)xpos >= field->xpos + field->width)
 			{
-				fprintf(stderr, "2\n");
 				field->val = 1.0f;
 			}
 			else if ((int)xpos > field->xpos)
@@ -202,10 +206,16 @@ void	cursor_menu(double xpos, double ypos, t_main *main_data)
 			}
 			else
 			{
-				fprintf(stderr, "error cursor_menu\n");
 				ft_error(main_data);
 			}
-			printf("field->val: %f\n", field->val);
+			if (field->img == main_data->menu.mouse_sens.img)
+			{
+				//field->val is a slider val beteen 0.0001 and 1.0
+				//main_data->settings.mouse_sens = field->val * MOUSE_SENS_BASE; //tring to avoid linear calc
+				main_data->settings.mouse_sens = powf(field->val, 0.5) * MOUSE_SENS_BASE;
+				printf("mouse sens: %f\n", main_data->settings.mouse_sens);
+			}
+			
 		}
 	}
 }
@@ -224,8 +234,8 @@ void	cursor_hook(double xpos, double ypos, void* param)
 	}
 	x_dist = xpos - WIDTH / 2;
 	y_dist = ypos - HEIGHT / 2;
-	main_data->pitch += main_data->settings.mouse_sens * y_dist * MOUSE_SENS_BASE;
-	main_data->yaw += main_data->settings.mouse_sens * x_dist * MOUSE_SENS_BASE;
+	main_data->pitch += main_data->settings.mouse_sens * y_dist;
+	main_data->yaw += main_data->settings.mouse_sens * x_dist;
 	main_data->look_direct = v3_add(main_data->look_direct, get_direction(main_data->pitch, main_data->yaw, main_data->roll));
 	unit_vec3(&main_data->look_direct);
 	if (main_data->settings.cursor_lock)
