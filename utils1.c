@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 05:43:13 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/29 16:10:53 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 19:12:55 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,34 @@
 #include <cub3D.h>
 #include <MLX42.h>
 
-bool	print = true;
+void	ft_free_img(t_main *main_data, mlx_image_t **img)
+{
+	if (!*img)
+		return ;
+	mlx_delete_image(main_data->mlx, *img);
+	*img = NULL;
+}
+
+void	reset_pixel_buffer(uint8_t *pixels, float *depth)
+{
+	uint32_t	*buffer = (uint32_t *)pixels;
+
+	if (depth)
+	{
+		for (int i = 0; i < WIDTH * HEIGHT; i++)
+		{
+			buffer[i] = BLACK;
+			depth[i] = Z_FAR;
+		}
+	}
+	else
+	{
+		for (int i = 0; i < WIDTH * HEIGHT; i++)
+		{
+			buffer[i] = BLACK;
+		}
+	}
+}
 
 bool	zero_f(float f)
 {
@@ -80,7 +107,7 @@ t_vec3	out_of_bound(t_vec3 *v)
 	// 	bounds_result.y = -1;
 	// else if (v->y > 1)
 	// 	bounds_result.y = 1;
-	// //printf("%f\n", v->z);
+	// //fprintf(stderr, "%f\n", v->z);
 	// if (v->z >= 0.98)
 	// {
 	// 	bounds_result.z = -1;

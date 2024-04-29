@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 21:22:14 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/22 02:17:03 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 20:36:01 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 // 	transformed.p[X] = vec3d->p[X] * ((float) (FOV_RAD * ASPECT_RATIO));// / vec3d->p[Z];
 // 	transformed.p[Y] = vec3d->p[Y] * ((float) FOV_RAD);// / vec3d->p[Z];
 // 	transformed.p[Z] = vec3d->p[Z] * ((float) Z_NORM) + ((float) Z_OFFSET);
-// 	printf("base: {%f, %f, %f} transformed: {%f, %f, %f}\n", vec3d->p[X], vec3d->p[Y], vec3d->p[Z], transformed.p[X], transformed.p[Y], transformed.p[Z]);
+// 	fprintf(stderr, "base: {%f, %f, %f} transformed: {%f, %f, %f}\n", vec3d->p[X], vec3d->p[Y], vec3d->p[Z], transformed.p[X], transformed.p[Y], transformed.p[Z]);
 // 	return (transformed);
 // }
 
@@ -32,7 +32,7 @@ uint32_t	lerp_color(uint32_t max_col, float strength)
 
 	if (strength < 0.0 || strength > 1.0)
 	{
-		printf("error lerp color\n");
+		fprintf(stderr, "error lerp color\n");
 		exit (1);
 	}
 	result = (uint32_t)roundf(((max_col & 0xFF) * strength));

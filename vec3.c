@@ -28,7 +28,7 @@ void	unit_vec3(t_vec3 *v)
 		v->z /= len;
 	}
 	else if (v->w == 3)
-		printf("unable to make uinit vec: to close to zero: %f\n", sum);
+		fprintf(stderr, "unable to make uinit vec: to close to zero: %f\n", sum);
 }
 
 // rotation_matrix_x
@@ -175,7 +175,7 @@ t_vec3 v3_random(void)
 	
 	v.x = generate_random_float();
 	//((float)rand()) / RAND_MAX;
-	printf("%f\n", v.x);
+	fprintf(stderr, "%f\n", v.x);
 	//v.x -= 0.5;
 	//v.x *= 2;
 	// v.x *= 4.0;
@@ -228,7 +228,7 @@ void div_vec3(t_vec3 *v, float a)
 {
 	if (zero_f(a))
 	{
-		printf("zero div!\n");
+		fprintf(stderr, "zero div!\n");
 		exit(1);
 	}
 	v->x /= a;
@@ -257,52 +257,52 @@ void	print_vec3(t_vec3 v, char *msg)
 {
 	if (!msg)
 	{
-		printf("x: %.2f, y: %.2f z: %.2f w: %.2f u: %.2f v: %.2f", v.x, v.y, v.z, v.w, v.u, v.v);
+		fprintf(stderr, "x: %.2f, y: %.2f z: %.2f w: %.2f u: %.2f v: %.2f", v.x, v.y, v.z, v.w, v.u, v.v);
 		if (v.mtl)
 		{
-			printf("\n");
-			//printf(" mtl: %s\n", v.mtl->name);
+			fprintf(stderr, "\n");
+			//fprintf(stderr, " mtl: %s\n", v.mtl->name);
 		}
 		else
 		{
-			printf(" mtl: none\n");
+			fprintf(stderr, " mtl: none\n");
 		}
 	}
 	else
 	{
-		printf("%s x: %.2f, y: %.2f z: %.2f w: %.2f u: %.2f v: %.2f", msg, v.x, v.y, v.z, v.w, v.u, v.v);
+		fprintf(stderr, "%s x: %.2f, y: %.2f z: %.2f w: %.2f u: %.2f v: %.2f", msg, v.x, v.y, v.z, v.w, v.u, v.v);
 		if (v.mtl)
 		{
-			printf("\n");
-			//printf(" mtl: %s\n", v.mtl->name);
+			fprintf(stderr, "\n");
+			//fprintf(stderr, " mtl: %s\n", v.mtl->name);
 		}
 		else
 		{
-			printf(" mtl: none\n");
+			fprintf(stderr, " mtl: none\n");
 		}
 	}
 	// if (!msg)
 	// {
-	// 	printf("x: %.2f, y: %.2f z: %.2f w: %.2f u: %.2f v: %.2f", v.x, v.y, v.z, v.w, v.u, v.v);
+	// 	fprintf(stderr, "x: %.2f, y: %.2f z: %.2f w: %.2f u: %.2f v: %.2f", v.x, v.y, v.z, v.w, v.u, v.v);
 	// 	if (v.mtl)
 	// 	{
-	// 		printf(" mtl: %s\n", v.mtl->name);
+	// 		fprintf(stderr, " mtl: %s\n", v.mtl->name);
 	// 	}
 	// 	else
 	// 	{
-	// 		printf(" mtl: none\n");
+	// 		fprintf(stderr, " mtl: none\n");
 	// 	}
 	// }
 	// else
 	// {
-	// 	printf("%s x: %.2f, y: %.2f z: %.2f w: %.2f u: %.2f v: %.2f", msg, v.x, v.y, v.z, v.w, v.u, v.v);
+	// 	fprintf(stderr, "%s x: %.2f, y: %.2f z: %.2f w: %.2f u: %.2f v: %.2f", msg, v.x, v.y, v.z, v.w, v.u, v.v);
 	// 	if (v.mtl)
 	// 	{
-	// 		printf(" mtl: %s\n", v.mtl->name);
+	// 		fprintf(stderr, " mtl: %s\n", v.mtl->name);
 	// 	}
 	// 	else
 	// 	{
-	// 		printf(" mtl: none\n");
+	// 		fprintf(stderr, " mtl: none\n");
 	// 	}
 	// }
 }

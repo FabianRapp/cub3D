@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/29 18:13:29 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 20:21:44 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@
 #define TEAL 0xFF808000
 #define PINK 0xFFFF80FF
 #define LIME 0xFF80FF00
-
+#define LIGHT_GREY 0xFFD3D3D3
+#define DARK_GREY 0xFFA9A9A9
 //=== DEFAULT KEY BINDS======
 
 #define FORWARD_KEY MLX_KEY_W
@@ -88,7 +89,7 @@
 
 //=============================
 
-#define MOUSE_SENS_BASE 0.0001f * 2
+#define MOUSE_SENS_BASE 0.0001f * 6
 
 #define X 0
 #define Y 1
@@ -181,7 +182,7 @@ typedef struct s_triangle
 	uint32_t	col;
 	t_vec3		centroid;
 	t_vec3		normal;
-	t_vec3		obj_normal[3];
+	t_vec3		obj_normal[3]; 
 	
 }	t_triangle;
 
@@ -244,7 +245,7 @@ typedef struct s_settings
 	uint8_t	cursor_hide:1;
 	uint8_t	disable_cursor:1;
 	uint8_t	paused:1;
-	uint8_t	menu_state:2;
+	
 	float	mouse_sens;
 }	t_settings;
 
@@ -322,6 +323,8 @@ t_vec3	out_of_bound(t_vec3 *v);
 t_vec3	out_of_bound_triangle(t_triangle *tri);
 t_vec3	out_of_bound_triangle_projeceted(t_triangle *projected);
 bool	zero_f(float f);
+void	reset_pixel_buffer(uint8_t *pixels, float *depth);
+void	ft_free_img(t_main *main_data, mlx_image_t **img);
 
 void	ft_put_pixel(uint8_t *pixel_buffer, int x, int y, int color);
 void	ft_put_pixel_fin_index(uint8_t *pixel_buffer, int index, int color);
@@ -406,7 +409,7 @@ void	jump_key_handler(mlx_key_data_t keydata, void *param);
 void	settings_key_handler(mlx_key_data_t keydata, t_main *main_data);
 void	key_hook(mlx_key_data_t keydata, void *param);
 void	cursor_hook(double xpos, double ypos, void* param);
-
+void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *param);
 //to_replace.c
 float	generate_random_float();
 

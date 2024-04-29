@@ -6,12 +6,13 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:30:59 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/29 18:13:22 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 21:02:32 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 #include <MLX42.h>
+#include <menu.h>
 
 void	wasd_key_handler(mlx_key_data_t keydata, void *param)
 {
@@ -67,7 +68,7 @@ void	settings_key_handler(mlx_key_data_t keydata, t_main *main_data)
 	{
 		if (main_data->settings.cursor_lock)
 		{
-			//main_data->settings.cursor_lock = false;
+			main_data->settings.cursor_lock = false;
 			main_data->settings.cursor_hide = false;
 			mlx_set_cursor_mode(main_data->mlx, MLX_MOUSE_NORMAL);
 		}
@@ -89,16 +90,30 @@ void	settings_key_handler(mlx_key_data_t keydata, t_main *main_data)
 
 void	toggl_menu_state(t_main *main_data)
 {
-	if (main_data->settings.menu_state == MENU_OPENING || main_data->settings.menu_state == MENU_CLOSING)
+	if (main_data->menu.state == MENU_OPENING || main_data->menu.state == MENU_CLOSING)
 		return ;
-	else if (main_data->settings.menu_state == MENU_CLOSED)
-		main_data->settings.menu_state = MENU_OPENING;
-	else if (main_data->settings.menu_state == MENU_OPEN)
-		main_data->settings.menu_state = MENU_CLOSING;
+	else if (main_data->menu.state == MENU_CLOSED)
+		main_data->menu.state = MENU_OPENING;
+	else if (main_data->menu.state == MENU_OPEN)
+		main_data->menu.state = MENU_CLOSING;
+}
+
+void	key_hook_menu(mlx_key_data_t keydata, t_main *main_data)
+{
+	if (keydata.key == MENU_KEY && keydata.action == MLX_PRESS)
+	{
+		toggl_menu_state(main_data);
+		return ;
+	}
 }
 
 void	key_hook(mlx_key_data_t keydata, void *param)
 {
+	if (((t_main *)param)->menu.state != MENU_CLOSED)
+	{
+		key_hook_menu(keydata, (t_main *)param);
+		return ;
+	}
 	if (keydata.key == FORWARD_KEY || keydata.key == LEFT_KEY || keydata.key == BACKWARDS_KEY || keydata.key == RIGHT_KEY)
 		wasd_key_handler(keydata, param);
 	if (keydata.key == JUMP_KEY || keydata.key == NEGATIVE_JUMP_KEY)
@@ -109,6 +124,92 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		toggl_menu_state((t_main *)param);
 }
 
+t_entry_field	*clicked_menu_field(t_main *main_data, int xpos, int ypos)
+{
+	t_entry_field	*field;
+	
+
+	field = &main_data->menu.mouse_sens;
+	if (xpos >= field->xpos && xpos < field->xpos + field->width
+		&& ypos >= field->ypos && ypos < field->ypos + field->height)
+	{
+		return (field);
+	}
+	return (NULL);
+}
+
+void	menu_mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, t_main *main_data)
+{
+	t_entry_field	*field;
+	int				xpos;
+	int				ypos;
+
+	mlx_get_mouse_pos(main_data->mlx, &xpos, &ypos);
+	if (action == MLX_PRESS)
+	{
+		field = clicked_menu_field(main_data, xpos, ypos);
+		if (!field)
+			return ;
+		main_data->menu.clicked_field = field;
+		return ;
+	}
+	else if (action == MLX_REPEAT || !main_data->menu.clicked_field)
+		return ;
+	else if (action == MLX_RELEASE)
+	{
+		main_data->menu.clicked_field = NULL;
+		return ;
+	}
+}
+
+void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *param)
+{
+	t_main	*main_data;
+
+	main_data = (t_main *)param;
+	if (main_data->menu.state != MENU_CLOSED)
+	{
+		menu_mouse_hook(button, action, mods, main_data);
+		return ;
+	}
+}
+
+void	cursor_menu(double xpos, double ypos, t_main *main_data)
+{
+	t_menu	*menu;
+	t_entry_field	*field;
+
+	menu = &main_data->menu;
+	field = menu->clicked_field;
+	if (field)
+	{
+		if (field->is_slider)
+		{
+			if ((int)xpos <= field->xpos)
+			{
+				fprintf(stderr, "1\n");
+				field->val = 0.001f;
+			}
+			else if ((int)xpos >= field->xpos + field->width)
+			{
+				fprintf(stderr, "2\n");
+				field->val = 1.0f;
+			}
+			else if ((int)xpos > field->xpos)
+			{
+				field->val = (xpos - field->xpos) / field->width;
+				field->val = fmax(0.0f, fmin(1.0f, field->val));
+			}
+			else
+			{
+				fprintf(stderr, "error cursor_menu\n");
+				ft_error(main_data);
+			}
+			printf("field->val: %f\n", field->val);
+		}
+	}
+}
+
 void	cursor_hook(double xpos, double ypos, void* param)
 {
 	float			x_dist;
@@ -116,15 +217,15 @@ void	cursor_hook(double xpos, double ypos, void* param)
 	t_main			*main_data;
 
 	main_data = (t_main *)param;
+	if (main_data->menu.state != MENU_CLOSED)
+	{
+		cursor_menu(xpos, ypos, main_data);
+		return ;
+	}
 	x_dist = xpos - WIDTH / 2;
 	y_dist = ypos - HEIGHT / 2;
-	// x_dist -= WIDTH / 2 - main_data->controls.last_mouse_pos[X];
-	// y_dist -= HEIGHT / 2 - main_data->controls.last_mouse_pos[Y];
-	printf("x_dist : %f y_dist: %f\n", x_dist, y_dist);
-	// main_data->pitch += ((float)M_PI * MOUSE_SENS_BASE) * y_dist;
-	// main_data->yaw += ((float)M_PI * MOUSE_SENS_BASE) * x_dist;
-	main_data->pitch += main_data->settings.mouse_sens * y_dist;
-	main_data->yaw += main_data->settings.mouse_sens * x_dist;
+	main_data->pitch += main_data->settings.mouse_sens * y_dist * MOUSE_SENS_BASE;
+	main_data->yaw += main_data->settings.mouse_sens * x_dist * MOUSE_SENS_BASE;
 	main_data->look_direct = v3_add(main_data->look_direct, get_direction(main_data->pitch, main_data->yaw, main_data->roll));
 	unit_vec3(&main_data->look_direct);
 	if (main_data->settings.cursor_lock)

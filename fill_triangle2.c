@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 05:11:27 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/24 09:07:47 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 18:19:57 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,10 @@ void	fill_min_max_xy(int a[2], int b[2], int c[2], int min[2], int max[2])
 // 			cur[X] = x;
 // 			if (edge_fn(a, b, cur) && edge_fn(a, c, cur) && edge_fn(b, c, cur))
 // 			{
-// 				//printf("x: %d y: %d\n", x, y);
+// 				//fprintf(stderr, "x: %d y: %d\n", x, y);
 // 				((uint32_t *)img->pixels)[x + y_index] = color;
 // 			}
-// 			//printf("index: %d (max: %d)\n", x + y * WIDTH, WIDTH * HEIGHT);
+// 			//fprintf(stderr, "index: %d (max: %d)\n", x + y * WIDTH, WIDTH * HEIGHT);
 // 		}
 // 	}
 // }
@@ -101,12 +101,12 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 	float		*depth;
 	uint32_t	*pixels = (uint32_t *)img->pixels;
 
-	//printf("here\n");
+	//fprintf(stderr, "here\n");
 	depth = mesh->main->depth;
 	sort_vertexes_for_y(projected);
 	if (!(p[0].y <= p[1].y && p[1].y <= p[2].y))
 	{
-		printf("error sort_vertexes_for_y 1: %f 2: %f 3: %f\n", p[0].y, p[1].y, p[2].y);
+		fprintf(stderr, "error sort_vertexes_for_y 1: %f 2: %f 3: %f\n", p[0].y, p[1].y, p[2].y);
 		exit(1);
 	}
 	//float	m1 = slope_2d_x_per_y(p[0], p[1]);

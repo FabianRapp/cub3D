@@ -41,7 +41,8 @@ SOURCES= \
 	fill_triangle2.c \
 	old.c \
 	clipping.c \
-	key_handlers.c 
+	key_handlers.c \
+	menu.c
 
 OBJECTS=$(SOURCES:.c=.o)
 MAIN_OB=$(MAIN:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:38:58 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/26 16:27:45 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 18:19:57 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,26 +80,26 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 	t_mtl	*mtl = projected->p->mtl;
 	if (!mtl)
 	{
-		printf("no mtl!\n");
+		fprintf(stderr, "no mtl!\n");
 		exit(1);
 	}
 	if (!mtl->texture)
 	{
-		printf("no texture\n");
+		fprintf(stderr, "no texture\n");
 		exit(1);
 	}
 	abs_uv(p);//needed for now to remove negative values
 	mlx_texture_t	*texture = mtl->texture;
 	int texture_start_x = (texture->width - 1) * p->u;
 	int texture_start_y = (texture->height - 1) * (1 - p->v);
-	//printf("y start: %d\n", )
+	//fprintf(stderr, "y start: %d\n", )
 	//uint32_t	color = ((uint32_t *)texture->pixels)[texture_start_x + texture_start_y * texture->width];
 	
 	int	center_x = (int)((texture->width - 1) *((p[0].u + p[1].u + p[2].u) / 3.0f));
 	int	center_y = (int)((texture->height - 1) * ((3.0f - p[0].v - p[1].v - p[2].v) / (3.0f)));
-	//printf("width: %d height: %d\n", texture->width, texture->height);
-	//printf("center_x: %d center_y: %d\n", center_x, center_y);
-	//printf("v1: %f v2: %f v3: %f\n",  p[0].v, p[1].v, p[2].v);
+	//fprintf(stderr, "width: %d height: %d\n", texture->width, texture->height);
+	//fprintf(stderr, "center_x: %d center_y: %d\n", center_x, center_y);
+	//fprintf(stderr, "v1: %f v2: %f v3: %f\n",  p[0].v, p[1].v, p[2].v);
 	t_color_split	color = ((t_color_split *)texture->pixels)[center_x + center_y * texture->width];
 	color.argb[R] *= color_scalars.v[R];
 	color.argb[G] *= color_scalars.v[G];
@@ -110,7 +110,7 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 	sort_vertexes_for_y(projected);
 	if (!(p[0].y <= p[1].y && p[1].y <= p[2].y))
 	{
-		printf("error sort_vertexes_for_y 1: %f 2: %f 3: %f\n", p[0].y, p[1].y, p[2].y);
+		fprintf(stderr, "error sort_vertexes_for_y 1: %f 2: %f 3: %f\n", p[0].y, p[1].y, p[2].y);
 		exit(1);
 	}
 	//float	m1 = slope_2d_x_per_y(p[0], p[1]);
@@ -172,7 +172,7 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 						// 	// if (cur_x_total_progress > 0)
 						// 	// 	cur_x_total_progress = 1.0f;
 						// 	int	cur_x_color_index = (texture->width - 1) * ((cur_x_total_progress * (p[1].u - p[0].u)) + p[0].u);
-						// 	printf("total_x_progress: %f color x index: %d color y index: %d\n", cur_x_total_progress, cur_x_color_index, color_y_index);
+						// 	fprintf(stderr, "total_x_progress: %f color x index: %d color y index: %d\n", cur_x_total_progress, cur_x_color_index, color_y_index);
 						// 	color =  ((uint32_t *)texture->pixels)[cur_x_color_index + color_y_index];
 						// }
 						depth[fin_index] = cur_z;

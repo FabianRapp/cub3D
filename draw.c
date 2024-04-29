@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/28 16:02:18 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 18:19:57 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,24 +59,6 @@ void	draw_line(mlx_image_t *image, int x1, int x2, int y1, int y2, int color)
 		direct_y++;
 	dist_x = abs(x2 - pos[X]);
 	dist_y = abs(y2 - pos[Y]);
-	// if (!dist_x + dist_y)
-	// {
-	// 	printf("error no dist\n");
-	// 	if (color == RED)
-	// 		printf("red\n");
-	// 	else if (color == GREEN)
-	// 		printf("green\n");
-	// 	else if (color == BLUE)
-	// 		printf("blue\n");
-	// 	else
-	// 		printf("other color\n");
-	//}
-	// if (color == RED)// && dist_x + dist_y)
-	// {
-	// 	printf("target x: %d target y: %d\n", x2, y2);
-	// 	printf("pos x: %d pos y: %d\n", pos[X], pos[Y]);
-	// 	//printf("red dist: %d\n", dist_x + dist_y);
-	// }
 	if (pos[X] == x2 || pos[Y] == y2)
 	{
 		if (pos[X] == x2)
@@ -95,9 +77,6 @@ void	draw_line(mlx_image_t *image, int x1, int x2, int y1, int y2, int color)
 			{
 				if (pos[X] >= 0 && pos[X] < WIDTH && pos[Y] >= 0 && pos[Y] < HEIGHT)
 					ft_put_pixel(image->pixels, pos[X], pos[Y], color);
-					//mlx_put_pixel(image, pos[X], pos[Y], color);
-				//else
-				//	printf("error: xpos: %d ypos: %d\n", pos[X], pos[Y]);
 				pos[X] += direct_x;
 			}
 		}
@@ -105,19 +84,19 @@ void	draw_line(mlx_image_t *image, int x1, int x2, int y1, int y2, int color)
 			ft_put_pixel(image->pixels, pos[X], pos[Y], color);
 			//mlx_put_pixel(image, pos[X], pos[Y], color);
 		//else
-			//printf("error: xpos: %d ypos: %d\n", pos[X], pos[Y]);
+			//fprintf(stderr, "error: xpos: %d ypos: %d\n", pos[X], pos[Y]);
 		return ;
 	}
 
 	last_error = dist_x - dist_y;
 	while (pos[X] != x2 || pos[Y] != y2)
 	{
-		//printf("x: %d y: %d\n", pos[X], pos[Y]);
+		//fprintf(stderr, "x: %d y: %d\n", pos[X], pos[Y]);
 		if (pos[X] >= 0 && pos[X] < WIDTH && pos[Y] >= 0 && pos[Y] < HEIGHT)
 			ft_put_pixel(image->pixels, pos[X], pos[Y], color);
 			//mlx_put_pixel(image, pos[X], pos[Y], color);
 	//	else
-			//printf("error: xpos: %d ypos: %d\n", pos[X], pos[Y]);
+			//fprintf(stderr, "error: xpos: %d ypos: %d\n", pos[X], pos[Y]);
 		cur_error = 2 * last_error;
 		if (cur_error >= -dist_y)
 		{
@@ -134,7 +113,7 @@ void	draw_line(mlx_image_t *image, int x1, int x2, int y1, int y2, int color)
 		ft_put_pixel(image->pixels, pos[X], pos[Y], color);
 		//mlx_put_pixel(image, pos[X], pos[Y], color);
 	else {
-		//printf("error: xpos: %d ypos: %d\n", pos[X], pos[Y]);
+		//fprintf(stderr, "error: xpos: %d ypos: %d\n", pos[X], pos[Y]);
 	}
 }
 
@@ -160,8 +139,8 @@ void	print_color(t_color_split color)
 
 	//col.col = color;
 	col = color;
-	printf("total color: %x\n", col.col);
-	printf("a: %x r: %x g: %x b: %x\n", col.argb[A], col.argb[R], col.argb[G], col.argb[B]);
+	fprintf(stderr, "total color: %x\n", col.col);
+	fprintf(stderr, "a: %x r: %x g: %x b: %x\n", col.argb[A], col.argb[R], col.argb[G], col.argb[B]);
 }
 
 void	init_light(t_light *light, t_vec3 direct, uint32_t color, float base_stren)
@@ -220,7 +199,7 @@ t_light	init_day_light(double d_time)
 	timer += d_time;
 	if (timer > 1)
 	{
-		//printf("day time: %f\n", 24 * day_progress);
+		//fprintf(stderr, "day time: %f\n", 24 * day_progress);
 		timer = 0;
 	}
 	float	light_intens = 1 - fabs(0.5 - day_progress);
@@ -375,9 +354,9 @@ void	draw_mesh(t_mesh *mesh)
 		if (!zero_f(projected.p[2].w))
 			div_vec3(projected.p + 2, projected.p[2].w);
 	
-		// printf("p1 x: %f, y: %f z: %f\n", transformed.p[0].x, transformed.p[0].y, transformed.p[0].z);
-		// printf("p2 x: %f, y: %f z: %f\n", projected.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
-		// printf("p3 x: %f, y: %f z: %f\n\n", projected.p[2].x, rotated_z.p[2].y, rotated_z.p[2].z);
+		// fprintf(stderr, "p1 x: %f, y: %f z: %f\n", transformed.p[0].x, transformed.p[0].y, transformed.p[0].z);
+		// fprintf(stderr, "p2 x: %f, y: %f z: %f\n", projected.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
+		// fprintf(stderr, "p3 x: %f, y: %f z: %f\n\n", projected.p[2].x, rotated_z.p[2].y, rotated_z.p[2].z);
 
 		scale_to_screen(&projected);
 

@@ -6,33 +6,15 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/29 18:15:07 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 20:33:38 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 #include <MLX42.h>
+#include <menu.h>
 
-void	reset_pixel_buffer(uint8_t *pixels, float *depth)
-{
-	uint32_t	*buffer = (uint32_t *)pixels;
 
-	if (depth)
-	{
-		for (int i = 0; i < WIDTH * HEIGHT; i++)
-		{
-			buffer[i] = BLACK;
-			depth[i] = Z_FAR;
-		}
-	}
-	else
-	{
-		for (int i = 0; i < WIDTH * HEIGHT; i++)
-		{
-			buffer[i] = BLACK;
-		}
-	}
-}
 
 void	handle_movement_per_frame(t_main *main_data)
 {
@@ -53,9 +35,6 @@ void	handle_movement_per_frame(t_main *main_data)
 		unit_vec3(&forward);
 		t_vec3 left = cross_product(main_data->up, forward);
 		unit_vec3(&left);
-		print_vec3(left, "left: ");
-		print_vec3(forward, "forward: ");
-		print_vec3(main_data->up, "up: ");
 		main_data->camera.x -= main_data->mlx->delta_time * controls.movement_speed_left * left.x;
 		main_data->camera.z -= main_data->mlx->delta_time * controls.movement_speed_left * left.z;
 		//print_vec3(main_data->camera, "new camera: ");
@@ -70,9 +49,6 @@ void	handle_movement_per_frame(t_main *main_data)
 		unit_vec3(&forward);
 		t_vec3 right = cross_product(main_data->up, forward);
 		unit_vec3(&right);
-		print_vec3(right, "right: ");
-		print_vec3(forward, "forward: ");
-		print_vec3(main_data->up, "up: ");
 		main_data->camera.x += main_data->mlx->delta_time * controls.movement_speed_right * right.x;
 		main_data->camera.z += main_data->mlx->delta_time * controls.movement_speed_right * right.z;
 		//print_vec3(main_data->camera, "new camera: ");
@@ -101,37 +77,7 @@ void	handle_movement_per_frame(t_main *main_data)
 	}
 }
 
-void	create_menu_img(t_main *main_data)
-{
-	main_data->settings.menu_state = MENU_OPEN;
-	if (main_data->menu.img)
-		mlx_delete_image(main_data->mlx, main_data->menu.img);
-	main_data->menu.img = mlx_new_image(main_data->mlx, WIDTH, HEIGHT);
-	if (!main_data->menu.img || mlx_image_to_window(main_data->mlx, main_data->menu.img, 0, 0))
-		ft_error(main_data);
-	reset_pixel_buffer(main_data->menu.img->pixels, NULL);
-	
-}
 
-bool	menu_handler(t_main *main_data)
-{
-	if (main_data->settings.menu_state == MENU_CLOSED)
-		return (false);
-	else if (main_data->settings.menu_state == MENU_OPEN)
-		return (true);
-	else if (main_data->settings.menu_state == MENU_OPENING)
-	{
-		create_menu_img(main_data);
-	}
-	else if (main_data->settings.menu_state == MENU_CLOSING)
-	{
-		if (main_data->menu.img)
-			mlx_delete_image(main_data->mlx, main_data->menu.img);
-		main_data->menu.img = NULL;
-		main_data->settings.menu_state = MENU_CLOSED;
-	}
-	return (true);
-}
 
 // Print the window width and height.
 void	ft_hook(void* param)
@@ -164,7 +110,7 @@ void	ft_hook(void* param)
 	// pixel++;
 	// if (pixel >= WIDTH * HEIGHT)
 	// {
-	// 	printf("filled !\n");
+	// 	fprintf(stderr, "filled !\n");
 	// 	usleep(30000000);
 	// 	pixel = 0;
 	// 	color = ~color;
@@ -234,7 +180,7 @@ void	cleanup_exit(void *m_data)
 	t_main	*main_data;
 
 	main_data = (t_main *)m_data;
-	printf("exiting..\n");
+	fprintf(stderr, "exiting..\n");
 	exit(0);
 }
 
@@ -243,7 +189,7 @@ void	init_cursor(t_main *main_data)
 	mlx_set_cursor_mode(main_data->mlx, MLX_MOUSE_DISABLED);
 	main_data->settings.cursor_lock = true;
 	main_data->settings.cursor_hide = true;
-	main_data->settings.mouse_sens = (float)MOUSE_SENS_BASE;
+	main_data->settings.mouse_sens = 0.5;
 	//mlx_set_mouse_pos(main_data->mlx, WIDTH / 2, HEIGHT / 2); does not work before loop
 	mlx_set_cursor_mode(main_data->mlx, MLX_MOUSE_HIDDEN);
 }
@@ -251,7 +197,7 @@ void	init_cursor(t_main *main_data)
 void	init_settings(t_main *main_data)
 {
 	main_data->settings.paused = false;
-	main_data->settings.menu_state = MENU_CLOSED;
+	main_data->menu.state = MENU_CLOSED;
 	init_cursor(main_data);
 }
 
@@ -268,8 +214,9 @@ int32_t	main(void)
 	// while (!m_data.monitor_width)
 	// {
 	// 	mlx_get_monitor_size(i++, &m_data.monitor_width, &m_data.monitor_height);
-	// 	printf("monitor width: %d monitor height: %d\n", m_data.monitor_width, m_data.monitor_height);
+	// 	fprintf(stderr, "monitor width: %d monitor height: %d\n", m_data.monitor_width, m_data.monitor_height);
 	// }
+	ft_bzero(&m_data.menu, sizeof(m_data.menu));
 	ft_bzero(&m_data, sizeof(m_data));
 	m_data.controls.jump_height = 3;
 	m_data.controls.movement_speed_straight = 3;
@@ -326,12 +273,12 @@ int32_t	main(void)
 	// NOTE: Do this before calling mlx_loop!
 	// int	pos_a[2] = {200, 200};
 	// int	pos_b[2] = {100, 100};
-
-	mlx_key_hook(m_data.mlx, &key_hook, &m_data);
-	mlx_loop_hook(m_data.mlx, display_fps_hook, m_data.mlx);
-	mlx_cursor_hook(m_data.mlx, cursor_hook, &m_data);
-	mlx_loop_hook(m_data.mlx, ft_hook, &m_data);
-	mlx_close_hook(m_data.mlx, cleanup_exit, &m_data);
+	mlx_mouse_hook(m_data.mlx, mouse_hook, &m_data); // first
+	mlx_key_hook(m_data.mlx, &key_hook, &m_data); // second
+	mlx_cursor_hook(m_data.mlx, cursor_hook, &m_data); // third
+	mlx_loop_hook(m_data.mlx, display_fps_hook, m_data.mlx); // dosnt matter when
+	mlx_loop_hook(m_data.mlx, ft_hook, &m_data); // last
+	mlx_close_hook(m_data.mlx, cleanup_exit, &m_data); // dosnt matter when
 	init_settings(&m_data);
 	mlx_loop(m_data.mlx);
 	mlx_terminate(m_data.mlx);

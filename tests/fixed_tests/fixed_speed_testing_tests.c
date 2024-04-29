@@ -78,7 +78,7 @@ struct timeval	timer(char *msg)
 	{
 		diff = time_diff(start_time, fin_time);
 		//if (msg)
-			//printf("%ssecond: %ld\nadditonal microseconds: %d\n", msg, diff.tv_sec, diff.tv_usec);
+			//fprintf(stderr, "%ssecond: %ld\nadditonal microseconds: %d\n", msg, diff.tv_sec, diff.tv_usec);
 		first = true;
 		return fin_time;
 	}
@@ -92,7 +92,7 @@ void	log_diff(struct timeval diff, char *title)
 	FILE *fd = fopen(LOG_FILE, "a");
 	int64_t	micro_diff = diff.tv_sec * 1000000 + diff.tv_usec;
 	fprintf(fd, "%s: %lld\n", title, micro_diff);
-	printf("%s: %lld\n", title, micro_diff);
+	fprintf(stderr, "%s: %lld\n", title, micro_diff);
 	fclose(fd);
 }
 

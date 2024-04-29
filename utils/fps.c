@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:30:36 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/29 15:49:01 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 18:19:57 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 
 void	print_instance(mlx_instance_t *instance)
 {
-	printf("--------------Instance---------------\n");
+	fprintf(stderr, "--------------Instance---------------\n");
 	if (!instance)
 	{
-		printf("no instance!!\n");
+		fprintf(stderr, "no instance!!\n");
 		return ;
 	}
-	printf("x: %d\n", instance->x);
-	printf("y: %d\n", instance->y);
-	printf("z: %d\n", instance->z);
+	fprintf(stderr, "x: %d\n", instance->x);
+	fprintf(stderr, "y: %d\n", instance->y);
+	fprintf(stderr, "z: %d\n", instance->z);
 	if (instance->enabled)
-		printf("enabled\n");
+		fprintf(stderr, "enabled\n");
 	else
-		printf("disabled\n");
-	printf("-------------------------------------\n");
+		fprintf(stderr, "disabled\n");
+	fprintf(stderr, "-------------------------------------\n");
 }
 
 // needs to be called once during init and then when ever needed
@@ -153,7 +153,7 @@ void	display_fps(mlx_t *mlx, int fps, mlx_instance_t instance, int i)
 			i++;
 		}
 		i = 0;
-		// printf("digit width: %d\ndigit height: %d\n", digit_width, digit_hight);
+		// fprintf(stderr, "digit width: %d\ndigit height: %d\n", digit_width, digit_hight);
 		instance.x = mlx->width - (digit_width * digit_count);//digit_width;
 		instance.y = digit_hight / 2;//digit_hight;
 		instance.z = FPS_DEPTH;
@@ -181,7 +181,7 @@ void	display_fps_hook(void *param)
 	{
 		fps = (int)(frames / sum_delta_time);
 		display_fps(mlx, fps, instance, 0);
-		//printf("%d\n", fps);
+		//fprintf(stderr, "%d\n", fps);
 		sum_delta_time = 0.001f;
 		frames = 0;
 	}
