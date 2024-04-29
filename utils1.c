@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 05:43:13 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/26 12:28:31 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 16:10:53 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ bool	zero_f(float f)
 	return (false);
 }
 
-void ft_error(void)
+void ft_error(t_main *main_data)
 {
 	fprintf(stderr, "%s", mlx_strerror(mlx_errno));
-	exit(EXIT_FAILURE);
+	cleanup_exit(main_data);
 }
 
 t_vec3	out_of_bound_projected(t_vec3 *v)

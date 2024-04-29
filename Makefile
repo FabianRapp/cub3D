@@ -40,7 +40,8 @@ SOURCES= \
 	fill_triangle.c \
 	fill_triangle2.c \
 	old.c \
-	clipping.c 
+	clipping.c \
+	key_handlers.c 
 
 OBJECTS=$(SOURCES:.c=.o)
 MAIN_OB=$(MAIN:.c=.o)

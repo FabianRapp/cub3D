@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:30:36 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/20 05:51:48 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 15:49:01 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void	display_fps(mlx_t *mlx, int fps, mlx_instance_t instance, int i)
 		// printf("digit width: %d\ndigit height: %d\n", digit_width, digit_hight);
 		instance.x = mlx->width - (digit_width * digit_count);//digit_width;
 		instance.y = digit_hight / 2;//digit_hight;
-		instance.z = HIGHEST_IMG_DEPTH;
+		instance.z = FPS_DEPTH;
 	}
 	//print_instance(&instance);
 

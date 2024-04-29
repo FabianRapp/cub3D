@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/28 16:04:58 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 18:15:07 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,40 +17,29 @@ void	reset_pixel_buffer(uint8_t *pixels, float *depth)
 {
 	uint32_t	*buffer = (uint32_t *)pixels;
 
-	for (int i = 0; i < WIDTH * HEIGHT; i++)
+	if (depth)
 	{
-		buffer[i] = BLACK;
-		depth[i] = Z_FAR;
+		for (int i = 0; i < WIDTH * HEIGHT; i++)
+		{
+			buffer[i] = BLACK;
+			depth[i] = Z_FAR;
+		}
 	}
-	
+	else
+	{
+		for (int i = 0; i < WIDTH * HEIGHT; i++)
+		{
+			buffer[i] = BLACK;
+		}
+	}
 }
 
 void	handle_movement_per_frame(t_main *main_data)
 {
 	t_controls			controls;
 	t_vec3				movement = {0, 0, 0, .w = 1};
-	// t_vec3				x_z_unit_look_direct;
-
-	// x_z_unit_look_direct = main_data->look_direct;
-	// float	len_x_z_look = x_z_unit_look_direct.x + x_z_unit_look_direct.z;
-	// x_z_unit_look_direct.x = (x_z_unit_look_direct.x * 2) / len_x_z_look;
-	// x_z_unit_look_direct.z = (x_z_unit_look_direct.z * 2) / len_x_z_look;
 
 	controls = main_data->controls;
-	// if (state->up)
-	// {
-	// 	main_data->look_direct.y += 0.1;
-	// }
-	// // else if (state->left)
-	// // {
-	// // }
-	// // else if (state->right)
-	// // {
-	// // }
-	// else if (state->down)
-	// {
-	// 	main_data->look_direct.y -= 0.1;
-	// }
 	if (controls.state.up)
 	{
 		movement.x += main_data->look_direct.x * main_data->mlx->delta_time * controls.movement_speed_straight;
@@ -60,7 +49,6 @@ void	handle_movement_per_frame(t_main *main_data)
 	if (controls.state.left)
 	{
 		t_vec3	no_y = {.x = 0.5, .y = 0, .z = 0.5, .w = 1};
-
 		t_vec3	forward = v3_sub(main_data->look_direct, main_data->camera);
 		unit_vec3(&forward);
 		t_vec3 left = cross_product(main_data->up, forward);
@@ -68,8 +56,8 @@ void	handle_movement_per_frame(t_main *main_data)
 		print_vec3(left, "left: ");
 		print_vec3(forward, "forward: ");
 		print_vec3(main_data->up, "up: ");
-		main_data->camera.x += main_data->mlx->delta_time * controls.movement_speed_left * left.x;
-		main_data->camera.z += main_data->mlx->delta_time * controls.movement_speed_left * left.z;
+		main_data->camera.x -= main_data->mlx->delta_time * controls.movement_speed_left * left.x;
+		main_data->camera.z -= main_data->mlx->delta_time * controls.movement_speed_left * left.z;
 		//print_vec3(main_data->camera, "new camera: ");
 		// movement.x += main_data->look_direct.x * main_data->mlx->delta_time * controls.movement_speed_left;
 		// movement.y += main_data->look_direct.y * main_data->mlx->delta_time * controls.movement_speed_left;
@@ -77,19 +65,16 @@ void	handle_movement_per_frame(t_main *main_data)
 	}
 	if (controls.state.right)
 	{
-		t_vec3	no_y;
-		t_vec3	normal;
-		const t_vec3	origin = {.x = 0, .y = 0, .z = 0, .w = 1};
-
-		no_y = main_data->look_direct;
-		no_y.y = 0;
-		normal = cross_product(v3_sub(main_data->look_direct, origin), v3_sub(no_y, origin));
-		unit_vec3(&normal);
-		normal.w = 3;
-		// print_vec3(normal, "normal: ");
-		normal.w = 1;
-		main_data->camera.x -= main_data->mlx->delta_time * controls.movement_speed_left * normal.x;
-		main_data->camera.z -= main_data->mlx->delta_time * controls.movement_speed_left * normal.z;
+		t_vec3	no_y = {.x = 0.5, .y = 0, .z = 0.5, .w = 1};
+		t_vec3	forward = v3_sub(main_data->look_direct, main_data->camera);
+		unit_vec3(&forward);
+		t_vec3 right = cross_product(main_data->up, forward);
+		unit_vec3(&right);
+		print_vec3(right, "right: ");
+		print_vec3(forward, "forward: ");
+		print_vec3(main_data->up, "up: ");
+		main_data->camera.x += main_data->mlx->delta_time * controls.movement_speed_right * right.x;
+		main_data->camera.z += main_data->mlx->delta_time * controls.movement_speed_right * right.z;
 		//print_vec3(main_data->camera, "new camera: ");
 		// movement.x += main_data->look_direct.x * main_data->mlx->delta_time * controls.movement_speed_straight;
 		// movement.y += main_data->look_direct.y * main_data->mlx->delta_time * controls.movement_speed_straight;
@@ -104,25 +89,52 @@ void	handle_movement_per_frame(t_main *main_data)
 	//multiply_vec3(&movement, &controls.movement_speed);
 	if (controls.state.jump)
 	{
-		//printf("jump\n");
 		movement.y -= controls.jump_height * main_data->mlx->delta_time;
 	}
 	if (controls.state.negative_jump)
 	{
-		//printf("negative jump\n");
 		movement.y += controls.jump_height * main_data->mlx->delta_time;
 	}
 	if (!zero_f(movement.x) || !zero_f(movement.y) || !zero_f(movement.z))
 	{
 		add_vec3(&main_data->camera, &movement);
-		//print_vec3(main_data->camera, "new camera: ");
 	}
-	//
-	//unit_vec3(&main_data->camera);
+}
+
+void	create_menu_img(t_main *main_data)
+{
+	main_data->settings.menu_state = MENU_OPEN;
+	if (main_data->menu.img)
+		mlx_delete_image(main_data->mlx, main_data->menu.img);
+	main_data->menu.img = mlx_new_image(main_data->mlx, WIDTH, HEIGHT);
+	if (!main_data->menu.img || mlx_image_to_window(main_data->mlx, main_data->menu.img, 0, 0))
+		ft_error(main_data);
+	reset_pixel_buffer(main_data->menu.img->pixels, NULL);
+	
+}
+
+bool	menu_handler(t_main *main_data)
+{
+	if (main_data->settings.menu_state == MENU_CLOSED)
+		return (false);
+	else if (main_data->settings.menu_state == MENU_OPEN)
+		return (true);
+	else if (main_data->settings.menu_state == MENU_OPENING)
+	{
+		create_menu_img(main_data);
+	}
+	else if (main_data->settings.menu_state == MENU_CLOSING)
+	{
+		if (main_data->menu.img)
+			mlx_delete_image(main_data->mlx, main_data->menu.img);
+		main_data->menu.img = NULL;
+		main_data->settings.menu_state = MENU_CLOSED;
+	}
+	return (true);
 }
 
 // Print the window width and height.
-void ft_hook(void* param)
+void	ft_hook(void* param)
 {
 	t_main		*main_data = param;
 	static int pixel = 0;
@@ -130,12 +142,12 @@ void ft_hook(void* param)
 	int	y = pixel / WIDTH;
 	int x = pixel - (y * WIDTH);
 
+	if (menu_handler(main_data) == true)
+		return ;
+	if (main_data->settings.paused == true)
+		return ;
 	handle_movement_per_frame(main_data);
 	ident_mat_4x4(main_data->world_mat);
-	// rot_matz_4x4()
-	// rot_matx_4x4()
-	// rot_maty_4x4()
-	// mat4x4_mult_mat4x4( , ,main_data->world_mat);
 	reset_pixel_buffer(main_data->img->pixels, main_data->depth);
 	//draw_skybox(&main_data->skybox);
 	//ft_bzero(main_data->depth, sizeof(float) * WIDTH * HEIGHT);
@@ -216,183 +228,31 @@ void	determine_centroid(t_triangle *tri)
 	tri->centroid.y = s.y / 3.0;
 	tri->centroid.z = s.z / 3.0;
 }
-void	draw_objects(int nb, t_main *m_data)
-{
-	const float max_edge_size = 0.1;
-	const float min_edge_szie = 0.01;
-	t_vec3	tetrahedron[4] = {
-		{1.71, 1.41, 2.22},  // Vertex A
-		{1.71, 2.22, 1.00},  // Vertex B
-		{2.41, 1.00, 1.00},  // Vertex C
-		{1.00, 1.00, 1.00}   // Vertex D
-	};
-	m_data->objs =  malloc(sizeof(t_mesh) * nb);
-	m_data->nb = nb;
-	// t_vec3 points[4]
-	// int indexes[24][3] = {{1,3,2}, {1,2,4}, {1,4,2}, {1,3,4}, {1,4,3}, {2,1,3}, {2,3,1}, {2,1,4}, {2,4,1}, {2,3,4}, {2,4,3}, {3,1,2}, {3,2,1}, {3,1,4}, {3,4,1}, {3,2,4}, {3,4,2}, {4,1,2}, {4,2,1}, {4,1,3}, {4,3,1}, {4,2,3}, {4,3,2}};
-	
-	for (int i = 0; i < nb; i++)
-	{
-		t_vec3	v = v3_random();
-		// mesh_arr[i].triangles = (t_triangle *) malloc(sizeof(t_triangle) * 4);
-		// mesh_arr[i].triangles->p[0] = v3_random();
-		// t_triangle tmp = {
-		// 	.p = {{v.x * 1.71, v.y * 1.41, v.z * 2.22},  // Vertex A
-		// 	 {v.x * 1.71, v.y * 2.22, v.z * 1.00},  // Vertex B
-		// 	 {v.x * 2.41, v.y * 1.00, v.z * 1.00},  // Vertex C
-		// 	 {{v.x * 1.00, v.y * 1.00, v.z * 1.00}}   // Vertex D
-		// };
-		//mesh_arr[i].triangles;
-		t_vec3	vertex[4] = {
-			{v.x * 1.71f, v.y * 1.41f, v.z * 2.22f},// Vertex A
-			{v.x * 1.71f, v.y * 2.22f, v.z * 1.00f},// Vertex B
-			{v.x * 2.41f, v.y * 1.00f, v.z * 1.00f},// Vertex C
-			{v.x * 1.00f, v.y * 1.00f, v.z * 1.00f}
-		};// Vertex D
-		for (int j = 0; j < 4; j++) {
-			//print_vec3(j[vertex], "[0]");
-		}
-		// mesh_arr[i].triangles = (t_triangle *) malloc(sizeof(t_triangle) * 24);
-		t_triangle trians[4] = {
-			{{vertex[0], vertex[1], vertex[2]}, MAGENTA, 0},
-			{{vertex[0], vertex[1], vertex[3]}, MAGENTA, 0},
-			{{vertex[1], vertex[2], vertex[3]}, MAGENTA, 0},
-			{{vertex[2], vertex[3], vertex[0]}, MAGENTA, 0},
-		};
-		// for (int j = 0; j < 4; j++) {
-		// 	print_vec3(trians->p[j], "0");
-		// }
-		// print_vec3(trians[0].p[0], "tr[0]");
-		// print_vec3(trians[1].p[0], "tr[1]");
-		// print_vec3(trians[2].p[0], "tr[2]");
-		// print_vec3(trians[3].p[0], "tr[3]");
-		//printf("\n");
-		m_data->objs[i].triangles = ft_memdup(&trians, sizeof(trians));
-		m_data->objs[i].img = mlx_new_image(m_data->mlx, WIDTH, HEIGHT);
-		if (!m_data->objs[i].img || (mlx_image_to_window(m_data->mlx, m_data->objs[i].img, 0, 0) < 0))
-			ft_error();
-		mlx_set_instance_depth(m_data->objs[i].img->instances, 2*nb - i);
-		m_data->objs[i].momentum = v3_zero();
-		m_data->objs[i].momentum.x = generate_random_float();
-		m_data->objs[i].momentum.y = generate_random_float();
-		m_data->objs[i].count = 4;
-		m_data->objs[i].d_time = &m_data->mlx->delta_time;
-		// for (int j = 0; j < 24; j++) {
-		// 	for (int k = 0; k < 3; k++) {
-		// 		t_vec3 tmp = vertex[indexes[j][k]];
-		// 		for (int L = 0; L < 3; L++) {
-		// 			mesh_arr[i].triangles->p[k].p[L] = tmp[L];
-		// 		}
-		// 	}
-		// }
-	}
-}
-#include <sys/time.h>
 
-// pauses the loop while key is held
-void	pause_key_hook(void *param)
+void	cleanup_exit(void *m_data)
 {
-	t_main	*data;
+	t_main	*main_data;
 
-	usleep(100000);
-	//data->mlx->delta_time = d_time;
+	main_data = (t_main *)m_data;
+	printf("exiting..\n");
+	exit(0);
 }
 
-void	ft_key_hook(mlx_key_data_t keydata, void *param)
+void	init_cursor(t_main *main_data)
 {
-	if (keydata.key == MLX_KEY_SPACE)
-		pause_key_hook(param);
+	mlx_set_cursor_mode(main_data->mlx, MLX_MOUSE_DISABLED);
+	main_data->settings.cursor_lock = true;
+	main_data->settings.cursor_hide = true;
+	main_data->settings.mouse_sens = (float)MOUSE_SENS_BASE;
+	//mlx_set_mouse_pos(main_data->mlx, WIDTH / 2, HEIGHT / 2); does not work before loop
+	mlx_set_cursor_mode(main_data->mlx, MLX_MOUSE_HIDDEN);
 }
 
-
-void	init_key_hooks(t_main *main_data)
+void	init_settings(t_main *main_data)
 {
-	mlx_key_hook(main_data->mlx, &ft_key_hook, &main_data);
-}
-
-void	wasd_key_handler(mlx_key_data_t keydata, void *param)
-{
-	t_controls	*controls;
-
-	controls = &((t_main *)param)->controls;
-	if (keydata.action == MLX_REPEAT)
-	{
-		if (keydata.key == MLX_KEY_W)
-			controls->state.up = true;
-		if (keydata.key == MLX_KEY_A)
-			controls->state.left = true;
-		if (keydata.key == MLX_KEY_D)
-			controls->state.right = true;
-		if (keydata.key == MLX_KEY_S)
-			controls->state.back = true;
-	}
-	else if (keydata.action == MLX_RELEASE)
-	{
-		if (keydata.key == MLX_KEY_W)
-			controls->state.up = false;
-		if (keydata.key == MLX_KEY_A)
-			controls->state.left = false;
-		if (keydata.key == MLX_KEY_D)
-			controls->state.right = false;
-		if (keydata.key == MLX_KEY_S)
-			controls->state.back = false;
-	}
-}
-
-void	jump_key_handler(mlx_key_data_t keydata, void *param)
-{
-	t_controls	*controls;
-
-	controls = &((t_main *)param)->controls;
-	if (keydata.key == MLX_KEY_SPACE && keydata.action != MLX_RELEASE)
-	{
-		controls->state.jump = true;
-	}
-	else
-	{
-		controls->state.jump = false;
-	}
-	if (keydata.key == MLX_KEY_Z && keydata.action != MLX_RELEASE)
-		controls->state.negative_jump = true;
-	else
-		controls->state.negative_jump = false;
-}
-
-void	key_hook(mlx_key_data_t keydata, void *param)
-{
-	if (keydata.key == MLX_KEY_W || keydata.key == MLX_KEY_A || keydata.key == MLX_KEY_S || keydata.key == MLX_KEY_D)
-		wasd_key_handler(keydata, param);
-	if (keydata.key == MLX_KEY_SPACE || keydata.key == MLX_KEY_Z)
-		jump_key_handler(keydata, param);
-}
-
-#define INIT_DOUBLE_VAL -1000000000000000.0
-void	cursor_hook(double xpos, double ypos, void* param)
-{
-	static double	last_x = INIT_DOUBLE_VAL;
-	static double	last_y = INIT_DOUBLE_VAL;
-	double			x_dist;
-	double			y_dist;
-	t_main			*main_data;
-
-	if (last_x == INIT_DOUBLE_VAL || last_y == INIT_DOUBLE_VAL)
-	{
-		last_x = xpos;
-		last_y = ypos;
-	}
-	main_data = (t_main *)param;
-	x_dist = (xpos - last_x) / 1000;
-	y_dist = (ypos - last_y) / 1000;
-	float pitch;
-	float yaw;
-	// main_data->pitch += ((float)M_PI * MOUSE_SENS) * y_dist;
-	// main_data->yaw += ((float)M_PI * MOUSE_SENS) * x_dist;
-	pitch = ((float)M_PI * MOUSE_SENS) * y_dist;
-	yaw = ((float)M_PI * MOUSE_SENS) * x_dist;
-	main_data->look_direct = v3_add(main_data->look_direct, get_direction(pitch, yaw, main_data->roll));
-	unit_vec3(&main_data->look_direct);
-	//printf("x_dist: %lf y_dist: %lf\n", x_dist, y_dist);
-	
+	main_data->settings.paused = false;
+	main_data->settings.menu_state = MENU_CLOSED;
+	init_cursor(main_data);
 }
 
 int32_t	main(void)
@@ -411,14 +271,15 @@ int32_t	main(void)
 	// 	printf("monitor width: %d monitor height: %d\n", m_data.monitor_width, m_data.monitor_height);
 	// }
 	ft_bzero(&m_data, sizeof(m_data));
-	m_data.controls.jump_height = 1;
-	m_data.controls.movement_speed_straight = 1;
-	m_data.controls.movement_speed_left = 1;
-	m_data.controls.movement_speed_right = 1;
-	m_data.controls.movement_speed_back = 1;
+	m_data.controls.jump_height = 3;
+	m_data.controls.movement_speed_straight = 3;
+	m_data.controls.movement_speed_left = 3;
+	m_data.controls.movement_speed_right = 3;
+	m_data.controls.movement_speed_back = 3;
 	m_data.pitch = 0;
 	m_data.yaw = 0;
 	m_data.roll = 0;
+
 	ft_memcpy(&m_data.camera, &init_cam, sizeof(init_cam));
 	ft_memcpy(&m_data.up, &init_up, sizeof(init_up));
 	ft_memcpy(&m_data.look_direct, &init_look_direct, sizeof(init_look_direct));
@@ -429,28 +290,24 @@ int32_t	main(void)
 	mlx_set_setting(0, true);
 	m_data.mlx = mlx_init(WIDTH, HEIGHT, "test", true);
 	if (!m_data.mlx)
-		ft_error();
+		ft_error(&m_data);
+	
 	mlx_image_t* cube_img = mlx_new_image(m_data.mlx, WIDTH, HEIGHT);
 	if (!cube_img || (mlx_image_to_window(m_data.mlx, cube_img, 0, 0) < 0))
-		ft_error();
+		ft_error(&m_data);
+	
 	mlx_image_t* cube_img2 = cube_img;
 	mlx_image_t* tetra_img = cube_img;
 	m_data.img = cube_img;
-	// mlx_image_t* cube_img2 = mlx_new_image(m_data.mlx, WIDTH, HEIGHT);
-	// if (!cube_img2 || (mlx_image_to_window(m_data.mlx, cube_img2, 0, 0) < 0))
-	// 	ft_error();
-	// mlx_image_t* tetra_img = mlx_new_image(m_data.mlx, WIDTH, HEIGHT);
-	// if (!tetra_img || (mlx_image_to_window(m_data.mlx, tetra_img, 0, 0) < 0))
-	// 	ft_error();
 	m_data.cube.img = cube_img;
 	m_data.tetra.img = tetra_img;
 	m_data.cube2.img = cube_img2;
 	m_data.cube.d_time = &m_data.mlx->delta_time;
 	m_data.cube2.d_time = &m_data.mlx->delta_time;
 	m_data.tetra.d_time = &m_data.mlx->delta_time;
-	
+
 	load_obj_file("./", "axis.obj", &m_data.axis, &m_data);
-	
+
 	//load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_Low_Poly.obj", &m_data.custom, &m_data);
 	//load_obj_file("lego_obj/", "lego_obj/lego obj.obj", &m_data.custom, &m_data);
 	//load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj", &m_data.custom, &m_data);
@@ -463,20 +320,19 @@ int32_t	main(void)
 	//fill_tetra_mesh(&m_data.tetra, &m_data);
 	fill_cube_mesh2(&m_data.cube2, &m_data);
 	//draw_mesh(&m_data.cube);
-	mlx_set_instance_depth(cube_img->instances, 2);
-	mlx_set_instance_depth(cube_img2->instances, 1);
-	mlx_set_instance_depth(tetra_img->instances, 3);
+	mlx_set_instance_depth(m_data.img->instances, MAIN_RENDER_DEPTH);
 	//first_ob_ball(m_data.mlx);
 	// Register a hook and pass mlx as an optional param.
 	// NOTE: Do this before calling mlx_loop!
-	init_key_hooks(&m_data);
-	
-	int	pos_a[2] = {200, 200};
-	int	pos_b[2] = {100, 100};
+	// int	pos_a[2] = {200, 200};
+	// int	pos_b[2] = {100, 100};
+
 	mlx_key_hook(m_data.mlx, &key_hook, &m_data);
 	mlx_loop_hook(m_data.mlx, display_fps_hook, m_data.mlx);
 	mlx_cursor_hook(m_data.mlx, cursor_hook, &m_data);
 	mlx_loop_hook(m_data.mlx, ft_hook, &m_data);
+	mlx_close_hook(m_data.mlx, cleanup_exit, &m_data);
+	init_settings(&m_data);
 	mlx_loop(m_data.mlx);
 	mlx_terminate(m_data.mlx);
 	return (EXIT_SUCCESS);

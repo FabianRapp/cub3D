@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/28 15:59:40 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 18:13:29 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@
 # include <libft.h>
 # include <time.h>
 # include <float.h>
+
+// out headers
+# include <menu.h>
+
+
 
 // # include <iomanip>
 /*
@@ -67,16 +72,33 @@
 #define PINK 0xFFFF80FF
 #define LIME 0xFF80FF00
 
+//=== DEFAULT KEY BINDS======
 
-#define MOUSE_SENS 1.0f
+#define FORWARD_KEY MLX_KEY_W
+#define LEFT_KEY MLX_KEY_A
+#define RIGHT_KEY MLX_KEY_D
+#define BACKWARDS_KEY MLX_KEY_S
+
+#define JUMP_KEY MLX_KEY_SPACE
+#define NEGATIVE_JUMP_KEY MLX_KEY_Z
+
+#define PAUSE_KEY MLX_KEY_P
+#define MENU_KEY MLX_KEY_M
+#define CURSORE_MODE_TOGGLE MLX_KEY_T
+
+//=============================
+
+#define MOUSE_SENS_BASE 0.0001f * 2
 
 #define X 0
 #define Y 1
 #define Z 2
-#define HIGHEST_IMG_DEPTH 30	//?? somehow big numbers add a huge delay from the mlx lib
-								// HIGHEST_IMG_DEPTH to HIGHEST_IMG_DEPTH-4: fps_counter
-# define LOWEST_IMG_DEPTH 0
 
+#define FPS_DEPTH 4
+#define MENU_DEPTH 3
+#define MAIN_RENDER_DEPTH 2
+
+typedef struct s_menu	t_menu;
 typedef struct s_main	t_main;
 
 typedef int64_t	t_fixed;
@@ -216,6 +238,17 @@ typedef struct s_controls
 	float				jump_height;
 }	t_controls;
 
+typedef struct s_settings
+{
+	uint8_t	cursor_lock:1;
+	uint8_t	cursor_hide:1;
+	uint8_t	disable_cursor:1;
+	uint8_t	paused:1;
+	uint8_t	menu_state:2;
+	float	mouse_sens;
+}	t_settings;
+
+
 typedef struct s_main
 {
 	t_vec3		camera;
@@ -238,6 +271,8 @@ typedef struct s_main
 	mlx_image_t	*img;
 	float		depth[WIDTH * HEIGHT];
 	t_controls	controls;
+	t_settings	settings;
+	t_menu		menu;
 	// int32_t		monitor_width;
 	// int32_t		monitor_height;
 }	t_main;
@@ -259,6 +294,8 @@ struct s_fps_textures
 
 void	draw_mesh(t_mesh *cube_mesh);
 
+// main.c
+void	cleanup_exit(void *m_data);
 
 //old.c
 t_triangle	apply_rotation_addtiononal_translation(t_mesh *mesh, int i);
@@ -280,7 +317,7 @@ uint32_t	lerp_color(uint32_t max_col, float strength);
 int	lerp_int(int start, int end, float pos);
 
 // utils.c
-void	ft_error(void);
+void	ft_error(t_main *main_data);
 t_vec3	out_of_bound(t_vec3 *v);
 t_vec3	out_of_bound_triangle(t_triangle *tri);
 t_vec3	out_of_bound_triangle_projeceted(t_triangle *projected);
@@ -361,6 +398,14 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 
 // fill_triangle2.c
 void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color, t_mesh *mesh);
+
+// key_handlers.c
+void	ft_key_hook(mlx_key_data_t keydata, void *param);
+void	wasd_key_handler(mlx_key_data_t keydata, void *param);
+void	jump_key_handler(mlx_key_data_t keydata, void *param);
+void	settings_key_handler(mlx_key_data_t keydata, t_main *main_data);
+void	key_hook(mlx_key_data_t keydata, void *param);
+void	cursor_hook(double xpos, double ypos, void* param);
 
 //to_replace.c
 float	generate_random_float();
