@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/01 14:38:47 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/01 17:13:30 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,8 +193,8 @@ void	init_settings(t_main *main_data)
 
 int32_t	main(void)
 {
-	mlx_image_t	*ob;
-	t_main		m_data;
+	mlx_image_t		*ob;
+	t_main			m_data;
 	const t_vec3	init_cam = {.x = 0, .y = 0, .z = 0, .w = 1};
 	const t_vec3	init_look_direct = {.x = 0, .y = 0, .z = 1, .w = 1};
 	const t_vec3	init_up = {.x = 0, .y = 1, .z = 0, .w = 1};
@@ -272,6 +272,8 @@ int32_t	main(void)
 	init_settings(&m_data);
 	init_menu(&m_data, &m_data.menu);
 	add_menu_widget(&m_data, WIDGET_SLIDER, "Mouse Sensibility", (t_widget_val)(m_data.settings.mouse_sens / MOUSE_SENS_BASE), &m_data.menu);
+	add_menu_widget(&m_data, WIDGET_SLIDER, "Test 1", (t_widget_val)(m_data.settings.mouse_sens / MOUSE_SENS_BASE), &m_data.menu);
+	add_menu_widget(&m_data, WIDGET_SLIDER, "Test 2", (t_widget_val)(m_data.settings.mouse_sens / MOUSE_SENS_BASE), &m_data.menu);
 	mlx_loop(m_data.mlx);
 	cleanup_exit(&m_data);
 	return (EXIT_SUCCESS);

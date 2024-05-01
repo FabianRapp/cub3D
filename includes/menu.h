@@ -6,12 +6,18 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 16:35:25 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/01 14:52:12 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/01 17:12:49 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MENU_H
 # define MENU_H
+
+/*
+	TODO:
+	- make a menu array in the t_main struct to allow diffrent options + supporting function changes
+	- make widgets modify a mem locatation (void *) given in init rather than struct var: remove need to take call back fn
+*/
 
 #define MENU_CLOSED 0
 #define MENU_OPEN 1

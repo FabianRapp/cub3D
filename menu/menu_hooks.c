@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 14:26:19 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/01 14:50:25 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/01 14:58:08 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ void	menu_mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, t
 	}
 }
 
-
-
+// possible to highlight widget hovered over
 void	cursor_menu(double xpos, double ypos, t_main *main_data, void fn(t_main *main_data, t_entry_widget *widget, int menu_index))
 {
 	t_menu	*menu;
@@ -71,30 +70,18 @@ void	cursor_menu(double xpos, double ypos, t_main *main_data, void fn(t_main *ma
 	if (menu->state != MENU_OPEN)
 		return ;
 	widget = menu->clicked_widget;
-	if (widget)
+	if (!widget || widget->type != WIDGET_SLIDER)
+		return ;
+	if ((int)xpos <= widget->xpos)
+		widget->val.slider_val = 0.001f;
+	else if ((int)xpos >= widget->xpos + widget->width)
+		widget->val.slider_val = 1.0f;
+	else if ((int)xpos > widget->xpos)
 	{
-		if (widget->type == WIDGET_SLIDER)
-		{
-			if ((int)xpos <= widget->xpos)
-			{
-				widget->val.slider_val = 0.001f;
-			}
-			else if ((int)xpos >= widget->xpos + widget->width)
-			{
-				widget->val.slider_val = 1.0f;
-			}
-			else if ((int)xpos > widget->xpos)
-			{
-				widget->val.slider_val = (xpos - widget->xpos) / widget->width;
-				widget->val.slider_val = fmax(0.0f, fmin(1.0f, widget->val.slider_val));
-			}
-			else
-			{
-				ft_error(main_data);
-			}
-			fn(main_data, widget, 0);
-		}
+		widget->val.slider_val = (xpos - widget->xpos) / widget->width;
+		widget->val.slider_val = fmax(0.0f, fmin(1.0f, widget->val.slider_val));
 	}
+	else
+		ft_error(main_data);
+	fn(main_data, widget, 0);
 }
-
-

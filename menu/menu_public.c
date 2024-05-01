@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 14:22:47 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/01 14:52:24 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/01 15:00:09 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,7 @@ bool	menu_handler(t_main *main_data, t_menu *menu)
 	if (menu->state == MENU_CLOSED)
 		return (false);
 	else if (menu->state == MENU_OPEN)
-	{
 		handle_open_menu(main_data, menu);
-		//fill_slider(&menu->mouse_sens, menu->mouse_sens.val);
-		return (true);
-	}
 	else if (menu->state == MENU_OPENING)
 		open_menu(main_data);
 	else if (menu->state == MENU_CLOSING)
@@ -81,13 +77,9 @@ t_entry_widget	*add_menu_widget(t_main *main_data, int8_t type, char *title, t_w
 	new_widget->height = WIDGET_HEIGHT;
 	ft_strlcpy(new_widget->title, title, sizeof(new_widget->title));
 	if (new_widget->index)
-	{
 		new_widget->ypos = menu->all_widgets[new_widget->index - 1].ypos + WIDGET_HEIGHT * 2;
-	}
 	else
-	{
 		new_widget->ypos = WIDGET_HEIGHT * 2;
-	}
 	init_entry_widget(main_data, new_widget, title, MENU_DEPTH + 1 + new_widget->index * 2);
 	if (type == WIDGET_SLIDER)
 	{
