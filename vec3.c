@@ -332,7 +332,7 @@ t_vec3	get_direction(float pitch, float yaw, float roll)
 
 	direct.w = 1;
 	direct.x = cosf(pitch) * sinf(yaw);
-	direct.y = sin(pitch);
-	direct.z = cos(pitch) * cos(yaw);
+	direct.y = sinf(pitch);
+	direct.z = cosf(pitch) * cosf(yaw);
 	return (direct);
 }

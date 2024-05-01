@@ -1,7 +1,8 @@
 CC= cc 
-FLAGS_SPEED =  -fsanitize=address -g
- 
-#-Ofast -march=native
+FLAGS_SPEED = -fsanitize=address -g 
+# -Ofast -march=native -flto
+
+#
 #-O3
 CFLAGS= $(FLAGS_SPEED)
 #-Wextra -Wall -Werror
@@ -42,7 +43,10 @@ SOURCES= \
 	old.c \
 	clipping.c \
 	key_handlers.c \
-	menu.c
+	menu/menu.c \
+	menu/menu_open_close.c \
+	menu/menu_public.c \
+	menu/menu_hooks.c
 
 OBJECTS=$(SOURCES:.c=.o)
 MAIN_OB=$(MAIN:.c=.o)

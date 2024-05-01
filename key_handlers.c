@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:30:59 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/29 22:23:45 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/01 14:54:23 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ void	settings_key_handler(mlx_key_data_t keydata, t_main *main_data)
 		else
 		{
 			main_data->settings.cursor_lock = true;
-			main_data->settings.cursor_hide = true;
-			mlx_set_cursor_mode(main_data->mlx, MLX_MOUSE_HIDDEN);
+			//main_data->settings.cursor_hide = true;
+			//mlx_set_cursor_mode(main_data->mlx, MLX_MOUSE_HIDDEN);
 		}
 	}
 	else if (keydata.key == PAUSE_KEY && keydata.action == MLX_PRESS)
@@ -126,46 +126,6 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		toggl_menu_state((t_main *)param);
 }
 
-t_entry_field	*clicked_menu_field(t_main *main_data, int xpos, int ypos)
-{
-	t_entry_field	*field;
-	
-
-	field = &main_data->menu.mouse_sens;
-	if (xpos >= field->xpos && xpos < field->xpos + field->width
-		&& ypos >= field->ypos && ypos < field->ypos + field->height)
-	{
-		return (field);
-	}
-	return (NULL);
-}
-
-void	menu_mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, t_main *main_data)
-{
-	t_entry_field	*field;
-	int				xpos;
-	int				ypos;
-
-	if (main_data->menu.state != MENU_OPEN)
-		return ;
-	mlx_get_mouse_pos(main_data->mlx, &xpos, &ypos);
-	if (action == MLX_PRESS)
-	{
-		field = clicked_menu_field(main_data, xpos, ypos);
-		if (!field)
-			return ;
-		main_data->menu.clicked_field = field;
-		return ;
-	}
-	else if (action == MLX_REPEAT || !main_data->menu.clicked_field)
-		return ;
-	else if (action == MLX_RELEASE)
-	{
-		main_data->menu.clicked_field = NULL;
-		return ;
-	}
-}
-
 void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *param)
 {
 	t_main	*main_data;
@@ -178,46 +138,10 @@ void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *
 	}
 }
 
-void	cursor_menu(double xpos, double ypos, t_main *main_data)
+void	menu_action(t_main *main_data, t_entry_widget *widget, int menu_index)
 {
-	t_menu	*menu;
-	t_entry_field	*field;
-
-	menu = &main_data->menu;
-	if (menu->state != MENU_OPEN)
-		return ;
-	field = menu->clicked_field;
-	if (field)
-	{
-		if (field->is_slider)
-		{
-			if ((int)xpos <= field->xpos)
-			{
-				field->val = 0.001f;
-			}
-			else if ((int)xpos >= field->xpos + field->width)
-			{
-				field->val = 1.0f;
-			}
-			else if ((int)xpos > field->xpos)
-			{
-				field->val = (xpos - field->xpos) / field->width;
-				field->val = fmax(0.0f, fmin(1.0f, field->val));
-			}
-			else
-			{
-				ft_error(main_data);
-			}
-			if (field->img == main_data->menu.mouse_sens.img)
-			{
-				//field->val is a slider val beteen 0.0001 and 1.0
-				//main_data->settings.mouse_sens = field->val * MOUSE_SENS_BASE; //tring to avoid linear calc
-				main_data->settings.mouse_sens = powf(field->val, 0.5) * MOUSE_SENS_BASE;
-				printf("mouse sens: %f\n", main_data->settings.mouse_sens);
-			}
-			
-		}
-	}
+	if (menu_index == 0 && widget->index == MOUSE_SENS_WIDGET_INDEX)
+		main_data->settings.mouse_sens = powf(widget->val.slider_val, 0.5) * MOUSE_SENS_BASE;
 }
 
 void	cursor_hook(double xpos, double ypos, void* param)
@@ -229,7 +153,7 @@ void	cursor_hook(double xpos, double ypos, void* param)
 	main_data = (t_main *)param;
 	if (main_data->menu.state != MENU_CLOSED)
 	{
-		cursor_menu(xpos, ypos, main_data);
+		cursor_menu(xpos, ypos, main_data, menu_action);
 		return ;
 	}
 	x_dist = xpos - WIDTH / 2;
@@ -243,3 +167,5 @@ void	cursor_hook(double xpos, double ypos, void* param)
 		mlx_set_mouse_pos(main_data->mlx, WIDTH / 2, HEIGHT / 2);
 	}
 }
+
+

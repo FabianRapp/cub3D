@@ -6,15 +6,13 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/29 21:33:13 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/01 14:38:47 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 #include <MLX42.h>
 #include <menu.h>
-
-
 
 void	handle_movement_per_frame(t_main *main_data)
 {
@@ -88,7 +86,7 @@ void	ft_hook(void* param)
 	int	y = pixel / WIDTH;
 	int x = pixel - (y * WIDTH);
 
-	if (menu_handler(main_data) == true)
+	if (menu_handler(main_data, &main_data->menu) == true)
 		return ;
 	if (main_data->settings.paused == true)
 		return ;
@@ -171,6 +169,8 @@ void	cleanup_exit(void *m_data)
 
 	main_data = (t_main *)m_data;
 	fprintf(stderr, "exiting..\n");
+	free_menu(main_data, &main_data->menu);
+	mlx_terminate(main_data->mlx);
 	exit(0);
 }
 
@@ -180,14 +180,14 @@ void	init_cursor(t_main *main_data)
 	main_data->settings.cursor_lock = true;
 	main_data->settings.cursor_hide = true;
 	main_data->settings.mouse_sens = 0.5 * MOUSE_SENS_BASE;
-	//mlx_set_mouse_pos(main_data->mlx, WIDTH / 2, HEIGHT / 2); does not work before loop
-	mlx_set_cursor_mode(main_data->mlx, MLX_MOUSE_HIDDEN);
+	mlx_set_cursor_mode(main_data->mlx, MLX_MOUSE_NORMAL);
+	mlx_set_mouse_pos(main_data->mlx, WIDTH / 2, HEIGHT / 2);// does not work before loop
 }
 
 void	init_settings(t_main *main_data)
 {
 	main_data->settings.paused = false;
-	main_data->menu.state = MENU_CLOSED;
+	//main_data->menu.state = MENU_CLOSED;
 	init_cursor(main_data);
 }
 
@@ -216,7 +216,7 @@ int32_t	main(void)
 	m_data.pitch = 0;
 	m_data.yaw = 0;
 	m_data.roll = 0;
-
+	
 	ft_memcpy(&m_data.camera, &init_cam, sizeof(init_cam));
 	ft_memcpy(&m_data.up, &init_up, sizeof(init_up));
 	ft_memcpy(&m_data.look_direct, &init_look_direct, sizeof(init_look_direct));
@@ -247,8 +247,8 @@ int32_t	main(void)
 
 	//load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_Low_Poly.obj", &m_data.custom, &m_data);
 	//load_obj_file("lego_obj/", "lego_obj/lego obj.obj", &m_data.custom, &m_data);
-	//load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj", &m_data.custom, &m_data);
-	load_obj_file("objs/", "objs/HorseArmor.obj", &m_data.custom, &m_data);
+	load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj", &m_data.custom, &m_data);
+	//load_obj_file("objs/", "objs/HorseArmor.obj", &m_data.custom, &m_data);
 	//load_obj_file("teapot/", "teapot/teapot.obj", &m_data.custom, &m_data);
 	// load_obj_file("obj/", "obj/crates.obj", &m_data.custom, &m_data);
 	//load_obj_file("22-trees_9_obj/", "22-trees_9_obj/trees9.obj", &m_data.custom, &m_data);
@@ -270,7 +270,9 @@ int32_t	main(void)
 	mlx_loop_hook(m_data.mlx, ft_hook, &m_data); // last
 	mlx_close_hook(m_data.mlx, cleanup_exit, &m_data); // dosnt matter when
 	init_settings(&m_data);
+	init_menu(&m_data, &m_data.menu);
+	add_menu_widget(&m_data, WIDGET_SLIDER, "Mouse Sensibility", (t_widget_val)(m_data.settings.mouse_sens / MOUSE_SENS_BASE), &m_data.menu);
 	mlx_loop(m_data.mlx);
-	mlx_terminate(m_data.mlx);
+	cleanup_exit(&m_data);
 	return (EXIT_SUCCESS);
 }

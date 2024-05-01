@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 08:36:34 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/29 18:21:00 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 23:07:23 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,7 +376,7 @@ void	sacle_vecs(t_obj_parser *vars)
 		|| !ft_strcmp(vars->path, "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_Low_Poly.obj"))
 	{
 		init_vec3(&scalar, 100.0f, 100.0f, 100.0f);
-		init_vec3(&translate, 0.0f, 5.0f, -5.0f);
+		init_vec3(&translate, 0.0f, 5.0f, 5.0f);
 		init_vec3(&rotation, 0.0f, M_PI_2 , 0.0f);
 	}
 	else if (!ft_strcmp(vars->path, "objs/HorseArmor.obj"))
@@ -427,8 +427,8 @@ void	sacle_vecs(t_obj_parser *vars)
 			//print_vec3(vars->vertexes[i], NULL);
 		//}
 		rotate_vec3(vars->vertexes + i, rotation.x, rotation.y, rotation.z);
-	//	multiply_vec3(vars->vertexes + i, &scalar);
-		//add_vec3(vars->vertexes + i, &translate);
+		multiply_vec3(vars->vertexes + i, &scalar);
+		add_vec3(vars->vertexes + i, &translate);
 		i++;
 	}
 	fprintf(stderr, "total min max off all vertexes:\nmax: x: %f y: %f z: %f\nmin: x: %f y: %f z: %f\n", max.x, max.y, max.z, min.x, min.y, min.z);

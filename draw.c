@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/29 18:19:57 by frapp            ###   ########.fr       */
+/*   Updated: 2024/04/29 23:02:07 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,9 +323,9 @@ void	draw_mesh(t_mesh *mesh)
 		// color_scalars.v[G] += ambient_light3.strength.v[G] *  light_dp;
 		// color_scalars.v[B] += ambient_light3.strength.v[B] *  light_dp;
 
-		color_scalars.v[R] = fmin(color_scalars.v[R], 1.0f);
-		color_scalars.v[G] = fmin(color_scalars.v[G], 1.0f);
-		color_scalars.v[B] = fmin(color_scalars.v[B], 1.0f);
+		color_scalars.v[R] = fminf(color_scalars.v[R], 1.0f);
+		color_scalars.v[G] = fminf(color_scalars.v[G], 1.0f);
+		color_scalars.v[B] = fminf(color_scalars.v[B], 1.0f);
 
 		color.argb[R] *= color_scalars.v[R];
 		color.argb[G] *= color_scalars.v[G];

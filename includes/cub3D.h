@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/29 21:31:56 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/01 14:43:44 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@
 
 //=============================
 
-#define MOUSE_SENS_BASE (0.0025f)
+#define MOUSE_SENS_BASE (0.002f)
 
 #define X 0
 #define Y 1
@@ -113,8 +113,8 @@ t_fixed		fixed_dev(t_fixed a, t_fixed b);
 t_fixed		fixed_mult(t_fixed a, t_fixed b);
 t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 
-#define WIDTH 750
-#define HEIGHT 600
+#define WIDTH 1500
+#define HEIGHT 700
 
 #define ASPECT_RATIO ((float)HEIGHT) / ((float)WIDTH)
 
@@ -249,6 +249,7 @@ typedef struct s_settings
 	float	mouse_sens;
 }	t_settings;
 
+#define MOUSE_SENS_WIDGET_INDEX 0
 
 typedef struct s_main
 {
@@ -277,7 +278,6 @@ typedef struct s_main
 	// int32_t		monitor_width;
 	// int32_t		monitor_height;
 }	t_main;
-//9965 - 3646
 
 struct s_fps_textures
 {
