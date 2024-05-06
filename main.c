@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/06 10:08:48 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/06 12:14:21 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	handle_movement_per_frame(t_main *main_data)
 		movement.y += main_data->look_direct.y * main_data->mlx->delta_time * controls.movement_speed_straight;
 		movement.z += main_data->look_direct.z * main_data->mlx->delta_time * controls.movement_speed_straight;
 	}
-	if (controls.state.left)
+	if (controls.state.left) //todo
 	{
 		t_vec3	no_y = {.x = 0.5, .y = 0, .z = 0.5, .w = 1};
 		t_vec3	forward = v3_sub(main_data->look_direct, main_data->camera);
@@ -40,7 +40,7 @@ void	handle_movement_per_frame(t_main *main_data)
 		// movement.y += main_data->look_direct.y * main_data->mlx->delta_time * controls.movement_speed_left;
 		// movement.z += main_data->look_direct.z * main_data->mlx->delta_time * controls.movement_speed_left;
 	}
-	if (controls.state.right)
+	if (controls.state.right) //todo
 	{
 		t_vec3	no_y = {.x = 0.5, .y = 0, .z = 0.5, .w = 1};
 		t_vec3	forward = v3_sub(main_data->look_direct, main_data->camera);
@@ -93,8 +93,6 @@ void	ft_hook(void* param)
 	handle_movement_per_frame(main_data);
 	ident_mat_4x4(main_data->world_mat);
 	reset_pixel_buffer(main_data->img->pixels, main_data->depth);
-	//draw_skybox(&main_data->skybox);
-	//ft_bzero(main_data->depth, sizeof(float) * WIDTH * HEIGHT);
 	//mod_cube_rotation(&main_data->cube, main_data->mlx->delta_time);
 	mod_cube_rotation(&main_data->custom, main_data->mlx->delta_time);
 	//draw_mesh(&main_data->cube);
@@ -158,9 +156,9 @@ void	determine_centroid(t_triangle *tri)
 	for (int i = 0; i < 3; i++) {
 		add_vec3(&s, tri->p + i);
 	}
-	tri->centroid.x = s.x / 3.0;
-	tri->centroid.y = s.y / 3.0;
-	tri->centroid.z = s.z / 3.0;
+	tri->centroid.x = s.x / 3.0f;
+	tri->centroid.y = s.y / 3.0f;
+	tri->centroid.z = s.z / 3.0f;
 }
 
 void	cleanup_exit(void *m_data)
@@ -208,11 +206,11 @@ int32_t	main(void)
 	// }
 	ft_bzero(&m_data.menu, sizeof(m_data.menu));
 	ft_bzero(&m_data, sizeof(m_data));
-	m_data.controls.jump_height = 6;
-	m_data.controls.movement_speed_straight = 6;
-	m_data.controls.movement_speed_left = 6;
-	m_data.controls.movement_speed_right = 6;
-	m_data.controls.movement_speed_back = 6;
+	m_data.controls.jump_height = 2;
+	m_data.controls.movement_speed_straight = 2;
+	m_data.controls.movement_speed_left = 2;
+	m_data.controls.movement_speed_right = 2;
+	m_data.controls.movement_speed_back = 2;
 	m_data.pitch = 0;
 	m_data.yaw = 0;
 	m_data.roll = 0;
@@ -246,8 +244,8 @@ int32_t	main(void)
 
 	//load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_Low_Poly.obj", &m_data.custom, &m_data);
 	//load_obj_file("lego_obj/", "lego_obj/lego obj.obj", &m_data.custom, &m_data);
-	//load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj", &m_data.custom, &m_data);
-	load_obj_file("objs/", "objs/HorseArmor.obj", &m_data.custom, &m_data);
+	load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj", &m_data.custom, &m_data);
+	//load_obj_file("objs/", "objs/HorseArmor.obj", &m_data.custom, &m_data);
 	//load_obj_file("teapot/", "teapot/teapot.obj", &m_data.custom, &m_data);
 	// load_obj_file("obj/", "obj/crates.obj", &m_data.custom, &m_data);
 	//load_obj_file("22-trees_9_obj/", "22-trees_9_obj/trees9.obj", &m_data.custom, &m_data);

@@ -41,12 +41,14 @@ SOURCES= \
 	fill_triangle.c \
 	fill_triangle2.c \
 	old.c \
-	clipping.c \
+	clipping_z.c \
+	clipping_xy.c \
 	key_handlers.c \
 	menu/menu.c \
 	menu/menu_open_close.c \
 	menu/menu_public.c \
 	menu/menu_hooks.c
+
 
 OBJECTS=$(SOURCES:.c=.o)
 MAIN_OB=$(MAIN:.c=.o)

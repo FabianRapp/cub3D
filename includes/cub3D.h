@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/06 09:45:40 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/06 12:21:58 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@
 #define ROT_X
 //#define ROT_Y
 #define ROT_Z
-#define MOVEMENT
+//#define MOVEMENT
 
 #define GRAV_CONST 0.5f
 
@@ -404,7 +404,7 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 // fill_triangle2.c
 void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color, t_mesh *mesh);
 
-// clipping.c
+// clipping_z.c
 int8_t	clipping_z_near(t_triangle *tri, t_triangle *clipped);
 int8_t	clipping_z_far(t_triangle *tri, t_triangle *clipped);
 

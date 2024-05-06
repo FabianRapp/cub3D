@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/06 09:39:20 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/06 12:18:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,7 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 	j = 0;
 	while (j < clipped_count_front && j < 2)
 	{
+		projected.col = clipped_z_front[j].col;
 		clipped_count_back = clipping_z_far(clipped_z_front + j, clipped_z_back);
 		q = 0;
 		while (q < clipped_count_back && q < 2)

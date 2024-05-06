@@ -1,17 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clipping.c                                         :+:      :+:    :+:   */
+/*   clipping_z.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 15:27:09 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/06 10:06:56 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/06 12:24:48 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 #include <MLX42.h>
+
+/*
+	Todo:
+	- refactor
+	(- later: optimize the with knowledge what the plane is exactly)
+*/
 
 // d * line_direct is the line
 // dot(plane_n, plane_p - any_point_on_plane) == 0 is plane
@@ -45,7 +51,6 @@ t_vec3	line_plane_intersection(t_vec3 plane_p, t_vec3 plane_n, t_vec3 line_start
 	}
 	d = (dot_prod_unit(plane_p, plane_n) - dot_prod_unit(line_start, plane_n)) / dot_directline_nplane;
 	intersection = v3_add(v3_scale(line_direct, d), line_start);
-	
 	intersection.u = d * (line_end.u - line_start.u);
 	intersection.v = d * (line_end.v - line_start.v);
 	return (intersection);
@@ -83,13 +88,17 @@ int8_t	clipping_z_far(t_triangle *tri, t_triangle *clipped)
 		int8_t	outside_index2 = (inside_index[0] ^ 3) & 2;
 		clipped[0].p[outside_index1] = line_plane_intersection(plane_p, plane_n, cur_start, tri->p[outside_index1]);
 		clipped[0].p[outside_index2] = line_plane_intersection(plane_p, plane_n, cur_start, tri->p[outside_index2]);
+		clipped[0].col = BLUE;// TODO remove this line when clipping is fixed
 		return (1);
 	}
 	clipped[0] = *tri;
 	clipped[1] = *tri;
 	int8_t	outside_index = (inside_index[0] ^ 3) & (inside_index[1] ^ 3);
+	// TODO i think these triangles are wrong or atleast bad
 	clipped[0].p[outside_index] = line_plane_intersection(plane_p, plane_n, tri->p[inside_index[0]], tri->p[outside_index]);
 	clipped[1].p[outside_index] = line_plane_intersection(plane_p, plane_n, tri->p[inside_index[1]], tri->p[outside_index]);
+	clipped[0].col = RED;// TODO remove this line when clipping is fixed
+	clipped[1].col = GREEN;// TODO remove this line when clipping is fixed
 	return (2);
 }
 
@@ -125,12 +134,16 @@ int8_t	clipping_z_near(t_triangle *tri, t_triangle *clipped)
 		int8_t	outside_index2 = (inside_index[0] ^ 3) & 2;
 		clipped[0].p[outside_index1] = line_plane_intersection(plane_p, plane_n, cur_start, tri->p[outside_index1]);
 		clipped[0].p[outside_index2] = line_plane_intersection(plane_p, plane_n, cur_start, tri->p[outside_index2]);
+		clipped[0].col = BLUE;// TODO remove this line when clipping is fixed
 		return (1);
 	}
 	clipped[0] = *tri;
 	clipped[1] = *tri;
 	int8_t	outside_index = (inside_index[0] ^ 3) & (inside_index[1] ^ 3);
+	// TODO i think these triangles are wrong or atleast bad
 	clipped[0].p[outside_index] = line_plane_intersection(plane_p, plane_n, tri->p[inside_index[0]], tri->p[outside_index]);
 	clipped[1].p[outside_index] = line_plane_intersection(plane_p, plane_n, tri->p[inside_index[1]], tri->p[outside_index]);
+	clipped[0].col = RED;// TODO remove this line when clipping is fixed
+	clipped[1].col = GREEN;// TODO remove this line when clipping is fixed
 	return (2);
 }

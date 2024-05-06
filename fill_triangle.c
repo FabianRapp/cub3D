@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:38:58 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/29 18:19:57 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/06 12:22:08 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 	color.argb[R] *= color_scalars.v[R];
 	color.argb[G] *= color_scalars.v[G];
 	color.argb[B] *= color_scalars.v[B];
-
+	color.col = projected->col; // TODO remove this line when clipping is fixed
 
 	depth = mesh->main->depth;
 	sort_vertexes_for_y(projected);
