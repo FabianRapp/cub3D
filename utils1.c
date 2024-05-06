@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 05:43:13 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/29 19:12:55 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/06 08:58:30 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	reset_pixel_buffer(uint8_t *pixels, float *depth)
 
 bool	zero_f(float f)
 {
-	if (fabs(f) < 0.0001)
+	if (fabs(f) < 0.00001)
 	{
 		return (true);
 	}

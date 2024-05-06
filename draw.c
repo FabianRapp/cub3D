@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/06 08:50:50 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/06 09:39:20 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,15 +212,101 @@ t_light	init_day_light(double d_time)
 	return (day_light);
 }
 
+void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light_argb_stren color_scalars)
+{
+
+	t_triangle	clipped_z_front[2];
+	t_triangle	clipped_z_back[2];
+	int			clipped_count_front;
+	int			clipped_count_back;
+	t_triangle	projected;
+	const float	project_mat[4][4] = PROJECTION_MATRIX;
+
+	clipped_count_front = clipping_z_near(&triangle, clipped_z_front);
+	int	j;
+	int	q;
+	j = 0;
+	while (j < clipped_count_front && j < 2)
+	{
+		clipped_count_back = clipping_z_far(clipped_z_front + j, clipped_z_back);
+		q = 0;
+		while (q < clipped_count_back && q < 2)
+		{
+			triangle = clipped_z_back[q];
+			// enter projeceted space
+			ft_memcpy(&projected, base_data, sizeof(projected));
+			matrix_mult_vec3_4x4(triangle.p + 0, project_mat, &projected.p[0]);
+			matrix_mult_vec3_4x4(triangle.p + 1, project_mat, &projected.p[1]);
+			matrix_mult_vec3_4x4(triangle.p + 2, project_mat, &projected.p[2]);
+
+			//printf("w0: %f w1: %f w2: %f\n", projected.p[0].w, projected.p[1].w, projected.p[2].w);
+			// i think zero check is not needed after full clipping
+			if (!zero_f(projected.p[0].w))
+				div_vec3(projected.p + 0, projected.p[0].w);
+			if (!zero_f(projected.p[1].w))
+				div_vec3(projected.p + 1, projected.p[1].w);
+			if (!zero_f(projected.p[2].w))
+				div_vec3(projected.p + 2, projected.p[2].w);
+
+			scale_to_screen(&projected);
+
+			projected.unprojected_z[0] = triangle.p[0].z;
+			projected.unprojected_z[1] = triangle.p[1].z;
+			projected.unprojected_z[2] = triangle.p[2].z;
+			// bounds_result = out_of_bound_triangle_projeceted(&projected);
+			// if (!flipped_x && bounds_result.x < 0 && mesh->momentum.x < 0)
+			// {
+			// 	mesh->momentum.x *= -1;
+			// 	flipped_x = true;
+			// }
+			// if (!flipped_x && bounds_result.x > 0 && mesh->momentum.x > 0)
+			// {
+			// 	mesh->momentum.x *= -1;
+			// 	flipped_x = true;
+			// }
+
+			// if (!flipped_y && bounds_result.y < 0 && mesh->momentum.y < 0)
+			// {
+			// 	mesh->momentum.y *= -1;
+			// 	flipped_y = true;
+			// }
+			// if (!flipped_y && bounds_result.y > 0 && mesh->momentum.y > 0)
+			// {
+			// 	mesh->momentum.y *= -1;
+			// 	flipped_y = true;
+			// }
+
+			// if (!flipped_z && bounds_result.z < 0 && mesh->momentum.z < 0)
+			// {
+			// 	mesh->momentum.z *= -1;
+			// 	flipped_z = true;
+			// }
+			// if (!flipped_z && bounds_result.z > 0 && mesh->momentum.z > 0)
+			// {
+			// 	mesh->momentum.z *= -1;
+			// 	flipped_z = true;
+			// }
+			//draw_triangle(mesh->img, &projected, (mesh->triangles + i)->col);
+			//if (bounds_result.x < 3 && bounds_result.x > -3 && bounds_result.y < 3 && bounds_result.y > -3)
+			{
+				if (!projected.p[0].mtl || !projected.p[0].mtl->texture)
+					fill_triangle_color(mesh->img, &projected, base_data->col, mesh);
+				else
+					fill_triangle_texture(mesh->img, &projected, mesh, color_scalars);
+			}
+			q++;
+		}
+		j++;
+	}
+}
+
+
 void	draw_mesh(t_mesh *mesh)
 {
 	int			i;
 	t_triangle		transformed;
-	t_triangle		projected;
 	t_triangle		viewed;
-	t_color_split	color;
 
-	const float	project_mat[4][4] = PROJECTION_MATRIX;
 	i = 0;
 	static double	theta = 0;
 		theta += *mesh->d_time;
@@ -232,7 +318,6 @@ void	draw_mesh(t_mesh *mesh)
 	if (mesh->triangles != mesh->main->axis.triangles)
 		translate_mesh_3d(mesh, traveled_dist);
 	#endif
-	//
 	fill_mesh_matrix(mesh);
 
 	t_vec3	vec_target = v3_add(mesh->main->camera, mesh->main->look_direct);
@@ -241,14 +326,6 @@ void	draw_mesh(t_mesh *mesh)
 	float	mat_view[4][4];
 	matrix_look_at(camera, mat_view);
 	
-	//mat4x4_mult_mat4x4( , ,main_data->world_mat);
-	//print_vec3(traveled_dist, "traveled_dist: ");
-	bool flipped_x = false;
-	bool flipped_y = false;
-	bool flipped_z = false;
-	// mesh->center.x = 0;
-	// mesh->center.y = 0;
-	// mesh->center.z = 0;
 
 	t_light	day_light;
 
@@ -265,17 +342,11 @@ void	draw_mesh(t_mesh *mesh)
 	t_vec3	bounds_result;
 	while (i < mesh->count)
 	{
-		color.col = (mesh->triangles + i)->col;
 
 		transformed = mesh->triangles[i];//not neededm, for debugging
 		matrix_mult_vec3_4x4(mesh->triangles[i].p + 0, mesh->mesh_matrix, transformed.p + 0);
 		matrix_mult_vec3_4x4 (mesh->triangles[i].p + 1, mesh->mesh_matrix, transformed.p + 1);
 		matrix_mult_vec3_4x4(mesh->triangles[i].p + 2, mesh->mesh_matrix, transformed.p + 2);
-
-		// div_vec3(transformed.p + 0, transformed.p[0].w);
-		// div_vec3(transformed.p + 1, transformed.p[1].w);
-		// div_vec3(transformed.p + 2, transformed.p[2].w);
-
 
 		// t_vec3	tmp = transformed.normal;
 		// float	tmp_mat[4][4];
@@ -284,7 +355,7 @@ void	draw_mesh(t_mesh *mesh)
 
 
 
-	
+
 		bounds_result = out_of_bound_triangle(&transformed);
 		if (bounds_result.z == -3 || bounds_result.z == 3)
 		{
@@ -331,176 +402,13 @@ void	draw_mesh(t_mesh *mesh)
 		// color.argb[G] *= color_scalars.v[G];
 		// color.argb[B] *= color_scalars.v[B];
 
-
-
-
-
 		viewed = transformed;
 		// enter view space
 		matrix_mult_vec3_4x4(transformed.p + 0, mat_view, viewed.p + 0);
 		matrix_mult_vec3_4x4 (transformed.p + 1, mat_view, viewed.p + 1);
 		matrix_mult_vec3_4x4(transformed.p + 2, mat_view, viewed.p + 2);
 
-
-		t_triangle	clipped_z_front[2];
-		t_triangle	clipped_z_back[2];
-		int			clipped_count_front;
-		int			clipped_count_back;
-		clipped_count_front = clipping_z_near(&viewed, clipped_z_front);
-		int	j;
-		int	q;
-		j = 0;
-		while (j < clipped_count_front)
-		{
-			
-			clipped_count_back = clipping_z_far(clipped_z_front + j, clipped_z_back);
-			q = 0;
-			while (q < clipped_count_back)
-			{
-				viewed = clipped_z_back[q];
-				// enter projeceted space
-				ft_memcpy(&projected, mesh->triangles + i, sizeof(projected));
-				// print_vec3(viewed.p[0], "0: ");
-				// print_vec3(viewed.p[1], "1: ");
-				// print_vec3(viewed.p[2], "2: ");
-				matrix_mult_vec3_4x4(viewed.p + 0, project_mat, &projected.p[0]);
-				matrix_mult_vec3_4x4(viewed.p + 1, project_mat, &projected.p[1]);
-				matrix_mult_vec3_4x4(viewed.p + 2, project_mat, &projected.p[2]);
-
-				if (!zero_f(projected.p[0].w))
-					div_vec3(projected.p + 0, projected.p[0].w);
-				if (!zero_f(projected.p[1].w))
-					div_vec3(projected.p + 1, projected.p[1].w);
-				if (!zero_f(projected.p[2].w))
-					div_vec3(projected.p + 2, projected.p[2].w);
-			
-				// fprintf(stderr, "p1 x: %f, y: %f z: %f\n", transformed.p[0].x, transformed.p[0].y, transformed.p[0].z);
-				// fprintf(stderr, "p2 x: %f, y: %f z: %f\n", projected.p[1].x, rotated_z.p[1].y, rotated_z.p[1].z);
-				// fprintf(stderr, "p3 x: %f, y: %f z: %f\n\n", projected.p[2].x, rotated_z.p[2].y, rotated_z.p[2].z);
-
-				scale_to_screen(&projected);
-
-				projected.unprojected_z[0] = viewed.p[0].z;
-				projected.unprojected_z[1] = viewed.p[1].z;
-				projected.unprojected_z[2] = viewed.p[2].z;
-				bounds_result = out_of_bound_triangle_projeceted(&projected);
-				if (!flipped_x && bounds_result.x < 0 && mesh->momentum.x < 0)
-				{
-					mesh->momentum.x *= -1;
-					flipped_x = true;
-				}
-				if (!flipped_x && bounds_result.x > 0 && mesh->momentum.x > 0)
-				{
-					mesh->momentum.x *= -1;
-					flipped_x = true;
-				}
-
-				if (!flipped_y && bounds_result.y < 0 && mesh->momentum.y < 0)
-				{
-					mesh->momentum.y *= -1;
-					flipped_y = true;
-				}
-				if (!flipped_y && bounds_result.y > 0 && mesh->momentum.y > 0)
-				{
-					mesh->momentum.y *= -1;
-					flipped_y = true;
-				}
-
-				// if (!flipped_z && bounds_result.z < 0 && mesh->momentum.z < 0)
-				// {
-				// 	mesh->momentum.z *= -1;
-				// 	flipped_z = true;
-				// }
-				// if (!flipped_z && bounds_result.z > 0 && mesh->momentum.z > 0)
-				// {
-				// 	mesh->momentum.z *= -1;
-				// 	flipped_z = true;
-				// }
-				//draw_triangle(mesh->img, &projected, (mesh->triangles + i)->col);
-				if (bounds_result.x < 3 && bounds_result.x > -3 && bounds_result.y < 3 && bounds_result.y > -3)
-				{
-					if (!projected.p[0].mtl || !projected.p[0].mtl->texture)
-						fill_triangle_color(mesh->img, &projected, color.col, mesh);
-					else
-						fill_triangle_texture(mesh->img, &projected, mesh, color_scalars);
-				}
-				q++;
-			}
-			j++;
-		}
+		rasterize(viewed, mesh, mesh->triangles + i, color_scalars);
 		i++;
 	}
-	//mesh->center = v3_scale(mesh->center, 1.0f / (float) mesh->count);
-	// mesh->center = length_vec3(&mesh->center) / mesh->count;
-	// if (done)
-	// {
-		// float len = length_vec3(&mesh->center);
-		// t_vec3 normalized = v3_scale(mesh->center, 1.0f / (float) len);
-		// // mesh->momentum = v3_add(mesh->momentum, v3_reverse(normalized));
-		// mesh->momentum = v3_reverse(normalized);
-		// mesh->momentum.z += 1.0f;
-		// double a = 10.0;
-		// mesh->momentum.z = modf(50.0, (double *)(mesh->momentum.p + Z));
-		//scale_vec3(&mesh->momentum, 1);
-//	}
-	//if (mesh->triangles->col == GREEN)
-		//print_vec3(mesh->center, "\n");
-	
-}
-
-void	draw_skybox(t_mesh *mesh)
-{
-	int			i;
-
-	t_triangle	projected;
-	t_triangle	*base;
-	const float	project_mat[4][4] = PROJECTION_MATRIX;
-	i = 0;
-	while (i < mesh->count)
-	{
-		base = mesh->triangles + i;
-		base->normal = cross_product(v3_sub(base->p[1], base->p[0]), v3_sub(base->p[2], base->p[0]));
-	
-
-		
-		// unit_vec3(&base->normal);
-		// if (dot_prod_unit(base->normal, v3_sub(base->p[0], mesh->main->camera)) <= 0)
-
-		//float normal_len = sqrtf(base->normal.x * base->normal.x + base->normal.y * base->normal.y + base->normal.z * base->normal.z);
-		//scale_vec3(&base->normal, 1 / normal_len);
-		// if (dot_prod_unit(base->normal, v3_sub(base->p[0], mesh->main->camera)) >= 0)
-		// //if (base->normal.z > 0)
-		// {
-		// 	i++;
-		// 	continue ;
-		// }
-		matrix_mult_vec3_4x4(base->p + 0, project_mat, &projected.p[0]);
-		matrix_mult_vec3_4x4(base->p + 1, project_mat, &projected.p[1]);
-		matrix_mult_vec3_4x4(base->p + 2, project_mat, &projected.p[2]);
-
-		scale_to_screen(&projected);
-
-		projected.unprojected_z[0] = base->p[0].z;
-		projected.unprojected_z[1] = base->p[1].z;
-		projected.unprojected_z[2] = base->p[2].z;
-		//draw_triangle(mesh->img, &projected, (mesh->triangles + i)->col);
-		fill_triangle_color(mesh->img, &projected, (mesh->triangles + i)->col, mesh);
-		i++;
-	}
-	//mesh->center = v3_scale(mesh->center, 1.0f / (float) mesh->count);
-	// mesh->center = length_vec3(&mesh->center) / mesh->count;
-	// if (done)
-	// {
-		// float len = length_vec3(&mesh->center);
-		// t_vec3 normalized = v3_scale(mesh->center, 1.0f / (float) len);
-		// // mesh->momentum = v3_add(mesh->momentum, v3_reverse(normalized));
-		// mesh->momentum = v3_reverse(normalized);
-		// mesh->momentum.z += 1.0f;
-		// double a = 10.0;
-		// mesh->momentum.z = modf(50.0, (double *)(mesh->momentum.p + Z));
-		//scale_vec3(&mesh->momentum, 1);
-//	}
-	//if (mesh->triangles->col == GREEN)
-		//print_vec3(mesh->center, "\n");
-	
 }

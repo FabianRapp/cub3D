@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 15:27:09 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/06 08:51:31 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/06 10:06:56 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 // now d * line_direct + line_start == intersection
 t_vec3	line_plane_intersection(t_vec3 plane_p, t_vec3 plane_n, t_vec3 line_start, t_vec3 line_end)
 {
-	t_vec3	intersection = {.w=-1};
+	t_vec3	intersection;
 	t_vec3	line_direct;
 	float	d;
 	float	dot_directline_nplane;
@@ -40,10 +40,14 @@ t_vec3	line_plane_intersection(t_vec3 plane_p, t_vec3 plane_n, t_vec3 line_start
 	unit_vec3(&line_direct);
 	dot_directline_nplane = dot_prod_unit(line_direct, plane_n);
 	if (zero_f(dot_directline_nplane))
-		return (intersection);
+	{//todo: what to do here
+		return (line_start);
+	}
 	d = (dot_prod_unit(plane_p, plane_n) - dot_prod_unit(line_start, plane_n)) / dot_directline_nplane;
 	intersection = v3_add(v3_scale(line_direct, d), line_start);
-	intersection.w = 1;
+	
+	intersection.u = d * (line_end.u - line_start.u);
+	intersection.v = d * (line_end.v - line_start.v);
 	return (intersection);
 }
 
@@ -129,14 +133,4 @@ int8_t	clipping_z_near(t_triangle *tri, t_triangle *clipped)
 	clipped[0].p[outside_index] = line_plane_intersection(plane_p, plane_n, tri->p[inside_index[0]], tri->p[outside_index]);
 	clipped[1].p[outside_index] = line_plane_intersection(plane_p, plane_n, tri->p[inside_index[1]], tri->p[outside_index]);
 	return (2);
-}
-
-void	clipping_back(t_triangle *tri)
-{
-	
-}
-
-void	clipping_main(t_triangle *tri)
-{
-	
 }

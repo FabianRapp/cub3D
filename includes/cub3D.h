@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/06 08:50:59 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/06 09:45:40 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,13 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 
 #define FOV 60.0f
 #define FOV_RAD 1 / tan((double)FOV * 0.5 / 180.0 * 3.14159)
+//#define FOV_RAD 1.0471975512 // precomputed for FOV = 60.0 degrees
+//#define FOV_RAD 1.73205257663 // precomputed for FOV = 60.0 degrees
 //#define FOV_RAD 1.0 / tan(M_PI_4)
 #define Z_FAR 1000.0f
 #define Z_NEAR 0.1f
 #define Z_NORM ((double)Z_FAR) / (Z_FAR - Z_NEAR)
 #define Z_OFFSET (-(double)Z_FAR * Z_NEAR) / (Z_FAR - Z_NEAR)
-
 
 #define PROJECTION_MATRIX \
 { \
@@ -162,6 +163,16 @@ typedef struct s_vec3
 	float			v;
 }	t_vec3;
 
+typedef struct s_triangle
+{
+	t_vec3		p[3];
+	float		unprojected_z[3];
+	uint32_t	col;
+	t_vec3		centroid;
+	t_vec3		normal;
+	t_vec3		obj_normal[3]; 
+}	t_triangle;
+
 #define A 3
 #define R 0
 #define G 1
@@ -175,16 +186,7 @@ typedef union u_color_split
 	uint8_t		argb[4];
 }	t_color_split;
 
-typedef struct s_triangle
-{
-	t_vec3		p[3];
-	float		unprojected_z[3];
-	uint32_t	col;
-	t_vec3		centroid;
-	t_vec3		normal;
-	t_vec3		obj_normal[3]; 
-	
-}	t_triangle;
+
 
 typedef struct s_light_argb_stren
 {

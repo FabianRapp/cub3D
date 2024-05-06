@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/06 08:53:29 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/06 10:08:48 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,7 +272,7 @@ int32_t	main(void)
 	init_menu(&m_data, &m_data.menu);
 	add_menu_widget(&m_data, WIDGET_SLIDER, "Mouse Sensibility", (t_widget_val)(m_data.settings.mouse_sens / MOUSE_SENS_BASE), &m_data.menu);
 	add_menu_widget(&m_data, WIDGET_SLIDER, "Test 1", (t_widget_val)(m_data.settings.mouse_sens / MOUSE_SENS_BASE), &m_data.menu);
-	add_menu_widget(&m_data, WIDGET_SLIDER, "Test 2", (t_widget_val)(m_data.settings.mouse_sens / MOUSE_SENS_BASE), &m_data.menu);
+	add_menu_widget(&m_data, WIDGET_SLIDER, "Press 'm' to exit/enter menu", (t_widget_val)(m_data.settings.mouse_sens / MOUSE_SENS_BASE), &m_data.menu);
 	mlx_loop(m_data.mlx);
 	cleanup_exit(&m_data);
 	return (EXIT_SUCCESS);
