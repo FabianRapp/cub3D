@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/01 17:13:30 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/06 08:53:29 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,6 @@ int32_t	main(void)
 	m_data.pitch = 0;
 	m_data.yaw = 0;
 	m_data.roll = 0;
-	
 	ft_memcpy(&m_data.camera, &init_cam, sizeof(init_cam));
 	ft_memcpy(&m_data.up, &init_up, sizeof(init_up));
 	ft_memcpy(&m_data.look_direct, &init_look_direct, sizeof(init_look_direct));
@@ -247,8 +246,8 @@ int32_t	main(void)
 
 	//load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_Low_Poly.obj", &m_data.custom, &m_data);
 	//load_obj_file("lego_obj/", "lego_obj/lego obj.obj", &m_data.custom, &m_data);
-	load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj", &m_data.custom, &m_data);
-	//load_obj_file("objs/", "objs/HorseArmor.obj", &m_data.custom, &m_data);
+	//load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj", &m_data.custom, &m_data);
+	load_obj_file("objs/", "objs/HorseArmor.obj", &m_data.custom, &m_data);
 	//load_obj_file("teapot/", "teapot/teapot.obj", &m_data.custom, &m_data);
 	// load_obj_file("obj/", "obj/crates.obj", &m_data.custom, &m_data);
 	//load_obj_file("22-trees_9_obj/", "22-trees_9_obj/trees9.obj", &m_data.custom, &m_data);

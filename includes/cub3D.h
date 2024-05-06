@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/01 14:43:44 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/06 08:50:59 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -401,6 +401,10 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 
 // fill_triangle2.c
 void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color, t_mesh *mesh);
+
+// clipping.c
+int8_t	clipping_z_near(t_triangle *tri, t_triangle *clipped);
+int8_t	clipping_z_far(t_triangle *tri, t_triangle *clipped);
 
 // key_handlers.c
 void	ft_key_hook(mlx_key_data_t keydata, void *param);

@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 08:36:34 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/29 23:07:23 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/01 17:23:28 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,7 +396,7 @@ void	sacle_vecs(t_obj_parser *vars)
 		//return ;
 		//init_vec3(&scalar, 0.1f, 0.1f, 0.1f, 1.0f);
 		init_vec3(&scalar, 0.25, 0.25, 0.25);
-		init_vec3(&translate, 0.0f, 0.0f, 50.0f);
+		init_vec3(&translate, 0.0f, 0.0f, 500.0f);
 		init_vec3(&rotation, 0.0f, M_PI_2 , 0.0f);
 	}
 	i = 0;
