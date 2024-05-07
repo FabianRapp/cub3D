@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/06 12:18:13 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 00:41:44 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,14 +228,16 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 	j = 0;
 	while (j < clipped_count_front && j < 2)
 	{
-		projected.col = clipped_z_front[j].col;
+		
 		clipped_count_back = clipping_z_far(clipped_z_front + j, clipped_z_back);
 		q = 0;
+		uint32_t col = clipped_z_front[j].col; //TODO remove this line after fixing/implenting clipping
 		while (q < clipped_count_back && q < 2)
 		{
 			triangle = clipped_z_back[q];
 			// enter projeceted space
 			ft_memcpy(&projected, base_data, sizeof(projected));
+			projected.col = col; //TODO remove this line after fixing/implenting clipping
 			matrix_mult_vec3_4x4(triangle.p + 0, project_mat, &projected.p[0]);
 			matrix_mult_vec3_4x4(triangle.p + 1, project_mat, &projected.p[1]);
 			matrix_mult_vec3_4x4(triangle.p + 2, project_mat, &projected.p[2]);
@@ -291,7 +293,8 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 			//if (bounds_result.x < 3 && bounds_result.x > -3 && bounds_result.y < 3 && bounds_result.y > -3)
 			{
 				if (!projected.p[0].mtl || !projected.p[0].mtl->texture)
-					fill_triangle_color(mesh->img, &projected, base_data->col, mesh);
+					fill_triangle_color(mesh->img, &projected, projected.col, mesh);//TODO remove this line after fixing/implenting clipping
+					//fill_triangle_color(mesh->img, &projected, base_data->col, mesh);
 				else
 					fill_triangle_texture(mesh->img, &projected, mesh, color_scalars);
 			}

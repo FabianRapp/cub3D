@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 15:27:09 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/06 12:24:48 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 00:42:50 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_vec3	line_plane_intersection(t_vec3 plane_p, t_vec3 plane_n, t_vec3 line_start
 int8_t	clipping_z_far(t_triangle *tri, t_triangle *clipped)
 {
 	static const t_vec3	plane_p = {.x=0, .y=0,.z = Z_FAR};
-	static const t_vec3	plane_n = {.x=0.5, .y=0.5,.z = 0};
+	static const t_vec3	plane_n = {.x=0, .y=0,.z = 1};
 	int8_t				i;
 	t_vec3				cur_start;
 	int8_t				inside_points;
@@ -95,17 +95,23 @@ int8_t	clipping_z_far(t_triangle *tri, t_triangle *clipped)
 	clipped[1] = *tri;
 	int8_t	outside_index = (inside_index[0] ^ 3) & (inside_index[1] ^ 3);
 	// TODO i think these triangles are wrong or atleast bad
-	clipped[0].p[outside_index] = line_plane_intersection(plane_p, plane_n, tri->p[inside_index[0]], tri->p[outside_index]);
-	clipped[1].p[outside_index] = line_plane_intersection(plane_p, plane_n, tri->p[inside_index[1]], tri->p[outside_index]);
-	clipped[0].col = RED;// TODO remove this line when clipping is fixed
-	clipped[1].col = GREEN;// TODO remove this line when clipping is fixed
+	
+	t_vec3	intersec1 = line_plane_intersection(plane_p, plane_n, tri->p[inside_index[0]], tri->p[outside_index]);
+	t_vec3	intersec2 = line_plane_intersection(plane_p, plane_n, tri->p[inside_index[1]], tri->p[outside_index]);
+	
+	clipped[0].p[outside_index] = intersec1;
+
+	clipped[1].p[inside_index[0]] = intersec1;
+	clipped[1].p[outside_index] = intersec2;
+	clipped[0].col = BLUE;// TODO remove this line when clipping is fixed
+	clipped[1].col = BLUE;// TODO remove this line when clipping is fixed
 	return (2);
 }
 
 int8_t	clipping_z_near(t_triangle *tri, t_triangle *clipped)
 {
 	static const t_vec3	plane_p = {.x=0, .y=0,.z = Z_NEAR};
-	static const t_vec3	plane_n = {.x=0.5, .y=0.5,.z = 0};
+	static const t_vec3	plane_n = {.x=0, .y=0,.z = 1};
 	int8_t				i;
 	t_vec3				cur_start;
 	int8_t				inside_points;
@@ -119,7 +125,7 @@ int8_t	clipping_z_near(t_triangle *tri, t_triangle *clipped)
 			inside_index[inside_points++] = i;
 		i++;
 	}
-	if (inside_points == 0)
+	if (inside_points == 0) //inside_points == 2 ||
 		return (0);
 	if (inside_points == 3)
 	{
@@ -134,16 +140,32 @@ int8_t	clipping_z_near(t_triangle *tri, t_triangle *clipped)
 		int8_t	outside_index2 = (inside_index[0] ^ 3) & 2;
 		clipped[0].p[outside_index1] = line_plane_intersection(plane_p, plane_n, cur_start, tri->p[outside_index1]);
 		clipped[0].p[outside_index2] = line_plane_intersection(plane_p, plane_n, cur_start, tri->p[outside_index2]);
-		clipped[0].col = BLUE;// TODO remove this line when clipping is fixed
+		print_vec3(clipped[0].p[outside_index1], "0");
+		print_vec3(clipped[0].p[outside_index2], "1");
+		clipped[0].col = RED;// TODO remove this line when clipping is fixed
 		return (1);
 	}
 	clipped[0] = *tri;
 	clipped[1] = *tri;
 	int8_t	outside_index = (inside_index[0] ^ 3) & (inside_index[1] ^ 3);
 	// TODO i think these triangles are wrong or atleast bad
-	clipped[0].p[outside_index] = line_plane_intersection(plane_p, plane_n, tri->p[inside_index[0]], tri->p[outside_index]);
-	clipped[1].p[outside_index] = line_plane_intersection(plane_p, plane_n, tri->p[inside_index[1]], tri->p[outside_index]);
-	clipped[0].col = RED;// TODO remove this line when clipping is fixed
-	clipped[1].col = GREEN;// TODO remove this line when clipping is fixed
+	t_vec3	intersec1 = line_plane_intersection(plane_p, plane_n, tri->p[inside_index[0]], tri->p[outside_index]);
+	t_vec3	intersec2 = line_plane_intersection(plane_p, plane_n, tri->p[inside_index[1]], tri->p[outside_index]);
+	static int a= 0;
+	clipped[0].p[outside_index] = intersec1;
+	clipped[1].p[inside_index[0]] = intersec1;
+	clipped[1].p[outside_index] = intersec2;
+	printf("inside points: %d\n", inside_points);
+	clipped[0].col = LIGHT_GREY;// TODO remove this line when clipping is fixed
+	clipped[1].col = DARK_GREY;// TODO remove this line when clipping is fixed
+	printf("tri 1:\n");
+	print_vec3(clipped[0].p[0], 0);
+	print_vec3(clipped[0].p[1], 0);
+	print_vec3(clipped[0].p[2], 0);
+	printf("tri 2:\n");
+	print_vec3(clipped[1].p[0], 0);
+	print_vec3(clipped[1].p[1], 0);
+	print_vec3(clipped[1].p[2], 0);
+	printf("\n");
 	return (2);
 }

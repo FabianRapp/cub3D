@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/06 12:14:21 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 00:42:28 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,11 +206,11 @@ int32_t	main(void)
 	// }
 	ft_bzero(&m_data.menu, sizeof(m_data.menu));
 	ft_bzero(&m_data, sizeof(m_data));
-	m_data.controls.jump_height = 2;
-	m_data.controls.movement_speed_straight = 2;
-	m_data.controls.movement_speed_left = 2;
-	m_data.controls.movement_speed_right = 2;
-	m_data.controls.movement_speed_back = 2;
+	m_data.controls.jump_height = 1;
+	m_data.controls.movement_speed_straight = 1;
+	m_data.controls.movement_speed_left = 1;
+	m_data.controls.movement_speed_right = 1;
+	m_data.controls.movement_speed_back = 1;
 	m_data.pitch = 0;
 	m_data.yaw = 0;
 	m_data.roll = 0;
