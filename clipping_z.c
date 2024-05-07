@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 15:27:09 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/08 00:42:50 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 00:57:01 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,6 @@ int8_t	clipping_z_near(t_triangle *tri, t_triangle *clipped)
 		int8_t	outside_index2 = (inside_index[0] ^ 3) & 2;
 		clipped[0].p[outside_index1] = line_plane_intersection(plane_p, plane_n, cur_start, tri->p[outside_index1]);
 		clipped[0].p[outside_index2] = line_plane_intersection(plane_p, plane_n, cur_start, tri->p[outside_index2]);
-		print_vec3(clipped[0].p[outside_index1], "0");
-		print_vec3(clipped[0].p[outside_index2], "1");
 		clipped[0].col = RED;// TODO remove this line when clipping is fixed
 		return (1);
 	}
@@ -155,17 +153,7 @@ int8_t	clipping_z_near(t_triangle *tri, t_triangle *clipped)
 	clipped[0].p[outside_index] = intersec1;
 	clipped[1].p[inside_index[0]] = intersec1;
 	clipped[1].p[outside_index] = intersec2;
-	printf("inside points: %d\n", inside_points);
 	clipped[0].col = LIGHT_GREY;// TODO remove this line when clipping is fixed
 	clipped[1].col = DARK_GREY;// TODO remove this line when clipping is fixed
-	printf("tri 1:\n");
-	print_vec3(clipped[0].p[0], 0);
-	print_vec3(clipped[0].p[1], 0);
-	print_vec3(clipped[0].p[2], 0);
-	printf("tri 2:\n");
-	print_vec3(clipped[1].p[0], 0);
-	print_vec3(clipped[1].p[1], 0);
-	print_vec3(clipped[1].p[2], 0);
-	printf("\n");
 	return (2);
 }

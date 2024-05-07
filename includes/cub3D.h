@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/06 12:21:58 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 01:09:43 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,9 +154,9 @@ typedef struct s_mtl
 
 typedef struct s_vec3
 {
-	float			x;
-	float			y;
-	float			z;
+	float			x;//HAS TO BE FIRST
+	float			y;//HAS TO BE SECOND
+	float			z;//HAS TO BE THIRD
 	float			w;
 	t_mtl			*mtl;
 	float			u;
@@ -165,8 +165,8 @@ typedef struct s_vec3
 
 typedef struct s_triangle
 {
-	t_vec3		p[3];
-	float		unprojected_z[3];
+	t_vec3		p[3];// HAS TO BE FIRST
+	float		unprojected_z[3];// HAS TO BE FIRST AFTER p
 	uint32_t	col;
 	t_vec3		centroid;
 	t_vec3		normal;
@@ -407,6 +407,9 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 // clipping_z.c
 int8_t	clipping_z_near(t_triangle *tri, t_triangle *clipped);
 int8_t	clipping_z_far(t_triangle *tri, t_triangle *clipped);
+
+//clipping_xy.c
+int	clipping_left(t_triangle *tri, t_triangle *clipped);
 
 // key_handlers.c
 void	ft_key_hook(mlx_key_data_t keydata, void *param);

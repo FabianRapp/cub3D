@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/08 00:41:44 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 01:35:31 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,11 +212,26 @@ t_light	init_day_light(double d_time)
 	return (day_light);
 }
 
+//copies specifc tri data
+void	cpy_triangle_data_rasterize(t_triangle *src, t_triangle *dst)
+{
+	int	i;
+
+	// printf("full size: %zu\nsize: %zu\n", sizeof(t_triangle), (uintptr_t)(&src->unprojected_z) - (uintptr_t)src);
+	ft_memcpy(&dst->unprojected_z, &src->unprojected_z, sizeof(t_triangle) - (((uintptr_t)(&src->unprojected_z)) - ((uintptr_t)src)));
+	i = 0;
+	while (i < 3)
+	{
+		ft_memcpy(&(dst->p + i)->mtl, &(src->p + i)->mtl, sizeof(t_vec3) - ((((uintptr_t)&(src->p + i)->mtl)) - ((uintptr_t)(src->p + i))));
+		i++;
+	}
+}
+
 void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light_argb_stren color_scalars)
 {
-
 	t_triangle	clipped_z_front[2];
 	t_triangle	clipped_z_back[2];
+	
 	int			clipped_count_front;
 	int			clipped_count_back;
 	t_triangle	projected;
@@ -226,77 +241,90 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 	int	j;
 	int	q;
 	j = 0;
-	while (j < clipped_count_front && j < 2)
+	while (j == 0 || (j < clipped_count_front && j < 2))
 	{
-		
-		clipped_count_back = clipping_z_far(clipped_z_front + j, clipped_z_back);
+		if (clipped_count_front)
+			triangle = clipped_z_front[j];
+		clipped_count_back = clipping_z_far(&triangle, clipped_z_back);
 		q = 0;
 		uint32_t col = clipped_z_front[j].col; //TODO remove this line after fixing/implenting clipping
-		while (q < clipped_count_back && q < 2)
+		while (q == 0 || (q < clipped_count_back && q < 2))
 		{
-			triangle = clipped_z_back[q];
+			if (clipped_count_back)
+				triangle = clipped_z_back[q];
+
 			// enter projeceted space
-			ft_memcpy(&projected, base_data, sizeof(projected));
+			//cpy_triangle_data_rasterize(base_data, &projected);
 			projected.col = col; //TODO remove this line after fixing/implenting clipping
 			matrix_mult_vec3_4x4(triangle.p + 0, project_mat, &projected.p[0]);
 			matrix_mult_vec3_4x4(triangle.p + 1, project_mat, &projected.p[1]);
 			matrix_mult_vec3_4x4(triangle.p + 2, project_mat, &projected.p[2]);
-
-			//printf("w0: %f w1: %f w2: %f\n", projected.p[0].w, projected.p[1].w, projected.p[2].w);
-			// i think zero check is not needed after full clipping
-			if (!zero_f(projected.p[0].w))
-				div_vec3(projected.p + 0, projected.p[0].w);
-			if (!zero_f(projected.p[1].w))
-				div_vec3(projected.p + 1, projected.p[1].w);
-			if (!zero_f(projected.p[2].w))
-				div_vec3(projected.p + 2, projected.p[2].w);
-
-			scale_to_screen(&projected);
-
-			projected.unprojected_z[0] = triangle.p[0].z;
-			projected.unprojected_z[1] = triangle.p[1].z;
-			projected.unprojected_z[2] = triangle.p[2].z;
-			// bounds_result = out_of_bound_triangle_projeceted(&projected);
-			// if (!flipped_x && bounds_result.x < 0 && mesh->momentum.x < 0)
-			// {
-			// 	mesh->momentum.x *= -1;
-			// 	flipped_x = true;
-			// }
-			// if (!flipped_x && bounds_result.x > 0 && mesh->momentum.x > 0)
-			// {
-			// 	mesh->momentum.x *= -1;
-			// 	flipped_x = true;
-			// }
-
-			// if (!flipped_y && bounds_result.y < 0 && mesh->momentum.y < 0)
-			// {
-			// 	mesh->momentum.y *= -1;
-			// 	flipped_y = true;
-			// }
-			// if (!flipped_y && bounds_result.y > 0 && mesh->momentum.y > 0)
-			// {
-			// 	mesh->momentum.y *= -1;
-			// 	flipped_y = true;
-			// }
-
-			// if (!flipped_z && bounds_result.z < 0 && mesh->momentum.z < 0)
-			// {
-			// 	mesh->momentum.z *= -1;
-			// 	flipped_z = true;
-			// }
-			// if (!flipped_z && bounds_result.z > 0 && mesh->momentum.z > 0)
-			// {
-			// 	mesh->momentum.z *= -1;
-			// 	flipped_z = true;
-			// }
-			//draw_triangle(mesh->img, &projected, (mesh->triangles + i)->col);
-			//if (bounds_result.x < 3 && bounds_result.x > -3 && bounds_result.y < 3 && bounds_result.y > -3)
+			cpy_triangle_data_rasterize(base_data, &projected);
+			// t_triangle	clipped_left[2];
+			int clipped_count_left = 0;//clipping_left(&projected, clipped_left);
+			int l = 0;
+			while (l == 0 || (l < clipped_count_left && l < 2))
 			{
-				if (!projected.p[0].mtl || !projected.p[0].mtl->texture)
-					fill_triangle_color(mesh->img, &projected, projected.col, mesh);//TODO remove this line after fixing/implenting clipping
-					//fill_triangle_color(mesh->img, &projected, base_data->col, mesh);
-				else
-					fill_triangle_texture(mesh->img, &projected, mesh, color_scalars);
+				// if (clipped_count_left)
+				// 	triangle = clipped_left[l];
+				//printf("w0: %f w1: %f w2: %f\n", projected.p[0].w, projected.p[1].w, projected.p[2].w);
+				// i think zero check is not needed after full clipping
+				if (!zero_f(projected.p[0].w))
+					div_vec3(projected.p + 0, projected.p[0].w);
+				if (!zero_f(projected.p[1].w))
+					div_vec3(projected.p + 1, projected.p[1].w);
+				if (!zero_f(projected.p[2].w))
+					div_vec3(projected.p + 2, projected.p[2].w);
+
+				scale_to_screen(&projected);
+
+				projected.unprojected_z[0] = triangle.p[0].z;
+				projected.unprojected_z[1] = triangle.p[1].z;
+				projected.unprojected_z[2] = triangle.p[2].z;
+				// bounds_result = out_of_bound_triangle_projeceted(&projected);
+				// if (!flipped_x && bounds_result.x < 0 && mesh->momentum.x < 0)
+				// {
+				// 	mesh->momentum.x *= -1;
+				// 	flipped_x = true;
+				// }
+				// if (!flipped_x && bounds_result.x > 0 && mesh->momentum.x > 0)
+				// {
+				// 	mesh->momentum.x *= -1;
+				// 	flipped_x = true;
+				// }
+
+				// if (!flipped_y && bounds_result.y < 0 && mesh->momentum.y < 0)
+				// {
+				// 	mesh->momentum.y *= -1;
+				// 	flipped_y = true;
+				// }
+				// if (!flipped_y && bounds_result.y > 0 && mesh->momentum.y > 0)
+				// {
+				// 	mesh->momentum.y *= -1;
+				// 	flipped_y = true;
+				// }
+
+				// if (!flipped_z && bounds_result.z < 0 && mesh->momentum.z < 0)
+				// {
+				// 	mesh->momentum.z *= -1;
+				// 	flipped_z = true;
+				// }
+				// if (!flipped_z && bounds_result.z > 0 && mesh->momentum.z > 0)
+				// {
+				// 	mesh->momentum.z *= -1;
+				// 	flipped_z = true;
+				// }
+				//draw_triangle(mesh->img, &projected, (mesh->triangles + i)->col);
+				//if (bounds_result.x < 3 && bounds_result.x > -3 && bounds_result.y < 3 && bounds_result.y > -3)
+				
+				{
+					if (!projected.p[0].mtl || !projected.p[0].mtl->texture)
+						fill_triangle_color(mesh->img, &projected, projected.col, mesh);//TODO remove this line after fixing/implenting clipping
+						//fill_triangle_color(mesh->img, &projected, base_data->col, mesh);
+					else
+						fill_triangle_texture(mesh->img, &projected, mesh, color_scalars);
+				}
+				l++;
 			}
 			q++;
 		}

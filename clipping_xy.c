@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 15:27:09 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/06 12:25:00 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 00:58:28 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,21 @@ int	clipping_left(t_triangle *tri, t_triangle *clipped)
 		int8_t	outside_index2 = (inside_index[0] ^ 3) & 2;
 		fast_line_intersect(flags, tri->p[inside_index[0]], tri->p + outside_index1);
 		fast_line_intersect(flags, tri->p[inside_index[0]], tri->p + outside_index2);
+		clipped[0].col = RED;
 		return (1);
 	}
+	static int c = 0;
+	printf("here: %d\n", c++);
 	// this is super inefficent (alot of area is covered twice (draw the tris))
 	clipped[0] = *tri;
 	clipped[1] = *tri;
 	int8_t	outside_index = (inside_index[0] ^ 3) & (inside_index[1] ^ 3);
 	// TODO i think these triangles are wrong or atleast bad
-	// clipped[0].p[outside_index] = line_plane_intersection(plane_p, plane_n, tri->p[inside_index[0]], tri->p[outside_index]);
-	// clipped[1].p[outside_index] = line_plane_intersection(plane_p, plane_n, tri->p[inside_index[1]], tri->p[outside_index]);
+	fast_line_intersect(flags, clipped[0].p[inside_index[0]], clipped[0].p + outside_index);
+	fast_line_intersect(flags, clipped[1].p[inside_index[1]], clipped[0].p + outside_index);
+	clipped[1].p[inside_index[0]] = clipped[0].p[outside_index];
+	clipped[0].col = LIGHT_GREY;
+	clipped[1].col = DARK_GREY;
 	return (2);
 }
 
