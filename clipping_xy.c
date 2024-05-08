@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 15:27:09 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/09 00:56:01 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/09 01:14:58 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ void	fast_line_intersect(const int8_t base_flags[2], t_vec3 p1, t_vec3 *p2)
 	if (base_flags[0])
 	{
 		if (base_flags[1])
-			progress = ((HEIGHT - 1 - p1.y) / (dist_y));
+			progress = ((((double)HEIGHT) - 1.0 - p1.y) / (dist_y));
 		else
-			progress = ((WIDTH - 1 - p1.x) / (dist_x));
+			progress = ((((double)WIDTH) - 1.0 - p1.x) / (dist_x));
 	}
 	else
 	{
@@ -43,6 +43,10 @@ void	fast_line_intersect(const int8_t base_flags[2], t_vec3 p1, t_vec3 *p2)
 	}
 	p2->x = p1.x + (dist_x) * progress;
 	p2->y = p1.y + (dist_y) * progress;
+	if (p2->y < 0.0f && p2->y > -0.0001f)
+		p2->y = 0.0f;
+	if (p2->x < 0.0f && p2->x > -0.0001f)
+		p2->x = 0.0f;
 	p2->u = (p2->u - p1.u) * progress;
 	p2->v = (p2->v - p1.v) * progress;
 }
@@ -57,9 +61,9 @@ int	clipping_xy(t_triangle *tri, t_triangle *clipped, const int8_t flags[2])
 	i = 0;
 	while (i < 3)
 	{
-		if (!flags[0] && !flags[1] && tri->p[i].x >= 0)
+		if (!flags[0] && !flags[1] && tri->p[i].x > 0.0f)
 			inside_index[inside_points++] = i;
-		else if (!flags[0] && flags[1] && tri->p[i].y >= 0)
+		else if (!flags[0] && flags[1] && tri->p[i].y > 0.0f)
 			inside_index[inside_points++] = i;
 		else if (flags[0] && !flags[1] && tri->p[i].x < (float)WIDTH)
 			inside_index[inside_points++] = i;
@@ -80,7 +84,7 @@ int	clipping_xy(t_triangle *tri, t_triangle *clipped, const int8_t flags[2])
 		{
 			for (int i = 0; i < 3; i++)
 			{
-				if (flags[0] && flags[1] && clipped[0].p[i].y >= HEIGHT)
+				if (!flags[0] && !flags[1] && clipped[0].p[i].x < 0.0f)
 				{
 					printf("case 1\n");
 					print_vec3(tri->p[0], "base y HEIGTH");
@@ -104,7 +108,7 @@ int	clipping_xy(t_triangle *tri, t_triangle *clipped, const int8_t flags[2])
 		fast_line_intersect(flags, tri->p[inside_index[0]], clipped->p + outside_index2);
 		for (int i = 0; i < 3; i++)
 		{
-			if (flags[0] && flags[1] && clipped[0].p[i].y >= HEIGHT)
+			if (!flags[0] && !flags[1] && clipped[0].p[i].x < 0.0f)
 			{
 				printf("case 2\n");
 				print_vec3(tri->p[0], "base y HEIGTH");
@@ -129,7 +133,7 @@ int	clipping_xy(t_triangle *tri, t_triangle *clipped, const int8_t flags[2])
 	clipped[1].p[inside_index[0]] = clipped[0].p[outside_index];
 	for (int i = 0; i < 3; i++)
 	{
-		if (flags[0] && flags[1] && clipped[0].p[i].y >= HEIGHT)
+		if (!flags[0] && !flags[1] && clipped[0].p[i].x < 0.0f)
 		{
 			printf("case 3\n");
 			printf("outside index: %d\n", outside_index);
@@ -147,7 +151,7 @@ int	clipping_xy(t_triangle *tri, t_triangle *clipped, const int8_t flags[2])
 	}
 	for (int i = 0; i < 3; i++)
 	{
-		if (flags[0] && flags[1] && clipped[1].p[i].y >= HEIGHT)
+		if (!flags[0] && !flags[1] && clipped[1].p[i].x < -0.0f)
 		{
 			printf("case 4\n");
 			printf("outside index: %d\n", outside_index);

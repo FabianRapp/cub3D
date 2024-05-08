@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:38:58 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/08 23:52:56 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/09 01:10:10 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,11 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 	}
 	for (int i = 0; i < 3; i++)
 	{
-		if (p[i].y < 0 || p[i].x < 0 || p[i].x >= WIDTH || p[i].y >= HEIGHT)
+		if (p[i].x < 0 || p[i].x >= WIDTH)// || p[i].y < 0 ||  p[i].y >= HEIGHT)
 		{
-			print_vec3(p[i], 0);
+			print_vec3(p[0], 0);
+			print_vec3(p[1], 0);
+			print_vec3(p[2], 0);
 			exit(1);
 		}
 	}
