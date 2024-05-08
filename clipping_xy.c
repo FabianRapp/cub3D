@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 15:27:09 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/08 00:58:28 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 23:03:07 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,29 @@
 	if !base_flags[0] -> l1 goes through (0, 0)
 	if base_flags[1] -> l1 is along the y axis
 	if !base_flags[1] -> l1 is along the x axis
-	(l1 is either the x or the y axis)
-	returns the multiplier for the direct where direct * x + p == p on l1
 */
-void	fast_line_intersect(const int8_t base_flags[2], t_vec3 p, t_vec3 *direct)
+void	fast_line_intersect(const int8_t base_flags[2], t_vec3 p1, t_vec3 *p2)
 {
 	float	progress;
 
 	if (base_flags[0])
 	{
 		if (base_flags[1])
-			progress = (HEIGHT / direct->y - p.y / direct->y);
+			progress = ((HEIGHT - p1.y) / (p2->y - p1.y));
 		else
-			progress = (WIDTH / direct->x - p.x / direct->x);
+			progress = ((WIDTH -p1.x) / (p2->x - p1.x));
 	}
 	else
 	{
 		if (base_flags[1])
-			progress = (-p.y / direct->y);
+			progress = (-p1.y / (p2->y - p1.y));
 		else
-			progress = (-p.x / direct->x);
+			progress = (-p1.x / (p2->x - p1.x));
 	}
-	direct->x = direct->x * progress;
-	direct->y = direct->y * progress;
-	direct->u = (direct->u - p.u) * progress;
-	direct->v = (direct->v - p.v) * progress;
+	p2->x = p1.x + (p2->x - p1.x) * progress;
+	p2->y = p1.y + (p2->y - p1.y) * progress;
+	p2->u = (p2->u - p1.u) * progress;
+	p2->v = (p2->v - p1.v) * progress;
 }
 
 int	clipping_left(t_triangle *tri, t_triangle *clipped)
@@ -77,18 +75,14 @@ int	clipping_left(t_triangle *tri, t_triangle *clipped)
 		clipped[0].col = RED;
 		return (1);
 	}
-	static int c = 0;
-	printf("here: %d\n", c++);
-	// this is super inefficent (alot of area is covered twice (draw the tris))
 	clipped[0] = *tri;
 	clipped[1] = *tri;
 	int8_t	outside_index = (inside_index[0] ^ 3) & (inside_index[1] ^ 3);
-	// TODO i think these triangles are wrong or atleast bad
 	fast_line_intersect(flags, clipped[0].p[inside_index[0]], clipped[0].p + outside_index);
 	fast_line_intersect(flags, clipped[1].p[inside_index[1]], clipped[0].p + outside_index);
 	clipped[1].p[inside_index[0]] = clipped[0].p[outside_index];
 	clipped[0].col = LIGHT_GREY;
-	clipped[1].col = DARK_GREY;
+	clipped[1].col = YELLOW;
 	return (2);
 }
 

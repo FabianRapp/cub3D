@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/08 01:35:31 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 22:38:37 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,7 +218,7 @@ void	cpy_triangle_data_rasterize(t_triangle *src, t_triangle *dst)
 	int	i;
 
 	// printf("full size: %zu\nsize: %zu\n", sizeof(t_triangle), (uintptr_t)(&src->unprojected_z) - (uintptr_t)src);
-	ft_memcpy(&dst->unprojected_z, &src->unprojected_z, sizeof(t_triangle) - (((uintptr_t)(&src->unprojected_z)) - ((uintptr_t)src)));
+	ft_memcpy(&dst->centroid, &src->centroid, sizeof(t_triangle) - (((uintptr_t)(&src->centroid)) - ((uintptr_t)src)));
 	i = 0;
 	while (i < 3)
 	{
@@ -259,28 +259,28 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 			matrix_mult_vec3_4x4(triangle.p + 0, project_mat, &projected.p[0]);
 			matrix_mult_vec3_4x4(triangle.p + 1, project_mat, &projected.p[1]);
 			matrix_mult_vec3_4x4(triangle.p + 2, project_mat, &projected.p[2]);
-			cpy_triangle_data_rasterize(base_data, &projected);
-			// t_triangle	clipped_left[2];
-			int clipped_count_left = 0;//clipping_left(&projected, clipped_left);
+			if (!zero_f(projected.p[0].w))
+				div_vec3(projected.p + 0, projected.p[0].w);
+			if (!zero_f(projected.p[1].w))
+				div_vec3(projected.p + 1, projected.p[1].w);
+			if (!zero_f(projected.p[2].w))
+				div_vec3(projected.p + 2, projected.p[2].w);
+
+			scale_to_screen(&projected);
+
+			projected.unprojected_z[0] = triangle.p[0].z;
+			projected.unprojected_z[1] = triangle.p[1].z;
+			projected.unprojected_z[2] = triangle.p[2].z;
+			t_triangle	clipped_left[2];
+			int clipped_count_left = clipping_left(&projected, clipped_left);
 			int l = 0;
 			while (l == 0 || (l < clipped_count_left && l < 2))
 			{
-				// if (clipped_count_left)
-				// 	triangle = clipped_left[l];
+				if (clipped_count_left)
+					projected = clipped_left[l];
 				//printf("w0: %f w1: %f w2: %f\n", projected.p[0].w, projected.p[1].w, projected.p[2].w);
 				// i think zero check is not needed after full clipping
-				if (!zero_f(projected.p[0].w))
-					div_vec3(projected.p + 0, projected.p[0].w);
-				if (!zero_f(projected.p[1].w))
-					div_vec3(projected.p + 1, projected.p[1].w);
-				if (!zero_f(projected.p[2].w))
-					div_vec3(projected.p + 2, projected.p[2].w);
 
-				scale_to_screen(&projected);
-
-				projected.unprojected_z[0] = triangle.p[0].z;
-				projected.unprojected_z[1] = triangle.p[1].z;
-				projected.unprojected_z[2] = triangle.p[2].z;
 				// bounds_result = out_of_bound_triangle_projeceted(&projected);
 				// if (!flipped_x && bounds_result.x < 0 && mesh->momentum.x < 0)
 				// {
@@ -316,7 +316,7 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 				// }
 				//draw_triangle(mesh->img, &projected, (mesh->triangles + i)->col);
 				//if (bounds_result.x < 3 && bounds_result.x > -3 && bounds_result.y < 3 && bounds_result.y > -3)
-				
+				cpy_triangle_data_rasterize(base_data, &projected);
 				{
 					if (!projected.p[0].mtl || !projected.p[0].mtl->texture)
 						fill_triangle_color(mesh->img, &projected, projected.col, mesh);//TODO remove this line after fixing/implenting clipping

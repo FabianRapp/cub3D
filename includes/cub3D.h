@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/08 01:09:43 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 22:29:21 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ typedef struct s_vec3
 	float			y;//HAS TO BE SECOND
 	float			z;//HAS TO BE THIRD
 	float			w;
-	t_mtl			*mtl;
+	t_mtl			*mtl; // HAS TO BE AFTER POSITION DATA
 	float			u;
 	float			v;
 }	t_vec3;
@@ -166,8 +166,8 @@ typedef struct s_vec3
 typedef struct s_triangle
 {
 	t_vec3		p[3];// HAS TO BE FIRST
-	float		unprojected_z[3];// HAS TO BE FIRST AFTER p
-	uint32_t	col;
+	float		unprojected_z[3];// HAS TO BE SECOND
+	uint32_t	col; //HAS TO BE THIRD
 	t_vec3		centroid;
 	t_vec3		normal;
 	t_vec3		obj_normal[3]; 
