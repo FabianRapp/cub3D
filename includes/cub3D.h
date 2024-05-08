@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/08 23:14:26 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 23:43:53 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 /*
 /todo:
-	- init postion
-	- add basic button input to change postion
+	- it seems the unprojected z val i sometimes wrong leading to triangles beeing drawn partly eventhough they are behind others,
+		might be diffrent reason aswell
 
 
 */

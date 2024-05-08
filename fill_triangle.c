@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:38:58 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/08 01:01:33 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 23:52:56 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 	color.argb[R] *= color_scalars.v[R];
 	color.argb[G] *= color_scalars.v[G];
 	color.argb[B] *= color_scalars.v[B];
-	color.col = projected->col; // TODO remove this line when clipping is fixed
 
 	depth = mesh->main->depth;
 	sort_vertexes_for_y(projected);
@@ -112,6 +111,14 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 	{
 		fprintf(stderr, "error sort_vertexes_for_y 1: %f 2: %f 3: %f\n", p[0].y, p[1].y, p[2].y);
 		exit(1);
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		if (p[i].y < 0 || p[i].x < 0 || p[i].x >= WIDTH || p[i].y >= HEIGHT)
+		{
+			print_vec3(p[i], 0);
+			exit(1);
+		}
 	}
 	//float	m1 = slope_2d_x_per_y(p[0], p[1]);
 	float	y_dist1 = p[1].y - p[0].y;
@@ -140,15 +147,20 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 			float	z_dist = end_z - start_z;
 			int row_index = WIDTH * y_index;
 
-			if ((start_z < Z_NEAR && end_z < Z_NEAR) || (start_z > Z_FAR && end_z > Z_FAR))
-			{
-				cur_y_float = cur_y_float + 1.0f;
-				y_index =  (int)roundf(cur_y_float);
-				continue ;
-			}
+			// if ((start_z < Z_NEAR && end_z < Z_NEAR) || (start_z > Z_FAR && end_z > Z_FAR))
+			// {
+			// 	cur_y_float = cur_y_float + 1.0f;
+			// 	y_index =  (int)roundf(cur_y_float);
+			// 	continue ;
+			// }
 			int	color_y_index = (y_progress * (1 - p[1].v - (1 - p[0].v)) + p[0].v) * (texture->height - 1);
 			if (cur_x < x_max)
 			{
+				// if (cur_x < -100)
+				// {
+				// 	printf("cur_x < 0: cur_x: %d\n", cur_x);
+				// 	exit(1);
+				// }
 				if (cur_x < 0)
 					cur_x = 0;
 				while (cur_x <= x_max && cur_x < WIDTH)
@@ -183,6 +195,11 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 			}
 			else if (cur_x > x_max)
 			{
+				// if (cur_x >= WIDTH)
+				// {
+				// 	printf("cur_x >= WIDTH: cur_x: %d\n", cur_x);
+				// 	exit(1);
+				// }
 				if (cur_x >= WIDTH)
 					cur_x = WIDTH - 1;
 				while (cur_x >= x_max && cur_x >= 0)

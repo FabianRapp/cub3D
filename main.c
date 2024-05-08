@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/08 22:52:35 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 23:40:30 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,8 @@ void	ft_hook(void* param)
 	reset_pixel_buffer(main_data->img->pixels, main_data->depth);
 	//mod_cube_rotation(&main_data->cube, main_data->mlx->delta_time);
 	mod_cube_rotation(&main_data->custom, main_data->mlx->delta_time);
-	//draw_mesh(&main_data->cube);
 	draw_mesh(&main_data->axis);
-	//draw_mesh(&main_data->custom);
+	draw_mesh(&main_data->custom);
 	//mod_cube_rotation(&main_data->tetra, main_data->mlx->delta_time);
 	//draw_mesh(&main_data->tetra);
 //	mod_cube_rotation2(&main_data->cube2, main_data->mlx->delta_time);

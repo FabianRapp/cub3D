@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/08 23:38:08 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 23:41:29 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,7 +286,6 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 			int	clipping_return;
 			for (int i = 0; i < last_count; i++)
 			{
-				printf("clipped_count: %d\n", clipped_count);
 				clipping_return = clipping_xy(&projected, clipped + clipped_count, clipping_flags);
 				if (clipping_return)
 					clipped_count += clipping_return - 1;
@@ -317,8 +316,7 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 				cpy_triangle_data_rasterize(base_data, &projected);
 				{
 					if (!projected.p[0].mtl || !projected.p[0].mtl->texture)
-						fill_triangle_color(mesh->img, &projected, projected.col, mesh);//TODO remove this line after fixing/implenting clipping
-						//fill_triangle_color(mesh->img, &projected, base_data->col, mesh);
+						fill_triangle_color(mesh->img, &projected, base_data->col, mesh);
 					else
 						fill_triangle_texture(mesh->img, &projected, mesh, color_scalars);
 				}
