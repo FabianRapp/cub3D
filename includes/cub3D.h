@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/08 22:29:21 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 23:14:26 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -409,7 +409,7 @@ int8_t	clipping_z_near(t_triangle *tri, t_triangle *clipped);
 int8_t	clipping_z_far(t_triangle *tri, t_triangle *clipped);
 
 //clipping_xy.c
-int	clipping_left(t_triangle *tri, t_triangle *clipped);
+int	clipping_xy(t_triangle *tri, t_triangle *clipped, const int8_t flags[2]);
 
 // key_handlers.c
 void	ft_key_hook(mlx_key_data_t keydata, void *param);

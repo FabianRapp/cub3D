@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/08 22:38:37 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 23:38:08 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,7 @@ void	cpy_triangle_data_rasterize(t_triangle *src, t_triangle *dst)
 	}
 }
 
+// TODO: the clipping loops are inefficent and need refactor anyay
 void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light_argb_stren color_scalars)
 {
 	t_triangle	clipped_z_front[2];
@@ -271,51 +272,48 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 			projected.unprojected_z[0] = triangle.p[0].z;
 			projected.unprojected_z[1] = triangle.p[1].z;
 			projected.unprojected_z[2] = triangle.p[2].z;
-			t_triangle	clipped_left[2];
-			int clipped_count_left = clipping_left(&projected, clipped_left);
-			int l = 0;
-			while (l == 0 || (l < clipped_count_left && l < 2))
+			t_triangle	clipped[30];
+			int8_t		clipping_flags[2];
+			
+			clipping_flags[0] = 0;
+			clipping_flags[1] = 0;
+			int clipped_count = 0;
+			clipped_count += clipping_xy(&projected, clipped + clipped_count, clipping_flags);
+			clipping_flags[0] = 0;
+			clipping_flags[1] = 1;
+			int last_count;
+			last_count = clipped_count;
+			int	clipping_return;
+			for (int i = 0; i < last_count; i++)
 			{
-				if (clipped_count_left)
-					projected = clipped_left[l];
-				//printf("w0: %f w1: %f w2: %f\n", projected.p[0].w, projected.p[1].w, projected.p[2].w);
-				// i think zero check is not needed after full clipping
-
-				// bounds_result = out_of_bound_triangle_projeceted(&projected);
-				// if (!flipped_x && bounds_result.x < 0 && mesh->momentum.x < 0)
-				// {
-				// 	mesh->momentum.x *= -1;
-				// 	flipped_x = true;
-				// }
-				// if (!flipped_x && bounds_result.x > 0 && mesh->momentum.x > 0)
-				// {
-				// 	mesh->momentum.x *= -1;
-				// 	flipped_x = true;
-				// }
-
-				// if (!flipped_y && bounds_result.y < 0 && mesh->momentum.y < 0)
-				// {
-				// 	mesh->momentum.y *= -1;
-				// 	flipped_y = true;
-				// }
-				// if (!flipped_y && bounds_result.y > 0 && mesh->momentum.y > 0)
-				// {
-				// 	mesh->momentum.y *= -1;
-				// 	flipped_y = true;
-				// }
-
-				// if (!flipped_z && bounds_result.z < 0 && mesh->momentum.z < 0)
-				// {
-				// 	mesh->momentum.z *= -1;
-				// 	flipped_z = true;
-				// }
-				// if (!flipped_z && bounds_result.z > 0 && mesh->momentum.z > 0)
-				// {
-				// 	mesh->momentum.z *= -1;
-				// 	flipped_z = true;
-				// }
-				//draw_triangle(mesh->img, &projected, (mesh->triangles + i)->col);
-				//if (bounds_result.x < 3 && bounds_result.x > -3 && bounds_result.y < 3 && bounds_result.y > -3)
+				printf("clipped_count: %d\n", clipped_count);
+				clipping_return = clipping_xy(&projected, clipped + clipped_count, clipping_flags);
+				if (clipping_return)
+					clipped_count += clipping_return - 1;
+			}
+			clipping_flags[0] = 1;
+			clipping_flags[1] = 0;
+			last_count = clipped_count;
+				for (int i = 0; i < last_count; i++)
+			{
+				clipping_return = clipping_xy(&projected, clipped + clipped_count, clipping_flags);
+				if (clipping_return)
+					clipped_count += clipping_return - 1;
+			}
+			clipping_flags[0] = 1;
+			clipping_flags[1] = 1;
+			last_count = clipped_count;
+			for (int i = 0; i < last_count; i++)
+			{
+				clipping_return = clipping_xy(&projected, clipped + clipped_count, clipping_flags);
+				if (clipping_return)
+					clipped_count += clipping_return - 1;
+			}
+			int l = 0;
+			while (l == 0 || (l < clipped_count && l < 2))
+			{
+				if (clipped_count)
+					projected = clipped[l];
 				cpy_triangle_data_rasterize(base_data, &projected);
 				{
 					if (!projected.p[0].mtl || !projected.p[0].mtl->texture)

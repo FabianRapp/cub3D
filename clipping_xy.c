@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 15:27:09 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/08 23:03:07 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 23:14:31 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <MLX42.h>
 
 /*
-	if base_flags[0] -> l1 goes through (WIDTH, HEIGHT)
+	if base_flags[0] -> l1 goes through (WIDTH/HEIGHT)
 	if !base_flags[0] -> l1 goes through (0, 0)
 	if base_flags[1] -> l1 is along the y axis
 	if !base_flags[1] -> l1 is along the x axis
@@ -43,18 +43,23 @@ void	fast_line_intersect(const int8_t base_flags[2], t_vec3 p1, t_vec3 *p2)
 	p2->v = (p2->v - p1.v) * progress;
 }
 
-int	clipping_left(t_triangle *tri, t_triangle *clipped)
+int	clipping_xy(t_triangle *tri, t_triangle *clipped, const int8_t flags[2])
 {
 	int8_t				i;
 	int8_t				inside_points;
 	int8_t				inside_index[3];
-	static const int8_t	flags[2] = {0, 0};
 
 	inside_points = 0;
 	i = 0;
 	while (i < 3)
 	{
-		if (tri->p[i].x >= 0)
+		if (!flags[0] && !flags[1] && tri->p[i].x >= 0)
+			inside_index[inside_points++] = i;
+		else if (!flags[0] && flags[1] && tri->p[i].y >= 0)
+			inside_index[inside_points++] = i;
+		else if (flags[0] && !flags[1] && tri->p[i].x < WIDTH)
+			inside_index[inside_points++] = i;
+		else if (flags[0] && flags[1] && tri->p[i].y < HEIGHT)
 			inside_index[inside_points++] = i;
 		i++;
 	}
@@ -84,18 +89,4 @@ int	clipping_left(t_triangle *tri, t_triangle *clipped)
 	clipped[0].col = LIGHT_GREY;
 	clipped[1].col = YELLOW;
 	return (2);
-}
-
-void	clipping_right()
-{
-}
-
-void	clipping_up()
-{
-	
-}
-
-void	clipping_down()
-{
-	
 }
