@@ -257,7 +257,7 @@ void	print_vec3(t_vec3 v, char *msg)
 {
 	if (!msg)
 	{
-		fprintf(stderr, "x: %.2f, y: %.5f z: %.2f w: %.2f u: %.2f v: %.2f", v.x, v.y, v.z, v.w, v.u, v.v);
+		fprintf(stderr, "x: %.10f, y: %.10f z: %.10f w: %.2f u: %.2f v: %.2f", v.x, v.y, v.z, v.w, v.u, v.v);
 		if (v.mtl)
 		{
 			fprintf(stderr, "\n");
@@ -270,7 +270,7 @@ void	print_vec3(t_vec3 v, char *msg)
 	}
 	else
 	{
-		fprintf(stderr, "%s x: %.2f, y: %.5f z: %.2f w: %.2f u: %.2f v: %.2f", msg, v.x, v.y, v.z, v.w, v.u, v.v);
+		fprintf(stderr, "%s x: %.10f, y: %.10f z: %.10f w: %.2f u: %.2f v: %.2f", msg, v.x, v.y, v.z, v.w, v.u, v.v);
 		if (v.mtl)
 		{
 			fprintf(stderr, "\n");

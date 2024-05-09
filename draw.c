@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/09 01:21:20 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/09 03:07:44 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,61 +273,27 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 			projected.unprojected_z[0] = triangle.p[0].z;
 			projected.unprojected_z[1] = triangle.p[1].z;
 			projected.unprojected_z[2] = triangle.p[2].z;
-			t_triangle	clipped[30];
-			int8_t		clipping_flags[2];
-			
+			t_triangle				clipped[30];
+			clipped[0] = projected;
+			int clipped_count = call_clipping_xy(clipped);
 
-			// TODO!!: SAVING THE NEW TRIS INTO AN ARRAY DOES NOT WORK LIKE THIS, NEEDS REWORK ON WHERE THE CLIPPED TRIS ARE STORED
-			clipping_flags[0] = 0;
-			clipping_flags[1] = 0;
-			int clipped_count = 0;
-			clipped_count += clipping_xy(&projected, clipped + clipped_count, clipping_flags);
-			clipping_flags[0] = 0;
-			clipping_flags[1] = 1;
-			int last_count;
-			last_count = clipped_count;
-			int	clipping_return;
-			for (int i = 0; i < last_count; i++)
-			{
-				clipping_return = clipping_xy(&projected, clipped + clipped_count, clipping_flags);
-				if (clipping_return)
-					clipped_count += clipping_return - 1;
-			}
-			clipping_flags[0] = 1;
-			clipping_flags[1] = 0;
-			last_count = clipped_count;
-			for (int i = 0; i < last_count; i++)
-			{
-				clipping_return = clipping_xy(&projected, clipped + clipped_count, clipping_flags);
-				if (clipping_return)
-					clipped_count += clipping_return - 1;
-			}
-			clipping_flags[0] = 1;
-			clipping_flags[1] = 1;
-			last_count = clipped_count;
-			for (int i = 0; i < last_count; i++)
-			{
-				clipping_return = clipping_xy(&projected, clipped + clipped_count, clipping_flags);
-				if (clipping_return)
-					clipped_count += clipping_return - 1;
-			}
 			int l = 0;
-			while (l < clipped_count && l < 2)
+			while (l < clipped_count)
 			{
-				if (clipped_count)
-					projected = clipped[l];
+				projected = clipped[l];
+				cpy_triangle_data_rasterize(base_data, &projected);
 				for (int i = 0; i < 3; i++)
 				{
-					if (projected.p[i].x < 0 || projected.p[i].x >= WIDTH)// || p[i].y < 0 ||  p[i].y >= HEIGHT)
+					if (projected.p[i].x < 0.0f || projected.p[i].x >= (float)WIDTH)// || p[i].y < 0 ||  p[i].y >= HEIGHT)
 					{
 						printf("error before filling: clipping error or trash memory, l: %d clipped count: %d\n", l, clipped_count);
 						print_vec3(projected.p[0], 0);
 						print_vec3(projected.p[1], 0);
 						print_vec3(projected.p[2], 0);
-						exit(1);
+						//exit(1);
 					}
 				}
-				// cpy_triangle_data_rasterize(base_data, &projected);
+				
 				{
 					if (!projected.p[0].mtl || !projected.p[0].mtl->texture)
 						fill_triangle_color(mesh->img, &projected, base_data->col, mesh);
