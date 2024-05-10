@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/10 02:18:52 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/10 03:16:57 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,7 +274,6 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 			projected.unprojected_z[1] = triangle.p[1].z;
 			projected.unprojected_z[2] = triangle.p[2].z;
 			t_triangle				clipped[30];
-			ft_bzero(clipped, sizeof(clipped));
 			clipped[0] = projected;
 			int clipped_count = call_clipping_xy(clipped);
 
@@ -282,7 +281,7 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 			while (l < clipped_count)
 			{
 				projected = clipped[l];
-				cpy_triangle_data_rasterize(base_data, &projected);
+				//cpy_triangle_data_rasterize(base_data, &projected);
 				for (int i = 0; i < 3; i++)
 				{
 					if (projected.p[i].x < 0.0f || projected.p[i].x >= (float)WIDTH)// || p[i].y < 0 ||  p[i].y >= HEIGHT)

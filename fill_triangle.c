@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:38:58 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/09 01:43:27 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/10 03:22:49 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,8 +254,10 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 			if (cur_x < x_max)
 			{
 				if (cur_x < 0)
+				{
+					printf("cur_x: %d\n", cur_x);
 					cur_x = 0;
-				
+				}
 				while(cur_x <= x_max && cur_x < WIDTH)
 				{
 					float x_progress = (cur_x - start_x) / len_x;
@@ -272,7 +274,10 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 			else if (cur_x > x_max)
 			{
 				if (cur_x >= WIDTH)
+				{
+					printf("cur_x: %d\n", cur_x);
 					cur_x = WIDTH - 1;
+				}
 				while (cur_x >= x_max && cur_x >= 0)
 				{
 					float x_progress = (cur_x - start_x) / len_x;

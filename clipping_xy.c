@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 15:27:09 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/10 02:14:21 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/10 03:46:34 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,41 +42,40 @@ bool	is_empty(t_triangle *clipped)
 	return (false);
 }
 
-int8_t	get_free_index(t_index_usage *usage)
+int8_t	get_free_index(t_index_usage *const usage)
 {
 	int8_t		i;
+	t_index_usage	local;
 
 	i = 0;
+	local = *usage;
 	while (i < 64)
 	{
-		if (((*usage) & (1ULL << i)) == 0)
+		if ((local & (1ULL << i)) == 0)
 		{
 			return (i);
 		}
 		i++;
 	}
-	// fprintf(stderr, "error get_free_index\n");
-	// exit(1);
 	return (-1);
 }
 
-int8_t	get_unset_last_used_index(t_index_usage *usage)
+int8_t	get_unset_last_used_index(t_index_usage *const usage)
 {
-	int8_t		i;
+	int8_t			i;
+	t_index_usage	local;
 
-	
 	i = 63;
+	local = *usage;
 	while (i >= 0)
 	{
-		if ((*usage) & (1ULL << i))
+		if (local & (1ULL << i))
 		{
 			*usage ^= 1ULL << i;
 			return (i);
 		}
 		i--;
 	}
-	// fprintf(stderr, "error get_free_index\n");
-	// exit(1);
 	return (-1);
 }
 
@@ -94,8 +93,6 @@ int8_t	get_unset_used_index(t_index_usage *usage)
 		}
 		i++;
 	}
-	// fprintf(stderr, "error get_free_index\n");
-	// exit(1);
 	return (-1);
 }
 
@@ -115,64 +112,108 @@ bool	index_is_used(t_index_usage usage, int index)
 	return(usage & (1ULL << index));
 }
 
-
-/*
-	if base_flags[0] -> l1 goes through (WIDTH/HEIGHT)
-	if !base_flags[0] -> l1 goes through (0, 0)
-	if base_flags[1] -> l1 is along the y axis
-	if !base_flags[1] -> l1 is along the x axis
-*/
-void	fast_line_intersect(const int8_t base_flags[2], t_vec3 p1, t_vec3 *p2)
+void fast_line_intersect(const int8_t base_flags[2], t_vec3 p1, t_vec3 *p2)
 {
-	float	progress;
-	float	dist_x;
-	float	dist_y;
+	float progress;
+	float dist_x = p2->x - p1.x;
+	float dist_y = p2->y - p1.y;
 
-	dist_x = ((p2->x) - (p1.x));
-	dist_y = ((p2->y) - (p1.y));
 	if ((zero_f(dist_x) && !base_flags[1]) || (zero_f(dist_y) && base_flags[1]))
 	{
 		print_vec3(p1, "p1: ");
 		print_vec3(*p2, "p2:");
 		exit(0);
 	}
+
 	if (base_flags[0])
 	{
 		if (base_flags[1])
-			progress = ((((float)HEIGHT - 1.0) - floorf(p1.y)) / (dist_y));
+			progress = (HEIGHT - 1.0f - p1.y) / dist_y;
 		else
-			progress = ((((float)WIDTH  - 1.0) - floorf(p1.x)) / (dist_x));
+			progress = (WIDTH - 1.0f - p1.x) / dist_x;
 	}
 	else
 	{
 		if (base_flags[1])
-			progress = (((float)- floorf(p1.y)) / (dist_y));
+			progress = -p1.y / dist_y;
 		else
-			progress = (((float)- floorf(p1.x)) / (dist_x));
+			progress = -p1.x / dist_x;
 	}
-	p2->x = p1.x + (dist_x) * progress;
-	p2->y = p1.y + (dist_y) * progress;
-	if (p2->x > 10)
-		p2->x -= 1.0f;
-	else
-		p2->x += 1.0f;
-	if (p2->y > 10)
-		p2->y -= 1.0f;
-	else
-		p2->y += 1.0f;
-	// if (p2->y > (float)HEIGHT && p2->y - 1 < (float)HEIGHT)
-	// 	p2->y =
-	// if (p2->x < 0.0f && fabs(p2->x) > 0.01)
-	// 	p2->x = 0.0f;
-	// if (p2->y < 0.0f && p2->y > -0.01f)
-	// 	p2->y = 0.0f;
-	// if (p2->x < 0.0f && p2->x > -0.01f)
-	// 	p2->x = 0.0f;
-	p2->y = (p2->y);
-	p2->x = (p2->x);
-	p2->u = (p2->u - p1.u) * progress;
-	p2->v = (p2->v - p1.v) * progress;//TODO keep in mind when texture mapping, these val might be fked
+	p2->x = p1.x + dist_x * progress;
+	p2->y = p1.y + dist_y * progress;
+
+	if (p2->x < 0)
+		p2->x = 0;
+	else if (p2->x >= WIDTH)
+		p2->x = WIDTH - 1;
+	if (p2->y < 0)
+		p2->y = 0;
+	else if (p2->y >= HEIGHT)
+		p2->y = HEIGHT - 1;
+
+	p2->u = p1.u + (p2->u - p1.u) * progress;
+	p2->v = p1.v + (p2->v - p1.v) * progress;
 }
+
+// /*
+// 	if base_flags[0] -> l1 goes through (WIDTH/HEIGHT)
+// 	if !base_flags[0] -> l1 goes through (0, 0)
+// 	if base_flags[1] -> l1 is along the y axis
+// 	if !base_flags[1] -> l1 is along the x axis
+// */
+// void	fast_line_intersect(const int8_t base_flags[2], t_vec3 p1, t_vec3 *p2)
+// {
+// 	float	progress;
+// 	float	dist_x;
+// 	float	dist_y;
+
+// 	dist_x = ((p2->x) - (p1.x));
+// 	dist_y = ((p2->y) - (p1.y));
+// 	if ((zero_f(dist_x) && !base_flags[1]) || (zero_f(dist_y) && base_flags[1]))
+// 	{
+// 		print_vec3(p1, "p1: ");
+// 		print_vec3(*p2, "p2:");
+// 		exit(0);
+// 	}
+// 	if (base_flags[0])
+// 	{
+// 		if (base_flags[1])
+// 			progress = (((HEIGHT - 1.0) - (int)(p1.y)) / (dist_y));
+// 		else
+// 			progress = (((WIDTH  - 1.0) - (int)(p1.x)) / (dist_x));
+// 	}
+// 	else
+// 	{
+// 		if (base_flags[1])
+// 			progress = ((-(int)(p1.y)) / (dist_y));
+// 		else
+// 			progress = ((-(int)(p1.x)) / (dist_x));
+// 	}
+// 	p2->x = p1.x + (dist_x) * progress;
+// 	p2->y = p1.y + (dist_y) * progress;
+// 	if (p2->x > 10)
+// 		p2->x -= 1.0f;
+// 	else
+// 		p2->x += 1.0f;
+// 	if (p2->y > 10)
+// 		p2->y -= 1.0f;
+// 	else
+// 		p2->y += 1.0f;
+// 	// if (p2->y > (float)HEIGHT && p2->y - 1 < (float)HEIGHT)
+// 	// 	p2->y =
+// 	// if (p2->x < 0.0f && fabs(p2->x) > 0.01)
+// 	// 	p2->x = 0.0f;
+// 	// if (p2->y < 0.0f && p2->y > -0.01f)
+// 	// 	p2->y = 0.0f;
+// 	// if (p2->x < 0.0f && p2->x > -0.01f)
+// 	// 	p2->x = 0.0f;
+// 	p2->y = (p2->y);
+// 	p2->x = (p2->x);
+// 	p2->u = (p2->u - p1.u) * progress;
+// 	p2->v = (p2->v - p1.v) * progress;
+// 	// TODO INACCUARATE UV VALS CAUSE SEGFAULT WITH LOTS OF CLIPPING
+// 	//TODO keep in mind when texture mapping, these val might be fked since p2->x/y are fked
+// }
 
 void	clipping_xy(t_triangle *clipped, t_index_usage *used_indexes, const int8_t flags[2], int8_t cur_index)
 {
@@ -210,21 +251,21 @@ void	clipping_xy(t_triangle *clipped, t_index_usage *used_indexes, const int8_t 
 	}
 	if (inside_points == 3)
 	{
-		set_index_usage(used_indexes, cur_index, 1);
-		if (flags[0] && flags[1])
-		{
-			for (int i = 0; i < 3; i++)
-			{
-				if (!flags[0] && !flags[1] && clipped[cur_index].p[i].x < 0.0f)
-				{
-					printf("case 1\n");
-					print_vec3(clipped[cur_index].p[0], "clipped y HEIGTH");
-					print_vec3(clipped[cur_index].p[1], "clipped y HEIGTH");
-					print_vec3(clipped[cur_index].p[2], "clipped y HEIGTH");
-					break ;
-				}
-			}
-		}
+		//set_index_usage(used_indexes, cur_index, 1);
+		// if (flags[0] && flags[1])
+		// {
+		// 	for (int i = 0; i < 3; i++)
+		// 	{
+		// 		if (!flags[0] && !flags[1] && clipped[cur_index].p[i].x < 0.0f)
+		// 		{
+		// 			printf("case 1\n");
+		// 			print_vec3(clipped[cur_index].p[0], "clipped y HEIGTH");
+		// 			print_vec3(clipped[cur_index].p[1], "clipped y HEIGTH");
+		// 			print_vec3(clipped[cur_index].p[2], "clipped y HEIGTH");
+		// 			break ;
+		// 		}
+		// 	}
+		// }
 		return ;
 	}
 	if (inside_points == 1)
@@ -235,18 +276,18 @@ void	clipping_xy(t_triangle *clipped, t_index_usage *used_indexes, const int8_t 
 		int8_t	outside_index2 = (inside_index[0] ^ 3) & 2;
 		fast_line_intersect(flags, clipped[cur_index].p[inside_index[0]], clipped[cur_index].p + outside_index1);
 		fast_line_intersect(flags, clipped[cur_index].p[inside_index[0]], clipped[cur_index].p + outside_index2);
-		for (int i = 0; i < 3; i++)
-		{
-			if (flags[0] && flags[1] && clipped[cur_index].p[i].y >= HEIGHT)
-			{
-				printf("case 2\n");
-				print_vec3(clipped[cur_index].p[0], "clipped y HEIGTH");
-				print_vec3(clipped[cur_index].p[1], "clipped y HEIGTH");
-				print_vec3(clipped[cur_index].p[2], "clipped y HEIGTH");
-				exit(1);
-				break ;
-			}
-		}
+		// for (int i = 0; i < 3; i++)
+		// {
+		// 	if (flags[0] && flags[1] && clipped[cur_index].p[i].y >= HEIGHT)
+		// 	{
+		// 		printf("case 2\n");
+		// 		print_vec3(clipped[cur_index].p[0], "clipped y HEIGTH");
+		// 		print_vec3(clipped[cur_index].p[1], "clipped y HEIGTH");
+		// 		print_vec3(clipped[cur_index].p[2], "clipped y HEIGTH");
+		// 		exit(1);
+		// 		break ;
+		// 	}
+		// }
 		clipped[cur_index].col = RED;
 		return ;
 	}
@@ -266,48 +307,49 @@ void	clipping_xy(t_triangle *clipped, t_index_usage *used_indexes, const int8_t 
 	clipped[second_index].p[inside_index[0]] = clipped[cur_index].p[outside_index];
 	clipped[cur_index].col = PINK;
 	clipped[cur_index].col = DARK_GREY;
-	for (int i = 0; i < 3; i++)
-	{
-		if (flags[0] && flags[1] && clipped[second_index].p[i].y >= HEIGHT)
-		{
-			printf("case 3\n");
-			printf("outside index: %d\n", outside_index);
-			print_vec3(input.p[0], "input");
-			print_vec3(input.p[1], "input");
-			print_vec3(input.p[2], "input");
-			print_vec3(clipped[cur_index].p[0], "1: clipped y HEIGTH");
-			print_vec3(clipped[cur_index].p[1], "1: clipped y HEIGTH");
-			print_vec3(clipped[cur_index].p[2], "1: clipped y HEIGTH");
-			print_vec3(clipped[1].p[0], "2: clipped y HEIGTH");
-			print_vec3(clipped[1].p[1], "2: clipped y HEIGTH");
-			print_vec3(clipped[1].p[2], "2: clipped y HEIGTH");
-			break ;
-		}
-	}
-	for (int i = 0; i < 3; i++)
-	{
-		if (flags[0] && flags[1] && clipped[cur_index].p[i].y >= HEIGHT)
-		{
-			printf("case 4\n");
-			printf("outside index: %d\n", outside_index);
-			printf("inside index 1: %d\n", inside_index[0]);
-			printf("inside index[1]: %d\n", inside_index[1]);
-			print_vec3(input.p[0], "input");
-			print_vec3(input.p[1], "input");
-			print_vec3(input.p[2], "input");
-			print_vec3(clipped[cur_index].p[0], "1: clipped y HEIGTH");
-			print_vec3(clipped[cur_index].p[1], "1: clipped y HEIGTH");
-			print_vec3(clipped[cur_index].p[2], "1: clipped y HEIGTH");
-			print_vec3(clipped[second_index].p[0], "2[0]: clipped y HEIGTH");
-			print_vec3(clipped[second_index].p[1], "2[1]: clipped y HEIGTH");
-			print_vec3(clipped[second_index].p[2], "2[2]: clipped y HEIGTH");
-			print_vec3(input_fn_left, "input_fn_left");
-			print_vec3(input_fn_right, "input_fn_right");
-			print_vec3(output_fn, "output of fn");
-			exit(0);
-			break ;
-		}
-	}
+	// for (int i = 0; i < 3; i++)
+	// {
+	// 	if (flags[0] && flags[1] && clipped[second_index].p[i].y >= HEIGHT)
+	// 	{
+	// 		printf("case 3\n");
+	// 		printf("outside index: %d\n", outside_index);
+	// 		print_vec3(input.p[0], "input");
+	// 		print_vec3(input.p[1], "input");
+	// 		print_vec3(input.p[2], "input");
+	// 		print_vec3(clipped[cur_index].p[0], "1: clipped y HEIGTH");
+	// 		print_vec3(clipped[cur_index].p[1], "1: clipped y HEIGTH");
+	// 		print_vec3(clipped[cur_index].p[2], "1: clipped y HEIGTH");
+	// 		print_vec3(clipped[1].p[0], "2: clipped y HEIGTH");
+	// 		print_vec3(clipped[1].p[1], "2: clipped y HEIGTH");
+	// 		print_vec3(clipped[1].p[2], "2: clipped y HEIGTH");
+	// 		exit(0);
+	// 		break ;
+	// 	}
+	// }
+	// for (int i = 0; i < 3; i++)
+	// {
+	// 	if (flags[0] && flags[1] && clipped[cur_index].p[i].y >= HEIGHT)
+	// 	{
+	// 		printf("case 4\n");
+	// 		printf("outside index: %d\n", outside_index);
+	// 		printf("inside index 1: %d\n", inside_index[0]);
+	// 		printf("inside index[1]: %d\n", inside_index[1]);
+	// 		print_vec3(input.p[0], "input");
+	// 		print_vec3(input.p[1], "input");
+	// 		print_vec3(input.p[2], "input");
+	// 		print_vec3(clipped[cur_index].p[0], "1: clipped y HEIGTH");
+	// 		print_vec3(clipped[cur_index].p[1], "1: clipped y HEIGTH");
+	// 		print_vec3(clipped[cur_index].p[2], "1: clipped y HEIGTH");
+	// 		print_vec3(clipped[second_index].p[0], "2[0]: clipped y HEIGTH");
+	// 		print_vec3(clipped[second_index].p[1], "2[1]: clipped y HEIGTH");
+	// 		print_vec3(clipped[second_index].p[2], "2[2]: clipped y HEIGTH");
+	// 		print_vec3(input_fn_left, "input_fn_left");
+	// 		print_vec3(input_fn_right, "input_fn_right");
+	// 		print_vec3(output_fn, "output of fn");
+	// 		exit(0);
+	// 		break ;
+	// 	}
+	// }
 }
 
 // moves the triangles to the start so there are no empty slots
@@ -348,7 +390,7 @@ int8_t	fix_clipped_arr(t_triangle *clipped, t_index_usage used_indexes)
 		//clipped[last_used_index].p[0].x = 11111;
 		first_empty_index = get_free_index(&used_indexes);
 		last_used_index = get_unset_last_used_index(&used_indexes);
-		printf("first_empty_index: %d\nlast_used_index: %d\n", first_empty_index, last_used_index);
+		//printf("first_empty_index: %d\nlast_used_index: %d\n", first_empty_index, last_used_index);
 		
 		if (last_used_index == -1)
 		{
