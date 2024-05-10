@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/09 03:07:44 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/10 02:18:52 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,6 +274,7 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 			projected.unprojected_z[1] = triangle.p[1].z;
 			projected.unprojected_z[2] = triangle.p[2].z;
 			t_triangle				clipped[30];
+			ft_bzero(clipped, sizeof(clipped));
 			clipped[0] = projected;
 			int clipped_count = call_clipping_xy(clipped);
 
@@ -291,12 +292,14 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 						print_vec3(projected.p[1], 0);
 						print_vec3(projected.p[2], 0);
 						//exit(1);
+						break ;
 					}
 				}
 				
 				{
 					if (!projected.p[0].mtl || !projected.p[0].mtl->texture)
-						fill_triangle_color(mesh->img, &projected, base_data->col, mesh);
+						fill_triangle_color(mesh->img, &projected, projected.col, mesh);
+						// fill_triangle_color(mesh->img, &projected, base_data->col, mesh);
 					else
 						fill_triangle_texture(mesh->img, &projected, mesh, color_scalars);
 				}

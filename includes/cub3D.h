@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/09 02:48:55 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/10 01:20:07 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@
 typedef struct s_menu	t_menu;
 typedef struct s_main	t_main;
 
-typedef uint64_t	t_index_usage;
+typedef int64_t	t_index_usage;
 
 typedef int64_t	t_fixed;
 #define FRACTION_BITS 32
@@ -411,7 +411,7 @@ int8_t	clipping_z_near(t_triangle *tri, t_triangle *clipped);
 int8_t	clipping_z_far(t_triangle *tri, t_triangle *clipped);
 
 //clipping_xy.c
-int8_t		call_clipping_xy(t_triangle clipped[30]);
+int8_t		call_clipping_xy(t_triangle *clipped);
 
 // key_handlers.c
 void	ft_key_hook(mlx_key_data_t keydata, void *param);

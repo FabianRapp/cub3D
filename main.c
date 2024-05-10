@@ -6,7 +6,7 @@
 /*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/09 03:37:15 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/10 02:15:37 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,24 @@ void	handle_movement_per_frame(t_main *main_data)
 		movement.y += main_data->look_direct.y * main_data->mlx->delta_time * controls.movement_speed_straight;
 		movement.z += main_data->look_direct.z * main_data->mlx->delta_time * controls.movement_speed_straight;
 	}
-	if (controls.state.left) //todo
+	if (controls.state.left)
 	{
-		t_vec3	no_y = {.x = 0.5, .y = 0, .z = 0.5, .w = 1};
-		t_vec3	forward = v3_sub(main_data->look_direct, main_data->camera);
+		t_vec3	no_y = {.x = 0.5, .y = 0, .z = 0.0, .w = 1};
+		t_vec3	forward = main_data->look_direct;
 		unit_vec3(&forward);
-		t_vec3 left = cross_product(main_data->up, forward);
+		t_vec3 left = cross_product(forward, main_data->up);
 		unit_vec3(&left);
-		main_data->camera.x -= main_data->mlx->delta_time * controls.movement_speed_left * left.x;
-		main_data->camera.z -= main_data->mlx->delta_time * controls.movement_speed_left * left.z;
+		main_data->camera.x += main_data->mlx->delta_time * controls.movement_speed_left * left.x;
+		main_data->camera.z += main_data->mlx->delta_time * controls.movement_speed_left * left.z;
 		//print_vec3(main_data->camera, "new camera: ");
 		// movement.x += main_data->look_direct.x * main_data->mlx->delta_time * controls.movement_speed_left;
 		// movement.y += main_data->look_direct.y * main_data->mlx->delta_time * controls.movement_speed_left;
 		// movement.z += main_data->look_direct.z * main_data->mlx->delta_time * controls.movement_speed_left;
 	}
-	if (controls.state.right) //todo
+	if (controls.state.right)
 	{
-		t_vec3	no_y = {.x = 0.5, .y = 0, .z = 0.5, .w = 1};
-		t_vec3	forward = v3_sub(main_data->look_direct, main_data->camera);
+		t_vec3	no_y = {.x = 0.5, .y = 0, .z = 0.0, .w = 1};
+		t_vec3	forward = main_data->look_direct;
 		unit_vec3(&forward);
 		t_vec3 right = cross_product(main_data->up, forward);
 		unit_vec3(&right);
@@ -194,7 +194,7 @@ int32_t	main(void)
 	t_main			m_data;
 	const t_vec3	init_cam = {.x = 0, .y = 0, .z = 0, .w = 1};
 	const t_vec3	init_look_direct = {.x = 0, .y = 0, .z = 1, .w = 1};
-	const t_vec3	init_up = {.x = 0, .y = 1, .z = 0, .w = 1};
+	const t_vec3	init_up = {.x = 0.0, .y = 1, .z = 0, .w = 1};
 
 	int i = 0;
 	// m_data.monitor_width = 0;
@@ -215,6 +215,7 @@ int32_t	main(void)
 	m_data.roll = 0;
 	ft_memcpy(&m_data.camera, &init_cam, sizeof(init_cam));
 	ft_memcpy(&m_data.up, &init_up, sizeof(init_up));
+	unit_vec3(&m_data.up);
 	ft_memcpy(&m_data.look_direct, &init_look_direct, sizeof(init_look_direct));
 	srand(time(NULL));
 	if (!init())
@@ -243,8 +244,8 @@ int32_t	main(void)
 
 	//load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_Low_Poly.obj", &m_data.custom, &m_data);
 	//load_obj_file("lego_obj/", "lego_obj/lego obj.obj", &m_data.custom, &m_data);
-	//load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj", &m_data.custom, &m_data);
-	load_obj_file("objs/", "objs/HorseArmor.obj", &m_data.custom, &m_data);
+	load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj", &m_data.custom, &m_data);
+	//load_obj_file("objs/", "objs/HorseArmor.obj", &m_data.custom, &m_data);
 	//load_obj_file("teapot/", "teapot/teapot.obj", &m_data.custom, &m_data);
 	// load_obj_file("obj/", "obj/crates.obj", &m_data.custom, &m_data);
 	//load_obj_file("22-trees_9_obj/", "22-trees_9_obj/trees9.obj", &m_data.custom, &m_data);
