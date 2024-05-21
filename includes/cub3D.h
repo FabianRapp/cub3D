@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/10 01:20:07 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/21 16:57:50 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@
 
 //=============================
 
-#define MOUSE_SENS_BASE (0.002f)
+#define MOUSE_SENS_BASE (0.0001f)
 
 #define X 0
 #define Y 1
@@ -359,7 +359,7 @@ t_vec3	v3_add(t_vec3 a, t_vec3 b);
 t_vec3	v3_reverse(t_vec3 a);
 t_vec3	v3_multiply(t_vec3 a, t_vec3 b);
 t_vec3	v3_scale(t_vec3 a, float scalar);
-t_vec3	v3_random(void);
+//t_vec3	v3_random(void);
 t_vec3	v3_sub(t_vec3 a, t_vec3 b);
 void	zero_vec3(t_vec3 *v);
 void	add_vec3(t_vec3 *v, t_vec3 *a);

@@ -33,7 +33,6 @@ SOURCES= \
 	mesh_rotation.c \
 	utils1.c \
 	triangle.c \
-	to_replace.c \
 	obj_parser.c \
 	matrix/init_matrix.c \
 	matrix/matrix_math1.c \
@@ -49,6 +48,7 @@ SOURCES= \
 	menu/menu_public.c \
 	menu/menu_hooks.c
 
+#	to_replace.c \
 
 OBJECTS=$(SOURCES:.c=.o)
 MAIN_OB=$(MAIN:.c=.o)

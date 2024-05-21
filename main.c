@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/10 03:00:53 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/21 17:13:04 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,12 @@ void	ft_hook(void* param)
 		return ;
 	handle_movement_per_frame(main_data);
 	ident_mat_4x4(main_data->world_mat);
+
 	reset_pixel_buffer(main_data->img->pixels, main_data->depth);
 	//mod_cube_rotation(&main_data->cube, main_data->mlx->delta_time);
 	mod_cube_rotation(&main_data->custom, main_data->mlx->delta_time);
+	//print_vec3(main_data->up, "up");
+	//print_vec3(main_data->camera, "camera");
 	draw_mesh(&main_data->axis);
 	draw_mesh(&main_data->custom);
 	//mod_cube_rotation(&main_data->tetra, main_data->mlx->delta_time);
@@ -244,9 +247,9 @@ int32_t	main(void)
 
 	//load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_Low_Poly.obj", &m_data.custom, &m_data);
 	//load_obj_file("lego_obj/", "lego_obj/lego obj.obj", &m_data.custom, &m_data);
-	load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj", &m_data.custom, &m_data);
+	//load_obj_file("RAN Easter Egg 2024 - OBJ/", "RAN Easter Egg 2024 - OBJ/RAN_Easter_Egg_2024_High_Poly.obj", &m_data.custom, &m_data);
 	//load_obj_file("objs/", "objs/HorseArmor.obj", &m_data.custom, &m_data);
-	//load_obj_file("teapot/", "teapot/teapot.obj", &m_data.custom, &m_data);
+	load_obj_file("teapot/", "teapot/teapot.obj", &m_data.custom, &m_data);
 	// load_obj_file("obj/", "obj/crates.obj", &m_data.custom, &m_data);
 	//load_obj_file("22-trees_9_obj/", "22-trees_9_obj/trees9.obj", &m_data.custom, &m_data);
 	//fill_cube_mesh(&m_data.cube, &m_data);

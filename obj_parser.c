@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 08:36:34 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/01 17:23:28 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/14 00:05:52 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,9 +201,9 @@ t_vec3	parse_face_normals(t_obj_parser *vars, char *sub_face)
 	char	**split;
 	int 	i;
 
+	split = ft_split(sub_face, '/');
 	if (!split || !split[0] || !split[1] || !split[2])
 		return(return_vec);
-	split = ft_split(sub_face, '/');
 	i =  ft_atoi(split[1]) - 1;
 	fprintf(stderr, "index: %d\n", i);
 	ft_memcpy(&return_vec, vars->normals + i, sizeof(t_vec3));

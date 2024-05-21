@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_handlers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:30:59 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/01 14:54:23 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/21 17:25:38 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,13 @@ void	cursor_hook(double xpos, double ypos, void* param)
 	x_dist = xpos - WIDTH / 2;
 	y_dist = ypos - HEIGHT / 2;
 	main_data->pitch += main_data->settings.mouse_sens * y_dist;
+	if (main_data->pitch < ((-M_PI + 0.05) / 2))
+		main_data->pitch = ((-M_PI + 0.05) / 2);
+	else if (main_data->pitch > ((M_PI - 0.05)/ 2))
+		main_data->pitch = ((M_PI - 0.05) / 2);
 	main_data->yaw += main_data->settings.mouse_sens * x_dist;
+	main_data->yaw -= ((int)(main_data->yaw / (2 * (float)M_PI)))* (2 * (float)M_PI); // main_data->yaw %= 2 * PI
+	//printf("pitch: %f\nyaw: %f\n", main_data->pitch, main_data->yaw);
 	main_data->look_direct = v3_add(main_data->look_direct, get_direction(main_data->pitch, main_data->yaw, main_data->roll));
 	unit_vec3(&main_data->look_direct);
 	if (main_data->settings.cursor_lock)
