@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/21 20:06:19 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/21 21:05:01 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,9 +270,6 @@ typedef struct s_main
 	mlx_t		*mlx;
 	t_mesh		*objs;
 	int			nb;
-	t_mesh		skybox;
-	t_mesh		custom;
-	t_mesh		axis;
 	t_mesh		*meshes;
 	int			mesh_count;
 	mlx_image_t	*img;

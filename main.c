@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/21 20:25:01 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/21 21:04:48 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	ft_hook(void* param)
 		return ;
 	handle_movement_per_frame(main_data);
 	ident_mat_4x4(main_data->world_mat);
-
 	reset_pixel_buffer(main_data->img->pixels, main_data->depth);
 	i = 0;
 	while (i < main_data->mesh_count)
@@ -184,15 +183,3 @@ int32_t	main(void)
 	cleanup_exit(&m_data);
 	return (EXIT_SUCCESS);
 }
-
-//12140 byte(s) leaked in 81 allocation(s)
-
-// 418965 byte(s) leaked in 38843 allocation(s).
-//418965 byte(s) leaked in 38843 allocation(s).
-
-// 418773 byte(s) leaked in 38841 allocation(s).
-
-//20210 byte(s) leaked in 921 allocation(s).
-
-//20210 byte(s) leaked in 921 allocation(s).
-//20210 byte(s) leaked in 921 allocation(s)

@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 08:36:34 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/21 20:34:15 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/21 21:02:36 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,11 @@ void	obj_parser_count(t_obj_parser *vars)
 	close(vars->fd);
 }
 
+
 float	str_to_float(char *str)
 {
 	int		integer;
 	float	fraction;
-	float	return_val;
 	int		sign;
 
 	sign = 1;
@@ -89,22 +89,23 @@ float	str_to_float(char *str)
 		sign = -1;
 		str++;
 	}
-	char *new = ft_strtrim(str, "\n");
-	integer = ft_atoi(new);
-	char *new2 = ft_strchr(new, '.');
-	if (new2 && *new2 == '.')
-		new2++;
+	integer = ft_atoi(str);
+	while (ft_isdigit(*str))
+		str++;
+	if (*str == '.')
+		str++;
 	else
-		return (free(new), (float)integer);
-	if (!new2 || !ft_isdigit(*new2))
-		return (free(new), (float)integer);
-	fraction = (float)ft_atoi(new2);
-	fraction /= ft_powint(10, ft_strlen(new2));
-	return_val = fraction + integer;
-	free(new);
-	return_val *= sign;
-	return (return_val);
+		return ((float)integer * sign);
+	if (!ft_isdigit(*str))
+		return ((float)integer * sign);
+	fraction = (float)ft_atoi(str);
+	if (ft_strchr(str, '\n'))
+		fraction /= ft_powint(10, ft_strlen(str) - 1);
+	else
+		fraction /= ft_powint(10, ft_strlen(str));
+	return ((fraction + integer) * sign);
 }
+
 
 int	obj_parser_fill_vertexes(t_obj_parser *vars)
 {
@@ -123,8 +124,6 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 		if (!ft_strncmp(vars->line, "v ", 2))
 		{
 			split = ft_split(vars->line, ' ');
-			//fprintf(stderr, "vertex_i : %d\n", vertex_i);
-			//fprintf(stderr, "vertex coutn: %d\n", vars->vertex_count);
 			vars->vertexes[vertex_i].x = str_to_float(split[1]);
 			vars->vertexes[vertex_i].y = str_to_float(split[2]);
 			vars->vertexes[vertex_i].z = str_to_float(split[3]);
@@ -140,7 +139,6 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 			vars->normals[normal_i].z = str_to_float(split[3]);
 			vars->normals[normal_i].w = 1;
 			ft_free_2darr(split);
-			//fprintf(stderr, "normal_i: %d; normal_count: %d\n", normal_i, vars->normal_count);
 			normal_i++;
 		}
 		else if (!ft_strncmp(vars->line, "vt ", 3))
@@ -152,7 +150,6 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 			if (split[3])
 				vars->texture_cords[texture_cords_i].w = str_to_float(split[3]);
 			ft_free_2darr(split);
-			//fprintf(stderr, "normal_i: %d; normal_count: %d\n", normal_i, vars->normal_count);
 			texture_cords_i++;
 		}
 		free(vars->line);
@@ -172,14 +169,11 @@ t_vec3	parse_face_vertex(t_obj_parser *vars, char *sub_face, t_mtl *mtl)
 	split = ft_split(sub_face, '/');
 	vt_index = ft_atoi(split[0]) - 1;
 	ft_memcpy(&return_vec, vars->vertexes + vt_index, sizeof(t_vec3));
-	//fprintf(stderr, "vt_index: %d\n", vt_index);
 	return_vec.w = 1;
 	return_vec.mtl = mtl;
 	if (split[1] && split[2])
 	{
 		vt_index = ft_atoi(split[1]) - 1;
-		
-		// fprintf(stderr, "u: %f v: %f\n", vars->texture_cords[vt_index].u,  vars->texture_cords[vt_index].v);
 		return_vec.u = vars->texture_cords[vt_index].u;
 		return_vec.v = vars->texture_cords[vt_index].v;
 		return_vec.w = vars->texture_cords[vt_index].w;
@@ -201,7 +195,6 @@ t_vec3	parse_face_normals(t_obj_parser *vars, char *sub_face)
 		return(return_vec);
 	}
 	i =  ft_atoi(split[1]) - 1;
-	fprintf(stderr, "index: %d\n", i);
 	ft_memcpy(&return_vec, vars->normals + i, sizeof(t_vec3));
 	ft_free_2darr(split);
 	return(return_vec);
@@ -213,11 +206,7 @@ void	triangulation(t_obj_parser *vars, t_vec3 *vertexes, int vertex_count, t_vec
 	int			tris_count;
 	int			tris_i;
 	int			vertex_i;
-	t_vec3		*anchor = vertexes;
 	int			min_buffer_size;
-
-	static float last_z_len = 0;
-	static float max_z_len = 0;
 
 	if (!vertex_count)
 		return ;
@@ -238,22 +227,13 @@ void	triangulation(t_obj_parser *vars, t_vec3 *vertexes, int vertex_count, t_vec
 	vertex_i = 0;
 	while (tris_i < vars->tris_count)
 	{
-		tris[tris_i].p[0] = vertexes[0];
-		tris[tris_i].p[1] = vertexes[vertex_i + 1];
-		tris[tris_i].p[2] = vertexes[vertex_i + 2];
-
-		tris[tris_i].obj_normal[0] = normals[0];
-		tris[tris_i].obj_normal[1] = normals[vertex_i + 1];
-		tris[tris_i].obj_normal[2] = normals[vertex_i + 2];
-
+		ft_memcpy(tris[tris_i].p, vertexes, sizeof(t_vec3) * 3);
+		ft_memcpy(tris[tris_i].obj_normal, normals, sizeof(t_vec3) * 3);
 		tris[tris_i].normal = normals[0];
-
-
 		tris[tris_i].col = vars->colors[(vars->tris_count + tris_i) % OBJ_PARSER_COLOR_COUNT];
 		vertex_i++;
 		tris_i++;
-	};
-	last_z_len = max_z_len;
+	}
 }
 
 void	parse_vt(t_obj_parser *vars, char *face_p, t_vec3 *vec)
@@ -263,9 +243,11 @@ void	parse_vt(t_obj_parser *vars, char *face_p, t_vec3 *vec)
 
 	split = ft_split(face_p, '/');
 	if (!split || !split[0] || !split[1] || !split[2])
+	{
+		ft_free_2darr(split);
 		return ;
+	}
 	vt_index = ft_atoi(split[1]) - 1;
-	// fprintf(stderr, "u: %f v: %f\n", vars->texture_cords[vt_index].u,  vars->texture_cords[vt_index].v);
 	vec->u = vars->texture_cords[vt_index].u;
 	vec->v = vars->texture_cords[vt_index].v;
 	vec->w = vars->texture_cords[vt_index].w;
@@ -322,10 +304,6 @@ void	obj_parser_handle_faces(t_obj_parser *vars)
 	close(vars->fd);
 }
 
-
-
-// l 194 409
-// l 194 1146
 void	sacle_vecs(t_obj_parser *vars)
 {
 	int		i;
@@ -378,14 +356,8 @@ void	sacle_vecs(t_obj_parser *vars)
 			min.y = vars->vertexes[i].y;
 		if (vars->vertexes[i].z < min.z)
 		{
-			//fprintf(stderr, "min z i: %d\n", i);
 			min.z = vars->vertexes[i].z;
 		}
-		//if (i == 194 || i == 409 || i == 1146)
-	//	{
-			//fprintf(stderr, "vertex index %d: ", i);
-			//print_vec3(vars->vertexes[i], NULL);
-		//}
 		rotate_vec3(vars->vertexes + i, rotation.x, rotation.y, rotation.z);
 		multiply_vec3(vars->vertexes + i, &scalar);
 		add_vec3(vars->vertexes + i, &translate);
@@ -580,24 +552,12 @@ t_mesh	load_obj_file(char *dir, char *path, t_main *main_data)
 	t_obj_parser	vars;
 	t_mesh			mesh;
 
+	ft_bzero(&vars, sizeof(vars));
 	vars.path = path;
 	vars.mesh = &mesh;
-	
-	vars.tris = NULL;
-	vars.tris_count = 0;
-	vars.vertexes = NULL;
-	vars.vertex_count = 0;
-	vars.normals = NULL;
-	vars.normal_count = 0;
-	vars.texture_cords_count = 0;
-	vars.texture_cords = NULL;
 	mesh.obj_file = true;
-	vars.mtl_libs = NULL;
-	vars.mtl_libs_count = 0;
-	vars.buffer_size = 0;
 	init_obj_file_colors(&vars);
 	obj_parser_count(&vars);
-	
 
 	vars.vertexes = ft_calloc(vars.vertex_count, sizeof(t_vec3));
 	vars.normals = ft_calloc(vars.normal_count, sizeof(t_vec3));
@@ -605,20 +565,19 @@ t_mesh	load_obj_file(char *dir, char *path, t_main *main_data)
 	vars.mtl_libs = ft_calloc(vars.mtl_libs_count, sizeof(t_mtl *));
 	mesh.mtl_libs = vars.mtl_libs;
 	mesh.mtl_count = vars.mtl_libs_count;
-	
 	if ((!vars.vertexes && vars.vertex_count) || (!vars.normals && vars.normal_count))
 	{
-		fprintf(stderr, "mall err(vertex count: %d normal count (is not 0): %d\n", vars.vertex_count, vars.normal_count);
-		exit(1);
+		fprintf(stderr, "mall err\n");
+		free(vars.vertexes);
+		free(vars.normals);
+		free(vars.texture_cords);
+		free(vars.mtl_libs);
+		cleanup_exit(main_data);
 	}
 	obj_parser_parse_mtl_libs(&vars, dir, path);
-	//vars.vertex_count = 
 	obj_parser_fill_vertexes(&vars);
 	sacle_vecs(&vars);
-
 	obj_parser_handle_faces(&vars);
-
-
 	mesh.triangles = vars.tris;
 	mesh.count = vars.tris_count;
 	t_vec3	momentum = {0.5, 0.3, 0.0};
@@ -635,7 +594,6 @@ t_mesh	load_obj_file(char *dir, char *path, t_main *main_data)
 	mesh.main = main_data;
 	mesh.d_time = &main_data->mlx->delta_time;
 	mesh.img = main_data->img;
-	
 	free(vars.vertexes);
 	free(vars.normals);
 	printf("%s loaded\n", path);
