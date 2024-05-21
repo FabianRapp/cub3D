@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/21 16:57:50 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/21 20:06:19 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,8 @@ typedef struct s_mesh
 	double			*d_time;
 	mlx_image_t		*img;
 	t_main			*main;
+	t_mtl			**mtl_libs;
+	int				mtl_count;
 }	t_mesh;
 
 typedef struct	s_movement_state
@@ -268,12 +270,11 @@ typedef struct s_main
 	mlx_t		*mlx;
 	t_mesh		*objs;
 	int			nb;
-	t_mesh		cube;
-	t_mesh		cube2;
-	t_mesh		tetra;
 	t_mesh		skybox;
 	t_mesh		custom;
 	t_mesh		axis;
+	t_mesh		*meshes;
+	int			mesh_count;
 	mlx_image_t	*img;
 	float		depth[WIDTH * HEIGHT];
 	t_controls	controls;
@@ -342,9 +343,6 @@ void	draw_skybox(t_mesh *mesh);
 // main.c
 void	ft_hook(void* param);
 void	translate_triangle_3d(t_triangle *tri_a, t_vec3 v);
-void	translate_mesh_3d(t_mesh *mesh, t_vec3 v);
-void	scale_triangle_3d(t_triangle *tri_a, float scalar);
-void	scale_mesh_3d(t_mesh *mesh, float scalar);
 void	determine_centroid(t_triangle *tri);
 
 // init_mesh.c
@@ -359,7 +357,6 @@ t_vec3	v3_add(t_vec3 a, t_vec3 b);
 t_vec3	v3_reverse(t_vec3 a);
 t_vec3	v3_multiply(t_vec3 a, t_vec3 b);
 t_vec3	v3_scale(t_vec3 a, float scalar);
-//t_vec3	v3_random(void);
 t_vec3	v3_sub(t_vec3 a, t_vec3 b);
 void	zero_vec3(t_vec3 *v);
 void	add_vec3(t_vec3 *v, t_vec3 *a);
@@ -378,7 +375,7 @@ t_vec3	vec3_init(float x, float y, float z);
 t_vec3	get_direction(float pitch, float yaw, float roll);
 
 // obj_parser.c
-void	load_obj_file(char *dir, char *path, t_mesh *mesh, t_main *main_data);
+t_mesh	load_obj_file(char *dir, char *path, t_main *main_data);
 
 //matrix/matrix_math1.c
 
@@ -421,7 +418,11 @@ void	settings_key_handler(mlx_key_data_t keydata, t_main *main_data);
 void	key_hook(mlx_key_data_t keydata, void *param);
 void	cursor_hook(double xpos, double ypos, void* param);
 void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *param);
-//to_replace.c
-float	generate_random_float();
+
+
+// init.c
+void	init_main(t_main *main_data);
+void	init_hooks(t_main *main_data);
+void	init_menu_widgets(t_main *main_data);
 
 #endif

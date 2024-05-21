@@ -3,16 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   old.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 23:23:56 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/29 18:19:57 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/21 18:01:14 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 #include <MLX42.h>
 
+void	scale_triangle_3d(t_triangle *tri_a, float scalar)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		scale_vec3(tri_a->p + i, scalar);
+	}
+}
+
+void	scale_mesh_3d(t_mesh *mesh, float scalar)
+{
+	for (int i = 0; i < mesh->count; i++)
+	{
+		scale_triangle_3d(mesh->triangles + i, scalar);
+	}
+}
 
 t_triangle	apply_rotation_addtiononal_translation(t_mesh *mesh, int i)
 {

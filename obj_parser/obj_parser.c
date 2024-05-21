@@ -6,14 +6,12 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 08:36:34 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/14 00:05:52 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/21 20:34:15 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3D.h>
 #include <MLX42.h>
-
-FILE *fd;
 
 typedef	struct s_obj_parser
 {
@@ -31,7 +29,6 @@ typedef	struct s_obj_parser
 	t_vec3		*normals;
 	t_triangle	*tris;
 	int			tris_count;
-	int			tris_size;
 	t_mtl		**mtl_libs;
 	int			mtl_libs_count;
 	int			buffer_size;
@@ -132,8 +129,6 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 			vars->vertexes[vertex_i].y = str_to_float(split[2]);
 			vars->vertexes[vertex_i].z = str_to_float(split[3]);
 			vars->vertexes[vertex_i].w = 1;
-			fprintf(fd, "v %f %f %f\n", vars->vertexes[vertex_i].x, vars->vertexes[vertex_i].y, vars->vertexes[vertex_i].z);
-			//print_vec3(vars->vertexes[vertex_i], NULL);
 			ft_free_2darr(split);
 			vertex_i++;
 		}
@@ -165,7 +160,6 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 	}
 	get_next_line(vars->fd);
 	close(vars->fd);
-	fprintf(fd, "\n");
 	return (vertex_i);
 }
 
@@ -177,7 +171,6 @@ t_vec3	parse_face_vertex(t_obj_parser *vars, char *sub_face, t_mtl *mtl)
 
 	split = ft_split(sub_face, '/');
 	vt_index = ft_atoi(split[0]) - 1;
-	fprintf(fd, "%d", vt_index + 1);
 	ft_memcpy(&return_vec, vars->vertexes + vt_index, sizeof(t_vec3));
 	//fprintf(stderr, "vt_index: %d\n", vt_index);
 	return_vec.w = 1;
@@ -203,7 +196,10 @@ t_vec3	parse_face_normals(t_obj_parser *vars, char *sub_face)
 
 	split = ft_split(sub_face, '/');
 	if (!split || !split[0] || !split[1] || !split[2])
+	{
+		ft_free_2darr(split);
 		return(return_vec);
+	}
 	i =  ft_atoi(split[1]) - 1;
 	fprintf(stderr, "index: %d\n", i);
 	ft_memcpy(&return_vec, vars->normals + i, sizeof(t_vec3));
@@ -218,7 +214,6 @@ void	triangulation(t_obj_parser *vars, t_vec3 *vertexes, int vertex_count, t_vec
 	int			tris_i;
 	int			vertex_i;
 	t_vec3		*anchor = vertexes;
-	//static int	buffer_size = 0;
 	int			min_buffer_size;
 
 	static float last_z_len = 0;
@@ -238,46 +233,27 @@ void	triangulation(t_obj_parser *vars, t_vec3 *vertexes, int vertex_count, t_vec
 	}
 	else
 		tris = vars->tris;
-	//fprintf(stderr, "vars->tris_count: %d\n", vars->tris_count);
 	tris_i = vars->tris_count;
 	vars->tris_count += tris_count;
 	vertex_i = 0;
-	//fprintf(stderr, "buffer size: %lu\n", buffer_size / sizeof(t_triangle));
-	while (tris_i < vars->tris_count) {
-		//fprintf(stderr, "tris_i: %d\n", tris_i);
+	while (tris_i < vars->tris_count)
+	{
 		tris[tris_i].p[0] = vertexes[0];
 		tris[tris_i].p[1] = vertexes[vertex_i + 1];
 		tris[tris_i].p[2] = vertexes[vertex_i + 2];
-		//print_vec3(vertexes[vertex_i + 1], "first: ");
-		//print_vec3(vertexes[vertex_i + 2], "second: ");
+
 		tris[tris_i].obj_normal[0] = normals[0];
 		tris[tris_i].obj_normal[1] = normals[vertex_i + 1];
 		tris[tris_i].obj_normal[2] = normals[vertex_i + 2];
 
 		tris[tris_i].normal = normals[0];
-		// t_vec3	norms_sum = v3_add(v3_add(normals[0], normals[tris_i + 1]), normals[tris_i + 2]);
-		// tris[tris_i].normal = v3_scale(norms_sum, 1 / length_vec3(&norms_sum));
+
 
 		tris[tris_i].col = vars->colors[(vars->tris_count + tris_i) % OBJ_PARSER_COLOR_COUNT];
-		//tris[tris_i].col = WHITE;
 		vertex_i++;
 		tris_i++;
-	}
-	//if (last_z_len != max_z_len)
-		//fprintf(stderr, "max z len: %f\n", max_z_len);
+	};
 	last_z_len = max_z_len;
-	// t_triangle	*tmp123;
-	// if (vars->tris_size < sizeof(t_triangle) * (vars->tris_count + 1) + sizeof(t_triangle) * tris_count)
-	// {
-	// 	tmp123 = ft_memjoin(vars->tris, tris, sizeof(t_triangle) * (vars->tris_count + 1), sizeof(t_triangle) * tris_count);
-	// 	free(vars->tris);
-	// 	vars->tris = tmp123;
-	// 	vars->tris_size = (sizeof(t_triangle) * (vars->tris_count + 1) + sizeof(t_triangle) * tris_count) * 2;
-	// }
-	// else
-	// {
-	// 	ft_memcpy(vars->tris + vars->tris_count, tris, sizeof(t_triangle) * tris_count);
-	// }
 }
 
 void	parse_vt(t_obj_parser *vars, char *face_p, t_vec3 *vec)
@@ -308,8 +284,6 @@ void	obj_parser_handle_faces(t_obj_parser *vars)
 	char		*tmp;
 
 	cur_mtl = NULL;
-	vars->tris = malloc(sizeof(t_triangle));
-	vars->tris_size = sizeof(t_triangle);
 	vars->fd = open(vars->path, O_RDONLY);
 	vars->line = get_next_line(vars->fd);
 	int nb = 0;
@@ -319,7 +293,6 @@ void	obj_parser_handle_faces(t_obj_parser *vars)
 		{
 			tmp = ft_strtrim(vars->line + ft_strlen("usemtl "), "\n");
 			cur_mtl = get_mtl(vars, tmp);
-			//fprintf(stderr, "texture probe: %u\n", cur_mtl->texture->pixels[1000]);
 			free(tmp);
 		}
 		if (!ft_strncmp(vars->line, "f ", 2))
@@ -333,31 +306,18 @@ void	obj_parser_handle_faces(t_obj_parser *vars)
 			ft_bzero(tmp_v, sizeof(tmp_v));
 			count--;
 			i = 0;
-			fprintf(fd, "f");
 			while (i < count)
 			{
-				fprintf(fd, " ");
 				tmp_v[i] = parse_face_vertex(vars, split[i + 1], cur_mtl);
 				tmp_v_norm[i] = parse_face_normals(vars, split[i + 1]);
-				//parse_vt(vars, split[i], tmp_v + i - 1);
-				//print_vec3(tmp_v[i - 1], NULL);
 				i++;
 			}
-			fprintf(fd, "\n");
 			ft_free_2darr(split);
-			
 			triangulation(vars, tmp_v, count, tmp_v_norm);
-			// else
-			// {
-			// 	fprintf(stderr, "parser error\n");
-			// 	exit(1);
-			// }
 		}
-		//fprintf(stderr, "hre\n");
 		free(vars->line);
 		vars->line = get_next_line(vars->fd);
 	}
-	//fprintf(stderr, "faces loop end\n");
 	get_next_line(vars->fd);
 	close(vars->fd);
 }
@@ -521,6 +481,7 @@ t_mtl	*parse_mtl(char *dir, char *file_name)
 	count = mtl_len(file_path);
 	arr = ft_calloc(count + 1, sizeof(t_mtl));
 	fd = open(file_path, O_RDONLY);
+	free(file_path);
 	line = get_next_line(fd);
 
 	i = 0;
@@ -593,13 +554,6 @@ void	obj_parser_parse_mtl_libs(t_obj_parser *vars, char *dir, char *path)
 		if (!line)
 			break ;
 		vars->mtl_libs[i] = parse_mtl(dir, ft_strtrim(line + ft_strlen("mtllib "), "\n"));
-		// for (int j = 0; j <= i; j++)
-		// {
-		// 	for (int k = 0; !is_buffer_all_zeros(vars->mtl_libs[j] + k, sizeof(t_mtl)); k++)
-		// 	{
-		// 		fprintf(stderr, "%u\n", vars->mtl_libs[j][k].texture->pixels[0]);
-		// 	}
-		// }
 		i++;
 		free(line);
 		line = get_next_line(fd);
@@ -608,14 +562,27 @@ void	obj_parser_parse_mtl_libs(t_obj_parser *vars, char *dir, char *path)
 	free(line);
 }
 
-void	load_obj_file(char *dir, char *path, t_mesh *mesh, t_main *main_data)
+void	free_mesh2(t_mesh *mesh)
+{
+	int	i;
+
+	i = 0;
+	while (i < mesh->mtl_count)
+	{
+		i++;
+	}
+	free(mesh->mtl_libs);
+	ft_free((void **)&mesh->triangles);
+}
+
+t_mesh	load_obj_file(char *dir, char *path, t_main *main_data)
 {
 	t_obj_parser	vars;
-
-	fd = fopen("log.log", "a");
+	t_mesh			mesh;
 
 	vars.path = path;
-	vars.mesh = mesh;
+	vars.mesh = &mesh;
+	
 	vars.tris = NULL;
 	vars.tris_count = 0;
 	vars.vertexes = NULL;
@@ -624,68 +591,55 @@ void	load_obj_file(char *dir, char *path, t_mesh *mesh, t_main *main_data)
 	vars.normal_count = 0;
 	vars.texture_cords_count = 0;
 	vars.texture_cords = NULL;
-	mesh->obj_file = true;
+	mesh.obj_file = true;
 	vars.mtl_libs = NULL;
 	vars.mtl_libs_count = 0;
 	vars.buffer_size = 0;
 	init_obj_file_colors(&vars);
 	obj_parser_count(&vars);
+	
+
 	vars.vertexes = ft_calloc(vars.vertex_count, sizeof(t_vec3));
 	vars.normals = ft_calloc(vars.normal_count, sizeof(t_vec3));
 	vars.texture_cords = ft_calloc(vars.texture_cords_count, sizeof(t_vec3));
-	vars.mtl_libs = ft_calloc(vars.mtl_libs_count + 1, sizeof(t_mtl));
+	vars.mtl_libs = ft_calloc(vars.mtl_libs_count, sizeof(t_mtl *));
+	mesh.mtl_libs = vars.mtl_libs;
+	mesh.mtl_count = vars.mtl_libs_count;
+	
 	if ((!vars.vertexes && vars.vertex_count) || (!vars.normals && vars.normal_count))
 	{
 		fprintf(stderr, "mall err(vertex count: %d normal count (is not 0): %d\n", vars.vertex_count, vars.normal_count);
 		exit(1);
 	}
 	obj_parser_parse_mtl_libs(&vars, dir, path);
-	fprintf(stderr, "mtl parsed\n");
 	//vars.vertex_count = 
 	obj_parser_fill_vertexes(&vars);
 	sacle_vecs(&vars);
-	fprintf(stderr, "parsed vertexes\n");
+
 	obj_parser_handle_faces(&vars);
-	fprintf(stderr, "parsed faces\n");
 
 
-	mesh->triangles = vars.tris;
-	mesh->count = vars.tris_count;
+	mesh.triangles = vars.tris;
+	mesh.count = vars.tris_count;
 	t_vec3	momentum = {0.5, 0.3, 0.0};
-	mesh->momentum = momentum;
+	mesh.momentum = momentum;
 	float rotation_mat[4][4] = {
 		{1.0f, 0.0f, 0.0f, 0.0f},
 		{0.0f, 1.0f, 0.0f, 0.0f},
 		{0.0f, 0.0f, 1.0f, 0.0f},
 		{0.0f, 0.0f, 0.0f, 1.0f}
 	};
-	ft_memcpy(mesh->rotation_mat_x, rotation_mat, sizeof(rotation_mat));
-	ft_memcpy(mesh->rotation_mat_y, rotation_mat, sizeof(rotation_mat));
-	ft_memcpy(mesh->rotation_mat_z, rotation_mat, sizeof(rotation_mat));
-	mesh->main = main_data;
-	mesh->d_time = &main_data->mlx->delta_time;
-	mesh->img = main_data->img;
-	// for (int i = 1; i < vars.vertex_count; i++)
-	// {
-	// 	fprintf(stderr, "vec %d: ", i);
-	// 	print_vec3(vars.vertexes[i], 0);
-	// 	if (zero_f(vars.vertexes[i].w))
-	// 	{
-	// 		fprintf(stderr, "zero found\n");
-	// 		exit(1);
-	// 	}
-	// }
-	// for (int i = 0; i < vars.tris_count; i++)
-	// {
-	// 	fprintf(stderr, "========\ntri %d:\n", i);
-	// 	print_vec3(vars.tris[i].obj_normal[0], "1 :");
-	// 	print_vec3(vars.tris[i].obj_normal[1], "2 :");
-	// 	print_vec3(vars.tris[i].obj_normal[2], "3 :");
-	// }
-//	fprintf(stderr, "vert count: %d\n", vars.vertex_count);
-	fprintf(stderr, "tri count: %d\n", mesh->count);
-	fclose(fd);
+	ft_memcpy(mesh.rotation_mat_x, rotation_mat, sizeof(rotation_mat));
+	ft_memcpy(mesh.rotation_mat_y, rotation_mat, sizeof(rotation_mat));
+	ft_memcpy(mesh.rotation_mat_z, rotation_mat, sizeof(rotation_mat));
+	mesh.main = main_data;
+	mesh.d_time = &main_data->mlx->delta_time;
+	mesh.img = main_data->img;
+	
 	free(vars.vertexes);
 	free(vars.normals);
+	printf("%s loaded\n", path);
+	//free(vars.texture_cords);
+	return (mesh);
 }
 

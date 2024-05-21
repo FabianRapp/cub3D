@@ -33,7 +33,7 @@ SOURCES= \
 	mesh_rotation.c \
 	utils1.c \
 	triangle.c \
-	obj_parser.c \
+	obj_parser/obj_parser.c \
 	matrix/init_matrix.c \
 	matrix/matrix_math1.c \
 	matrix/matrix_mult.c \
@@ -46,7 +46,8 @@ SOURCES= \
 	menu/menu.c \
 	menu/menu_open_close.c \
 	menu/menu_public.c \
-	menu/menu_hooks.c
+	menu/menu_hooks.c \
+	init.c
 
 #	to_replace.c \
 
@@ -90,9 +91,12 @@ re: fclean all
 
 rre: ffclean all
 
+# && cmake --build build -j4;
+#&& make -C build -j4; 
+
 mlx: clone_mlx
 	@if [ ! -e $(MLX) ]; then \
-		cd MLX42 && cmake -B build && cmake --build build -j4; \
+		cd MLX42 && cmake -DDEBUG=1 -B build && cmake --build build -j4; \
 		echo "$(GREEN) lib_MLX compiled!$(CLEAR)"; \
 	fi
 

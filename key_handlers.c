@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:30:59 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/21 17:25:38 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/21 19:12:08 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ void	key_hook_menu(mlx_key_data_t keydata, t_main *main_data)
 
 void	key_hook(mlx_key_data_t keydata, void *param)
 {
+	if (keydata.key == MLX_KEY_ESCAPE)
+		cleanup_exit(param);
 	if (((t_main *)param)->menu.state != MENU_CLOSED)
 	{
 		key_hook_menu(keydata, (t_main *)param);
@@ -159,7 +161,7 @@ void	cursor_hook(double xpos, double ypos, void* param)
 	x_dist = xpos - WIDTH / 2;
 	y_dist = ypos - HEIGHT / 2;
 	main_data->pitch += main_data->settings.mouse_sens * y_dist;
-	if (main_data->pitch < ((-M_PI + 0.05) / 2))
+	if (main_data->pitch < ((-M_PI + 0.05) / 2)) // can't look straight up/down up avoid bugs
 		main_data->pitch = ((-M_PI + 0.05) / 2);
 	else if (main_data->pitch > ((M_PI - 0.05)/ 2))
 		main_data->pitch = ((M_PI - 0.05) / 2);

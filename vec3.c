@@ -165,35 +165,6 @@ t_vec3 v3_scale(t_vec3 a, float scalar)
 	return v;
 }
 
-
-
-// t_vec3 v3_random(void)
-// {
-// 	t_vec3	v;
-// 	static int i = 1;
-// 	static int a;
-	
-// 	v.x = generate_random_float();
-// 	//((float)rand()) / RAND_MAX;
-// 	fprintf(stderr, "%f\n", v.x);
-// 	//v.x -= 0.5;
-// 	//v.x *= 2;
-// 	// v.x *= 4.0;
-// 	// v.x -= 1.0;
-// 	v.y = generate_random_float();
-// 	//((double)rand()) / (double) RAND_MAX;
-// 	// v.y *= 4.0;
-// 	// v.y -= 1.0;
-// 	//v.z = generate_random_float();
-// 	//((double)rand()) / (double) RAND_MAX;
-// 	// v.z += 1;
-// 	// v.z *= 6;
-// 	v.z = 1;
-// 	//print_vec3(v, "a");
-// 	//v.w = 1;
-// 	return (v);
-// }
-
 void zero_vec3(t_vec3 *v)
 {
 	v->x = 0;

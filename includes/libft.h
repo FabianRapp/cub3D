@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fabi <fabi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 22:22:26 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/13 23:52:14 by fabi             ###   ########.fr       */
+/*   Updated: 2024/05/21 19:05:57 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,5 +118,9 @@ void	*ft_realloc_copy_until_zeroed(void *ptr,
 bool	is_buffer_all_zeros(void *buffer, size_t size);
 char	*ft_strstrtrim(char const *s1, char const *sub);
 char	**ft_split_wildcards(char const *s);
+
+/**************************   CUB3D ADDITIONS   ******************************/
+bool	arr_append(void **arr, void *new_data, int data_size, int old_arr_len);
+void	ft_free(void **ptr);
 
 #endif //LIBFT_H
