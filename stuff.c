@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   stuff.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 21:22:14 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/29 20:36:01 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/26 03:09:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3D.h>
-#include <MLX42.h>
+#include "includes/cub3D.h"
+#include "MLX42/include/MLX42/MLX42.h"
 
 
 

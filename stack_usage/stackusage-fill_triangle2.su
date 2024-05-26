@@ -1,0 +1,3 @@
+fill_triangle2.c:17:8:edge_fn	16	static
+fill_triangle2.c:23:6:fill_min_max_xy	16	static
+fill_triangle2.c:98:6:fill_triangle_color	272	dynamic,bounded

@@ -1,0 +1,9 @@
+matrix/init_matrix.c:16:6:zero_matrix	16	static
+matrix/init_matrix.c:36:6:projection_matrix	16	static
+matrix/init_matrix.c:56:6:translation_matrix	16	static
+matrix/init_matrix.c:76:6:ident_mat_4x4	16	static
+matrix/init_matrix.c:96:6:rot_matx_4x4	48	static
+matrix/init_matrix.c:116:6:rot_maty_4x4	48	static
+matrix/init_matrix.c:136:6:rot_matz_4x4	48	static
+matrix/init_matrix.c:158:6:matrix_point_at	288	dynamic,bounded
+matrix/init_matrix.c:198:6:matrix_look_at	16	static

@@ -1,0 +1,3 @@
+matrix/matrix_mult.c:26:6:mat4x4_mult_mat4x4	16	static
+matrix/matrix_mult.c:59:6:matrix_mult_vec3_4x4	16	static
+matrix/matrix_mult.c:67:6:matrix_mult_1x3_3x3	16	static

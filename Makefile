@@ -57,7 +57,7 @@ OBJ_DIR=o_files/
 #OBJECTS=$(SOURCES:.c=.o)
 TMP=$(notdir $(SOURCES))
 OBJECTS=$(TMP:%.c=$(OBJ_DIR)%.o)
-
+	
 
 GREEN	=	\033[0;32m
 YELLOW	=	\033[33m
@@ -96,6 +96,9 @@ ffclean: fclean
 re: fclean all
 
 rre: ffclean all
+
+stack_usage: mlx
+	$(CC) -fstack-usage -o stack_usage/stackusage $(SOURCES) $(MLX) -lglfw -lm $(LIBFT)
 
 # && cmake --build build -j4;
 #&& make -C build -j4; 

@@ -1,5 +1,5 @@
 
-#include <cub3D.h>
+#include "../../../includes/cub3D.h"
 #include "fixed_testing.h"
 
 // float	float_linear_comb_test_fn(float a, float b)

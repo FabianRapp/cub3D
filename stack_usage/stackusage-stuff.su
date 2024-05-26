@@ -1,0 +1,6 @@
+stuff.c:29:10:lerp_color	48	static
+stuff.c:45:5:lerp_int	16	static
+stuff.c:51:5:x_pos_x_index	24	static
+stuff.c:60:5:y_pos_y_index	24	static
+stuff.c:69:6:circular_mask	80	static
+stuff.c:106:14:first_ob_ball	48	static

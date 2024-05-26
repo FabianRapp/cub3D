@@ -1,0 +1,11 @@
+draw.c:16:6:draw_line	96	static
+draw.c:120:6:draw_triangle	80	static
+draw.c:127:7:norm_float	16	static
+draw.c:132:6:print_color	48	static
+draw.c:142:6:init_light	32	static
+draw.c:153:6:scale_to_screen	16	static
+draw.c:170:6:fill_mesh_matrix	112	static
+draw.c:182:9:init_day_light	192	dynamic,bounded
+draw.c:212:6:cpy_triangle_data_rasterize	48	static
+draw.c:227:6:rasterize	9712	dynamic,bounded
+draw.c:310:6:draw_mesh	1440	dynamic,bounded

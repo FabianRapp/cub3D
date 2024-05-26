@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   fps.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:30:36 by fabian            #+#    #+#             */
-/*   Updated: 2024/04/29 18:19:57 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/26 03:10:15 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3D.h>
+#include "../includes/cub3D.h"
 
 void	print_instance(mlx_instance_t *instance)
 {

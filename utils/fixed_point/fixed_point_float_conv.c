@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3D.h>
+#include "../../includes/cub3D.h"
 
 t_fixed	float_to_fixed(float nb)
 {

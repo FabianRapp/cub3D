@@ -1,0 +1,17 @@
+obj_parser/obj_parser.c:38:8:get_mtl	48	static
+obj_parser/obj_parser.c:58:6:obj_parser_count	32	static
+obj_parser/obj_parser.c:80:7:str_to_float	48	static
+obj_parser/obj_parser.c:110:5:obj_parser_fill_vertexes	80	static
+obj_parser/obj_parser.c:163:8:parse_face_vertex	112	static
+obj_parser/obj_parser.c:185:8:parse_face_normals	112	static
+obj_parser/obj_parser.c:203:6:triangulation	80	static
+obj_parser/obj_parser.c:239:6:parse_vt	64	static
+obj_parser/obj_parser.c:257:6:obj_parser_handle_faces	6544	static
+obj_parser/obj_parser.c:307:6:sacle_vecs	224	static
+obj_parser/obj_parser.c:375:6:init_obj_file_colors	16	static
+obj_parser/obj_parser.c:391:5:mtl_len	48	static
+obj_parser/obj_parser.c:416:6:fill_3_floats	64	static
+obj_parser/obj_parser.c:442:8:parse_mtl	96	static
+obj_parser/obj_parser.c:510:6:obj_parser_parse_mtl_libs	80	static
+obj_parser/obj_parser.c:537:6:free_mesh2	48	static
+obj_parser/obj_parser.c:550:8:load_obj_file	800	static

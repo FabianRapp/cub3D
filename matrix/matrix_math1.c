@@ -3,12 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   matrix_math1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 02:08:04 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/22 02:11:31 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/26 03:09:22 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3D.h>
-#include <MLX42.h>
+#include "../includes/cub3D.h"
+#include "../MLX42/include/MLX42/MLX42.h"

@@ -1,0 +1,10 @@
+utils1.c:17:6:ft_free_img	32	static
+utils1.c:25:6:reset_pixel_buffer	16	static
+utils1.c:46:6:zero_f	16	static
+utils1.c:55:6:ft_error	32	static
+utils1.c:61:8:out_of_bound_projected	80	static
+utils1.c:87:8:out_of_bound_triangle_projeceted	144	static
+utils1.c:97:8:out_of_bound	80	static
+utils1.c:128:8:out_of_bound_triangle	144	static
+utils1.c:138:6:ft_put_pixel	16	static
+utils1.c:144:6:ft_put_pixel_fin_index	16	static

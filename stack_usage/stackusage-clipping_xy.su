@@ -1,0 +1,11 @@
+clipping_xy.c:22:6:ft_put_binary	48	static
+clipping_xy.c:38:6:is_empty	16	static
+clipping_xy.c:45:8:get_free_index	16	static
+clipping_xy.c:63:8:get_unset_last_used_index	16	static
+clipping_xy.c:82:8:get_unset_used_index	16	static
+clipping_xy.c:99:6:set_index_usage	16	static
+clipping_xy.c:109:6:index_is_used	16	static
+clipping_xy.c:114:6:fast_line_intersect	80	dynamic,bounded
+clipping_xy.c:158:6:clipping_xy	208	dynamic,bounded
+clipping_xy.c:221:8:fix_clipped_arr	48	static
+clipping_xy.c:277:8:call_clipping_xy	80	static

@@ -1,6 +1,6 @@
 
-#include <cub3D.h>
-#include <MLX42.h>
+#include "includes/cub3D.h"
+#include "MLX42/include/MLX42/MLX42.h"
 
 void	mod_cube_rotation(t_mesh *mesh, float delta_time)
 {

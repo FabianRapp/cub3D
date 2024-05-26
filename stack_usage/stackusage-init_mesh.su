@@ -1,0 +1,4 @@
+init_mesh.c:16:6:fill_tetra_mesh	1184	static
+init_mesh.c:45:6:fill_cube_mesh	3360	static
+init_mesh.c:84:6:fill_skybox_mesh	3424	static
+init_mesh.c:133:6:fill_cube_mesh2	3360	static

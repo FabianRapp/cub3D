@@ -6,12 +6,12 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 08:36:34 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/21 22:23:35 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/26 03:09:26 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3D.h"
-#include <MLX42.h>
+#include "../MLX42/include/MLX42/MLX42.h"
 
 typedef	struct s_obj_parser
 {

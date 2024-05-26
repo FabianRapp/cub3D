@@ -6,13 +6,14 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 17:51:26 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/21 19:55:15 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/26 03:14:43 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3D.h>
-#include <MLX42.h>
-#include <menu.h>
+#include "includes/cub3D.h"
+#include "MLX42/include/MLX42/MLX42.h"
+#include "includes/menu.h"
+#include "includes/libft.h"
 
 static void	init_cursor(t_main *main_data)
 {

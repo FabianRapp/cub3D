@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   menu.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 18:49:11 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/01 14:36:23 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/26 03:13:58 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3D.h>
-#include <MLX42.h>
-#include <menu.h>
+#include "../includes/cub3D.h"
+#include "../MLX42/include/MLX42/MLX42.h"
+#include "../includes/menu.h"
 #include "menu_internals.h"
 
 void	recolor_text_in_field(mlx_image_t *img, uint32_t col)

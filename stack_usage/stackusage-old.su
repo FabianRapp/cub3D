@@ -1,0 +1,3 @@
+old.c:16:6:scale_triangle_3d	48	static
+old.c:24:6:scale_mesh_3d	48	static
+old.c:32:12:apply_rotation_addtiononal_translation	1152	static

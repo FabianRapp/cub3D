@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   clipping_z.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 15:27:09 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/08 23:42:07 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/26 03:09:07 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3D.h>
-#include <MLX42.h>
+#include "includes/cub3D.h"
+#include "MLX42/include/MLX42/MLX42.h"
 
 /*
 	Todo:

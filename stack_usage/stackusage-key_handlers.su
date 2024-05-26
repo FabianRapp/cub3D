@@ -1,0 +1,9 @@
+key_handlers.c:17:6:wasd_key_handler	24	static
+key_handlers.c:46:6:jump_key_handler	24	static
+key_handlers.c:65:6:settings_key_handler	64	static
+key_handlers.c:91:6:toggl_menu_state	16	static
+key_handlers.c:101:6:key_hook_menu	64	static
+key_handlers.c:112:6:key_hook	64	static
+key_handlers.c:131:6:mouse_hook	64	static
+key_handlers.c:143:6:menu_action	48	static
+key_handlers.c:149:6:cursor_hook	224	dynamic,bounded

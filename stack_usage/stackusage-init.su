@@ -1,0 +1,6 @@
+init.c:18:13:init_cursor	32	static
+init.c:28:13:init_settings	16	static
+init.c:40:6:init_mlx_no_leaks	32	static
+init.c:47:6:init_main	224	static
+init.c:76:6:init_hooks	32	static
+init.c:86:6:init_menu_widgets	32	static

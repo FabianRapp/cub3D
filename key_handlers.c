@@ -6,13 +6,13 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:30:59 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/21 19:12:08 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/26 03:14:45 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3D.h>
-#include <MLX42.h>
-#include <menu.h>
+#include "includes/cub3D.h"
+#include "MLX42/include/MLX42/MLX42.h"
+#include "includes/menu.h"
 
 void	wasd_key_handler(mlx_key_data_t keydata, void *param)
 {

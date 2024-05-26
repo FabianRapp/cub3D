@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/21 21:35:50 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/26 02:43:06 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,6 @@
 
 // out headers
 # include "menu.h"
-
-
-
-// # include <iomanip>
-/*
-	inlining these functions helps alot with performence!
-	- saves alot performence for mixed type opperations and devison,
-		when the result should be a float (1 int var 1 float var)
-	-performce logs in "time_logs"
-
-*/
 
 #define ROT_X
 //#define ROT_Y
@@ -115,8 +104,8 @@ t_fixed		fixed_dev(t_fixed a, t_fixed b);
 t_fixed		fixed_mult(t_fixed a, t_fixed b);
 t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 
-#define WIDTH 1500
-#define HEIGHT 700
+#define WIDTH 2000
+#define HEIGHT 1500
 
 #define ASPECT_RATIO ((float)HEIGHT) / ((float)WIDTH)
 
@@ -273,7 +262,8 @@ typedef struct s_main
 	t_mesh		*meshes;
 	int			mesh_count;
 	mlx_image_t	*img;
-	float		depth[WIDTH * HEIGHT];
+	float		depth[WIDTH * HEIGHT];//somehow reduce the sice of this to
+    //save allot of stack recources and enable higher res
 	t_controls	controls;
 	t_settings	settings;
 	t_menu		menu;

@@ -1,0 +1,2 @@
+menu/menu_open_close.c:18:6:close_menu	48	static
+menu/menu_open_close.c:40:6:open_menu	48	static

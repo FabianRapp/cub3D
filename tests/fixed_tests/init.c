@@ -1,4 +1,4 @@
-#include <cub3D.h>
+#include "../../includes/cub3D.h"
 #include "fixed_testing.h"
 
 int main(void)

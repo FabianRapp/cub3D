@@ -1,0 +1,7 @@
+utils/fps.c:15:6:print_instance	32	static
+utils/fps.c:34:23:get_fps_digit_texture	48	static
+utils/fps.c:56:6:free_fps_digit_textures	112	static
+utils/fps.c:83:14:display_digit	144	static
+utils/fps.c:120:5:ft_u_nb_len	16	static
+utils/fps.c:135:6:display_fps	80	static
+utils/fps.c:169:6:display_fps_hook	48	static

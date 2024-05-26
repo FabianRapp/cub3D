@@ -6,12 +6,12 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 02:06:43 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/22 23:38:01 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/26 03:09:21 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3D.h>
-#include <MLX42.h>
+#include "../includes/cub3D.h"
+#include "../MLX42/include/MLX42/MLX42.h"
 
 void	zero_matrix(float mat[4][4])
 {

@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/21 22:46:36 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/26 03:47:36 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,6 @@ void	handle_movement_per_frame(t_main *main_data)
 void	ft_hook(void* param)
 {
 	t_main		*main_data = param;
-	static int pixel = 0;
-	static int color = RED;
-	int	y = pixel / WIDTH;
-	int x = pixel - (y * WIDTH);
 	int i;
 
 	if (menu_handler(main_data, &main_data->menu) == true)
@@ -170,7 +166,8 @@ void	add_obj_file_meshes(t_main *main_data)
 int32_t	main(void)
 {
 	mlx_image_t		*ob;
-	t_main			m_data;
+	static t_main			m_data; //has to be static so it's in the
+                                    //BSS segment to avoid stack overflows
 
 	int i = 0;
 	init_main(&m_data);
@@ -182,3 +179,5 @@ int32_t	main(void)
 	cleanup_exit(&m_data);
 	return (EXIT_SUCCESS);
 }
+//8352432
+//448

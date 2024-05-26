@@ -6,12 +6,12 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 15:27:09 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/21 21:19:26 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/26 03:09:05 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3D.h>
-#include <MLX42.h>
+#include "includes/cub3D.h"
+#include "MLX42/include/MLX42/MLX42.h"
 
 t_triangle *clipped_g;
 

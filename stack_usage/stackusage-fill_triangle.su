@@ -1,0 +1,4 @@
+fill_triangle.c:21:6:sort_vertexes_for_y	16	static
+fill_triangle.c:57:7:slope_2d_x_per_y	16	static
+fill_triangle.c:64:6:abs_uv	16	static
+fill_triangle.c:74:6:fill_triangle_texture	352	dynamic,bounded

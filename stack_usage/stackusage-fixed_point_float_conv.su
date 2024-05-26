@@ -1,0 +1,7 @@
+utils/fixed_point/fixed_point_float_conv.c:15:9:float_to_fixed	16	static
+utils/fixed_point/fixed_point_float_conv.c:20:9:int_to_fixed	16	static
+utils/fixed_point/fixed_point_float_conv.c:25:7:fixed_to_float	16	static
+utils/fixed_point/fixed_point_float_conv.c:30:5:fixed_to_int	16	static
+utils/fixed_point/fixed_point_float_conv.c:35:9:fixed_mult	16	static
+utils/fixed_point/fixed_point_float_conv.c:40:9:fixed_dev	16	static
+utils/fixed_point/fixed_point_float_conv.c:47:9:fixed_lerp1d	40	static
