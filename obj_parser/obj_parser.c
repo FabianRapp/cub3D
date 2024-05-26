@@ -6,11 +6,11 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 08:36:34 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/21 21:02:36 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/21 22:23:35 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3D.h>
+#include "../includes/cub3D.h"
 #include <MLX42.h>
 
 typedef	struct s_obj_parser
@@ -358,7 +358,7 @@ void	sacle_vecs(t_obj_parser *vars)
 		{
 			min.z = vars->vertexes[i].z;
 		}
-		rotate_vec3(vars->vertexes + i, rotation.x, rotation.y, rotation.z);
+		//rotate_vec3(vars->vertexes + i, rotation.x, rotation.y, rotation.z);
 		multiply_vec3(vars->vertexes + i, &scalar);
 		add_vec3(vars->vertexes + i, &translate);
 		i++;
@@ -367,7 +367,7 @@ void	sacle_vecs(t_obj_parser *vars)
 	i = 0;
 	while (i < vars->normal_count)
 	{
-		rotate_vec3(vars->normals + i, rotation.x, rotation.y, rotation.z);
+		//rotate_vec3(vars->normals + i, rotation.x, rotation.y, rotation.z);
 		i++;
 	}
 }

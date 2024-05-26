@@ -22,8 +22,8 @@ endif
 
 
 NAME=cub3D
-MAIN= main.c
 SOURCES= \
+	main.c \
 	utils/fps.c \
 	utils/fixed_point/fixed_point_float_conv.c \
 	stuff.c \
@@ -49,10 +49,15 @@ SOURCES= \
 	menu/menu_hooks.c \
 	init.c
 
+VPATH = includes:MLX42/include/MLX42/:utils:utils/fixed_point:obj_parser:matrix:menu
+
 #	to_replace.c \
 
-OBJECTS=$(SOURCES:.c=.o)
-MAIN_OB=$(MAIN:.c=.o)
+OBJ_DIR=o_files/
+#OBJECTS=$(SOURCES:.c=.o)
+TMP=$(notdir $(SOURCES))
+OBJECTS=$(TMP:%.c=$(OBJ_DIR)%.o)
+
 
 GREEN	=	\033[0;32m
 YELLOW	=	\033[33m
@@ -61,16 +66,17 @@ CLEAR	=	\033[0m
 
 .PHONY: clone_mlx42 all clean fclean ffclean
 
-all: SOURCES += $(MAIN)
-all: mlx $(OBJECTS) $(MAIN_OB)
+all: mlx $(OBJECTS)
 	@cd libft && make
 	@$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) $(INCLUDES) -o $(NAME) $(MLX_FLAGS)
 	@echo "$(GREEN)$(NAME) compiled!$(CLEAR)"
 
-%.o: %.c mlx
+obs:
+	echo $(OBJECTS)
+
+$(OBJ_DIR)%.o: %.c mlx
 	@$(CC) $(CFLAGS) -c $< -o$@ $(INCLUDES)
 
-#clean: OBJECTS += MAIN_OB
 clean: SOURCES += main.c
 clean:
 	@rm -f $(OBJECTS)

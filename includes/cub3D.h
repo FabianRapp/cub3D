@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/21 21:05:01 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/21 21:35:50 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,25 @@
 /todo:
 	- it seems the unprojected z val i sometimes wrong leading to triangles beeing drawn partly eventhough they are behind others,
 		might be diffrent reason aswell
-
+	- clipping against Z axis seems to not work correctly (shows when triangle clips 2 other sides for z < Z_NEAR)
 
 */
 
 # include <fcntl.h>
 # include <stdio.h>
-# include <MLX42.h>
+# include "../MLX42/include/MLX42/MLX42.h"
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdint.h>
 # include <stdbool.h>
 # include <math.h>
 # include <limits.h>
-# include <libft.h>
+# include "libft.h"
 # include <time.h>
 # include <float.h>
 
 // out headers
-# include <menu.h>
+# include "menu.h"
 
 
 

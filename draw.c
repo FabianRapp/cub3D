@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/10 03:16:57 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/21 22:45:42 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,6 @@ void	draw_line(mlx_image_t *image, int x1, int x2, int y1, int y2, int color)
 		//fprintf(stderr, "error: xpos: %d ypos: %d\n", pos[X], pos[Y]);
 	}
 }
-
-
-
-
 
 void	draw_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color)
 {
@@ -333,6 +329,7 @@ void	draw_mesh(t_mesh *mesh)
 	t_vec3	vec_target = v3_add(mesh->main->camera, mesh->main->look_direct);
 	float	camera[4][4];
 	matrix_point_at(&mesh->main->camera, &vec_target, &mesh->main->up, camera);
+	//print_vec3(mesh->main->up, "up");
 	float	mat_view[4][4];
 	matrix_look_at(camera, mat_view);
 	
@@ -354,6 +351,7 @@ void	draw_mesh(t_mesh *mesh)
 	{
 
 		transformed = mesh->triangles[i];//not neededm, for debugging
+	
 		matrix_mult_vec3_4x4(mesh->triangles[i].p + 0, mesh->mesh_matrix, transformed.p + 0);
 		matrix_mult_vec3_4x4 (mesh->triangles[i].p + 1, mesh->mesh_matrix, transformed.p + 1);
 		matrix_mult_vec3_4x4(mesh->triangles[i].p + 2, mesh->mesh_matrix, transformed.p + 2);

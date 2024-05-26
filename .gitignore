@@ -1,8 +1,5 @@
 cub3D
 MLX42
-*.o
-*/*.o
-*/*/*.o
 *.a
 *a.out
 .vscode
@@ -25,3 +22,6 @@ Contents
 l
 log.log
 22-trees_9_obj
+70-sting-sword.blend
+o_files/*
+.clangd

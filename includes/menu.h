@@ -24,10 +24,10 @@
 #define MENU_OPENING 2
 #define MENU_CLOSING 3
 
-# include <MLX42.h>
+# include "../MLX42/include/MLX42/MLX42.h"
 
 // our headers
-# include <cub3D.h>
+# include "cub3D.h"
 
 #define MOUSE_SENS_ELEMENT 0
 

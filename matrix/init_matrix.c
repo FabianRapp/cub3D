@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_matrix.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 02:06:43 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/26 11:17:17 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/22 23:38:01 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,15 +162,17 @@ void	matrix_point_at(t_vec3 *pos, t_vec3 *target, t_vec3 *up, float result[4][4]
 	t_vec3	a;
 	t_vec3	new_right;
 
-	new_forward = v3_sub(*target, *pos);
+	new_forward = v3_sub(*target, *pos);// get the look direct
 	unit_vec3(&new_forward);
 
 	a = v3_scale(new_forward, dot_prod_unit(*up, new_forward));
-	new_up = v3_sub(*up, a);
-	//new_up = v3_sub(a, *up);
+
+	new_up = v3_sub(*up, a); //can not look straight up
 	unit_vec3(&new_up);
+	print_vec3(new_up, "new_up.");
 
 	new_right = cross_product(new_up, new_forward);
+	//new_right = cross_product(new_forward, new_up);
 
 	//why this order not [0]: forward, [1]:right, [2]: up?
 	result[0][0] = new_right.x;
@@ -207,11 +209,11 @@ void	matrix_look_at(float point_at_mat[4][4], float look_at_mat[4][4])
 	look_at_mat[2][1] = point_at_mat[1][2];
 	look_at_mat[2][2] = point_at_mat[2][2];
 	look_at_mat[2][3] = 0.0f;
-	// look_at_mat[3][0] = -(point_at_mat[3][0] * look_at_mat[0][0] + point_at_mat[3][1] * look_at_mat[1][0] + point_at_mat[3][2] * look_at_mat[2][0]);
-	// look_at_mat[3][1] = -(point_at_mat[3][0] * look_at_mat[0][1] + point_at_mat[3][1] * look_at_mat[1][1] + point_at_mat[3][2] * look_at_mat[2][1]);
-	// look_at_mat[3][2] = -(point_at_mat[3][0] * look_at_mat[0][2] + point_at_mat[3][1] * look_at_mat[1][2] + point_at_mat[3][2] * look_at_mat[2][2]);
-	look_at_mat[3][0] = -(point_at_mat[0][0] * point_at_mat[3][0] + point_at_mat[0][1] * point_at_mat[3][1] + point_at_mat[0][2] * point_at_mat[3][2]);//- dot prod of point_at[0], point_at[3]
-	look_at_mat[3][1] = -(point_at_mat[1][0] * point_at_mat[3][0] + point_at_mat[1][1] * point_at_mat[3][1] + point_at_mat[1][2] * point_at_mat[3][2]);
-	look_at_mat[3][2] = -(point_at_mat[2][0] * point_at_mat[3][0] + point_at_mat[2][1] * point_at_mat[3][1] + point_at_mat[2][2] * point_at_mat[3][2]);
+	look_at_mat[3][0] = -(point_at_mat[3][0] * look_at_mat[0][0] + point_at_mat[3][1] * look_at_mat[1][0] + point_at_mat[3][2] * look_at_mat[2][0]);
+	look_at_mat[3][1] = -(point_at_mat[3][0] * look_at_mat[0][1] + point_at_mat[3][1] * look_at_mat[1][1] + point_at_mat[3][2] * look_at_mat[2][1]);
+	look_at_mat[3][2] = -(point_at_mat[3][0] * look_at_mat[0][2] + point_at_mat[3][1] * look_at_mat[1][2] + point_at_mat[3][2] * look_at_mat[2][2]);
+	// look_at_mat[3][0] = -(point_at_mat[0][0] * point_at_mat[3][0] + point_at_mat[0][1] * point_at_mat[3][1] + point_at_mat[0][2] * point_at_mat[3][2]);//- dot prod of point_at[0], point_at[3]
+	// look_at_mat[3][1] = -(point_at_mat[1][0] * point_at_mat[3][0] + point_at_mat[1][1] * point_at_mat[3][1] + point_at_mat[1][2] * point_at_mat[3][2]);
+	// look_at_mat[3][2] = -(point_at_mat[2][0] * point_at_mat[3][0] + point_at_mat[2][1] * point_at_mat[3][1] + point_at_mat[2][2] * point_at_mat[3][2]);
 	look_at_mat[3][3] = 1.0f;
 }

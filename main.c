@@ -6,13 +6,12 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:46:09 by fabian            #+#    #+#             */
-/*   Updated: 2024/05/21 21:04:48 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/21 22:46:36 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3D.h>
-#include <MLX42.h>
-#include <menu.h>
+#include "includes/cub3D.h"
+#include "includes/menu.h"
 
 void	handle_movement_per_frame(t_main *main_data)
 {
@@ -74,7 +73,7 @@ void	ft_hook(void* param)
 	i = 0;
 	while (i < main_data->mesh_count)
 	{
-		mod_cube_rotation(main_data->meshes + i, main_data->mlx->delta_time);
+		//mod_cube_rotation(main_data->meshes + i, main_data->mlx->delta_time);
 		draw_mesh(main_data->meshes + i);
 		i++;
 	}
