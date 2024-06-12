@@ -1,605 +1,17 @@
 [
     {
         "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/obj_parser.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "obj_parser/obj_parser.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "obj_parser/obj_parser.c"
-    },
-    {
-        "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/matrix_mult.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "matrix/matrix_mult.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "matrix/matrix_mult.c"
-    },
-    {
-        "arguments": [
             "cc",
             "-c",
             "-Wall",
             "-Wextra",
             "-Werror",
             "-o",
-            "obj/ft_lstnew_bonus.o",
-            "ft_lstnew_bonus.c"
+            "obj/ft_lstlast_bonus.o",
+            "ft_lstlast_bonus.c"
         ],
         "directory": "/workspaces/cub3D/libft",
-        "file": "ft_lstnew_bonus.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_memmove.o",
-            "ft_memmove.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_memmove.c"
-    },
-    {
-        "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/fill_triangle.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "fill_triangle.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "fill_triangle.c"
-    },
-    {
-        "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/matrix_math1.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "matrix/matrix_math1.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "matrix/matrix_math1.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_strdup.o",
-            "ft_strdup.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_strdup.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_putnbr_fd.o",
-            "ft_putnbr_fd.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_putnbr_fd.c"
-    },
-    {
-        "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/fixed_point_float_conv.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "utils/fixed_point/fixed_point_float_conv.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "utils/fixed_point/fixed_point_float_conv.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_strjoin_free_both.o",
-            "ft_strjoin_free_both.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_strjoin_free_both.c"
-    },
-    {
-        "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/clipping_xy.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "clipping_xy.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "clipping_xy.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_printf_handle_u.o",
-            "ft_printf_handle_u.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_printf_handle_u.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_printf_handle_p.o",
-            "ft_printf_handle_p.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_printf_handle_p.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_lstclear_bonus.o",
-            "ft_lstclear_bonus.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_lstclear_bonus.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_strmapi.o",
-            "ft_strmapi.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_strmapi.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_printf.o",
-            "ft_printf.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_printf.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_memcmp.o",
-            "ft_memcmp.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_memcmp.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_isascii.o",
-            "ft_isascii.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_isascii.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_printf_handle_x.o",
-            "ft_printf_handle_x.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_printf_handle_x.c"
-    },
-    {
-        "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/init_matrix.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "matrix/init_matrix.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "matrix/init_matrix.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_iswhitespace.o",
-            "ft_iswhitespace.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_iswhitespace.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_tolower.o",
-            "ft_tolower.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_tolower.c"
-    },
-    {
-        "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/utils1.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "utils1.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "utils1.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_strncmp.o",
-            "ft_strncmp.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_strncmp.c"
-    },
-    {
-        "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/key_handlers.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "key_handlers.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "key_handlers.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_strnstr.o",
-            "ft_strnstr.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_strnstr.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/get_next_line.o",
-            "get_next_line.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "get_next_line.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_strchr.o",
-            "ft_strchr.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_strchr.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/get_next_line_utils.o",
-            "get_next_line_utils.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "get_next_line_utils.c"
-    },
-    {
-        "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/main.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "main.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "main.c"
-    },
-    {
-        "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/menu_public.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "menu/menu_public.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "menu/menu_public.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_printf_handle_c.o",
-            "ft_printf_handle_c.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_printf_handle_c.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_split_fn.o",
-            "ft_split_fn.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_split_fn.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_memcpy.o",
-            "ft_memcpy.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_memcpy.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_strjoin_free_s1.o",
-            "ft_strjoin_free_s1.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_strjoin_free_s1.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_isdigit.o",
-            "ft_isdigit.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_isdigit.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_free.o",
-            "ft_free.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_free.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_strlcpy.o",
-            "ft_strlcpy.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_strlcpy.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/arr_append.o",
-            "arr_append.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "arr_append.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_split_wildcards.o",
-            "ft_split_wildcards.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_split_wildcards.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_printf_handle_s.o",
-            "ft_printf_handle_s.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_printf_handle_s.c"
-    },
-    {
-        "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/menu_open_close.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "menu/menu_open_close.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "menu/menu_open_close.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_lstadd_front_bonus.o",
-            "ft_lstadd_front_bonus.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_lstadd_front_bonus.c"
+        "file": "ft_lstlast_bonus.c"
     },
     {
         "arguments": [
@@ -623,39 +35,38 @@
             "-Wextra",
             "-Werror",
             "-o",
-            "obj/ft_memset.o",
-            "ft_memset.c"
+            "obj/ft_printf.o",
+            "ft_printf.c"
         ],
         "directory": "/workspaces/cub3D/libft",
-        "file": "ft_memset.c"
+        "file": "ft_printf.c"
     },
     {
         "arguments": [
-            "clang",
+            "/usr/bin/cc",
             "-c",
-            "-fsanitize=address",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
             "-g",
-            "-oo_files/fps.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "utils/fps.c"
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/mlx_init.c.o",
+            "../src/mlx_init.c"
         ],
-        "directory": "/workspaces/cub3D",
-        "file": "utils/fps.c"
-    },
-    {
-        "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/fill_triangle2.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "fill_triangle2.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "fill_triangle2.c"
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/mlx_init.c"
     },
     {
         "arguments": [
@@ -665,11 +76,52 @@
             "-Wextra",
             "-Werror",
             "-o",
-            "obj/ft_realloc_copy_until_zeroed.o",
-            "ft_realloc_copy_until_zeroed.c"
+            "obj/ft_isascii.o",
+            "ft_isascii.c"
         ],
         "directory": "/workspaces/cub3D/libft",
-        "file": "ft_realloc_copy_until_zeroed.c"
+        "file": "ft_isascii.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/mlx_cursor.c.o",
+            "../src/mlx_cursor.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/mlx_cursor.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_isdigit.o",
+            "ft_isdigit.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_isdigit.c"
     },
     {
         "arguments": [
@@ -687,31 +139,30 @@
     },
     {
         "arguments": [
-            "cc",
+            "/usr/bin/cc",
             "-c",
-            "-Wall",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
             "-Wextra",
+            "-Wall",
             "-Werror",
-            "-o",
-            "obj/ft_split.o",
-            "ft_split.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_split.c"
-    },
-    {
-        "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
             "-g",
-            "-oo_files/old.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "old.c"
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/textures/mlx_xpm42.c.o",
+            "../src/textures/mlx_xpm42.c"
         ],
-        "directory": "/workspaces/cub3D",
-        "file": "old.c"
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/textures/mlx_xpm42.c"
     },
     {
         "arguments": [
@@ -729,17 +180,58 @@
     },
     {
         "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/draw.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "draw.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "draw.c"
+    },
+    {
+        "arguments": [
             "cc",
             "-c",
             "-Wall",
             "-Wextra",
             "-Werror",
             "-o",
-            "obj/ft_printf_handle_xx.o",
-            "ft_printf_handle_xx.c"
+            "obj/ft_memcmp.o",
+            "ft_memcmp.c"
         ],
         "directory": "/workspaces/cub3D/libft",
-        "file": "ft_printf_handle_xx.c"
+        "file": "ft_memcmp.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/lib/glad/glad.c.o",
+            "../lib/glad/glad.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../lib/glad/glad.c"
     },
     {
         "arguments": [
@@ -747,13 +239,13 @@
             "-c",
             "-fsanitize=address",
             "-g",
-            "-oo_files/triangle.o",
+            "-oo_files/old.o",
             "-I./includes",
             "-I./MLX42/include/MLX42",
-            "triangle.c"
+            "old.c"
         ],
         "directory": "/workspaces/cub3D",
-        "file": "triangle.c"
+        "file": "old.c"
     },
     {
         "arguments": [
@@ -763,11 +255,38 @@
             "-Wextra",
             "-Werror",
             "-o",
-            "obj/ft_lstiter_bonus.o",
-            "ft_lstiter_bonus.c"
+            "obj/ft_memcpy.o",
+            "ft_memcpy.c"
         ],
         "directory": "/workspaces/cub3D/libft",
-        "file": "ft_lstiter_bonus.c"
+        "file": "ft_memcpy.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/mlx_window.c.o",
+            "../src/mlx_window.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/mlx_window.c"
     },
     {
         "arguments": [
@@ -777,81 +296,38 @@
             "-Wextra",
             "-Werror",
             "-o",
-            "obj/ft_strlcat.o",
-            "ft_strlcat.c"
+            "obj/ft_itoa.o",
+            "ft_itoa.c"
         ],
         "directory": "/workspaces/cub3D/libft",
-        "file": "ft_strlcat.c"
+        "file": "ft_itoa.c"
     },
     {
         "arguments": [
-            "cc",
+            "/usr/bin/cc",
             "-c",
-            "-Wall",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
             "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_strtrim.o",
-            "ft_strtrim.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_strtrim.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
             "-Wall",
-            "-Wextra",
             "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
             "-o",
-            "obj/ft_putstr_fd.o",
-            "ft_putstr_fd.c"
+            "CMakeFiles/mlx42.dir/lib/png/lodepng.c.o",
+            "../lib/png/lodepng.c"
         ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_putstr_fd.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_striteri.o",
-            "ft_striteri.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_striteri.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_strarr_size.o",
-            "ft_strarr_size.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_strarr_size.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_substr.o",
-            "ft_substr.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_substr.c"
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../lib/png/lodepng.c"
     },
     {
         "arguments": [
@@ -875,11 +351,20 @@
             "-Wextra",
             "-Werror",
             "-o",
-            "obj/ft_bzero.o",
-            "ft_bzero.c"
+            "obj/ft_putstr_fd.o",
+            "ft_putstr_fd.c"
         ],
         "directory": "/workspaces/cub3D/libft",
-        "file": "ft_bzero.c"
+        "file": "ft_putstr_fd.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "CMakeCCompilerId.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build/CMakeFiles/3.16.3/CompilerIdC",
+        "file": "CMakeCCompilerId.c"
     },
     {
         "arguments": [
@@ -889,109 +374,11 @@
             "-Wextra",
             "-Werror",
             "-o",
-            "obj/ft_lstadd_back_bonus.o",
-            "ft_lstadd_back_bonus.c"
+            "obj/ft_lstclear_bonus.o",
+            "ft_lstclear_bonus.c"
         ],
         "directory": "/workspaces/cub3D/libft",
-        "file": "ft_lstadd_back_bonus.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_printf_handle_percent.o",
-            "ft_printf_handle_percent.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_printf_handle_percent.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_itoa.o",
-            "ft_itoa.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_itoa.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_strjoin.o",
-            "ft_strjoin.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_strjoin.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_isalnum.o",
-            "ft_isalnum.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_isalnum.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_memchr.o",
-            "ft_memchr.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_memchr.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_toupper.o",
-            "ft_toupper.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_toupper.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_powint.o",
-            "ft_powint.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_powint.c"
+        "file": "ft_lstclear_bonus.c"
     },
     {
         "arguments": [
@@ -999,69 +386,25 @@
             "-c",
             "-fsanitize=address",
             "-g",
-            "-oo_files/draw.o",
+            "-oo_files/mesh_rotation.o",
             "-I./includes",
             "-I./MLX42/include/MLX42",
-            "draw.c"
+            "mesh_rotation.c"
         ],
         "directory": "/workspaces/cub3D",
-        "file": "draw.c"
+        "file": "mesh_rotation.c"
     },
     {
         "arguments": [
-            "clang",
+            "/usr/bin/c++",
             "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/vec3.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "vec3.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "vec3.c"
-    },
-    {
-        "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/menu_hooks.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "menu/menu_hooks.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "menu/menu_hooks.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
+            "-v",
             "-o",
-            "obj/ft_putchar_fd.o",
-            "ft_putchar_fd.c"
+            "CMakeFiles/cmTC_3ae4a.dir/CMakeCXXCompilerABI.cpp.o",
+            "../../../../../../usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp"
         ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_putchar_fd.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_printf_handle_di.o",
-            "ft_printf_handle_di.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_printf_handle_di.c"
+        "directory": "/workspaces/cub3D/MLX42/build/CMakeFiles/CMakeTmp",
+        "file": "../../../../../../usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp"
     },
     {
         "arguments": [
@@ -1076,104 +419,6 @@
         ],
         "directory": "/workspaces/cub3D/libft",
         "file": "ft_lstmap_bonus.c"
-    },
-    {
-        "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/stuff.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "stuff.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "stuff.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_lstsize_bonus.o",
-            "ft_lstsize_bonus.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_lstsize_bonus.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_strrchr.o",
-            "ft_strrchr.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_strrchr.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_lstdelone_bonus.o",
-            "ft_lstdelone_bonus.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_lstdelone_bonus.c"
-    },
-    {
-        "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/init_mesh.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "init_mesh.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "init_mesh.c"
-    },
-    {
-        "arguments": [
-            "cc",
-            "-c",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-o",
-            "obj/ft_lstlast_bonus.o",
-            "ft_lstlast_bonus.c"
-        ],
-        "directory": "/workspaces/cub3D/libft",
-        "file": "ft_lstlast_bonus.c"
-    },
-    {
-        "arguments": [
-            "clang",
-            "-c",
-            "-fsanitize=address",
-            "-g",
-            "-oo_files/clipping_z.o",
-            "-I./includes",
-            "-I./MLX42/include/MLX42",
-            "clipping_z.c"
-        ],
-        "directory": "/workspaces/cub3D",
-        "file": "clipping_z.c"
     },
     {
         "arguments": [
@@ -1197,6 +442,20 @@
             "-Wextra",
             "-Werror",
             "-o",
+            "obj/ft_putchar_fd.o",
+            "ft_putchar_fd.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_putchar_fd.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
             "obj/ft_atoi.o",
             "ft_atoi.c"
         ],
@@ -1211,11 +470,25 @@
             "-Wextra",
             "-Werror",
             "-o",
-            "obj/ft_free_2darr.o",
-            "ft_free_2darr.c"
+            "obj/ft_lstiter_bonus.o",
+            "ft_lstiter_bonus.c"
         ],
         "directory": "/workspaces/cub3D/libft",
-        "file": "ft_free_2darr.c"
+        "file": "ft_lstiter_bonus.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_printf_handle_s.o",
+            "ft_printf_handle_s.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_printf_handle_s.c"
     },
     {
         "arguments": [
@@ -1233,17 +506,816 @@
     },
     {
         "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_split.o",
+            "ft_split.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_split.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/utils/mlx_utils.c.o",
+            "../src/utils/mlx_utils.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/utils/mlx_utils.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_free_2darr.o",
+            "ft_free_2darr.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_free_2darr.c"
+    },
+    {
+        "arguments": [
             "clang",
             "-c",
             "-fsanitize=address",
             "-g",
-            "-oo_files/mesh_rotation.o",
+            "-oo_files/fill_triangle.o",
             "-I./includes",
             "-I./MLX42/include/MLX42",
-            "mesh_rotation.c"
+            "fill_triangle.c"
         ],
         "directory": "/workspaces/cub3D",
-        "file": "mesh_rotation.c"
+        "file": "fill_triangle.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/clipping_xy.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "clipping_xy.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "clipping_xy.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_strdup.o",
+            "ft_strdup.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_strdup.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_realloc_copy_until_zeroed.o",
+            "ft_realloc_copy_until_zeroed.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_realloc_copy_until_zeroed.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/mlx_keys.c.o",
+            "../src/mlx_keys.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/mlx_keys.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/mlx_images.c.o",
+            "../src/mlx_images.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/mlx_images.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/mlx_frag_shader.c.o",
+            "mlx_frag_shader.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "mlx_frag_shader.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-v",
+            "-o",
+            "CMakeFiles/cmTC_bc09f.dir/CMakeCCompilerABI.c.o",
+            "../../../../../../usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build/CMakeFiles/CMakeTmp",
+        "file": "../../../../../../usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/menu_hooks.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "menu/menu_hooks.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "menu/menu_hooks.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_strtrim.o",
+            "ft_strtrim.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_strtrim.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_printf_handle_x.o",
+            "ft_printf_handle_x.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_printf_handle_x.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/get_next_line.o",
+            "get_next_line.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "get_next_line.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/mlx_put_pixel.c.o",
+            "../src/mlx_put_pixel.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/mlx_put_pixel.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_lstadd_front_bonus.o",
+            "ft_lstadd_front_bonus.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_lstadd_front_bonus.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/mlx_monitor.c.o",
+            "../src/mlx_monitor.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/mlx_monitor.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_substr.o",
+            "ft_substr.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_substr.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_split_fn.o",
+            "ft_split_fn.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_split_fn.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_strnstr.o",
+            "ft_strnstr.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_strnstr.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_powint.o",
+            "ft_powint.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_powint.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_printf_handle_u.o",
+            "ft_printf_handle_u.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_printf_handle_u.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_memchr.o",
+            "ft_memchr.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_memchr.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/obj_parser.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "obj_parser/obj_parser.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "obj_parser/obj_parser.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_putnbr_fd.o",
+            "ft_putnbr_fd.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_putnbr_fd.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_lstnew_bonus.o",
+            "ft_lstnew_bonus.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_lstnew_bonus.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_printf_handle_xx.o",
+            "ft_printf_handle_xx.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_printf_handle_xx.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/mlx_mouse.c.o",
+            "../src/mlx_mouse.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/mlx_mouse.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_strlcat.o",
+            "ft_strlcat.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_strlcat.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/menu_public.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "menu/menu_public.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "menu/menu_public.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_lstadd_back_bonus.o",
+            "ft_lstadd_back_bonus.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_lstadd_back_bonus.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_printf_handle_di.o",
+            "ft_printf_handle_di.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_printf_handle_di.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/textures/mlx_png.c.o",
+            "../src/textures/mlx_png.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/textures/mlx_png.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_lstdelone_bonus.o",
+            "ft_lstdelone_bonus.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_lstdelone_bonus.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/arr_append.o",
+            "arr_append.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "arr_append.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_printf_handle_c.o",
+            "ft_printf_handle_c.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_printf_handle_c.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_strjoin_free_s1.o",
+            "ft_strjoin_free_s1.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_strjoin_free_s1.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/utils/mlx_compare.c.o",
+            "../src/utils/mlx_compare.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/utils/mlx_compare.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/key_handlers.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "key_handlers.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "key_handlers.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_strjoin_free_both.o",
+            "ft_strjoin_free_both.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_strjoin_free_both.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_iswhitespace.o",
+            "ft_iswhitespace.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_iswhitespace.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/clipping_z.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "clipping_z.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "clipping_z.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_split_wildcards.o",
+            "ft_split_wildcards.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_split_wildcards.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_strrchr.o",
+            "ft_strrchr.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_strrchr.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/font/mlx_font.c.o",
+            "../src/font/mlx_font.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/font/mlx_font.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/textures/mlx_texture.c.o",
+            "../src/textures/mlx_texture.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/textures/mlx_texture.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/fixed_point_float_conv.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "utils/fixed_point/fixed_point_float_conv.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "utils/fixed_point/fixed_point_float_conv.c"
     },
     {
         "arguments": [
@@ -1258,5 +1330,569 @@
         ],
         "directory": "/workspaces/cub3D/libft",
         "file": "ft_putendl_fd.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/menu_open_close.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "menu/menu_open_close.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "menu/menu_open_close.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/vec3.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "vec3.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "vec3.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_memset.o",
+            "ft_memset.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_memset.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_lstsize_bonus.o",
+            "ft_lstsize_bonus.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_lstsize_bonus.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/mlx_vert_shader.c.o",
+            "mlx_vert_shader.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "mlx_vert_shader.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/main.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "main.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "main.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_bzero.o",
+            "ft_bzero.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_bzero.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_strmapi.o",
+            "ft_strmapi.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_strmapi.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/mlx_exit.c.o",
+            "../src/mlx_exit.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/mlx_exit.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/utils/mlx_list.c.o",
+            "../src/utils/mlx_list.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/utils/mlx_list.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/mlx_loop.c.o",
+            "../src/mlx_loop.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/mlx_loop.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_printf_handle_percent.o",
+            "ft_printf_handle_percent.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_printf_handle_percent.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/c++",
+            "-c",
+            "CMakeCXXCompilerId.cpp"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build/CMakeFiles/3.16.3/CompilerIdCXX",
+        "file": "CMakeCXXCompilerId.cpp"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_strncmp.o",
+            "ft_strncmp.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_strncmp.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/fill_triangle2.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "fill_triangle2.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "fill_triangle2.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_strarr_size.o",
+            "ft_strarr_size.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_strarr_size.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_striteri.o",
+            "ft_striteri.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_striteri.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/fps.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "utils/fps.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "utils/fps.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_memmove.o",
+            "ft_memmove.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_memmove.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/init_matrix.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "matrix/init_matrix.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "matrix/init_matrix.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/get_next_line_utils.o",
+            "get_next_line_utils.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "get_next_line_utils.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/init_mesh.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "init_mesh.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "init_mesh.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_strchr.o",
+            "ft_strchr.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_strchr.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/utils1.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "utils1.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "utils1.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_toupper.o",
+            "ft_toupper.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_toupper.c"
+    },
+    {
+        "arguments": [
+            "/usr/bin/cc",
+            "-c",
+            "-I/workspaces/cub3D/MLX42/include",
+            "-fPIC",
+            "-D",
+            "LODEPNG_NO_COMPILE_ENCODER",
+            "-D",
+            "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+            "-Wextra",
+            "-Wall",
+            "-Werror",
+            "-Wunreachable-code",
+            "-Wno-char-subscripts",
+            "-Wno-sign-compare",
+            "-Wno-unused-parameter",
+            "-Wno-missing-field-initializers",
+            "-g",
+            "-std=c11",
+            "-o",
+            "CMakeFiles/mlx42.dir/src/utils/mlx_error.c.o",
+            "../src/utils/mlx_error.c"
+        ],
+        "directory": "/workspaces/cub3D/MLX42/build",
+        "file": "../src/utils/mlx_error.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/matrix_math1.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "matrix/matrix_math1.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "matrix/matrix_math1.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_isalnum.o",
+            "ft_isalnum.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_isalnum.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_strlcpy.o",
+            "ft_strlcpy.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_strlcpy.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_printf_handle_p.o",
+            "ft_printf_handle_p.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_printf_handle_p.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_free.o",
+            "ft_free.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_free.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/stuff.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "stuff.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "stuff.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/triangle.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "triangle.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "triangle.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_tolower.o",
+            "ft_tolower.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_tolower.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-fsanitize=address",
+            "-g",
+            "-oo_files/matrix_mult.o",
+            "-I./includes",
+            "-I./MLX42/include/MLX42",
+            "matrix/matrix_mult.c"
+        ],
+        "directory": "/workspaces/cub3D",
+        "file": "matrix/matrix_mult.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-o",
+            "obj/ft_strjoin.o",
+            "ft_strjoin.c"
+        ],
+        "directory": "/workspaces/cub3D/libft",
+        "file": "ft_strjoin.c"
     }
 ]
