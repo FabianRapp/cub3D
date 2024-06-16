@@ -169,7 +169,7 @@ void	matrix_point_at(t_vec3 *pos, t_vec3 *target, t_vec3 *up, float result[4][4]
 
 	new_up = v3_sub(*up, a); //can not look straight up
 	unit_vec3(&new_up);
-	print_vec3(new_up, "new_up.");
+	//print_vec3(new_up, "new_up.");
 
 	new_right = cross_product(new_up, new_forward);
 	//new_right = cross_product(new_forward, new_up);

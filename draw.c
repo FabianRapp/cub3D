@@ -238,32 +238,32 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 	int	j;
 	int	q;
 	j = 0;
-	while (j == 0 || (j < clipped_count_front && j < 2))
+	while (j < clipped_count_front)
 	{
 		if (clipped_count_front)
 			triangle = clipped_z_front[j];
-		clipped_count_back = clipping_z_far(&triangle, clipped_z_back);
+		//todo: clipping_z_far not active for debugging
+		//clipped_count_back = clipping_z_far(&triangle, clipped_z_back);
+		clipped_z_back[0] = triangle;
+		clipped_count_back = 1;
 		q = 0;
 		uint32_t col = clipped_z_front[j].col; //TODO remove this line after fixing/implenting clipping
-		while (q == 0 || (q < clipped_count_back && q < 2))
+		while (q < clipped_count_back)
 		{
 			if (clipped_count_back)
 				triangle = clipped_z_back[q];
 
 			// enter projeceted space
-			//cpy_triangle_data_rasterize(base_data, &projected);
 			projected.col = col; //TODO remove this line after fixing/implenting clipping
 			matrix_mult_vec3_4x4(triangle.p + 0, project_mat, &projected.p[0]);
 			matrix_mult_vec3_4x4(triangle.p + 1, project_mat, &projected.p[1]);
 			matrix_mult_vec3_4x4(triangle.p + 2, project_mat, &projected.p[2]);
 			cpy_triangle_data_rasterize(base_data, &projected);
-			if (!zero_f(projected.p[0].w))
-				div_vec3(projected.p + 0, projected.p[0].w);
-			if (!zero_f(projected.p[1].w))
-				div_vec3(projected.p + 1, projected.p[1].w);
-			if (!zero_f(projected.p[2].w))
-				div_vec3(projected.p + 2, projected.p[2].w);
-
+			for (int i = 0; i < 3; i++)
+			{
+				assume(!zero_f(projected.p[i].w));
+				div_vec3(projected.p + i, projected.p[i].w);
+			}
 			scale_to_screen(&projected);
 
 			projected.unprojected_z[0] = triangle.p[0].z;
@@ -280,24 +280,18 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 				//cpy_triangle_data_rasterize(base_data, &projected);
 				for (int i = 0; i < 3; i++)
 				{
-					if (projected.p[i].x < 0.0f || projected.p[i].x >= (float)WIDTH)// || p[i].y < 0 ||  p[i].y >= HEIGHT)
+					if (!(projected.p[i].x >= 0.0f && projected.p[i].x < (float)WIDTH
+						&& projected.p[i].y >= 0.0f && projected.p[i].y < HEIGHT))
 					{
-						printf("error before filling: clipping error or trash memory, l: %d clipped count: %d\n", l, clipped_count);
-						print_vec3(projected.p[0], 0);
-						print_vec3(projected.p[1], 0);
-						print_vec3(projected.p[2], 0);
-						//exit(1);
-						break ;
+						print_vec3(projected.p[i], "out of bounds:");
+						assume(0);
 					}
 				}
-				
-				{
-					if (!projected.p[0].mtl || !projected.p[0].mtl->texture)
-						fill_triangle_color(mesh->img, &projected, projected.col, mesh);
-						// fill_triangle_color(mesh->img, &projected, base_data->col, mesh);
-					else
-						fill_triangle_texture(mesh->img, &projected, mesh, color_scalars);
-				}
+				if (!projected.p[0].mtl || !projected.p[0].mtl->texture)
+					fill_triangle_color(mesh->img, &projected, projected.col, mesh);
+					// fill_triangle_color(mesh->img, &projected, base_data->col, mesh);
+				else
+					fill_triangle_texture(mesh->img, &projected, mesh, color_scalars);
 				l++;
 			}
 			q++;

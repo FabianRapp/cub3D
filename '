@@ -111,7 +111,6 @@ int8_t	clipping_z_far(t_triangle *tri, t_triangle *clipped)
 	return (2);
 }
 
-//return the tri count afterwards
 int8_t	clipping_z_near(t_triangle *tri, t_triangle *clipped)
 {
 	int8_t				i;
@@ -145,28 +144,23 @@ int8_t	clipping_z_near(t_triangle *tri, t_triangle *clipped)
 		return (1);
 	}
 	//problem here
+	i = 0;
+	while (i < 3)
+	{
+		printf("%d: %f\n", i, tri->p[i].z);
+		i++;
+	}
 	clipped[0] = *tri;
 	clipped[1] = *tri;
-	int8_t	outside_index = 3 - inside_index[0] - inside_index[1];
-	clipped[0].p[0] = tri->p[inside_index[0]];
-	clipped[0].p[1] = tri->p[inside_index[1]];
-	clipped[0].p[2] = line_zplane_intersection(tri->p[inside_index[0]], tri->p[outside_index], true);
-	clipped[1].p[0] = tri->p[inside_index[1]];
-	clipped[1].p[1] = clipped[0].p[2];
-	clipped[1].p[2] = line_zplane_intersection(tri->p[inside_index[1]], tri->p[outside_index], true);
-	//print_vec3(tri->p[inside_index[0]], "inside 0: ");
-	//print_vec3(tri->p[inside_index[1]], "inside 1: ");
-	//print_vec3(tri->p[outside_index], "outside: ");
-	//t_vec3	intersec1 = line_zplane_intersection(tri->p[inside_index[0]], tri->p[outside_index], true);
-	//t_vec3	intersec2 = line_zplane_intersection(tri->p[inside_index[1]], tri->p[outside_index], true);
-	//print_vec3(intersec1, "intersecton 1: ");
-	//print_vec3(intersec2, "intersction 2: ");
-
-	//static int a= 0;
-	//clipped[0].p[outside_index] = intersec1;
-	//clipped[1].p[inside_index[0]] = tri->p[inside_index[1]];
-	//clipped[1].p[inside_index[1]] = intersec2;
-	//clipped[1].p[outside_index] = intersec1;
+	int8_t	outside_index = (inside_index[0] ^ 3) & (inside_index[1] ^ 3);
+	t_vec3	intersec1 = line_zplane_intersection(tri->p[inside_index[0]], tri->p[outside_index], true);
+	t_vec3	intersec2 = line_zplane_intersection(tri->p[inside_index[1]], tri->p[outside_index], true);
+	static int a= 0;
+	clipped[0].p[outside_index] = intersec1;
+	
+	clipped[1].p[inside_index[0]] = clipped[1].p[inside_index[1]];
+	clipped[1].p[inside_index[1]] = intersec2;
+	clipped[1].p[outside_index] = intersect1;
 	//clipped[1].p[inside_index[0]] = intersec1;
 	//clipped[1].p[outside_index] = intersec2;
 	return (2);

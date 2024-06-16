@@ -45,7 +45,7 @@ void	reset_pixel_buffer(uint8_t *pixels, float *depth)
 
 bool	zero_f(float f)
 {
-	if (fabs(f) < 0.00001)
+	if (fabs(f) < 0.0001)
 	{
 		return (true);
 	}
