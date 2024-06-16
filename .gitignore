@@ -25,3 +25,4 @@ log.log
 70-sting-sword.blend
 o_files/*
 .clangd
+*.cache

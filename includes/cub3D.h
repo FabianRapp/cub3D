@@ -37,6 +37,16 @@
 // out headers
 # include "menu.h"
 
+#define unreachable __builtin_unreachable
+
+//#define NDEBUG 1
+#if defined(NDEBUG)
+#define assume(cond) do { if (!(cond)) __builtin_unreachable(); } while (0)
+#else
+#include <assert.h>
+#define assume(cond) assert(cond)
+#endif
+
 #define ROT_X
 //#define ROT_Y
 #define ROT_Z

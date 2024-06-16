@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clipping_z.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
+/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 15:27:09 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/26 03:09:07 by frapp            ###   ########.fr       */
+/*   Updated: 2024/05/08 23:42:07 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ t_vec3	line_plane_intersection(t_vec3 plane_p, t_vec3 plane_n, t_vec3 line_start
 	dot_directline_nplane = dot_prod_unit(line_direct, plane_n);
 	if (zero_f(dot_directline_nplane))
 	{//todo: what to do here
+		assert(0);
 		return (line_start);
 	}
 	d = (dot_prod_unit(plane_p, plane_n) - dot_prod_unit(line_start, plane_n)) / dot_directline_nplane;

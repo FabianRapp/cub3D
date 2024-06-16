@@ -365,6 +365,7 @@ void	sacle_vecs(t_obj_parser *vars)
 	}
 	fprintf(stderr, "total min max off all vertexes:\nmax: x: %f y: %f z: %f\nmin: x: %f y: %f z: %f\n", max.x, max.y, max.z, min.x, min.y, min.z);
 	i = 0;
+
 	while (i < vars->normal_count)
 	{
 		//rotate_vec3(vars->normals + i, rotation.x, rotation.y, rotation.z);
