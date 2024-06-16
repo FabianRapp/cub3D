@@ -137,25 +137,17 @@ void fast_line_intersect(const t_clipping_para para, t_vec3 p1, t_vec3 *p2)
 	float progress;
 	float dist_x = p2->x - p1.x;
 	float dist_y = p2->y - p1.y;
-	//assume(!((zero_f(dist_x) && !base_flags[1]) || (zero_f(dist_y) && base_flags[1])));
 	assume(!((zero_f(dist_x) && (para.split.right || para.split.left)) || (zero_f(dist_y) && (para.split.top || para.split.bot))));
-	//if (base_flags[0])
-	if (para.split.right || para.split.bot)
-	{
-		//if (base_flags[1])
-		if (para.split.bot)
-			progress = (HEIGHT - 1.0f - p1.y) / dist_y;
-		else
-			progress = (WIDTH - 1.0f - p1.x) / dist_x;
-	}
+	if (para.split.bot)
+		progress = (HEIGHT - 1.0f - p1.y) / dist_y;
+	else if (para.split.right)
+		progress = (WIDTH - 1.0f - p1.x) / dist_x;
+	else if (para.split.top)
+		progress = -p1.y / dist_y;
+	else if (para.split.left)
+		progress = -p1.x / dist_x;
 	else
-	{
-		//if (base_flags[1])
-		if (para.split.top)
-			progress = -p1.y / dist_y;
-		else
-			progress = -p1.x / dist_x;
-	}
+		assume(0);
 	p2->x = p1.x + dist_x * progress;
 	p2->y = p1.y + dist_y * progress;
 
@@ -171,10 +163,6 @@ void fast_line_intersect(const t_clipping_para para, t_vec3 p1, t_vec3 *p2)
 	p2->u = p1.u + (p2->u - p1.u) * progress;
 	p2->v = p1.v + (p2->v - p1.v) * progress;
 }
-//00 -> left
-//10 -> top
-//01 -> right
-//11 -> bot
 
 void	clipping_xy(t_triangle *clipped, t_index_usage *used_indexes, const t_clipping_para para, int8_t cur_index)
 {
@@ -190,16 +178,12 @@ void	clipping_xy(t_triangle *clipped, t_index_usage *used_indexes, const t_clipp
 			clipped[cur_index].p[i].x = 0.0f;
 		if (clipped[cur_index].p[i].y <= 0.0f && clipped[cur_index].p[i].y >= -0.0001f)
 			clipped[cur_index].p[i].y = 0.0f;
-		//if (!flags[0] && !flags[1] && clipped[cur_index].p[i].x >= 0.0f)
 		if (para.split.left && clipped[cur_index].p[i].x >= 0.0f)
 			inside_index[inside_points++] = i;
-		//else if (!flags[0] && flags[1] && clipped[cur_index].p[i].y >= 0.0f)
 		else if (para.split.top && clipped[cur_index].p[i].y >= 0.0f)
 			inside_index[inside_points++] = i;
-		//else if (flags[0] && !flags[1] && clipped[cur_index].p[i].x < (float)WIDTH)
 		else if (para.split.right && clipped[cur_index].p[i].x < (float)WIDTH)
 			inside_index[inside_points++] = i;
-		//else if (flags[0] && flags[1] &&clipped[cur_index].p[i].y < (float)HEIGHT)
 		else if (para.split.bot && clipped[cur_index].p[i].y < (float)HEIGHT)
 		{
 			inside_index[inside_points++] = i;
@@ -279,11 +263,6 @@ int8_t	fix_clipped_arr(t_triangle *clipped, t_index_usage used_indexes)
 	return (count);
 }
 
-//00 -> left
-//10 -> top
-//01 -> right
-//11 -> bot
-
 // returns the new count
 int8_t	call_clipping_xy(t_triangle *clipped)
 {
@@ -297,19 +276,14 @@ int8_t	call_clipping_xy(t_triangle *clipped)
 	clipped_g = clipped;
 	para.all = 0;
 	para.split.left = 1;
-	//clipping_flags[0] = 0;
-	//clipping_flags[1] = 0;
 	cur_index = 0;
 	used_indexes = 1ULL;
 	count = 1;
-	//clipping_xy(clipped, &used_indexes, clipping_flags, cur_index);
 	clipping_xy(clipped, &used_indexes, para, cur_index);
 	if (!used_indexes)
 		return (0);
 	para.all = 0;
 	para.split.top = 1;
-	//clipping_flags[0] = 0;
-	//clipping_flags[1] = 1;
 	used_indexes_old = used_indexes;
 	cur_index = get_unset_used_index(&used_indexes_old);
 	//while (cur_index != -1)
@@ -317,7 +291,6 @@ int8_t	call_clipping_xy(t_triangle *clipped)
 	for (int i =0; i < old_count; i++)
 	{
 		assume(cur_index != -1);
-		//clipping_xy(clipped, &used_indexes, clipping_flags, cur_index);
 		clipping_xy(clipped, &used_indexes, para, cur_index);
 		if (!used_indexes)
 			return (0);
@@ -325,13 +298,10 @@ int8_t	call_clipping_xy(t_triangle *clipped)
 	}
 	para.all = 0;
 	para.split.right = 1;
-	//clipping_flags[0] = 1;
-	//clipping_flags[1] = 0;
 	used_indexes_old = used_indexes;
 	cur_index = get_unset_used_index(&used_indexes_old);
 	while (cur_index != -1)
 	{
-		//clipping_xy(clipped, &used_indexes, clipping_flags, cur_index);
 		clipping_xy(clipped, &used_indexes, para, cur_index);
 		if (!used_indexes)
 			return (0);
@@ -339,13 +309,10 @@ int8_t	call_clipping_xy(t_triangle *clipped)
 	}
 	para.all = 0;
 	para.split.bot = 1;
-	//clipping_flags[0] = 1;
-	//clipping_flags[1] = 1;
 	used_indexes_old = used_indexes;
 	cur_index = get_unset_used_index(&used_indexes_old);
 	while (cur_index != -1)
 	{
-		//clipping_xy(clipped, &used_indexes, clipping_flags, cur_index);
 		clipping_xy(clipped, &used_indexes, para, cur_index);
 		if (!used_indexes)
 			return (0);
