@@ -1,4 +1,4 @@
-CC= cc 
+CC= clang
 FLAGS_SPEED = -fsanitize=address -g 
 # -Ofast -march=native -flto
 
