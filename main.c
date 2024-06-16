@@ -67,7 +67,7 @@ void	ft_hook(void* param)
 	ident_mat_4x4(main_data->world_mat);
 	reset_pixel_buffer(main_data->img->pixels, main_data->depth);
 	i = 0;
-	//while (i < main_data->mesh_count)
+	while (i < main_data->mesh_count)
 	{
 		//mod_cube_rotation(main_data->meshes + i, main_data->mlx->delta_time);
 		draw_mesh(main_data->meshes + i);

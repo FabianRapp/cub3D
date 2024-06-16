@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   s_split_float.c                           :+:      :+:    :+:   */
+/*   s_split_double.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fabian <fabian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "../../includes/cub3D.h"
 
-t_fixed	float_to_fixed(float nb)
+t_fixed	double_to_fixed(double nb)
 {
 	return ((t_fixed)(nb * F_FIXED_MULTI));
 }
@@ -22,9 +22,9 @@ t_fixed	int_to_fixed(int nb)
 	return (((t_fixed)nb) << FRACTION_BITS);
 }
 
-float	fixed_to_float(t_fixed nb)
+double	fixed_to_double(t_fixed nb)
 {
-	return (((float)nb) / F_FIXED_MULTI);
+	return (((double)nb) / F_FIXED_MULTI);
 }
 
 int	fixed_to_int(t_fixed nb)

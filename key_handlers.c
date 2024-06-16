@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:30:59 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/26 03:14:45 by frapp            ###   ########.fr       */
+/*   Updated: 2024/06/16 06:45:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,8 +148,8 @@ void	menu_action(t_main *main_data, t_entry_widget *widget, int menu_index)
 
 void	cursor_hook(double xpos, double ypos, void* param)
 {
-	float			x_dist;
-	float			y_dist;
+	double			x_dist;
+	double			y_dist;
 	t_main			*main_data;
 
 	main_data = (t_main *)param;
@@ -166,7 +166,7 @@ void	cursor_hook(double xpos, double ypos, void* param)
 	else if (main_data->pitch > ((M_PI - 0.05)/ 2))
 		main_data->pitch = ((M_PI - 0.05) / 2);
 	main_data->yaw += main_data->settings.mouse_sens * x_dist;
-	main_data->yaw -= ((int)(main_data->yaw / (2 * (float)M_PI)))* (2 * (float)M_PI); // main_data->yaw %= 2 * PI
+	main_data->yaw -= ((int)(main_data->yaw / (2 * (double)M_PI)))* (2 * (double)M_PI); // main_data->yaw %= 2 * PI
 	//printf("pitch: %f\nyaw: %f\n", main_data->pitch, main_data->yaw);
 	main_data->look_direct = v3_add(main_data->look_direct, get_direction(main_data->pitch, main_data->yaw, main_data->roll));
 	unit_vec3(&main_data->look_direct);

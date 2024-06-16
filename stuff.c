@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 21:22:14 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/26 03:09:13 by frapp            ###   ########.fr       */
+/*   Updated: 2024/06/16 06:45:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@
 // {
 // 	t_vec3	transformed;
 
-// 	transformed.p[X] = vec3d->p[X] * ((float) (FOV_RAD * ASPECT_RATIO));// / vec3d->p[Z];
-// 	transformed.p[Y] = vec3d->p[Y] * ((float) FOV_RAD);// / vec3d->p[Z];
-// 	transformed.p[Z] = vec3d->p[Z] * ((float) Z_NORM) + ((float) Z_OFFSET);
+// 	transformed.p[X] = vec3d->p[X] * ((double) (FOV_RAD * ASPECT_RATIO));// / vec3d->p[Z];
+// 	transformed.p[Y] = vec3d->p[Y] * ((double) FOV_RAD);// / vec3d->p[Z];
+// 	transformed.p[Z] = vec3d->p[Z] * ((double) Z_NORM) + ((double) Z_OFFSET);
 // 	fprintf(stderr, "base: {%f, %f, %f} transformed: {%f, %f, %f}\n", vec3d->p[X], vec3d->p[Y], vec3d->p[Z], transformed.p[X], transformed.p[Y], transformed.p[Z]);
 // 	return (transformed);
 // }
 
-uint32_t	lerp_color(uint32_t max_col, float strength)
+uint32_t	lerp_color(uint32_t max_col, double strength)
 {
 	uint32_t	result;
 
@@ -42,13 +42,13 @@ uint32_t	lerp_color(uint32_t max_col, float strength)
 	return (result);
 }
 
-int	lerp_int(int start, int end, float pos)
+int	lerp_int(int start, int end, double pos)
 {
 	return (((int)((end - start) * pos)) + start);
 }
 
 // for given x range of -1 to 1
-int	x_pos_x_index(float x_pos)
+int	x_pos_x_index(double x_pos)
 {
 	if (x_pos > 0)
 		return (lerp_int(WIDTH / 2, WIDTH, x_pos));
@@ -57,7 +57,7 @@ int	x_pos_x_index(float x_pos)
 }
 
 // for given y ange of -1 to 1
-int	y_pos_y_index(float y_pos)
+int	y_pos_y_index(double y_pos)
 {
 	if (y_pos > 0)
 		return(lerp_int(HEIGHT / 2, HEIGHT, y_pos));

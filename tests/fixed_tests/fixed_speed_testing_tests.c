@@ -2,17 +2,17 @@
 #include "../../../includes/cub3D.h"
 #include "fixed_testing.h"
 
-// float	float_linear_comb_test_fn(float a, float b)
+// double	double_linear_comb_test_fn(double a, double b)
 // {
-// 	float	x;
-// 	float	y;
+// 	double	x;
+// 	double	y;
 
 // 	x = a * 2.5f + b * 3.5f;
 // 	y = a * 4.5f - b * 1.5f;
 // 	return (x + y);
 // }
 
-// float	fixed_linear_comb_test_fn(float a, float b)
+// double	fixed_linear_comb_test_fn(double a, double b)
 // {
 // 	t_fixed fa;
 // 	t_fixed fb;
@@ -20,15 +20,15 @@
 // 	t_fixed fd;
 // 	t_fixed fe;
 
-// 	fa = float_to_fixed(a);
-// 	fb = float_to_fixed(b);
-// 	fc = fixed_mult(fa, float_to_fixed(2.5f)) + fixed_mult(fb, float_to_fixed(3.5f));
-// 	fd = fixed_mult(fa, float_to_fixed(4.5f)) - fixed_mult(fb, float_to_fixed(1.5f));
+// 	fa = double_to_fixed(a);
+// 	fb = double_to_fixed(b);
+// 	fc = fixed_mult(fa, double_to_fixed(2.5f)) + fixed_mult(fb, double_to_fixed(3.5f));
+// 	fd = fixed_mult(fa, double_to_fixed(4.5f)) - fixed_mult(fb, double_to_fixed(1.5f));
 // 	fe = fc + fd;
-// 	return fixed_to_float(fe);
+// 	return fixed_to_double(fe);
 // }
 
-static inline t_fixed __attribute__((always_inline))	float_to_fixed1(float nb)
+static inline t_fixed __attribute__((always_inline))	double_to_fixed1(double nb)
 {
 	return ((t_fixed)(nb * F_FIXED_MULTI));
 }
@@ -46,9 +46,9 @@ static inline t_fixed __attribute__((always_inline))	fixed_dev1(t_fixed a, t_fix
 	return (INT_MAX);
 }
 
-static inline float __attribute__((always_inline))	fixed_to_float1(t_fixed nb)
+static inline double __attribute__((always_inline))	fixed_to_double1(t_fixed nb)
 {
-	return (((float)nb) / F_FIXED_MULTI);
+	return (((double)nb) / F_FIXED_MULTI);
 }
 
 struct timeval	time_diff(struct timeval start, struct timeval end)
@@ -96,7 +96,7 @@ void	log_diff(struct timeval diff, char *title)
 	fclose(fd);
 }
 
-float	ref_int_int_add(float a, float b)
+double	ref_int_int_add(double a, double b)
 {
 	int c = (int)b;
 
@@ -107,7 +107,7 @@ float	ref_int_int_add(float a, float b)
 	return (a);
 }
 
-float	float_test_additon(float a, float b)
+double	double_test_additon(double a, double b)
 {
 	for (int i = 0; i < CALC_PER_ITER; i++)
 	{
@@ -116,30 +116,30 @@ float	float_test_additon(float a, float b)
 	return (a);
 }
 
-float	fixed_test_additon(float a, float b)
+double	fixed_test_additon(double a, double b)
 {
 	t_fixed	fa;
 	t_fixed	fb;
 
 	#ifdef FT_INLINE_TEST_FT
-		fa = float_to_fixed1(a);
-		fb = float_to_fixed1(b);
+		fa = double_to_fixed1(a);
+		fb = double_to_fixed1(b);
 	#else
-		fa = float_to_fixed(a);
-		fb = float_to_fixed(b);
+		fa = double_to_fixed(a);
+		fb = double_to_fixed(b);
 	#endif
 	for (int i = 0; i < CALC_PER_ITER; i++)
 	{
 		fa = fa + fb;
 	}
 	#ifdef FT_INLINE_TEST_FT
-		return (fixed_to_float1(fa));
+		return (fixed_to_double1(fa));
 	#else
-		return (fixed_to_float(fa));
+		return (fixed_to_double(fa));
 	#endif
 }
 
-float	float_test_subtraction(float a, float b)
+double	double_test_subtraction(double a, double b)
 {
 	for (int i = 0; i < CALC_PER_ITER; i++)
 	{
@@ -148,31 +148,31 @@ float	float_test_subtraction(float a, float b)
 	return (a);
 }
 
-float	fixed_test_subtraction(float a, float b)
+double	fixed_test_subtraction(double a, double b)
 {
 	t_fixed	fa;
 	t_fixed	fb;
 
 	#ifdef FT_INLINE_TEST_FT
-		fa = float_to_fixed1(a);
-		fb = float_to_fixed1(b);
+		fa = double_to_fixed1(a);
+		fb = double_to_fixed1(b);
 			for (int i = 0; i < CALC_PER_ITER; i++)
 		{
 			fa = fa - fb;
 		}
-		return (fixed_to_float1(fa));
+		return (fixed_to_double1(fa));
 	#else
-		fa = float_to_fixed(a);
-		fb = float_to_fixed(b);
+		fa = double_to_fixed(a);
+		fb = double_to_fixed(b);
 			for (int i = 0; i < CALC_PER_ITER; i++)
 		{
 			fa = fa - fb;
 		}
-		return (fixed_to_float(fa));
+		return (fixed_to_double(fa));
 	#endif
 }
 
-float	float_test_multiplication(float a, float b)
+double	double_test_multiplication(double a, double b)
 {
 	for (int i = 0; i < CALC_PER_ITER; i++)
 	{
@@ -181,31 +181,31 @@ float	float_test_multiplication(float a, float b)
 	return (a);
 }
 
-float	fixed_test_multiplication(float a, float b)
+double	fixed_test_multiplication(double a, double b)
 {
 	t_fixed	fa;
 	t_fixed	fb;
 
 	#ifdef FT_INLINE_TEST_FT
-		fa = float_to_fixed1(a);
-		fb = float_to_fixed1(b);
+		fa = double_to_fixed1(a);
+		fb = double_to_fixed1(b);
 			for (int i = 0; i < CALC_PER_ITER; i++)
 		{
 			fa = fixed_mult1(fa, fb);
 		}
-		return (fixed_to_float1(fa));
+		return (fixed_to_double1(fa));
 	#else
-		fa = float_to_fixed(a);
-		fb = float_to_fixed(b);
+		fa = double_to_fixed(a);
+		fb = double_to_fixed(b);
 			for (int i = 0; i < CALC_PER_ITER; i++)
 		{
 			fa = fixed_mult(fa, fb);
 		}
-		return (fixed_to_float(fa));
+		return (fixed_to_double(fa));
 	#endif
 }
 
-float	float_test_devision(float a, float b)
+double	double_test_devision(double a, double b)
 {
 	for (int i = 0; i < CALC_PER_ITER; i++)
 	{
@@ -214,31 +214,31 @@ float	float_test_devision(float a, float b)
 	return (a);
 }
 
-float	fixed_test_devision(float a, float b)
+double	fixed_test_devision(double a, double b)
 {
 	t_fixed	fa;
 	t_fixed	fb;
 
 	#ifdef FT_INLINE_TEST_FT
-		fa = float_to_fixed1(a);
-		fb = float_to_fixed1(b);
+		fa = double_to_fixed1(a);
+		fb = double_to_fixed1(b);
 			for (int i = 0; i < CALC_PER_ITER; i++)
 		{
 			fa = fixed_dev1(fa, fb);
 		}
-		return (fixed_to_float1(fa));
+		return (fixed_to_double1(fa));
 	#else
-		fa = float_to_fixed(a);
-		fb = float_to_fixed(b);
+		fa = double_to_fixed(a);
+		fb = double_to_fixed(b);
 			for (int i = 0; i < CALC_PER_ITER; i++)
 		{
 			fa = fixed_dev(fa, fb);
 		}
-		return (fixed_to_float(fa));
+		return (fixed_to_double(fa));
 	#endif
 }
 
-float	float_test_devision_fi(float a, float b)
+double	double_test_devision_fi(double a, double b)
 {
 	(void)b;
 	for (int i = 1; i < CALC_PER_ITER + 1; i++)
@@ -248,29 +248,29 @@ float	float_test_devision_fi(float a, float b)
 	return (a);
 }
 
-float	fixed_test_devision_fi(float a, float b)
+double	fixed_test_devision_fi(double a, double b)
 {
 	t_fixed	fa;
 
 	(void)b;
 	#ifdef FT_INLINE_TEST_FT
-		fa = float_to_fixed1(a);
+		fa = double_to_fixed1(a);
 			for (int i = 1; i < CALC_PER_ITER + 1; i++)
 		{
 			fa = fa / i;
 		}
-		return (fixed_to_float1(fa));
+		return (fixed_to_double1(fa));
 	#else
-		fa = float_to_fixed(a);
+		fa = double_to_fixed(a);
 			for (int i = 1; i < CALC_PER_ITER + 1; i++)
 		{
 			fa = fa / i;
 		}
-		return (fixed_to_float(fa));
+		return (fixed_to_double(fa));
 	#endif
 }
 
-float	float_test_additon_fi(float a, float b)
+double	double_test_additon_fi(double a, double b)
 {
 	(void)b;
 	for (int i = 1; i < CALC_PER_ITER + 1; i++)
@@ -280,42 +280,42 @@ float	float_test_additon_fi(float a, float b)
 	return (a);
 }
 
-float	fixed_test_additon_fi(float a, float b)
+double	fixed_test_additon_fi(double a, double b)
 {
 	t_fixed	fa;
 
 	(void)b;
 	#ifdef FT_INLINE_TEST_FT
-		fa = float_to_fixed1(a);
+		fa = double_to_fixed1(a);
 			for (int i = 1; i < CALC_PER_ITER + 1; i++)
 		{
 			fa = fa + i;
 		}
-		return (fixed_to_float1(fa));
+		return (fixed_to_double1(fa));
 	#else
-		fa = float_to_fixed(a);
+		fa = double_to_fixed(a);
 			for (int i = 1; i < CALC_PER_ITER + 1; i++)
 		{
 			fa = fa + i;
 		}
-		return (fixed_to_float(fa));
+		return (fixed_to_double(fa));
 	#endif
 }
 
-int64_t	ff_test_loop(float f(float, float), char *timer_msg, int64_t time_sofar)
+int64_t	ff_test_loop(double f(double, double), char *timer_msg, int64_t time_sofar)
 {
 	struct timeval	start_time;
 	struct timeval	end_time;
 	struct timeval	diff;
-	const float		goal = LOOP_ITER_POSITIVE;
-	const float		start = -LOOP_ITER_NEGATIVE;
-	float			a = start;
-	float			b;
-	float			return_val;
+	const double		goal = LOOP_ITER_POSITIVE;
+	const double		start = -LOOP_ITER_NEGATIVE;
+	double			a = start;
+	double			b;
+	double			return_val;
 
 	usleep(100000);
 	int64_t	arr[10000];
-	float	arr2[10000];
+	double	arr2[10000];
 	for (int i = 0; i < 10000; i++)
 	{
 		arr[i] = i;

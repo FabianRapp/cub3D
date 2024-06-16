@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 02:11:26 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/26 03:09:22 by frapp            ###   ########.fr       */
+/*   Updated: 2024/06/16 06:45:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ for
 	x41,x42,x43,x44}
 */
 
-void	mat4x4_mult_mat4x4(float a[4][4], float b[4][4], float r[4][4])
+void	mat4x4_mult_mat4x4(double a[4][4], double b[4][4], double r[4][4])
 {
 	r[0][1] = a[0][0] * b[0][1] + a[0][1] * b[1][1] + a[0][2] * b[2][1] + a[0][3] * b[3][1];
 	r[0][2] = a[0][0] * b[0][2] + a[0][1] * b[1][2] + a[0][2] * b[2][2] + a[0][3] * b[3][2];
@@ -42,7 +42,7 @@ void	mat4x4_mult_mat4x4(float a[4][4], float b[4][4], float r[4][4])
 	r[3][3] = a[3][0] * b[0][3] + a[3][1] * b[1][3] + a[3][2] * b[2][3] + a[3][3] * b[3][3];
 }
 
-// void	matrix_mult_vec3_4x4(t_vec3 *v, const float m_b[4][4], t_vec3 *re)
+// void	matrix_mult_vec3_4x4(t_vec3 *v, const double m_b[4][4], t_vec3 *re)
 // {
 // 	re->x = v->x *  m_b[0][0] + v->y * m_b[1][0] + v->z * m_b[2][0] + m_b[3][0];
 // 	re->y = v->x *  m_b[0][1] + v->y * m_b[1][1] + v->z * m_b[2][1] + m_b[3][1];
@@ -56,7 +56,7 @@ void	mat4x4_mult_mat4x4(float a[4][4], float b[4][4], float r[4][4])
 // 	}
 // }
 
-void	matrix_mult_vec3_4x4(t_vec3 *v, const float m_b[4][4], t_vec3 *re)
+void	matrix_mult_vec3_4x4(t_vec3 *v, const double m_b[4][4], t_vec3 *re)
 {
 	re->x = v->x *  m_b[0][0] + v->y * m_b[1][0] + v->z * m_b[2][0] + v->w * m_b[3][0];
 	re->y = v->x *  m_b[0][1] + v->y * m_b[1][1] + v->z * m_b[2][1] + v->w * m_b[3][1];
@@ -64,7 +64,7 @@ void	matrix_mult_vec3_4x4(t_vec3 *v, const float m_b[4][4], t_vec3 *re)
 	re->w = v->x *  m_b[0][3]+ v->y * m_b[1][3] + v->z * m_b[2][3] + v->w * m_b[3][3];
 }
 
-void	matrix_mult_1x3_3x3(t_vec3 v, float mb[3][3], float m_result[3])
+void	matrix_mult_1x3_3x3(t_vec3 v, double mb[3][3], double m_result[3])
 {
 	m_result[0] = v.x * mb[0][0];
 	m_result[0] += v.y * mb[1][0];

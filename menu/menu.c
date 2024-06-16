@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 18:49:11 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/26 03:13:58 by frapp            ###   ########.fr       */
+/*   Updated: 2024/06/16 06:45:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	init_entry_widget(t_main *main_data, t_entry_widget *field, char *title, in
 	mlx_set_instance_depth(field->img->instances, depth);
 }
 
-void	fill_slider(t_entry_widget *slider, float filling)
+void	fill_slider(t_entry_widget *slider, double filling)
 {
 	int	cur_x;
 	int	cur_y;

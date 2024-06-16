@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   menu.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 16:35:25 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/01 17:12:49 by frapp            ###   ########.fr       */
+/*   Updated: 2024/06/16 06:45:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct s_main	t_main;
 //----------------widget init_data----
 typedef union u_widget_val
 {
-	float	slider_val;
+	double	slider_val;
 	int32_t	int_val;
 }	t_widget_val;
 

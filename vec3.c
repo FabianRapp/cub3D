@@ -16,8 +16,8 @@ t_vec3	v3_zero(void)
 
 void	unit_vec3(t_vec3 *v)
 {
-	float	len;
-	float	sum;
+	double	len;
+	double	sum;
 
 	sum = v->x * v->x + v->y * v->y + v->z * v->z;
 	if (sum > 0.0001 || sum < -0.0001)
@@ -58,17 +58,17 @@ void	unit_vec3(t_vec3 *v)
 
 
 // angle in rad
-void	rotate_vec3(t_vec3 *to_rotate, float x_rot, float first_z_rot, float second_z_rot)
+void	rotate_vec3(t_vec3 *to_rotate, double x_rot, double first_z_rot, double second_z_rot)
 {
-	float cx = cosf(x_rot);
-	float sx = sinf(x_rot);
-	float cz1 = cosf(first_z_rot);
-	float sz1 = sinf(first_z_rot);
-	float cz2 = cosf(second_z_rot);
-	float sz2 = sinf(second_z_rot);
+	double cx = cosf(x_rot);
+	double sx = sinf(x_rot);
+	double cz1 = cosf(first_z_rot);
+	double sz1 = sinf(first_z_rot);
+	double cz2 = cosf(second_z_rot);
+	double sz2 = sinf(second_z_rot);
 
 	t_vec3	re;
-	float	rotation_matrix[3][3] = {
+	double	rotation_matrix[3][3] = {
 		{cz1 * cx * cz2 - sz1 * sz2, -cz1 * cx * sz2 - sz1 * cz2, cz1 * sx},
 		{sz1 * cx * cz2 + cz1 * sz2, -sz1 * cx * sz2 + cz1 * cz2, sz1 * sx},
 		{-sx * cz2, sx * sz2, cx}
@@ -80,14 +80,14 @@ void	rotate_vec3(t_vec3 *to_rotate, float x_rot, float first_z_rot, float second
 	to_rotate->y = re.y;
 	to_rotate->z = re.z;
 	// // Apply Z-axis rotation
-	// float xy = cz * to_rotate->x - sz * to_rotate->y;
-	// float yy = sz * to_rotate->x + cz * to_rotate->y;
-	// float zy = to_rotate->z;
+	// double xy = cz * to_rotate->x - sz * to_rotate->y;
+	// double yy = sz * to_rotate->x + cz * to_rotate->y;
+	// double zy = to_rotate->z;
 
 	// // Apply Y-axis rotation
-	// float xz = cy * xy + sy * zy;
-	// float yz = yy;
-	// float zz = -sy * xy + cy * zy;
+	// double xz = cy * xy + sy * zy;
+	// double yz = yy;
+	// double zz = -sy * xy + cy * zy;
 
 	// // Apply X-axis rotation
 	// to_rotate->x = xz;
@@ -106,7 +106,7 @@ t_vec3	cross_product(t_vec3 a, t_vec3 b)
 	return (result);
 }
 
-float	dot_prod_unit(t_vec3 a, t_vec3 b)
+double	dot_prod_unit(t_vec3 a, t_vec3 b)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
@@ -154,7 +154,7 @@ t_vec3 v3_multiply(t_vec3 a, t_vec3 b)
 	return (v);
 }
 
-t_vec3 v3_scale(t_vec3 a, float scalar)
+t_vec3 v3_scale(t_vec3 a, double scalar)
 {
 	t_vec3	v;
 
@@ -195,7 +195,7 @@ void multiply_vec3(t_vec3 *v, t_vec3 *a)
 	v->z *= a->z;
 }
 
-void div_vec3(t_vec3 *v, float a)
+void div_vec3(t_vec3 *v, double a)
 {
 	if (zero_f(a))
 	{
@@ -207,16 +207,16 @@ void div_vec3(t_vec3 *v, float a)
 	v->z /= a;
 }
 
-void scale_vec3(t_vec3 *v, float scalar)
+void scale_vec3(t_vec3 *v, double scalar)
 {
 	v->x *= scalar;
 	v->y *= scalar;
 	v->z *= scalar;
 }
 
-float length_vec3(t_vec3 *v)
+double length_vec3(t_vec3 *v)
 {
-	float	sum;
+	double	sum;
 
 	sum = powf(v->x, 2);
 	sum += powf(v->y, 2);
@@ -278,7 +278,7 @@ void	print_vec3(t_vec3 v, char *msg)
 	// }
 }
 
-void	init_vec3(t_vec3 *v, float x, float y, float z)
+void	init_vec3(t_vec3 *v, double x, double y, double z)
 {
 	v->x = x;
 	v->y = y;
@@ -286,7 +286,7 @@ void	init_vec3(t_vec3 *v, float x, float y, float z)
 	v->w = 1;
 }
 
-t_vec3	vec3_init(float x, float y, float z)
+t_vec3	vec3_init(double x, double y, double z)
 {
 	t_vec3	v;
 
@@ -297,7 +297,7 @@ t_vec3	vec3_init(float x, float y, float z)
 	return (v);
 }
 
-t_vec3	get_direction(float pitch, float yaw, float roll)
+t_vec3	get_direction(double pitch, double yaw, double roll)
 {
 	t_vec3	direct;
 

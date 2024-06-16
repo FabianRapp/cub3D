@@ -2,9 +2,9 @@
 #include "includes/cub3D.h"
 #include "MLX42/include/MLX42/MLX42.h"
 
-void	mod_cube_rotation(t_mesh *mesh, float delta_time)
+void	mod_cube_rotation(t_mesh *mesh, double delta_time)
 {
-	static float	theta = 0;
+	static double	theta = 0;
 
 	theta += (delta_time / 4);
 
@@ -28,9 +28,9 @@ void	mod_cube_rotation(t_mesh *mesh, float delta_time)
 	
 }
 
-void	mod_cube_rotation2(t_mesh *mesh, float delta_time)
+void	mod_cube_rotation2(t_mesh *mesh, double delta_time)
 {
-	static float	theta = 0;
+	static double	theta = 0;
 
 	theta += delta_time;
 

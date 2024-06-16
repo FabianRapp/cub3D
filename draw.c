@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:39:06 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/26 03:09:07 by frapp            ###   ########.fr       */
+/*   Updated: 2024/06/16 06:45:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void	draw_triangle(mlx_image_t *img, t_triangle *projected, uint32_t color)
 	draw_line(img, (int)roundf(projected->p[2].x), (int)roundf(projected->p->x), (int)roundf(projected->p[2].y), (int)roundf(projected->p->y), color);
 }
 
-float	norm_float(float val, float min, float max)
+double	norm_double(double val, double min, double max)
 {
 	return (val / (max - min));
 }
@@ -139,7 +139,7 @@ void	print_color(t_color_split color)
 	fprintf(stderr, "a: %x r: %x g: %x b: %x\n", col.argb[A], col.argb[R], col.argb[G], col.argb[B]);
 }
 
-void	init_light(t_light *light, t_vec3 direct, uint32_t color, float base_stren)
+void	init_light(t_light *light, t_vec3 direct, uint32_t color, double base_stren)
 {
 	light->direct = direct;
 	unit_vec3(&light->direct);
@@ -159,18 +159,18 @@ void	scale_to_screen(t_triangle *projected)
 	projected->p[2].x += 1.0f;
 	projected->p[2].y += 1.0f;
 
-	projected->p[0].x *= 0.5f * (float)WIDTH;
-	projected->p[0].y *= 0.5f * (float)HEIGHT;
-	projected->p[1].x *= 0.5f * (float)WIDTH;
-	projected->p[1].y *= 0.5f * (float)HEIGHT;
-	projected->p[2].x *= 0.5f * (float)WIDTH;
-	projected->p[2].y *= 0.5f * (float)HEIGHT;
+	projected->p[0].x *= 0.5f * (double)WIDTH;
+	projected->p[0].y *= 0.5f * (double)HEIGHT;
+	projected->p[1].x *= 0.5f * (double)WIDTH;
+	projected->p[1].y *= 0.5f * (double)HEIGHT;
+	projected->p[2].x *= 0.5f * (double)WIDTH;
+	projected->p[2].y *= 0.5f * (double)HEIGHT;
 }
 
 void	fill_mesh_matrix(t_mesh *mesh)
 {
-	float	translation_mat[4][4];
-	float	tmp[4][4];
+	double	translation_mat[4][4];
+	double	tmp[4][4];
 
 	ident_mat_4x4(mesh->mesh_matrix);
 	// ident_mat_4x4(tmp);
@@ -183,22 +183,22 @@ t_light	init_day_light(double d_time)
 {
 	t_light			day_light;
 	static t_vec3	direct =  {.x = 1.0f, .y = -1.0f, .z = -1.0f, .w = 0};
-	static float light_direct = -1;
+	static double light_direct = -1;
 
 	if (direct.x < -1)
 		light_direct = 1;
 	if (direct.x > 1)
 		light_direct = -1;
 	direct.x += d_time * light_direct / 50;
-	float day_progress = (direct.x + 1) / 2;
-	static float timer = 0;
+	double day_progress = (direct.x + 1) / 2;
+	static double timer = 0;
 	timer += d_time;
 	if (timer > 1)
 	{
 		//fprintf(stderr, "day time: %f\n", 24 * day_progress);
 		timer = 0;
 	}
-	float	light_intens = 1 - fabs(0.5 - day_progress);
+	double	light_intens = 1 - fabs(0.5 - day_progress);
 	t_color_split light_col;
 	light_col.col = WHITE;
 	light_col.argb[R] *= 1 - 0.2 * fabs(0.5 - day_progress);
@@ -232,7 +232,7 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 	int			clipped_count_front;
 	int			clipped_count_back;
 	t_triangle	projected;
-	const float	project_mat[4][4] = PROJECTION_MATRIX;
+	const double	project_mat[4][4] = PROJECTION_MATRIX;
 
 	clipped_count_front = clipping_z_near(&triangle, clipped_z_front);
 	int	j;
@@ -280,7 +280,7 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 				//cpy_triangle_data_rasterize(base_data, &projected);
 				for (int i = 0; i < 3; i++)
 				{
-					if (!(projected.p[i].x >= 0.0f && projected.p[i].x < (float)WIDTH
+					if (!(projected.p[i].x >= 0.0f && projected.p[i].x < (double)WIDTH
 						&& projected.p[i].y >= 0.0f && projected.p[i].y < HEIGHT))
 					{
 						print_vec3(projected.p[i], "out of bounds:");
@@ -321,10 +321,10 @@ void	draw_mesh(t_mesh *mesh)
 	fill_mesh_matrix(mesh);
 
 	t_vec3	vec_target = v3_add(mesh->main->camera, mesh->main->look_direct);
-	float	camera[4][4];
+	double	camera[4][4];
 	matrix_point_at(&mesh->main->camera, &vec_target, &mesh->main->up, camera);
 	//print_vec3(mesh->main->up, "up");
-	float	mat_view[4][4];
+	double	mat_view[4][4];
 	matrix_look_at(camera, mat_view);
 	
 
@@ -351,7 +351,7 @@ void	draw_mesh(t_mesh *mesh)
 		matrix_mult_vec3_4x4(mesh->triangles[i].p + 2, mesh->mesh_matrix, transformed.p + 2);
 
 		// t_vec3	tmp = transformed.normal;
-		// float	tmp_mat[4][4];
+		// double	tmp_mat[4][4];
 		// mat4x4_mult_mat4x4(mesh->rotation_mat_z, mesh->rotation_mat_x, tmp_mat);
 		// matrix_mult_vec3_4x4(&tmp, tmp_mat, &transformed.normal);
 
@@ -378,7 +378,7 @@ void	draw_mesh(t_mesh *mesh)
 
 		t_light_argb_stren	color_scalars = {0};
 
-		float light_dp = dot_prod_unit(transformed.normal, day_light.direct);
+		double light_dp = dot_prod_unit(transformed.normal, day_light.direct);
 		light_dp = fmaxf(light_dp, 0.0f);
 		color_scalars.v[R] += day_light.strength.v[R] *  light_dp;
 		color_scalars.v[G] += day_light.strength.v[G] *  light_dp;

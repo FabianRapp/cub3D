@@ -6,14 +6,14 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 02:06:43 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/26 03:09:21 by frapp            ###   ########.fr       */
+/*   Updated: 2024/06/16 06:45:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3D.h"
 #include "../MLX42/include/MLX42/MLX42.h"
 
-void	zero_matrix(float mat[4][4])
+void	zero_matrix(double mat[4][4])
 {
 	mat[0][0] = 0.0f;
 	mat[0][1] = 0.0f;
@@ -33,27 +33,27 @@ void	zero_matrix(float mat[4][4])
 	mat[3][3] = 0.0f;
 }
 
-void	projection_matrix(float mat[4][4])
+void	projection_matrix(double mat[4][4])
 {
-	mat[0][0] = (float)(ASPECT_RATIO * ((float)FOV_RAD));
+	mat[0][0] = (double)(ASPECT_RATIO * ((double)FOV_RAD));
 	mat[0][1] = 0.0f;
 	mat[0][2] = 0.0f;
 	mat[0][3] = 0.0f;
 	mat[1][0] = 0.0f;
-	mat[1][1] = (float)(FOV_RAD);
+	mat[1][1] = (double)(FOV_RAD);
 	mat[1][2] = 0.0f;
 	mat[1][3] = 0.0f;
 	mat[2][0] = 0.0f;
 	mat[2][1] = 0.0f;
-	mat[2][2] = ((float) Z_NORM);
+	mat[2][2] = ((double) Z_NORM);
 	mat[2][3] = 1.0f;
 	mat[3][0] = 0.0f;
 	mat[3][1] = 0.0f;
-	mat[3][2] = ((float) Z_OFFSET);
+	mat[3][2] = ((double) Z_OFFSET);
 	mat[3][3] = 0.0f;
 }
 
-void	translation_matrix(float mat[4][4], float x, float y, float z)
+void	translation_matrix(double mat[4][4], double x, double y, double z)
 {
 	mat[0][0] = 1.0f;
 	mat[0][1] = 0.0f;
@@ -73,7 +73,7 @@ void	translation_matrix(float mat[4][4], float x, float y, float z)
 	mat[3][3] = 1.0f;
 }
 
-void	ident_mat_4x4(float mat[4][4])
+void	ident_mat_4x4(double mat[4][4])
 {
 	mat[0][0] = 1.0f;
 	mat[0][1] = 0.0f;
@@ -93,7 +93,7 @@ void	ident_mat_4x4(float mat[4][4])
 	mat[3][3] = 1.0f;
 }
 
-void	rot_matx_4x4(float mat[4][4], float theta)
+void	rot_matx_4x4(double mat[4][4], double theta)
 {
 	mat[0][0] = 1.0f;
 	mat[0][1] = 0.0f;
@@ -113,7 +113,7 @@ void	rot_matx_4x4(float mat[4][4], float theta)
 	mat[3][3] = 1.0f;
 }
 
-void	rot_maty_4x4(float mat[4][4], float theta)
+void	rot_maty_4x4(double mat[4][4], double theta)
 {
 	mat[0][0] = cosf(theta);
 	mat[0][1] = 0.0f;
@@ -133,7 +133,7 @@ void	rot_maty_4x4(float mat[4][4], float theta)
 	mat[3][3] = 1.0f;
 }
 
-void	rot_matz_4x4(float mat[4][4], float theta)
+void	rot_matz_4x4(double mat[4][4], double theta)
 {
 	mat[0][0] = cosf(theta);
 	mat[0][1] = sinf(theta);
@@ -155,7 +155,7 @@ void	rot_matz_4x4(float mat[4][4], float theta)
 
 //acomment_imgs/rotating_space_2d.png
 //acomment_imgs/point_at_mat.png
-void	matrix_point_at(t_vec3 *pos, t_vec3 *target, t_vec3 *up, float result[4][4])
+void	matrix_point_at(t_vec3 *pos, t_vec3 *target, t_vec3 *up, double result[4][4])
 {
 	t_vec3	new_forward;
 	t_vec3	new_up;
@@ -195,7 +195,7 @@ void	matrix_point_at(t_vec3 *pos, t_vec3 *target, t_vec3 *up, float result[4][4]
 
 //iverse for point_at_mat (does not inverse any matrix)
 //acomment_imgs/rotating_space_2d.png
-void	matrix_look_at(float point_at_mat[4][4], float look_at_mat[4][4])
+void	matrix_look_at(double point_at_mat[4][4], double look_at_mat[4][4])
 {
 	look_at_mat[0][0] = point_at_mat[0][0];
 	look_at_mat[0][1] = point_at_mat[1][0];

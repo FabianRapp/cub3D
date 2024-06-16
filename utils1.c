@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 05:43:13 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/26 03:09:14 by frapp            ###   ########.fr       */
+/*   Updated: 2024/06/16 06:45:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_free_img(t_main *main_data, mlx_image_t **img)
 	*img = NULL;
 }
 
-void	reset_pixel_buffer(uint8_t *pixels, float *depth)
+void	reset_pixel_buffer(uint8_t *pixels, double *depth)
 {
 	uint32_t	*buffer = (uint32_t *)pixels;
 
@@ -43,7 +43,7 @@ void	reset_pixel_buffer(uint8_t *pixels, float *depth)
 	}
 }
 
-bool	zero_f(float f)
+bool	zero_f(double f)
 {
 	if (fabs(f) < 0.0001)
 	{

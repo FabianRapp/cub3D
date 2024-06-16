@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 06:07:42 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/26 03:09:09 by frapp            ###   ########.fr       */
+/*   Updated: 2024/06/16 06:45:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 void	fill_tetra_mesh(t_mesh *cube, t_main *main_data)
 {
-	float dx = 0.96;//cosf(M_PI_4 / 3.0);
-	float dy = 0.25;//sinf(M_PI_4 / 3.0);
+	double dx = 0.96;//cosf(M_PI_4 / 3.0);
+	double dy = 0.25;//sinf(M_PI_4 / 3.0);
 	const t_triangle init_triangles[] = {
 		//front
 		{.p={{M_SQRT1_2, 1.0f, M_SQRT1_2}, {0, 0, 1}, {dx, 0, dy}}, YELLOW, 1},
@@ -103,7 +103,7 @@ void	fill_skybox_mesh(t_mesh *mesh, t_main *main_data)
 		{.p={{1, -1, Z_FAR}, {-1, -1, Z_FAR}, {-1, -1, 0}}, .col=ORANGE},
 		{.p={{1, -1, Z_FAR}, {-1, -1, 0}, {1, -1, 0}}, .col=LIME},
 	};
-	float rotation_mat[4][4] = {
+	double rotation_mat[4][4] = {
 		{1.0f, 0.0f, 0.0f, 0.0f},
 		{0.0f, 1.0f, 0.0f, 0.0f},
 		{0.0f, 0.0f, 1.0f, 0.0f},

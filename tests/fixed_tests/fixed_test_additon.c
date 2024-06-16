@@ -3,7 +3,7 @@
 
 int main(void)
 {
-	// //additon (float + float)
-	ff_test_loop(fixed_test_additon, "fixed additon (float + float)", 0);
+	// //additon (double + double)
+	ff_test_loop(fixed_test_additon, "fixed additon (double + double)", 0);
 	return (0);
 }

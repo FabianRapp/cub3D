@@ -3,7 +3,7 @@
 
 int main(void)
 {
-	//subraction (float - float)
-	ff_test_loop(fixed_test_subtraction, "fixed subtraction (float - float)", 0);
+	//subraction (double - double)
+	ff_test_loop(fixed_test_subtraction, "fixed subtraction (double - double)", 0);
 	return (0);
 }

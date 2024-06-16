@@ -3,7 +3,7 @@
 
 int main(void)
 {
-	// //devision (float / float)
-	ff_test_loop(ref_int_int_add, "REFERENCE (INT + INT with 1 float to int cast)", 0);
+	// //devision (double / double)
+	ff_test_loop(ref_int_int_add, "REFERENCE (INT + INT with 1 double to int cast)", 0);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 15:27:09 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/26 03:09:05 by frapp            ###   ########.fr       */
+/*   Updated: 2024/06/16 06:45:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,35 +89,54 @@ void	set_index_usage(t_index_usage *usage, int8_t index, int8_t state)
 	}
 }
 
+double	clamplf(double val, double min, double max)
+{
+	if (val < min)
+		return (min);
+	if (val > max)
+		return (max);
+	return (val);
+}
+
+// call order:
+//left
+//top
+//right
+//bot
+// todo: uv values need same bounds security
 void fast_line_intersect(const t_clipping_para para, t_vec3 p1, t_vec3 *p2)
 {
-	float progress;
-	float dist_x = p2->x - p1.x;
-	float dist_y = p2->y - p1.y;
+	double progress;
+	double dist_x = p2->x - p1.x;
+	double dist_y = p2->y - p1.y;
 	assume(!((zero_f(dist_x) && (para.split.right || para.split.left)) || (zero_f(dist_y) && (para.split.top || para.split.bot))));
 	if (para.split.bot)
 	{
-		progress = (HEIGHT - 1.0f - p1.y) / dist_y;
-		p2->y = HEIGHT- 1.0f;
+		progress = (HEIGHT - 1.0 - p1.y) / dist_y;
+		p2->y = HEIGHT - 1.1;
 		p2->x = p1.x + dist_x * progress;
+		p2->x = clamplf(p2->x, 0.0f, WIDTH - 1.1);
 	}
 	else if (para.split.right)
 	{
 		progress = (WIDTH - 1.0f - p1.x) / dist_x;
-		p2->x = WIDTH - 1.0f;
+		p2->x = WIDTH - 4.0f;
 		p2->y = p1.y + dist_y * progress;
+		p2->y = clamplf(p2->y, 0, HEIGHT - 1.1);
 	}
 	else if (para.split.top)
 	{
 		progress = -p1.y / dist_y;
 		p2->y = 0;
 		p2->x = p1.x + dist_x * progress;
+		p2->x = clamplf(p2->x, 0.0f, WIDTH - 1.1);
 	}
 	else if (para.split.left)
 	{
 		progress = -p1.x / dist_x;
-		p2->x = 0;
+		p2->x = 3;
 		p2->y = p1.y + dist_y * progress;
+		p2->y = clamplf(p2->y, 0, HEIGHT - 1.1);
 	}
 	else
 		assume(0);
@@ -154,9 +173,9 @@ int8_t	count_inside_points(t_triangle *clipped, int8_t cur_index, t_clipping_par
 			inside_index[inside_points++] = i;
 		else if (para.split.top && clipped[cur_index].p[i].y >= 0.0f)
 			inside_index[inside_points++] = i;
-		else if (para.split.right && clipped[cur_index].p[i].x < (float)WIDTH)
+		else if (para.split.right && clipped[cur_index].p[i].x < (double)WIDTH)
 			inside_index[inside_points++] = i;
-		else if (para.split.bot && clipped[cur_index].p[i].y < (float)HEIGHT)
+		else if (para.split.bot && clipped[cur_index].p[i].y < (double)HEIGHT)
 			inside_index[inside_points++] = i;
 		i++;
 	}

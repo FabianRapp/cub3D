@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 05:11:27 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/26 03:09:08 by frapp            ###   ########.fr       */
+/*   Updated: 2024/06/16 06:45:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	fill_min_max_xy(int a[2], int b[2], int c[2], int min[2], int max[2])
 void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color, t_mesh *mesh)
 {
 	t_vec3	*p = projected->p;
-	float		*depth;
+	double		*depth;
 	uint32_t	*pixels = (uint32_t *)img->pixels;
 
 	//fprintf(stderr, "here\n");
@@ -109,36 +109,36 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 		fprintf(stderr, "error sort_vertexes_for_y 1: %f 2: %f 3: %f\n", p[0].y, p[1].y, p[2].y);
 		exit(1);
 	}
-	//float	m1 = slope_2d_x_per_y(p[0], p[1]);
-	float	y_dist1 = p[1].y - p[0].y;
-	float	cur_y_float = p[0].y;
-	float	total_y_progress;
+	//double	m1 = slope_2d_x_per_y(p[0], p[1]);
+	double	y_dist1 = p[1].y - p[0].y;
+	double	cur_y_double = p[0].y;
+	double	total_y_progress;
 	int		cur_x;
 	static int i = 0;
-	if (cur_y_float < 0.0f)
+	if (cur_y_double < 0.0f)
 	{
-		cur_y_float = 0.0f;
+		cur_y_double = 0.0f;
 	}//todo: fix condtion for when objects leave the screen to the left and right
 	//if ((p[0].x >= 0 || p[1].x >= 0) && (p[0].x < WIDTH || p[1].x < WIDTH) && (p[0].y >= 0 || p[1].y >= 0) && (p[0].y < HEIGHT || p[1].y < HEIGHT) && (p[0].z > Z_NEAR || p[1].z > Z_NEAR) && (projected->unprojected_z[0] < Z_FAR || projected->unprojected_z[1] < Z_FAR))
 	{
-		int y_index =  (int)roundf(cur_y_float);
-		while (cur_y_float <= p[1].y && y_index < HEIGHT)
+		int y_index =  (int)roundf(cur_y_double);
+		while (cur_y_double <= p[1].y && y_index < HEIGHT)
 		{
-			total_y_progress = (cur_y_float - p[0].y) / (p[2].y - p[0].y);
+			total_y_progress = (cur_y_double - p[0].y) / (p[2].y - p[0].y);
 			cur_x = (int)roundf((p[2].x - p[0].x) * total_y_progress + p[0].x);
-			float	y_progress =  (cur_y_float - p[0].y) / (p[1].y - p[0].y);
+			double	y_progress =  (cur_y_double - p[0].y) / (p[1].y - p[0].y);
 			int	x_max = (int)roundf((p[1].x - p[0].x) * y_progress + p[0].x);
-			float cur_z;
-			float start_z = y_progress * (projected->unprojected_z[1] - projected->unprojected_z[0]) + projected->unprojected_z[0];
-			float end_z = total_y_progress * (projected->unprojected_z[2] - projected->unprojected_z[0]) + projected->unprojected_z[0];
+			double cur_z;
+			double start_z = y_progress * (projected->unprojected_z[1] - projected->unprojected_z[0]) + projected->unprojected_z[0];
+			double end_z = total_y_progress * (projected->unprojected_z[2] - projected->unprojected_z[0]) + projected->unprojected_z[0];
 			int	len_x = x_max - cur_x;
-			float	start_x = cur_x;
-			float	z_dist = end_z - start_z;
+			double	start_x = cur_x;
+			double	z_dist = end_z - start_z;
 			int row_index = WIDTH * y_index;
 			if ((start_z < Z_NEAR && end_z < Z_NEAR) || (start_z > Z_FAR && end_z > Z_FAR))
 			{
-				cur_y_float = cur_y_float + 1.0f;
-				y_index =  (int)roundf(cur_y_float);
+				cur_y_double = cur_y_double + 1.0f;
+				y_index =  (int)roundf(cur_y_double);
 				continue ;
 			}
 			if (cur_x < x_max)
@@ -147,7 +147,7 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 					cur_x = 0;
 				while (cur_x <= x_max && cur_x < WIDTH)
 				{
-					float x_progress = fabs(cur_x - start_x) / len_x;
+					double x_progress = fabs(cur_x - start_x) / len_x;
 					cur_z = x_progress * z_dist + start_z;
 					int fin_index = cur_x + row_index;
 					if (cur_z > Z_NEAR && cur_z < depth[fin_index])
@@ -164,7 +164,7 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 					cur_x = WIDTH - 1;
 				while (cur_x >= x_max && cur_x >= 0)
 				{
-					float x_progress = (cur_x - start_x) / len_x;
+					double x_progress = (cur_x - start_x) / len_x;
 					cur_z = x_progress * z_dist + start_z;
 					int fin_index = cur_x + row_index;
 					if (cur_z > Z_NEAR && cur_z < depth[fin_index])
@@ -175,38 +175,38 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 					cur_x--;
 				}
 			}
-			cur_y_float = cur_y_float + 1.0f;
-			y_index =  (int)roundf(cur_y_float);
+			cur_y_double = cur_y_double + 1.0f;
+			y_index =  (int)roundf(cur_y_double);
 		}
 	}
-	float	m2 = slope_2d_x_per_y(p[0], p[2]);
-	float	m3 = slope_2d_x_per_y(p[1], p[2]);
+	double	m2 = slope_2d_x_per_y(p[0], p[2]);
+	double	m3 = slope_2d_x_per_y(p[1], p[2]);
 	int x_max;
-	cur_y_float = p[1].y;
-	if (cur_y_float < 0.0f)
+	cur_y_double = p[1].y;
+	if (cur_y_double < 0.0f)
 	{
-		cur_y_float = 0.0f;
+		cur_y_double = 0.0f;
 	}//todo: fix condtion for when objects leave the screen to the left and right
 	//if ((p[2].x >= 0 || p[1].x >= 0) && (p[2].x < WIDTH || p[1].x < WIDTH) && (p[2].y >= 0 || p[1].y >= 0) && (p[2].y < HEIGHT || p[1].y < HEIGHT) && (p[2].z > Z_NEAR || p[1].z > Z_NEAR) && (projected->unprojected_z[2] < Z_FAR || projected->unprojected_z[1] < Z_FAR))
 	{
-		int y_index = (int)roundf(cur_y_float);
-		while (cur_y_float <= p[2].y && y_index < HEIGHT)
+		int y_index = (int)roundf(cur_y_double);
+		while (cur_y_double <= p[2].y && y_index < HEIGHT)
 		{
-			float	y_progress =  (cur_y_float - p[1].y) / (p[2].y - p[1].y);
-			total_y_progress = (cur_y_float - p[0].y) / (p[2].y - p[0].y);
-			cur_x = (int)roundf((m3 * (cur_y_float - p[1].y) + p[1].x));
-			x_max =  (int)roundf(((m2 * (cur_y_float - p[2].y) + p[2].x)));
-			float cur_z;
-			float start_z = y_progress * (projected->unprojected_z[2] - projected->unprojected_z[1]) + projected->unprojected_z[1];
-			float end_z = y_progress * (projected->unprojected_z[2] - projected->unprojected_z[0]) + projected->unprojected_z[0];
+			double	y_progress =  (cur_y_double - p[1].y) / (p[2].y - p[1].y);
+			total_y_progress = (cur_y_double - p[0].y) / (p[2].y - p[0].y);
+			cur_x = (int)roundf((m3 * (cur_y_double - p[1].y) + p[1].x));
+			x_max =  (int)roundf(((m2 * (cur_y_double - p[2].y) + p[2].x)));
+			double cur_z;
+			double start_z = y_progress * (projected->unprojected_z[2] - projected->unprojected_z[1]) + projected->unprojected_z[1];
+			double end_z = y_progress * (projected->unprojected_z[2] - projected->unprojected_z[0]) + projected->unprojected_z[0];
 			int	len_x = x_max - cur_x;
-			float	start_x = cur_x;
-			float	z_dist = end_z - start_z;
+			double	start_x = cur_x;
+			double	z_dist = end_z - start_z;
 			int row_index = WIDTH * y_index;
 			if ((start_z < Z_NEAR && end_z < Z_NEAR) || (start_z > Z_FAR && end_z > Z_FAR))
 			{
-				cur_y_float += 1.0f;
-				y_index =  (int)roundf(cur_y_float);
+				cur_y_double += 1.0f;
+				y_index =  (int)roundf(cur_y_double);
 				continue ;
 			}
 			if (cur_x < x_max)
@@ -216,7 +216,7 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 				
 				while(cur_x <= x_max && cur_x < WIDTH)
 				{
-					float x_progress = (cur_x - start_x) / len_x;
+					double x_progress = (cur_x - start_x) / len_x;
 					cur_z = x_progress * z_dist + start_z;
 					int fin_index = cur_x + row_index;
 					if (cur_z > Z_NEAR && cur_z < depth[fin_index])
@@ -233,7 +233,7 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 					cur_x = WIDTH - 1;
 				while (cur_x >= x_max && cur_x >= 0)
 				{
-					float x_progress = (cur_x - start_x) / len_x;
+					double x_progress = (cur_x - start_x) / len_x;
 					cur_z = x_progress * z_dist + start_z;
 					int fin_index = cur_x + row_index;
 					if (cur_z > Z_NEAR && cur_z < depth[fin_index])
@@ -244,8 +244,8 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 					cur_x--;
 				}
 			}
-			cur_y_float += 1.0f;
-			y_index =  (int)roundf(cur_y_float);
+			cur_y_double += 1.0f;
+			y_index =  (int)roundf(cur_y_double);
 		}
 	}
 }

@@ -3,7 +3,7 @@
 
 int main(void)
 {
-	// //multiplication (float * float)
-	ff_test_loop(fixed_test_multiplication, "fixed multiplication (float * float)", 0);
+	// //multiplication (double * double)
+	ff_test_loop(fixed_test_multiplication, "fixed multiplication (double * double)", 0);
 	return (0);
 }

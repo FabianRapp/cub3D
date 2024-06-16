@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 08:36:34 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/26 03:09:26 by frapp            ###   ########.fr       */
+/*   Updated: 2024/06/16 06:45:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,10 @@ void	obj_parser_count(t_obj_parser *vars)
 }
 
 
-float	str_to_float(char *str)
+double	str_to_double(char *str)
 {
 	int		integer;
-	float	fraction;
+	double	fraction;
 	int		sign;
 
 	sign = 1;
@@ -95,10 +95,10 @@ float	str_to_float(char *str)
 	if (*str == '.')
 		str++;
 	else
-		return ((float)integer * sign);
+		return ((double)integer * sign);
 	if (!ft_isdigit(*str))
-		return ((float)integer * sign);
-	fraction = (float)ft_atoi(str);
+		return ((double)integer * sign);
+	fraction = (double)ft_atoi(str);
 	if (ft_strchr(str, '\n'))
 		fraction /= ft_powint(10, ft_strlen(str) - 1);
 	else
@@ -124,9 +124,9 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 		if (!ft_strncmp(vars->line, "v ", 2))
 		{
 			split = ft_split(vars->line, ' ');
-			vars->vertexes[vertex_i].x = str_to_float(split[1]);
-			vars->vertexes[vertex_i].y = str_to_float(split[2]);
-			vars->vertexes[vertex_i].z = str_to_float(split[3]);
+			vars->vertexes[vertex_i].x = str_to_double(split[1]);
+			vars->vertexes[vertex_i].y = str_to_double(split[2]);
+			vars->vertexes[vertex_i].z = str_to_double(split[3]);
 			vars->vertexes[vertex_i].w = 1;
 			ft_free_2darr(split);
 			vertex_i++;
@@ -134,9 +134,9 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 		else if (!ft_strncmp(vars->line, "vn ", 3))
 		{
 			split = ft_split(vars->line, ' ');
-			vars->normals[normal_i].x = str_to_float(split[1]);
-			vars->normals[normal_i].y = str_to_float(split[2]);
-			vars->normals[normal_i].z = str_to_float(split[3]);
+			vars->normals[normal_i].x = str_to_double(split[1]);
+			vars->normals[normal_i].y = str_to_double(split[2]);
+			vars->normals[normal_i].z = str_to_double(split[3]);
 			vars->normals[normal_i].w = 1;
 			ft_free_2darr(split);
 			normal_i++;
@@ -144,11 +144,11 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 		else if (!ft_strncmp(vars->line, "vt ", 3))
 		{
 			split = ft_split(vars->line, ' ');
-			vars->texture_cords[texture_cords_i].u = str_to_float(split[1]);
-			vars->texture_cords[texture_cords_i].v = str_to_float(split[2]);
+			vars->texture_cords[texture_cords_i].u = str_to_double(split[1]);
+			vars->texture_cords[texture_cords_i].v = str_to_double(split[2]);
 			vars->texture_cords[texture_cords_i].w = 1;
 			if (split[3])
-				vars->texture_cords[texture_cords_i].w = str_to_float(split[3]);
+				vars->texture_cords[texture_cords_i].w = str_to_double(split[3]);
 			ft_free_2darr(split);
 			texture_cords_i++;
 		}
@@ -414,14 +414,14 @@ int	mtl_len(char *file_path)
 	return (len);
 }
 
-void	fill_3_floats(char *str, float arr[3])
+void	fill_3_doubles(char *str, double arr[3])
 {
 	int	i;
 
 	i = 0;
 	while (i < 3)
 	{
-		arr[i] = str_to_float(str);
+		arr[i] = str_to_double(str);
 		while (ft_isdigit(*str))
 		{
 			str++;
@@ -473,19 +473,19 @@ t_mtl	*parse_mtl(char *dir, char *file_name)
 		while (line && ft_strncmp(line, "newmtl ", ft_strlen("newmtl ")))
 		{
 			if (!ft_strncmp(line, "Ns ", ft_strlen("Ns ")))
-				arr[i].ns = str_to_float(line + ft_strlen("Ns "));
+				arr[i].ns = str_to_double(line + ft_strlen("Ns "));
 			else if (!ft_strncmp(line, "Ni ", ft_strlen("Ni ")))
-				arr[i].ni = str_to_float(line + ft_strlen("Ni "));
+				arr[i].ni = str_to_double(line + ft_strlen("Ni "));
 			else if (!ft_strncmp(line, "d ", ft_strlen("d ")))
-				arr[i].d = str_to_float(line + ft_strlen("d "));
+				arr[i].d = str_to_double(line + ft_strlen("d "));
 			else if (!ft_strncmp(line, "illum ", ft_strlen("illum ")))
-				arr[i].illum = str_to_float(line + ft_strlen("illum "));
+				arr[i].illum = str_to_double(line + ft_strlen("illum "));
 			else if (!ft_strncmp(line, "Ka ", ft_strlen("Ka ")))
-				fill_3_floats(line + ft_strlen("Ka "), arr[i].ka);
+				fill_3_doubles(line + ft_strlen("Ka "), arr[i].ka);
 			else if (!ft_strncmp(line, "Ks ", ft_strlen("Ks ")))
-				fill_3_floats(line + ft_strlen("Ks "), arr[i].ks);
+				fill_3_doubles(line + ft_strlen("Ks "), arr[i].ks);
 			else if (!ft_strncmp(line, "Ke ", ft_strlen("Ke ")))
-				fill_3_floats(line + ft_strlen("Ke "), arr[i].ke);
+				fill_3_doubles(line + ft_strlen("Ke "), arr[i].ke);
 			else if (!ft_strncmp(line, "map_Kd ", ft_strlen("map_Kd ")))
 				arr[i].map_kd = ft_strtrim(line + ft_strlen("map_Kd "), "\n");
 			free(line);
@@ -583,7 +583,7 @@ t_mesh	load_obj_file(char *dir, char *path, t_main *main_data)
 	mesh.count = vars.tris_count;
 	t_vec3	momentum = {0.5, 0.3, 0.0};
 	mesh.momentum = momentum;
-	float rotation_mat[4][4] = {
+	double rotation_mat[4][4] = {
 		{1.0f, 0.0f, 0.0f, 0.0f},
 		{0.0f, 1.0f, 0.0f, 0.0f},
 		{0.0f, 0.0f, 1.0f, 0.0f},

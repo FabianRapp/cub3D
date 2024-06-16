@@ -3,7 +3,7 @@
 
 int main(void)
 {
-	//devision (float / int)
-	ff_test_loop(float_test_devision_fi, "float devision (float / int)", 0);
+	//devision (double / int)
+	ff_test_loop(double_test_devision_fi, "double devision (double / int)", 0);
 	return (0);
 }

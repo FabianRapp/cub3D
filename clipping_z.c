@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clipping_z.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 15:27:09 by frapp             #+#    #+#             */
-/*   Updated: 2024/05/08 23:42:07 by frapp            ###   ########.fr       */
+/*   Updated: 2024/06/16 06:45:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ t_vec3	line_zplane_intersection(t_vec3 line_start, t_vec3 line_end, bool z_near)
 		plane_p = plane_far;
 	t_vec3	intersection;
 	t_vec3	line_direct;
-	float	d;
-	float	dot_directline_nplane;
+	double	d;
+	double	dot_directline_nplane;
 
 	line_direct = v3_sub(line_end, line_start);
 	unit_vec3(&line_direct);
@@ -60,6 +60,10 @@ t_vec3	line_zplane_intersection(t_vec3 line_start, t_vec3 line_end, bool z_near)
 	}
 	d = (dot_prod_unit(plane_p, plane_n) - dot_prod_unit(line_start, plane_n)) / dot_directline_nplane;
 	intersection = v3_add(v3_scale(line_direct, d), line_start);
+	if (z_near)
+		intersection.z = Z_NEAR + Z_NEAR * 0.05;
+	else
+		intersection.z = Z_FAR - Z_FAR * 0.01;
 	intersection.u = d * (line_end.u - line_start.u);
 	intersection.v = d * (line_end.v - line_start.v);
 	return (intersection);
