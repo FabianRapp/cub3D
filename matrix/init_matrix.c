@@ -237,3 +237,4 @@ void	matrix_look_at(double point_at_mat[4][4], double look_at_mat[4][4])
 	// look_at_mat[3][2] = -(point_at_mat[2][0] * point_at_mat[3][0] + point_at_mat[2][1] * point_at_mat[3][1] + point_at_mat[2][2] * point_at_mat[3][2]);
 	look_at_mat[3][3] = 1.0;
 }
+

@@ -583,7 +583,6 @@ t_mesh	load_obj_file(char *dir, char *path, t_main *main_data)
 	mesh.triangles = vars.tris;
 	mesh.count = vars.tris_count;
 	mesh.main = main_data;
-	mesh.d_time = &main_data->mlx->delta_time;
 	mesh.img = main_data->img;
 	free(vars.vertexes);
 	free(vars.normals);

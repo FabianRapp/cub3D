@@ -325,19 +325,20 @@ void	mesh_physics_handler(t_mesh *mesh)
 {
 }
 
-//Model to World Space, then to Camera and then Projection
+//Model to (World Space skipped), then to Camera and then Projection
 void	draw_mesh(t_mesh *mesh)
 {
 	int			i;
-	t_triangle		model;
-	t_triangle		viewed;
+	t_triangle	model;
+	t_triangle	viewed;
+	double		mat_model_world_space[4][4];
 
 	mesh_physics_handler(mesh);
 	fill_model_matrix(&mesh->model_space_data);
 
-	t_vec3	vec_target = v3_add(mesh->main->camera, mesh->main->look_direct);
+	t_vec3	vec_target = v3_add(mesh->world_data->camera, mesh->world_data->look_direct);
 	double	camera[4][4];
-	matrix_point_at(&mesh->main->camera, &vec_target, &mesh->main->up, camera);
+	matrix_point_at(&mesh->world_data->camera, &vec_target, &mesh->world_data->up, camera);
 	//print_vec3(mesh->main->up, "up");
 	double	mat_view[4][4];
 	matrix_look_at(camera, mat_view);
@@ -345,7 +346,7 @@ void	draw_mesh(t_mesh *mesh)
 
 	t_light	day_light;
 
-	day_light = init_day_light(*mesh->d_time);
+	day_light = init_day_light(*mesh->physics_data.delta_time);
 
 
 	t_light			ambient_light2;
@@ -366,15 +367,16 @@ void	draw_mesh(t_mesh *mesh)
 		matrix_mult_vec3_4x4(mesh->triangles[i].p + 1, mesh->model_space_data.model_matrix, model.p + 1);
 		matrix_mult_vec3_4x4(mesh->triangles[i].p + 2, mesh->model_space_data.model_matrix, model.p + 2);
 
+		// World Space (but not yet converted)
 		// check if triangle is facing away from the view direction
 		model.normal = cross_product(v3_sub(model.p[1], model.p[0]), v3_sub(model.p[2], model.p[0]));
 		unit_vec3(&model.normal);
-		if (dot_prod_unit(model.normal, v3_sub(model.p[0], mesh->main->camera)) >= 0)
+		if (dot_prod_unit(model.normal, v3_sub(model.p[0], mesh->world_data->camera)) >= 0)
 		{
 			i++;
 			continue ;
 		}
-		// World Space
+
 		t_light_argb_stren	color_scalars = {0};
 
 		double light_dp = dot_prod_unit(model.normal, day_light.direct);

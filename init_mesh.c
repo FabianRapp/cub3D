@@ -102,7 +102,6 @@ void	fill_skybox_mesh(t_mesh *mesh, t_main *main_data)
 	mesh->triangles = ft_memdup(&init_triangles, sizeof(init_triangles));
 	mesh->count = sizeof(init_triangles) / sizeof(t_triangle);
 	mesh->main = main_data;
-	mesh->d_time = &main_data->mlx->delta_time;
 	mesh->img = main_data->img;
 	mesh->obj_file = false;
 	for (int i = 0; i < mesh->count; i++)

@@ -15,8 +15,8 @@
 
 void	cursor_movement_per_frame(t_main *main_data)
 {
-	main_data->look_direct = v3_add(main_data->look_direct, get_direction(main_data->pitch, main_data->yaw, main_data->roll));
-	unit_vec3(&main_data->look_direct);
+	main_data->world_data.look_direct = v3_add(main_data->world_data.look_direct, get_direction(main_data->pitch, main_data->yaw, main_data->roll));
+	unit_vec3(&main_data->world_data.look_direct);
 	if (main_data->settings.cursor_lock)
 	{
 		mlx_set_mouse_pos(main_data->mlx, WIDTH / 2, HEIGHT / 2);
@@ -32,36 +32,36 @@ void	handle_movement_per_frame(t_main *main_data)
 	controls = main_data->controls;
 	if (controls.state.up)
 	{
-		movement.x += main_data->look_direct.x * main_data->mlx->delta_time * controls.movement_speed_straight;
-		movement.y += main_data->look_direct.y * main_data->mlx->delta_time * controls.movement_speed_straight;
-		movement.z += main_data->look_direct.z * main_data->mlx->delta_time * controls.movement_speed_straight;
+		movement.x += main_data->world_data.look_direct.x * main_data->mlx->delta_time * controls.movement_speed_straight;
+		movement.y += main_data->world_data.look_direct.y * main_data->mlx->delta_time * controls.movement_speed_straight;
+		movement.z += main_data->world_data.look_direct.z * main_data->mlx->delta_time * controls.movement_speed_straight;
 	}
 	if (controls.state.left)
 	{
-		t_vec3 left = cross_product(main_data->look_direct, main_data->up);
+		t_vec3 left = cross_product(main_data->world_data.look_direct, main_data->world_data.up);
 		unit_vec3(&left);
-		main_data->camera.x += main_data->mlx->delta_time * controls.movement_speed_left * left.x;
-		main_data->camera.z += main_data->mlx->delta_time * controls.movement_speed_left * left.z;
+		main_data->world_data.camera.x += main_data->mlx->delta_time * controls.movement_speed_left * left.x;
+		main_data->world_data.camera.z += main_data->mlx->delta_time * controls.movement_speed_left * left.z;
 	}
 	if (controls.state.right)
 	{
-		t_vec3 right = cross_product(main_data->up, main_data->look_direct);
+		t_vec3 right = cross_product(main_data->world_data.up, main_data->world_data.look_direct);
 		unit_vec3(&right);
-		main_data->camera.x += main_data->mlx->delta_time * controls.movement_speed_right * right.x;
-		main_data->camera.z += main_data->mlx->delta_time * controls.movement_speed_right * right.z;
+		main_data->world_data.camera.x += main_data->mlx->delta_time * controls.movement_speed_right * right.x;
+		main_data->world_data.camera.z += main_data->mlx->delta_time * controls.movement_speed_right * right.z;
 	}
 	if (controls.state.back)
 	{
-		movement.x -= main_data->look_direct.x * main_data->mlx->delta_time * controls.movement_speed_back;
-		movement.y -= main_data->look_direct.y * main_data->mlx->delta_time * controls.movement_speed_back;
-		movement.z -= main_data->look_direct.z * main_data->mlx->delta_time * controls.movement_speed_back;
+		movement.x -= main_data->world_data.look_direct.x * main_data->mlx->delta_time * controls.movement_speed_back;
+		movement.y -= main_data->world_data.look_direct.y * main_data->mlx->delta_time * controls.movement_speed_back;
+		movement.z -= main_data->world_data.look_direct.z * main_data->mlx->delta_time * controls.movement_speed_back;
 	}
 	if (controls.state.jump)
 		movement.y -= controls.jump_height * main_data->mlx->delta_time;
 	if (controls.state.negative_jump)
 		movement.y += controls.jump_height * main_data->mlx->delta_time;
 	if (!zero_f(movement.x) || !zero_f(movement.y) || !zero_f(movement.z))
-		add_vec3(&main_data->camera, &movement);
+		add_vec3(&main_data->world_data.camera, &movement);
 }
 
 // Print the window width and height.
@@ -75,7 +75,6 @@ void	ft_hook(void* param)
 	if (main_data->settings.paused == true)
 		return ;
 	handle_movement_per_frame(main_data);
-	ident_mat_4x4(main_data->world_mat);
 	reset_pixel_buffer(main_data->img->pixels, main_data->depth);
 	i = 0;
 	while (i < main_data->mesh_count)
