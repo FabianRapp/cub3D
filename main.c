@@ -52,6 +52,69 @@ void	handle_movement_per_frame(t_main *main_data)
 	if (!zero_f(movement.x) || !zero_f(movement.y) || !zero_f(movement.z))
 		add_vec3(&main_data->camera, &movement);
 }
+static inline void	reset_depth(double *depth)
+{
+	static const double	z_far = (double)Z_FAR;
+	static const int32_t	pixel_count = WIDTH * HEIGHT;
+
+	asm volatile(
+		//"vmovddup %[val], %%ymm0\n\t"
+		"vbroadcastsd %[val], %%ymm1\n\t"
+		"mov %[cnt], %%eax\n\t"
+		"z_buffer_reset_loop:\n\t"
+		"vmovapd %%ymm1, 0x00(%[dep])\n\t"
+		"vmovapd %%ymm1, 0x20(%[dep])\n\t"
+		"add $64, %[dep]\n\t"
+		"sub $8, %%eax\n\t"
+		//"vprefetch1  \n\t"
+		"jnz z_buffer_reset_loop\n\t"
+		: [dep] "+r" (depth)
+		: [val] "m" (z_far), [cnt] "r" (pixel_count)
+		: "eax", "ymm0", "memory"
+	);
+}
+
+//% of line by line profile
+static inline void	reset_pixel_buffer_main(uint8_t *pixels, double *depth)
+{
+	uint64_t	*buffer = (uint64_t *)pixels;
+	const uint64_t	black = (((uint64_t)BLACK<<32) | BLACK);
+	size_t	i;
+
+	assume((uintptr_t)depth % 128 == 0);
+	assume((WIDTH * HEIGHT) % 32 == 0);
+	i = 0;
+	while (((uintptr_t)buffer + i) % 128)
+		buffer[i++] = black;
+	while (i < ((WIDTH * HEIGHT) / 2 - 16))
+	{
+		buffer[i] = black;//18.3 % runtime
+		buffer[i + 1] = black;
+		buffer[i + 2] = black;
+		buffer[i + 3] = black;
+		buffer[i + 4] = black;
+		buffer[i + 5] = black;
+		buffer[i + 6] = black;
+		buffer[i + 7] = black;
+		i += 8;
+	}
+	while (i < (WIDTH * HEIGHT / 2))
+		buffer[i++] = black;
+	i = 0;
+	reset_depth(depth);
+	//while (i < (WIDTH * HEIGHT))//2.5%runtime
+	//{
+	//	depth[i] = Z_FAR; //19.0% runtime
+	//	depth[i + 1] = Z_FAR;
+	//	depth[i + 2] = Z_FAR;
+	//	depth[i + 3] = Z_FAR;
+	//	depth[i + 4] = Z_FAR;
+	//	depth[i + 5] = Z_FAR;
+	//	depth[i + 6] = Z_FAR;
+	//	depth[i + 7] = Z_FAR;
+	//	i += 8;
+	//}
+}
 
 // Print the window width and height.
 void	ft_hook(void* param)
@@ -65,7 +128,7 @@ void	ft_hook(void* param)
 		return ;
 	handle_movement_per_frame(main_data);
 	ident_mat_4x4(main_data->world_mat);
-	reset_pixel_buffer(main_data->img->pixels, main_data->depth);
+	reset_pixel_buffer_main(main_data->img->pixels, main_data->depth);
 	i = 0;
 	while (i < main_data->mesh_count)
 	{

@@ -1,4 +1,4 @@
-CC= clang
+CC= cc
 FLAGS_SPEED = -fsanitize=address -g 
 # -Ofast -march=native -flto
 
@@ -71,7 +71,13 @@ all: mlx $(OBJECTS)
 	@$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) $(INCLUDES) -o $(NAME) $(MLX_FLAGS)
 	@echo "$(GREEN)$(NAME) compiled!$(CLEAR)"
 
-obs:
+fast: fclean
+	make CFLAGS="-march=native -Ofast -DNDEBUG=1 -mavx"
+
+prof: fclean
+	make CFLAGS="-march=native -Ofast -mavx2 -DNDEBUG=1 -g -pg" CC=gcc
+
+bs:
 	echo $(OBJECTS)
 
 $(OBJ_DIR)%.o: %.c mlx

@@ -113,8 +113,8 @@ t_fixed		fixed_dev(t_fixed a, t_fixed b);
 t_fixed		fixed_mult(t_fixed a, t_fixed b);
 t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 
-#define WIDTH 2000
-#define HEIGHT 1500
+#define WIDTH (256 * 10)
+#define HEIGHT (256 * 8)
 
 #define ASPECT_RATIO ((double)HEIGHT) / ((double)WIDTH)
 
@@ -257,6 +257,7 @@ typedef struct s_settings
 
 typedef struct s_main
 {
+    _Alignas(128) double depth[WIDTH * HEIGHT];
 	t_vec3		camera;
 	t_vec3		look_direct;
 	t_vec3		direct[3];
@@ -271,8 +272,6 @@ typedef struct s_main
 	t_mesh		*meshes;
 	int			mesh_count;
 	mlx_image_t	*img;
-	double		depth[WIDTH * HEIGHT];//somehow reduce the sice of this to
-    //save allot of stack recources and enable higher res
 	t_controls	controls;
 	t_settings	settings;
 	t_menu		menu;

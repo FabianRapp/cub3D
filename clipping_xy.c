@@ -11,21 +11,20 @@
 /* ************************************************************************** */
 
 #include "includes/cub3D.h"
-#include "MLX42/include/MLX42/MLX42.h"
 
 typedef union u_clipping_para
 {
-	int16_t	all;
+	uint8_t	all;
 	struct
-	{
-		int8_t	bot		:2;
-		int8_t	top		:2;
-		int8_t	left	:2;
-		int8_t	right	:2;
+	{//dont change order
+		unsigned	left	:1;
+		unsigned	top		:1;
+		unsigned	right	:1;
+		unsigned	bot		:1;
 	}		split;
 }	t_clipping_para;
 
-int8_t	get_free_index(t_index_usage *const usage)
+static int8_t	get_free_index(t_index_usage *const usage)
 {
 	int8_t		i;
 	t_index_usage	local;
@@ -43,7 +42,7 @@ int8_t	get_free_index(t_index_usage *const usage)
 	return (-1);
 }
 
-int8_t	get_unset_last_used_index(t_index_usage *const usage)
+static int8_t	get_unset_last_used_index(t_index_usage *const usage)
 {
 	int8_t			i;
 	t_index_usage	local;
@@ -62,7 +61,7 @@ int8_t	get_unset_last_used_index(t_index_usage *const usage)
 	return (-1);
 }
 
-int8_t	get_unset_used_index(t_index_usage *usage)
+static int8_t	get_unset_used_index(t_index_usage *usage)
 {
 	int8_t		i;
 
@@ -79,23 +78,12 @@ int8_t	get_unset_used_index(t_index_usage *usage)
 	return (-1);
 }
 
-void	set_index_usage(t_index_usage *usage, int8_t index, int8_t state)
+static void	set_index_usage(t_index_usage *usage, int8_t index, int8_t state)
 {
 	if (state)
 		*usage |= (1ULL << index);
 	else
-	{
 		*usage &= ~(1ULL << index);
-	}
-}
-
-double	clamplf(double val, double min, double max)
-{
-	if (val < min)
-		return (min);
-	if (val > max)
-		return (max);
-	return (val);
 }
 
 // call order:
@@ -104,7 +92,7 @@ double	clamplf(double val, double min, double max)
 //right
 //bot
 // todo: uv values need same bounds security
-void fast_line_intersect(const t_clipping_para para, t_vec3 p1, t_vec3 *p2)
+static void fast_line_intersect(const t_clipping_para para, t_vec3 p1, t_vec3 *p2)
 {
 	double progress;
 	double dist_x = p2->x - p1.x;
@@ -113,50 +101,50 @@ void fast_line_intersect(const t_clipping_para para, t_vec3 p1, t_vec3 *p2)
 	if (para.split.bot)
 	{
 		progress = (HEIGHT - 1.0 - p1.y) / dist_y;
-		p2->y = HEIGHT - 1.1;
+		p2->y = HEIGHT - 1.0;
 		p2->x = p1.x + dist_x * progress;
-		p2->x = clamplf(p2->x, 0.0f, WIDTH - 1.1);
+		if (p2->x < 0.0f)
+			p2->x = 0.0f;
+		else if (p2->x > WIDTH - 1.0)
+			p2->x = WIDTH - 1.0;
 	}
 	else if (para.split.right)
 	{
 		progress = (WIDTH - 1.0f - p1.x) / dist_x;
-		p2->x = WIDTH - 4.0f;
+		p2->x = WIDTH - 1.0f;
 		p2->y = p1.y + dist_y * progress;
-		p2->y = clamplf(p2->y, 0, HEIGHT - 1.1);
+		if (p2->y < 0.0f)
+			p2->y = 0.0f;
 	}
 	else if (para.split.top)
 	{
 		progress = -p1.y / dist_y;
-		p2->y = 0;
+		p2->y = 0.0;
 		p2->x = p1.x + dist_x * progress;
-		p2->x = clamplf(p2->x, 0.0f, WIDTH - 1.1);
+		if (p2->x < 0.0)
+			p2->x = 0.0;
 	}
 	else if (para.split.left)
 	{
 		progress = -p1.x / dist_x;
-		p2->x = 3;
+		p2->x = 0.0;
 		p2->y = p1.y + dist_y * progress;
-		p2->y = clamplf(p2->y, 0, HEIGHT - 1.1);
 	}
 	else
 		assume(0);
-	//p2->x = p1.x + dist_x * progress;
-	//p2->y = p1.y + dist_y * progress;
-
-	//if (p2->x < 0)
-	//	p2->x = 0;
-	//else if (p2->x >= WIDTH)
-	//	p2->x = WIDTH - 1;
-	//if (p2->y < 0)
-	//	p2->y = 0;
-	//else if (p2->y >= HEIGHT)
-	//	p2->y = HEIGHT - 1;
-
 	p2->u = p1.u + (p2->u - p1.u) * progress;
+	if (p2->u < 0.0)
+		p2->u = 0.0;
+	else if (p2->u > 1.0)
+		p2->u = 1.0;
 	p2->v = p1.v + (p2->v - p1.v) * progress;
+	if (p2->v < 0.0)
+		p2->v = 0.0;
+	else if (p2->v > 1.0)
+		p2->v = 1.0;
 }
 
-int8_t	count_inside_points(t_triangle *clipped, int8_t cur_index, t_clipping_para para, int8_t inside_index[3])
+static int8_t	count_inside_points(t_triangle *clipped, int8_t cur_index, const t_clipping_para para, int8_t inside_index[3])
 {
 	int8_t				inside_points;
 	int					i;
@@ -165,10 +153,6 @@ int8_t	count_inside_points(t_triangle *clipped, int8_t cur_index, t_clipping_par
 	i = 0;
 	while (i < 3)
 	{
-		if (clipped[cur_index].p[i].x <= 0.0f && clipped[cur_index].p[i].x >= -0.0001f)
-			clipped[cur_index].p[i].x = 0.0f;
-		if (clipped[cur_index].p[i].y <= 0.0f && clipped[cur_index].p[i].y >= -0.0001f)
-			clipped[cur_index].p[i].y = 0.0f;
 		if (para.split.left && clipped[cur_index].p[i].x >= 0.0f)
 			inside_index[inside_points++] = i;
 		else if (para.split.top && clipped[cur_index].p[i].y >= 0.0f)
@@ -183,7 +167,7 @@ int8_t	count_inside_points(t_triangle *clipped, int8_t cur_index, t_clipping_par
 }
 
 // returns the amount of additional/removed triangles
-int	clipping_xy(t_triangle *clipped, t_index_usage *used_indexes, const t_clipping_para para, int8_t cur_index)
+static int	clipping_xy(t_triangle *clipped, t_index_usage *used_indexes, const t_clipping_para para, int8_t cur_index)
 {
 	int8_t				inside_points;
 	int8_t				inside_index[3];
@@ -203,7 +187,6 @@ int	clipping_xy(t_triangle *clipped, t_index_usage *used_indexes, const t_clippi
 		int8_t	outside_index2 = (inside_index[0] ^ 3) & 2;
 		fast_line_intersect(para, clipped[cur_index].p[inside_index[0]], clipped[cur_index].p + outside_index1);
 		fast_line_intersect(para, clipped[cur_index].p[inside_index[0]], clipped[cur_index].p + outside_index2);
-		clipped[cur_index].col = RED;
 		return (0);;
 	}
 	//if inside_points == 2
@@ -218,12 +201,10 @@ int	clipping_xy(t_triangle *clipped, t_index_usage *used_indexes, const t_clippi
 	fast_line_intersect(para, clipped[second_index].p[inside_index[1]], (clipped[second_index].p) + outside_index);
 	t_vec3	output_fn = clipped[second_index].p[outside_index];
 	clipped[second_index].p[inside_index[0]] = clipped[cur_index].p[outside_index];
-	clipped[second_index].col = DARK_GREY;
-	clipped[cur_index].col = PINK;//this triangle can be buggy
 	return (1);
 }
 
-int8_t	fix_clipped_arr(t_triangle *clipped, t_index_usage used_indexes)
+static int8_t	fix_clipped_arr(t_triangle *clipped, t_index_usage used_indexes)
 {
 	int8_t	first_empty_index;
 	int8_t	last_used_index;
@@ -241,7 +222,6 @@ int8_t	fix_clipped_arr(t_triangle *clipped, t_index_usage used_indexes)
 		set_index_usage(&used_indexes, first_empty_index, true);
 		first_empty_index = get_free_index(&used_indexes);
 		last_used_index = get_unset_last_used_index(&used_indexes);
-		//printf("first_empty_index: %d\nlast_used_index: %d\n", first_empty_index, last_used_index);
 		assume(last_used_index != -1);
 	}
 	set_index_usage(&used_indexes, last_used_index, true);
@@ -249,7 +229,7 @@ int8_t	fix_clipped_arr(t_triangle *clipped, t_index_usage used_indexes)
 	return (first_empty_index);
 }
 
-int	clipp_loop(int count, t_triangle *clipped, t_clipping_para para, t_index_usage *used_indexes_old, t_index_usage *used_indexes)
+static inline int	clipp_loop(int count, t_triangle *clipped, t_clipping_para para, t_index_usage *used_indexes_old, t_index_usage *used_indexes)
 {
 	int8_t	cur_index;
 
@@ -268,36 +248,21 @@ int	clipp_loop(int count, t_triangle *clipped, t_clipping_para para, t_index_usa
 // returns the new count
 int8_t	call_clipping_xy(t_triangle *clipped)
 {
-	//int8_t			clipping_flags[2];
 	t_clipping_para	para;
 	t_index_usage	used_indexes;
 	t_index_usage	used_indexes_old;
 	int				count = 1;
 
-	para.all = 0;
-	para.split.left = 1;
 	used_indexes = 1ULL;
-	count += clipping_xy(clipped, &used_indexes, para, 0);
-	if (!count)
-		return(0);
-	para.all = 0;
-	para.split.top = 1;
-	used_indexes_old = used_indexes;
-	count = clipp_loop(count, clipped, para, &used_indexes_old, &used_indexes);
-	if (!count)
-		return(0);
-	para.all = 0;
-	para.split.right = 1;
-	used_indexes_old = used_indexes;
-	count = clipp_loop(count, clipped, para, &used_indexes_old, &used_indexes);
-	if (!count)
-		return(0);
-	para.all = 0;
-	para.split.bot = 1;
-	used_indexes_old = used_indexes;
-	count = clipp_loop(count, clipped, para, &used_indexes_old, &used_indexes);
-	if (!count)
-		return(0);
+	para.all = 1;
+	for (int i = 0; i < 4; i++)
+	{
+		used_indexes_old = used_indexes;
+		count = clipp_loop(count, clipped, para, &used_indexes_old, &used_indexes);
+		if (!count)
+			return(0);
+		para.all <<= 1;
+	}
 	assume (count == fix_clipped_arr(clipped, used_indexes));
 	return (count);
 }

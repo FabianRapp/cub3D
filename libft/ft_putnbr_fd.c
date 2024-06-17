@@ -29,11 +29,15 @@ static void	fill_div(int *dividend)
 static int	start(int n, int fd)
 {
 	int		pow;
+	int		read_val;
 
+	read_val = 0;
 	if (n < 0)
-		write(fd, "-", 1);
+		read_val = write(fd, "-", 1);
 	else if (n == 0)
-		write(fd, "0", 1);
+		read_val = write(fd, "0", 1);
+	if (read_val < 0)
+		return (-1);
 	pow = 0;
 	while (n)
 	{
@@ -64,8 +68,8 @@ void	ft_putnbr_fd(int n, int fd)
 			temp = (n / dividend[pow - 1]);
 			*digit = '0' - temp;
 		}
-		n -= (temp * dividend[pow - 1]);
-		pow--;
-		write(fd, digit, 1);
+		n -= (temp * dividend[pow-- - 1]);
+		if (write(fd, digit, 1) == -1)
+			return ;
 	}
 }

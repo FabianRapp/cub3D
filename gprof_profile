@@ -1,0 +1,706 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 52.16     12.44    12.44  1491136     0.01     0.01  fill_triangle_color
+ 39.04     21.75     9.31     1548     6.01     6.01  reset_pixel_buffer
+  2.60     22.37     0.62     3094     0.20     4.68  draw_mesh
+  1.97     22.84     0.47  2647646     0.00     0.00  call_clipping_xy
+  1.01     23.08     0.24  9993620     0.00     0.00  out_of_bound_triangle
+  0.75     23.26     0.18 46509903     0.00     0.00  matrix_mult_vec3_4x4
+  0.46     23.37     0.11  2862035     0.00     0.00  rasterize
+  0.34     23.45     0.08 29980860     0.00     0.00  zero_vec3
+  0.29     23.52     0.07 10622918     0.00     0.00  ft_memcpy
+  0.25     23.58     0.06 30059164     0.00     0.00  v3_sub
+  0.25     23.64     0.06 10092071     0.00     0.00  unit_vec3
+  0.21     23.69     0.05 13075097     0.00     0.00  dot_prod_unit
+  0.17     23.73     0.04  3297905     0.00     0.00  clipping_z_near
+  0.13     23.76     0.03 19991857     0.00     0.00  add_vec3
+  0.08     23.78     0.02  9997391     0.00     0.00  cross_product
+  0.08     23.80     0.02  7942938     0.00     0.00  div_vec3
+  0.08     23.82     0.02       22     0.91     0.91  handle_open_menu
+  0.04     23.83     0.01   643832     0.00     0.00  append_buffer
+  0.04     23.84     0.01        3     3.33     3.33  init_entry_widget
+  0.04     23.85     0.01                             mlx_render_images
+  0.00     23.85     0.00 16832883     0.00     0.00  zero_f
+  0.00     23.85     0.00  2982272     0.00     0.00  slope_2d_x_per_y
+  0.00     23.85     0.00  1491136     0.00     0.00  sort_vertexes_for_y
+  0.00     23.85     0.00   224163     0.00     0.00  ft_isdigit
+  0.00     23.85     0.00   128459     0.00     0.00  ft_calloc
+  0.00     23.85     0.00    90654     0.00     0.00  ft_strchr
+  0.00     23.85     0.00    88490     0.00     0.00  v3_add
+  0.00     23.85     0.00    83225     0.00     0.00  ft_strlen
+  0.00     23.85     0.00    75210     0.00     0.00  v3_scale
+  0.00     23.85     0.00    73064     0.00     0.00  ft_strncmp
+  0.00     23.85     0.00    72116     0.00     0.00  line_zplane_intersection
+  0.00     23.85     0.00    48942     0.00     0.00  ft_free_2darr
+  0.00     23.85     0.00    48942     0.00     0.00  ft_split
+  0.00     23.85     0.00    41712     0.00     0.00  ft_atoi
+  0.00     23.85     0.00    30572     0.00     0.00  cleanup
+  0.00     23.85     0.00    30572     0.00     0.00  get_current_file
+  0.00     23.85     0.00    30572     0.00     0.00  get_next_line
+  0.00     23.85     0.00    30572     0.00     0.00  reading
+  0.00     23.85     0.00    30560     0.00     0.00  my_str_cpy
+  0.00     23.85     0.00    19380     0.00     0.00  parse_face_normals
+  0.00     23.85     0.00    19380     0.00     0.00  parse_face_vertex
+  0.00     23.85     0.00    13280     0.00     0.00  cursor_hook
+  0.00     23.85     0.00    13280     0.00     0.00  get_direction
+  0.00     23.85     0.00    11166     0.00     0.00  ft_powint
+  0.00     23.85     0.00    11166     0.00     0.00  str_to_double
+  0.00     23.85     0.00     6465     0.00     0.00  ft_bzero
+  0.00     23.85     0.00     6460     0.00     0.00  ft_put_pixel_fin_index
+  0.00     23.85     0.00     4641     0.00     0.00  ident_mat_4x4
+  0.00     23.85     0.00     3722     0.00     0.00  multiply_vec3
+  0.00     23.85     0.00     3094     0.00     0.00  init_day_light
+  0.00     23.85     0.00     3094     0.00     0.00  matrix_look_at
+  0.00     23.85     0.00     3094     0.00     0.00  matrix_point_at
+  0.00     23.85     0.00     1570     0.00     0.00  display_fps_hook
+  0.00     23.85     0.00     1570     0.00    15.17  ft_hook
+  0.00     23.85     0.00     1570     0.00     0.01  menu_handler
+  0.00     23.85     0.00     1547     0.00     0.00  handle_movement_per_frame
+  0.00     23.85     0.00      291     0.00     0.00  key_hook
+  0.00     23.85     0.00      209     0.00     0.00  display_digit
+  0.00     23.85     0.00      105     0.00     0.00  display_fps
+  0.00     23.85     0.00        8     0.00     0.00  ft_strcmp
+  0.00     23.85     0.00        7     0.00     0.00  ft_free_img
+  0.00     23.85     0.00        6     0.00     0.00  init_vec3
+  0.00     23.85     0.00        3     0.00     3.33  add_menu_widget
+  0.00     23.85     0.00        3     0.00     0.00  fill_slider
+  0.00     23.85     0.00        3     0.00     0.00  ft_free
+  0.00     23.85     0.00        3     0.00     0.00  ft_strlcpy
+  0.00     23.85     0.00        2     0.00     5.11  add_obj_file_meshes
+  0.00     23.85     0.00        2     0.00     0.00  arr_append
+  0.00     23.85     0.00        2     0.00     5.11  load_obj_file
+  0.00     23.85     0.00        2     0.00     1.67  obj_parser_count
+  0.00     23.85     0.00        2     0.00     1.67  obj_parser_fill_vertexes
+  0.00     23.85     0.00        2     0.00     1.77  obj_parser_handle_faces
+  0.00     23.85     0.00        2     0.00     0.00  obj_parser_parse_mtl_libs
+  0.00     23.85     0.00        2     0.00     0.00  sacle_vecs
+  0.00     23.85     0.00        1     0.00     0.00  clean_mlx
+  0.00     23.85     0.00        1     0.00     0.00  cleanup_exit
+  0.00     23.85     0.00        1     0.00     0.00  close_menu
+  0.00     23.85     0.00        1     0.00     0.00  free_fps_digit_textures
+  0.00     23.85     0.00        1     0.00     0.00  free_menu
+  0.00     23.85     0.00        1     0.00     5.11  get_fps_digit_texture
+  0.00     23.85     0.00        1     0.00     0.00  init_hooks
+  0.00     23.85     0.00        1     0.00    11.12  init_main
+  0.00     23.85     0.00        1     0.00     6.01  init_menu
+  0.00     23.85     0.00        1     0.00     6.67  init_menu_widgets
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2024 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 4 byte(s) for 0.04% of 23.85 seconds
+
+index % time    self  children    called     name
+                0.00   23.81    1570/1570        mlx_exec_loop_hooks [2]
+[1]     99.8    0.00   23.81    1570         ft_hook [1]
+                0.62   13.87    3094/3094        draw_mesh [3]
+                9.30    0.00    1547/1548        reset_pixel_buffer [6]
+                0.00    0.02    1570/1570        menu_handler [20]
+                0.00    0.00    1547/1547        handle_movement_per_frame [44]
+                0.00    0.00    1547/4641        ident_mat_4x4 [69]
+-----------------------------------------------
+                                                 <spontaneous>
+[2]     99.8    0.00   23.81                 mlx_exec_loop_hooks [2]
+                0.00   23.81    1570/1570        ft_hook [1]
+                0.00    0.00    1570/1570        display_fps_hook [72]
+-----------------------------------------------
+                0.62   13.87    3094/3094        ft_hook [1]
+[3]     60.8    0.62   13.87    3094         draw_mesh [3]
+                0.11   13.07 2862035/2862035     rasterize [4]
+                0.24    0.11 9993620/9993620     out_of_bound_triangle [8]
+                0.15    0.00 38566965/46509903     matrix_mult_vec3_4x4 [9]
+                0.06    0.00 29980860/30059164     v3_sub [12]
+                0.06    0.00 9996714/10092071     unit_vec3 [13]
+                0.05    0.00 12855655/13075097     dot_prod_unit [14]
+                0.02    0.00 9993620/9997391     cross_product [18]
+                0.00    0.00    3094/3094        matrix_point_at [42]
+                0.00    0.00    3094/3094        init_day_light [43]
+                0.00    0.00    3094/4641        ident_mat_4x4 [69]
+                0.00    0.00    3094/88490       v3_add [54]
+                0.00    0.00    3094/3094        matrix_look_at [71]
+-----------------------------------------------
+                0.11   13.07 2862035/2862035     draw_mesh [3]
+[4]     55.3    0.11   13.07 2862035         rasterize [4]
+               12.44    0.00 1491136/1491136     fill_triangle_color [5]
+                0.47    0.01 2647646/2647646     call_clipping_xy [7]
+                0.07    0.00 10590584/10622918     ft_memcpy [11]
+                0.03    0.00 2862035/3297905     clipping_z_near [15]
+                0.03    0.00 7942938/46509903     matrix_mult_vec3_4x4 [9]
+                0.02    0.00 7942938/7942938     div_vec3 [19]
+                0.00    0.00 7942938/16832883     zero_f [48]
+-----------------------------------------------
+               12.44    0.00 1491136/1491136     rasterize [4]
+[5]     52.2   12.44    0.00 1491136         fill_triangle_color [5]
+                0.00    0.00 2982272/2982272     slope_2d_x_per_y [49]
+                0.00    0.00 1491136/1491136     sort_vertexes_for_y [50]
+-----------------------------------------------
+                0.01    0.00       1/1548        init_menu [32]
+                9.30    0.00    1547/1548        ft_hook [1]
+[6]     39.0    9.31    0.00    1548         reset_pixel_buffer [6]
+-----------------------------------------------
+                0.47    0.01 2647646/2647646     rasterize [4]
+[7]      2.0    0.47    0.01 2647646         call_clipping_xy [7]
+                0.01    0.00  435870/3297905     clipping_z_near [15]
+-----------------------------------------------
+                0.24    0.11 9993620/9993620     draw_mesh [3]
+[8]      1.5    0.24    0.11 9993620         out_of_bound_triangle [8]
+                0.08    0.00 29980860/29980860     zero_vec3 [10]
+                0.03    0.00 19987240/19991857     add_vec3 [16]
+-----------------------------------------------
+                0.03    0.00 7942938/46509903     rasterize [4]
+                0.15    0.00 38566965/46509903     draw_mesh [3]
+[9]      0.8    0.18    0.00 46509903         matrix_mult_vec3_4x4 [9]
+-----------------------------------------------
+                0.08    0.00 29980860/29980860     out_of_bound_triangle [8]
+[10]     0.3    0.08    0.00 29980860         zero_vec3 [10]
+-----------------------------------------------
+                0.00    0.00       3/10622918     add_menu_widget [25]
+                0.00    0.00       3/10622918     init_main [22]
+                0.00    0.00       4/10622918     arr_append [47]
+                0.00    0.00       6/10622918     load_obj_file [24]
+                0.00    0.00   12938/10622918     ft_put_pixel_fin_index [39]
+                0.00    0.00   19380/10622918     parse_face_vertex [38]
+                0.07    0.00 10590584/10622918     rasterize [4]
+[11]     0.3    0.07    0.00 10622918         ft_memcpy [11]
+-----------------------------------------------
+                0.00    0.00    6188/30059164     matrix_point_at [42]
+                0.00    0.00   72116/30059164     line_zplane_intersection [37]
+                0.06    0.00 29980860/30059164     draw_mesh [3]
+[12]     0.3    0.06    0.00 30059164         v3_sub [12]
+-----------------------------------------------
+                0.00    0.00       2/10092071     init_main [22]
+                0.00    0.00     677/10092071     handle_movement_per_frame [44]
+                0.00    0.00    3094/10092071     init_day_light [43]
+                0.00    0.00    6188/10092071     matrix_point_at [42]
+                0.00    0.00   13280/10092071     cursor_hook [40]
+                0.00    0.00   72116/10092071     line_zplane_intersection [37]
+                0.06    0.00 9996714/10092071     draw_mesh [3]
+[13]     0.3    0.06    0.00 10092071         unit_vec3 [13]
+-----------------------------------------------
+                0.00    0.00    3094/13075097     matrix_point_at [42]
+                0.00    0.00  216348/13075097     line_zplane_intersection [37]
+                0.05    0.00 12855655/13075097     draw_mesh [3]
+[14]     0.2    0.05    0.00 13075097         dot_prod_unit [14]
+-----------------------------------------------
+                0.01    0.00  435870/3297905     call_clipping_xy [7]
+                0.03    0.00 2862035/3297905     rasterize [4]
+[15]     0.2    0.04    0.00 3297905         clipping_z_near [15]
+                0.00    0.00   72116/72116       line_zplane_intersection [37]
+                0.00    0.00  871740/16832883     zero_f [48]
+-----------------------------------------------
+                0.00    0.00     895/19991857     handle_movement_per_frame [44]
+                0.00    0.00    3722/19991857     sacle_vecs [45]
+                0.03    0.00 19987240/19991857     out_of_bound_triangle [8]
+[16]     0.1    0.03    0.00 19991857         add_vec3 [16]
+-----------------------------------------------
+                                                 <spontaneous>
+[17]     0.1    0.00    0.03                 main [17]
+                0.00    0.01       1/1           init_main [22]
+                0.00    0.01       1/1           init_menu_widgets [31]
+                0.00    0.01       1/2           add_obj_file_meshes [23]
+                0.00    0.00       1/3           add_menu_widget [25]
+                0.00    0.00       1/1           init_hooks [87]
+-----------------------------------------------
+                0.00    0.00     677/9997391     handle_movement_per_frame [44]
+                0.00    0.00    3094/9997391     matrix_point_at [42]
+                0.02    0.00 9993620/9997391     draw_mesh [3]
+[18]     0.1    0.02    0.00 9997391         cross_product [18]
+-----------------------------------------------
+                0.02    0.00 7942938/7942938     rasterize [4]
+[19]     0.1    0.02    0.00 7942938         div_vec3 [19]
+                0.00    0.00 7942938/16832883     zero_f [48]
+-----------------------------------------------
+                0.00    0.02    1570/1570        ft_hook [1]
+[20]     0.1    0.00    0.02    1570         menu_handler [20]
+                0.02    0.00      22/22          handle_open_menu [21]
+                0.00    0.00       1/1           close_menu [84]
+-----------------------------------------------
+                0.02    0.00      22/22          menu_handler [20]
+[21]     0.1    0.02    0.00      22         handle_open_menu [21]
+-----------------------------------------------
+                0.00    0.01       1/1           main [17]
+[22]     0.0    0.00    0.01       1         init_main [22]
+                0.00    0.01       1/1           init_menu [32]
+                0.00    0.01       1/1           get_fps_digit_texture [33]
+                0.00    0.00       3/10622918     ft_memcpy [11]
+                0.00    0.00       2/10092071     unit_vec3 [13]
+                0.00    0.00       1/6465        ft_bzero [68]
+-----------------------------------------------
+                0.00    0.01       1/2           main [17]
+                0.00    0.01       1/2           get_fps_digit_texture [33]
+[23]     0.0    0.00    0.01       2         add_obj_file_meshes [23]
+                0.00    0.01       2/2           load_obj_file [24]
+                0.00    0.00       2/2           arr_append [47]
+-----------------------------------------------
+                0.00    0.01       2/2           add_obj_file_meshes [23]
+[24]     0.0    0.00    0.01       2         load_obj_file [24]
+                0.00    0.00       2/2           obj_parser_handle_faces [34]
+                0.00    0.00       2/2           obj_parser_count [35]
+                0.00    0.00       2/2           obj_parser_fill_vertexes [36]
+                0.00    0.00       2/2           sacle_vecs [45]
+                0.00    0.00       2/2           obj_parser_parse_mtl_libs [46]
+                0.00    0.00       6/10622918     ft_memcpy [11]
+                0.00    0.00       8/128459      ft_calloc [52]
+                0.00    0.00       2/6465        ft_bzero [68]
+-----------------------------------------------
+                0.00    0.00       1/3           main [17]
+                0.00    0.01       2/3           init_menu_widgets [31]
+[25]     0.0    0.00    0.01       3         add_menu_widget [25]
+                0.01    0.00       3/3           init_entry_widget [29]
+                0.00    0.00       3/10622918     ft_memcpy [11]
+                0.00    0.00       3/128459      ft_calloc [52]
+                0.00    0.00       3/3           ft_strlcpy [81]
+                0.00    0.00       3/3           fill_slider [79]
+-----------------------------------------------
+                0.01    0.00  643832/643832      reading [28]
+[26]     0.0    0.01    0.00  643832         append_buffer [26]
+-----------------------------------------------
+                0.00    0.00       2/30572       obj_parser_parse_mtl_libs [46]
+                0.00    0.00   10190/30572       obj_parser_count [35]
+                0.00    0.00   10190/30572       obj_parser_fill_vertexes [36]
+                0.00    0.00   10190/30572       obj_parser_handle_faces [34]
+[27]     0.0    0.00    0.01   30572         get_next_line [27]
+                0.00    0.01   30572/30572       reading [28]
+                0.00    0.00   30572/30572       get_current_file [62]
+                0.00    0.00   30572/30572       cleanup [61]
+                0.00    0.00   30560/30560       my_str_cpy [63]
+-----------------------------------------------
+                0.00    0.01   30572/30572       get_next_line [27]
+[28]     0.0    0.00    0.01   30572         reading [28]
+                0.01    0.00  643832/643832      append_buffer [26]
+-----------------------------------------------
+                0.01    0.00       3/3           add_menu_widget [25]
+[29]     0.0    0.01    0.00       3         init_entry_widget [29]
+-----------------------------------------------
+                                                 <spontaneous>
+[30]     0.0    0.01    0.00                 mlx_render_images [30]
+-----------------------------------------------
+                0.00    0.01       1/1           main [17]
+[31]     0.0    0.00    0.01       1         init_menu_widgets [31]
+                0.00    0.01       2/3           add_menu_widget [25]
+-----------------------------------------------
+                0.00    0.01       1/1           init_main [22]
+[32]     0.0    0.00    0.01       1         init_menu [32]
+                0.01    0.00       1/1548        reset_pixel_buffer [6]
+                0.00    0.00       1/6465        ft_bzero [68]
+-----------------------------------------------
+                0.00    0.01       1/1           init_main [22]
+[33]     0.0    0.00    0.01       1         get_fps_digit_texture [33]
+                0.00    0.01       1/2           add_obj_file_meshes [23]
+-----------------------------------------------
+                0.00    0.00       2/2           load_obj_file [24]
+[34]     0.0    0.00    0.00       2         obj_parser_handle_faces [34]
+                0.00    0.00   10190/30572       get_next_line [27]
+                0.00    0.00   19380/19380       parse_face_vertex [38]
+                0.00    0.00    6460/6460        ft_put_pixel_fin_index [39]
+                0.00    0.00   20372/73064       ft_strncmp [57]
+                0.00    0.00   19380/19380       parse_face_normals [64]
+                0.00    0.00   10186/83225       ft_strlen [55]
+                0.00    0.00    6460/48942       ft_split [59]
+                0.00    0.00    6460/6465        ft_bzero [68]
+                0.00    0.00    6460/48942       ft_free_2darr [58]
+-----------------------------------------------
+                0.00    0.00       2/2           load_obj_file [24]
+[35]     0.0    0.00    0.00       2         obj_parser_count [35]
+                0.00    0.00   10190/30572       get_next_line [27]
+                0.00    0.00   29578/73064       ft_strncmp [57]
+                0.00    0.00   12928/83225       ft_strlen [55]
+-----------------------------------------------
+                0.00    0.00       2/2           load_obj_file [24]
+[36]     0.0    0.00    0.00       2         obj_parser_fill_vertexes [36]
+                0.00    0.00   10190/30572       get_next_line [27]
+                0.00    0.00   23114/73064       ft_strncmp [57]
+                0.00    0.00   11166/11166       str_to_double [67]
+                0.00    0.00    3722/48942       ft_split [59]
+                0.00    0.00    3722/48942       ft_free_2darr [58]
+-----------------------------------------------
+                0.00    0.00   72116/72116       clipping_z_near [15]
+[37]     0.0    0.00    0.00   72116         line_zplane_intersection [37]
+                0.00    0.00  216348/13075097     dot_prod_unit [14]
+                0.00    0.00   72116/10092071     unit_vec3 [13]
+                0.00    0.00   72116/30059164     v3_sub [12]
+                0.00    0.00   72116/16832883     zero_f [48]
+                0.00    0.00   72116/75210       v3_scale [56]
+                0.00    0.00   72116/88490       v3_add [54]
+-----------------------------------------------
+                0.00    0.00   19380/19380       obj_parser_handle_faces [34]
+[38]     0.0    0.00    0.00   19380         parse_face_vertex [38]
+                0.00    0.00   19380/10622918     ft_memcpy [11]
+                0.00    0.00   19380/48942       ft_split [59]
+                0.00    0.00   19380/41712       ft_atoi [60]
+                0.00    0.00   19380/48942       ft_free_2darr [58]
+-----------------------------------------------
+                0.00    0.00    6460/6460        obj_parser_handle_faces [34]
+[39]     0.0    0.00    0.00    6460         ft_put_pixel_fin_index [39]
+                0.00    0.00   12938/10622918     ft_memcpy [11]
+                0.00    0.00      18/128459      ft_calloc [52]
+-----------------------------------------------
+                0.00    0.00   13280/13280       mlx_cursor_cb [41]
+[40]     0.0    0.00    0.00   13280         cursor_hook [40]
+                0.00    0.00   13280/10092071     unit_vec3 [13]
+                0.00    0.00   13280/13280       get_direction [65]
+                0.00    0.00   13280/88490       v3_add [54]
+-----------------------------------------------
+                                                 <spontaneous>
+[41]     0.0    0.00    0.00                 mlx_cursor_cb [41]
+                0.00    0.00   13280/13280       cursor_hook [40]
+-----------------------------------------------
+                0.00    0.00    3094/3094        draw_mesh [3]
+[42]     0.0    0.00    0.00    3094         matrix_point_at [42]
+                0.00    0.00    6188/10092071     unit_vec3 [13]
+                0.00    0.00    6188/30059164     v3_sub [12]
+                0.00    0.00    3094/13075097     dot_prod_unit [14]
+                0.00    0.00    3094/9997391     cross_product [18]
+                0.00    0.00    3094/75210       v3_scale [56]
+-----------------------------------------------
+                0.00    0.00    3094/3094        draw_mesh [3]
+[43]     0.0    0.00    0.00    3094         init_day_light [43]
+                0.00    0.00    3094/10092071     unit_vec3 [13]
+-----------------------------------------------
+                0.00    0.00    1547/1547        ft_hook [1]
+[44]     0.0    0.00    0.00    1547         handle_movement_per_frame [44]
+                0.00    0.00     677/10092071     unit_vec3 [13]
+                0.00    0.00     677/9997391     cross_product [18]
+                0.00    0.00     895/19991857     add_vec3 [16]
+                0.00    0.00    3151/16832883     zero_f [48]
+-----------------------------------------------
+                0.00    0.00       2/2           load_obj_file [24]
+[45]     0.0    0.00    0.00       2         sacle_vecs [45]
+                0.00    0.00    3722/19991857     add_vec3 [16]
+                0.00    0.00    3722/3722        multiply_vec3 [70]
+                0.00    0.00       8/8           ft_strcmp [76]
+                0.00    0.00       6/6           init_vec3 [78]
+-----------------------------------------------
+                0.00    0.00       2/2           load_obj_file [24]
+[46]     0.0    0.00    0.00       2         obj_parser_parse_mtl_libs [46]
+                0.00    0.00       2/30572       get_next_line [27]
+-----------------------------------------------
+                0.00    0.00       2/2           add_obj_file_meshes [23]
+[47]     0.0    0.00    0.00       2         arr_append [47]
+                0.00    0.00       4/10622918     ft_memcpy [11]
+-----------------------------------------------
+                0.00    0.00    3151/16832883     handle_movement_per_frame [44]
+                0.00    0.00   72116/16832883     line_zplane_intersection [37]
+                0.00    0.00  871740/16832883     clipping_z_near [15]
+                0.00    0.00 7942938/16832883     rasterize [4]
+                0.00    0.00 7942938/16832883     div_vec3 [19]
+[48]     0.0    0.00    0.00 16832883         zero_f [48]
+-----------------------------------------------
+                0.00    0.00 2982272/2982272     fill_triangle_color [5]
+[49]     0.0    0.00    0.00 2982272         slope_2d_x_per_y [49]
+-----------------------------------------------
+                0.00    0.00 1491136/1491136     fill_triangle_color [5]
+[50]     0.0    0.00    0.00 1491136         sort_vertexes_for_y [50]
+-----------------------------------------------
+                0.00    0.00   33536/224163      str_to_double [67]
+                0.00    0.00  190627/224163      ft_atoi [60]
+[51]     0.0    0.00    0.00  224163         ft_isdigit [51]
+-----------------------------------------------
+                0.00    0.00       3/128459      add_menu_widget [25]
+                0.00    0.00       8/128459      load_obj_file [24]
+                0.00    0.00      18/128459      ft_put_pixel_fin_index [39]
+                0.00    0.00  128430/128459      ft_split [59]
+[52]     0.0    0.00    0.00  128459         ft_calloc [52]
+-----------------------------------------------
+                0.00    0.00   11166/90654       str_to_double [67]
+                0.00    0.00   79488/90654       ft_split [59]
+[53]     0.0    0.00    0.00   90654         ft_strchr [53]
+-----------------------------------------------
+                0.00    0.00    3094/88490       draw_mesh [3]
+                0.00    0.00   13280/88490       cursor_hook [40]
+                0.00    0.00   72116/88490       line_zplane_intersection [37]
+[54]     0.0    0.00    0.00   88490         v3_add [54]
+-----------------------------------------------
+                0.00    0.00       3/83225       ft_strlcpy [81]
+                0.00    0.00   10186/83225       obj_parser_handle_faces [34]
+                0.00    0.00   11166/83225       str_to_double [67]
+                0.00    0.00   12928/83225       obj_parser_count [35]
+                0.00    0.00   48942/83225       ft_split [59]
+[55]     0.0    0.00    0.00   83225         ft_strlen [55]
+-----------------------------------------------
+                0.00    0.00    3094/75210       matrix_point_at [42]
+                0.00    0.00   72116/75210       line_zplane_intersection [37]
+[56]     0.0    0.00    0.00   75210         v3_scale [56]
+-----------------------------------------------
+                0.00    0.00   20372/73064       obj_parser_handle_faces [34]
+                0.00    0.00   23114/73064       obj_parser_fill_vertexes [36]
+                0.00    0.00   29578/73064       obj_parser_count [35]
+[57]     0.0    0.00    0.00   73064         ft_strncmp [57]
+-----------------------------------------------
+                0.00    0.00    3722/48942       obj_parser_fill_vertexes [36]
+                0.00    0.00    6460/48942       obj_parser_handle_faces [34]
+                0.00    0.00   19380/48942       parse_face_vertex [38]
+                0.00    0.00   19380/48942       parse_face_normals [64]
+[58]     0.0    0.00    0.00   48942         ft_free_2darr [58]
+-----------------------------------------------
+                0.00    0.00    3722/48942       obj_parser_fill_vertexes [36]
+                0.00    0.00    6460/48942       obj_parser_handle_faces [34]
+                0.00    0.00   19380/48942       parse_face_vertex [38]
+                0.00    0.00   19380/48942       parse_face_normals [64]
+[59]     0.0    0.00    0.00   48942         ft_split [59]
+                0.00    0.00  128430/128459      ft_calloc [52]
+                0.00    0.00   79488/90654       ft_strchr [53]
+                0.00    0.00   48942/83225       ft_strlen [55]
+-----------------------------------------------
+                0.00    0.00   19380/41712       parse_face_vertex [38]
+                0.00    0.00   22332/41712       str_to_double [67]
+[60]     0.0    0.00    0.00   41712         ft_atoi [60]
+                0.00    0.00  190627/224163      ft_isdigit [51]
+-----------------------------------------------
+                0.00    0.00   30572/30572       get_next_line [27]
+[61]     0.0    0.00    0.00   30572         cleanup [61]
+-----------------------------------------------
+                0.00    0.00   30572/30572       get_next_line [27]
+[62]     0.0    0.00    0.00   30572         get_current_file [62]
+-----------------------------------------------
+                0.00    0.00   30560/30560       get_next_line [27]
+[63]     0.0    0.00    0.00   30560         my_str_cpy [63]
+-----------------------------------------------
+                0.00    0.00   19380/19380       obj_parser_handle_faces [34]
+[64]     0.0    0.00    0.00   19380         parse_face_normals [64]
+                0.00    0.00   19380/48942       ft_split [59]
+                0.00    0.00   19380/48942       ft_free_2darr [58]
+-----------------------------------------------
+                0.00    0.00   13280/13280       cursor_hook [40]
+[65]     0.0    0.00    0.00   13280         get_direction [65]
+-----------------------------------------------
+                0.00    0.00   11166/11166       str_to_double [67]
+[66]     0.0    0.00    0.00   11166         ft_powint [66]
+-----------------------------------------------
+                0.00    0.00   11166/11166       obj_parser_fill_vertexes [36]
+[67]     0.0    0.00    0.00   11166         str_to_double [67]
+                0.00    0.00   33536/224163      ft_isdigit [51]
+                0.00    0.00   22332/41712       ft_atoi [60]
+                0.00    0.00   11166/90654       ft_strchr [53]
+                0.00    0.00   11166/83225       ft_strlen [55]
+                0.00    0.00   11166/11166       ft_powint [66]
+-----------------------------------------------
+                0.00    0.00       1/6465        free_menu [86]
+                0.00    0.00       1/6465        init_menu [32]
+                0.00    0.00       1/6465        init_main [22]
+                0.00    0.00       2/6465        load_obj_file [24]
+                0.00    0.00    6460/6465        obj_parser_handle_faces [34]
+[68]     0.0    0.00    0.00    6465         ft_bzero [68]
+-----------------------------------------------
+                0.00    0.00    1547/4641        ft_hook [1]
+                0.00    0.00    3094/4641        draw_mesh [3]
+[69]     0.0    0.00    0.00    4641         ident_mat_4x4 [69]
+-----------------------------------------------
+                0.00    0.00    3722/3722        sacle_vecs [45]
+[70]     0.0    0.00    0.00    3722         multiply_vec3 [70]
+-----------------------------------------------
+                0.00    0.00    3094/3094        draw_mesh [3]
+[71]     0.0    0.00    0.00    3094         matrix_look_at [71]
+-----------------------------------------------
+                0.00    0.00    1570/1570        mlx_exec_loop_hooks [2]
+[72]     0.0    0.00    0.00    1570         display_fps_hook [72]
+                0.00    0.00     105/105         display_fps [75]
+-----------------------------------------------
+                0.00    0.00     291/291         mlx_key_callback [327]
+[73]     0.0    0.00    0.00     291         key_hook [73]
+-----------------------------------------------
+                0.00    0.00     209/209         display_fps [75]
+[74]     0.0    0.00    0.00     209         display_digit [74]
+-----------------------------------------------
+                0.00    0.00     105/105         display_fps_hook [72]
+[75]     0.0    0.00    0.00     105         display_fps [75]
+                0.00    0.00     209/209         display_digit [74]
+-----------------------------------------------
+                0.00    0.00       8/8           sacle_vecs [45]
+[76]     0.0    0.00    0.00       8         ft_strcmp [76]
+-----------------------------------------------
+                0.00    0.00       7/7           free_menu [86]
+[77]     0.0    0.00    0.00       7         ft_free_img [77]
+-----------------------------------------------
+                0.00    0.00       6/6           sacle_vecs [45]
+[78]     0.0    0.00    0.00       6         init_vec3 [78]
+-----------------------------------------------
+                0.00    0.00       3/3           add_menu_widget [25]
+[79]     0.0    0.00    0.00       3         fill_slider [79]
+-----------------------------------------------
+                0.00    0.00       3/3           cleanup_exit [83]
+[80]     0.0    0.00    0.00       3         ft_free [80]
+-----------------------------------------------
+                0.00    0.00       3/3           add_menu_widget [25]
+[81]     0.0    0.00    0.00       3         ft_strlcpy [81]
+                0.00    0.00       3/83225       ft_strlen [55]
+-----------------------------------------------
+                0.00    0.00       1/1           cleanup_exit [83]
+[82]     0.0    0.00    0.00       1         clean_mlx [82]
+                0.00    0.00       1/1           free_fps_digit_textures [85]
+-----------------------------------------------
+                0.00    0.00       1/1           mlx_key_callback [327]
+[83]     0.0    0.00    0.00       1         cleanup_exit [83]
+                0.00    0.00       3/3           ft_free [80]
+                0.00    0.00       1/1           clean_mlx [82]
+                0.00    0.00       1/1           free_menu [86]
+-----------------------------------------------
+                0.00    0.00       1/1           menu_handler [20]
+[84]     0.0    0.00    0.00       1         close_menu [84]
+-----------------------------------------------
+                0.00    0.00       1/1           clean_mlx [82]
+[85]     0.0    0.00    0.00       1         free_fps_digit_textures [85]
+-----------------------------------------------
+                0.00    0.00       1/1           cleanup_exit [83]
+[86]     0.0    0.00    0.00       1         free_menu [86]
+                0.00    0.00       7/7           ft_free_img [77]
+                0.00    0.00       1/6465        ft_bzero [68]
+-----------------------------------------------
+                0.00    0.00       1/1           main [17]
+[87]     0.0    0.00    0.00       1         init_hooks [87]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2024 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+  [25] add_menu_widget        [77] ft_free_img            [24] load_obj_file
+  [23] add_obj_file_meshes     [1] ft_hook                [71] matrix_look_at
+  [16] add_vec3               [51] ft_isdigit              [9] matrix_mult_vec3_4x4
+  [26] append_buffer          [11] ft_memcpy              [42] matrix_point_at
+  [47] arr_append             [66] ft_powint              [20] menu_handler
+   [7] call_clipping_xy       [39] ft_put_pixel_fin_index [30] mlx_render_images (mlx_loop.c)
+  [82] clean_mlx              [59] ft_split               [70] multiply_vec3
+  [61] cleanup                [53] ft_strchr              [63] my_str_cpy
+  [83] cleanup_exit           [76] ft_strcmp              [35] obj_parser_count
+  [15] clipping_z_near        [81] ft_strlcpy             [36] obj_parser_fill_vertexes
+  [84] close_menu             [55] ft_strlen              [34] obj_parser_handle_faces
+  [18] cross_product          [57] ft_strncmp             [46] obj_parser_parse_mtl_libs
+  [40] cursor_hook            [62] get_current_file        [8] out_of_bound_triangle
+  [74] display_digit          [65] get_direction          [64] parse_face_normals
+  [75] display_fps            [33] get_fps_digit_texture  [38] parse_face_vertex
+  [72] display_fps_hook       [27] get_next_line           [4] rasterize
+  [19] div_vec3               [44] handle_movement_per_frame [28] reading
+  [14] dot_prod_unit          [21] handle_open_menu        [6] reset_pixel_buffer
+   [3] draw_mesh              [69] ident_mat_4x4          [45] sacle_vecs
+  [79] fill_slider            [43] init_day_light         [49] slope_2d_x_per_y
+   [5] fill_triangle_color    [29] init_entry_widget      [50] sort_vertexes_for_y
+  [85] free_fps_digit_textures [87] init_hooks            [67] str_to_double
+  [86] free_menu              [22] init_main              [13] unit_vec3
+  [60] ft_atoi                [32] init_menu              [54] v3_add
+  [68] ft_bzero               [31] init_menu_widgets      [56] v3_scale
+  [52] ft_calloc              [78] init_vec3              [12] v3_sub
+  [80] ft_free                [73] key_hook               [48] zero_f
+  [58] ft_free_2darr          [37] line_zplane_intersection [10] zero_vec3
