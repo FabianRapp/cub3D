@@ -13,11 +13,22 @@
 #include "includes/cub3D.h"
 #include "includes/menu.h"
 
+void	cursor_movement_per_frame(t_main *main_data)
+{
+	main_data->look_direct = v3_add(main_data->look_direct, get_direction(main_data->pitch, main_data->yaw, main_data->roll));
+	unit_vec3(&main_data->look_direct);
+	if (main_data->settings.cursor_lock)
+	{
+		mlx_set_mouse_pos(main_data->mlx, WIDTH / 2, HEIGHT / 2);
+	}
+}
+
 void	handle_movement_per_frame(t_main *main_data)
 {
 	t_controls			controls;
 	t_vec3				movement = {0, 0, 0, .w = 1};
 
+	cursor_movement_per_frame(main_data);
 	controls = main_data->controls;
 	if (controls.state.up)
 	{
@@ -91,7 +102,6 @@ void	translate_mesh_3d(t_mesh *mesh, t_vec3 v)
 	}
 }
 
-
 void	determine_centroid(t_triangle *tri)
 {
 	t_vec3 s = {0,0,0};
@@ -103,61 +113,17 @@ void	determine_centroid(t_triangle *tri)
 	tri->centroid.z = s.z / 3.0f;
 }
 
-void	free_mesh(t_mesh *mesh)
-{
-	int	i;
-
-	i = 0;
-	while (i < mesh->mtl_count)
-	{
-		i++;
-	}
-	free(mesh->mtl_libs);
-	ft_free((void **)&mesh->triangles);
-}
-
-void	clean_mlx(t_main *main_data)
-{
-	if (main_data->mlx)
-	{
-		mlx_close_window(main_data->mlx);
-		free_fps_digit_textures();
-		if (main_data->img)
-			mlx_delete_image(main_data->mlx, main_data->img);
-		mlx_terminate(main_data->mlx);
-		main_data->mlx = NULL;
-		//printf("on linux MLX will always leak 12140 byte(s) leaked in 81 allocation(s) (with fsanitize)\n");
-	}
-}
-
-void	cleanup_exit(void *m_data)
-{
-	t_main	*main_data;
-	int		i;
-
-	main_data = (t_main *)m_data;
-	fprintf(stderr, "exiting..\n");
-	i = 0;
-	while (i < main_data->mesh_count)
-	{
-		free_mesh(main_data->meshes + i);
-		i++;
-	}
-	ft_free((void **)&main_data->meshes);
-	free_menu(main_data, &main_data->menu);
-	clean_mlx(main_data);
-	exit(0);
-}
-
 void	add_obj_file_meshes(t_main *main_data)
 {
 	t_mesh	new_mesh;
 
 	new_mesh = load_obj_file("./", "axis.obj", main_data);
+	init_default_model_space(&new_mesh.model_space);
 	if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
 		ft_error(main_data);
 	main_data->mesh_count++;
 	new_mesh = load_obj_file("teapot/", "teapot/teapot.obj", main_data);
+	init_default_model_space(&new_mesh.model_space);
 	if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
 		ft_error(main_data);
 	main_data->mesh_count++;

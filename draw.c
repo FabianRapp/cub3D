@@ -167,16 +167,37 @@ void	scale_to_screen(t_triangle *projected)
 	projected->p[2].y *= 0.5f * (double)HEIGHT;
 }
 
-void	fill_mesh_matrix(t_mesh *mesh)
+// can be optimized alot
+// not all the steps have to be done all the time
+// (for example for most object the scaling should be fine during the init
+// and other objects might not move at all)
+void	fill_model_matrix(t_model_space_data *data)
 {
 	double	translation_mat[4][4];
-	double	tmp[4][4];
+	double	scale_mat[4][4];
+	double	rotx_mat[4][4];
+	double	roty_mat[4][4];
+	double	rotz_mat[4][4];
 
-	ident_mat_4x4(mesh->mesh_matrix);
-	// ident_mat_4x4(tmp);
-	// mat4x4_mult_mat4x4(mesh->rotation_mat_z, mesh->rotation_mat_x, tmp);
-//	translation_matrix(translation_mat, 0, 0, 0);
-	//mat4x4_mult_mat4x4(tmp, translation_mat, mesh->mesh_matrix);
+	translation_matrix(translation_mat, data->x_translation, data->y_translation, data->z_translation);
+	scale_matrix(scale_mat, data->x_scale, data->y_scale, data->z_scale);
+	rot_matx_4x4(rotx_mat, data->x_rotation);
+	rot_maty_4x4(roty_mat, data->y_rotation);
+	rot_matz_4x4(rotz_mat, data->z_rotation);
+
+	double	tmp1[4][4];
+	mat4x4_mult_mat4x4(rotx_mat, scale_mat, tmp1);
+	
+	double	tmp2[4][4];
+	mat4x4_mult_mat4x4(tmp1, roty_mat, tmp2);
+
+	double	tmp3[4][4];
+	mat4x4_mult_mat4x4(tmp2, rotz_mat, tmp3);
+
+	double	tmp4[4][4];
+	mat4x4_mult_mat4x4(tmp3, translation_mat, tmp4);
+
+	ft_memcpy(data->model_matrix, tmp4, sizeof(double[4][4]));
 }
 
 t_light	init_day_light(double d_time)
@@ -300,25 +321,19 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 	}
 }
 
+void	mesh_physics_handler(t_mesh *mesh)
+{
+}
 
+//Model to World Space, then to Camera and then Projection
 void	draw_mesh(t_mesh *mesh)
 {
 	int			i;
-	t_triangle		transformed;
+	t_triangle		model;
 	t_triangle		viewed;
 
-	i = 0;
-	static double	theta = 0;
-		theta += *mesh->d_time;
-	t_vec3	traveled_dist;
-	traveled_dist.x = mesh->momentum.x * *mesh->d_time;
-	traveled_dist.y = mesh->momentum.y * *mesh->d_time;
-	traveled_dist.z = mesh->momentum.z * *mesh->d_time;
-	#ifdef MOVEMENT
-	if (mesh->triangles != mesh->main->axis.triangles)
-		translate_mesh_3d(mesh, traveled_dist);
-	#endif
-	fill_mesh_matrix(mesh);
+	mesh_physics_handler(mesh);
+	fill_model_matrix(&mesh->model_space);
 
 	t_vec3	vec_target = v3_add(mesh->main->camera, mesh->main->look_direct);
 	double	camera[4][4];
@@ -341,44 +356,27 @@ void	draw_mesh(t_mesh *mesh)
 	// const t_vec3	light_direct3 =  {-1.0f, 1.0f, -1.0f};
 	// init_light(&ambient_light3, light_direct3, WHITE);
 	t_vec3	bounds_result;
+	i = 0;
 	while (i < mesh->count)
 	{
 
-		transformed = mesh->triangles[i];//not neededm, for debugging
-	
-		matrix_mult_vec3_4x4(mesh->triangles[i].p + 0, mesh->mesh_matrix, transformed.p + 0);
-		matrix_mult_vec3_4x4 (mesh->triangles[i].p + 1, mesh->mesh_matrix, transformed.p + 1);
-		matrix_mult_vec3_4x4(mesh->triangles[i].p + 2, mesh->mesh_matrix, transformed.p + 2);
-
-		// t_vec3	tmp = transformed.normal;
-		// double	tmp_mat[4][4];
-		// mat4x4_mult_mat4x4(mesh->rotation_mat_z, mesh->rotation_mat_x, tmp_mat);
-		// matrix_mult_vec3_4x4(&tmp, tmp_mat, &transformed.normal);
-
-
-
-
-		bounds_result = out_of_bound_triangle(&transformed);
-		if (bounds_result.z == -3 || bounds_result.z == 3)
+		model = mesh->triangles[i];//not neededm, for debugging
+		//Model space
+		matrix_mult_vec3_4x4(mesh->triangles[i].p + 0, mesh->model_space.model_matrix, model.p + 0);
+		matrix_mult_vec3_4x4 (mesh->triangles[i].p + 1, mesh->model_space.model_matrix, model.p + 1);
+		matrix_mult_vec3_4x4(mesh->triangles[i].p + 2, mesh->model_space.model_matrix, model.p + 2);
+		//
+		model.normal = cross_product(v3_sub(model.p[1], model.p[0]), v3_sub(model.p[2], model.p[0]));
+		unit_vec3(&model.normal);
+		if (dot_prod_unit(model.normal, v3_sub(model.p[0], mesh->main->camera)) >= 0)
 		{
 			i++;
 			continue ;
 		}
-		//if (!mesh->obj_file)
-		{
-			transformed.normal = cross_product(v3_sub(transformed.p[1], transformed.p[0]), v3_sub(transformed.p[2], transformed.p[0]));
-		}
-		unit_vec3(&transformed.normal);
-		if (dot_prod_unit(transformed.normal, v3_sub(transformed.p[0], mesh->main->camera)) >= 0)
-		//if (dot_prod_unit(transformed.normal, v3_sub(transformed.p[0], mesh->main->camera)) < 0)
-		{
-			i++;
-			continue ;
-		}
-
+		// World Space
 		t_light_argb_stren	color_scalars = {0};
 
-		double light_dp = dot_prod_unit(transformed.normal, day_light.direct);
+		double light_dp = dot_prod_unit(model.normal, day_light.direct);
 		light_dp = fmaxf(light_dp, 0.0f);
 		color_scalars.v[R] += day_light.strength.v[R] *  light_dp;
 		color_scalars.v[G] += day_light.strength.v[G] *  light_dp;
@@ -404,11 +402,11 @@ void	draw_mesh(t_mesh *mesh)
 		// color.argb[G] *= color_scalars.v[G];
 		// color.argb[B] *= color_scalars.v[B];
 
-		viewed = transformed;
 		// enter view space
-		matrix_mult_vec3_4x4(transformed.p + 0, mat_view, viewed.p + 0);
-		matrix_mult_vec3_4x4 (transformed.p + 1, mat_view, viewed.p + 1);
-		matrix_mult_vec3_4x4(transformed.p + 2, mat_view, viewed.p + 2);
+		viewed = model;
+		matrix_mult_vec3_4x4(model.p + 0, mat_view, viewed.p + 0);
+		matrix_mult_vec3_4x4 (model.p + 1, mat_view, viewed.p + 1);
+		matrix_mult_vec3_4x4(model.p + 2, mat_view, viewed.p + 2);
 
 		rasterize(viewed, mesh, mesh->triangles + i, color_scalars);
 		i++;

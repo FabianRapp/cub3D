@@ -89,3 +89,28 @@ void	init_menu_widgets(t_main *main_data)
 	add_menu_widget(main_data, WIDGET_SLIDER, "Test 1", (t_widget_val)(main_data->settings.mouse_sens / MOUSE_SENS_BASE), &main_data->menu);
 	add_menu_widget(main_data, WIDGET_SLIDER, "Press 'm' to exit/enter menu", (t_widget_val)(main_data->settings.mouse_sens / MOUSE_SENS_BASE), &main_data->menu);
 }
+
+void	init_default_model_space(t_model_space_data *data)
+{
+	ident_mat_4x4(data->model_matrix);
+	data->x_scale = 1.0;
+	data->y_scale = 1.0;
+	data->z_scale = 1.0;
+	data->x_translation = 0.0;
+	data->y_translation = 0.0;
+	data->z_translation = 0.0;
+	data->x_rotation = 0.0;
+	data->y_rotation = 0.0;
+	data->z_rotation = 0.0;
+}
+
+
+
+
+
+
+
+
+
+
+

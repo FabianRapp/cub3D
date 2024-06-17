@@ -87,7 +87,7 @@
 
 //=============================
 
-#define MOUSE_SENS_BASE (0.0001f)
+#define MOUSE_SENS_BASE (0.001f)
 
 #define X 0
 #define Y 1
@@ -152,6 +152,7 @@ typedef struct s_mtl
 	int				index;
 }	t_mtl;
 
+
 typedef struct s_vec3
 {
 	double			x;//HAS TO BE FIRST
@@ -201,6 +202,31 @@ typedef struct s_light
 	t_color_split		color;
 }	t_light;
 
+typedef struct s_physics_data
+{
+	double			x_speed;
+	double			y_speed;
+	double			z_speed;
+}	t_physics_data;
+
+typedef struct s_model_space_data
+{
+	double			model_matrix[4][4];
+	double			x_scale;
+	double			y_scale;
+	double			z_scale;
+	double			x_translation;
+	double			y_translation;
+	double			z_translation;
+	double			x_rotation;
+	double			y_rotation;
+	double			z_rotation;
+}	t_model_space_data;
+
+typedef struct s_world_data
+{
+}	t_world_data;
+
 typedef struct s_mesh
 {
 	t_triangle		*triangles;
@@ -208,7 +234,7 @@ typedef struct s_mesh
 	double			rotation_mat_x[4][4];
 	double			rotation_mat_y[4][4];
 	double			rotation_mat_z[4][4];
-	double			mesh_matrix[4][4];
+	t_model_space_data	model_space;
 	t_vec3			momentum;
 	t_vec3			center_pull;
 	t_vec3			center;
@@ -271,13 +297,10 @@ typedef struct s_main
 	t_mesh		*meshes;
 	int			mesh_count;
 	mlx_image_t	*img;
-	double		depth[WIDTH * HEIGHT];//somehow reduce the sice of this to
-    //save allot of stack recources and enable higher res
+	double		depth[WIDTH * HEIGHT];
 	t_controls	controls;
 	t_settings	settings;
 	t_menu		menu;
-	// int32_t		monitor_width;
-	// int32_t		monitor_height;
 }	t_main;
 
 struct s_fps_textures
@@ -297,7 +320,6 @@ struct s_fps_textures
 void	draw_mesh(t_mesh *cube_mesh);
 
 // main.c
-void	cleanup_exit(void *m_data);
 
 //old.c
 t_triangle	apply_rotation_addtiononal_translation(t_mesh *mesh, int i);
@@ -382,6 +404,7 @@ void	mat4x4_mult_mat4x4(double ma[4][4], double mb[4][4], double result[4][4]);
 
 //matrix/init_matrix.c
 void	ident_mat_4x4(double mat[4][4]);
+void	scale_matrix(double mat[4][4], double x, double y, double z);
 void	rot_matx_4x4(double mat[4][4], double theta);
 void	rot_maty_4x4(double mat[4][4], double theta);
 void	rot_matz_4x4(double mat[4][4], double theta);
@@ -390,6 +413,9 @@ void	projection_matrix(double mat[4][4]);
 void	zero_matrix(double mat[4][4]);
 void	matrix_point_at(t_vec3 *pos, t_vec3 *target, t_vec3 *up, double result[4][4]);
 void	matrix_look_at(double point_at_mat[4][4], double look_at_mat[4][4]);
+
+//matrix/debug.c
+void	print_matrix(double m[4][4]);
 
 // fill_triangle.c
 double	slope_2d_x_per_y(t_vec3 p1, t_vec3 p2);
@@ -420,5 +446,41 @@ void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *
 void	init_main(t_main *main_data);
 void	init_hooks(t_main *main_data);
 void	init_menu_widgets(t_main *main_data);
+void	init_default_model_space(t_model_space_data *data);
+
+// utils/cleanup.c
+void	cleanup_exit(void *m_data);
+void	clean_mlx(t_main *main_data);
+void	free_mesh(t_mesh *mesh);
+
+// clipping_z.c
+int8_t	clipping_z_near(t_triangle *tri, t_triangle *clipped);
+int8_t	clipping_z_far(t_triangle *tri, t_triangle *clipped);
+
+//clipping_xy.c
+int8_t		call_clipping_xy(t_triangle *clipped);
+
+// key_handlers.c
+void	ft_key_hook(mlx_key_data_t keydata, void *param);
+void	wasd_key_handler(mlx_key_data_t keydata, void *param);
+void	jump_key_handler(mlx_key_data_t keydata, void *param);
+void	settings_key_handler(mlx_key_data_t keydata, t_main *main_data);
+void	key_hook(mlx_key_data_t keydata, void *param);
+void	cursor_hook(double xpos, double ypos, void* param);
+void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *param);
+
+
+// init.c
+void	init_main(t_main *main_data);
+void	init_hooks(t_main *main_data);
+void	init_menu_widgets(t_main *main_data);
+
+// utils/cleanup.c
+void	cleanup_exit(void *m_data);
+void	clean_mlx(t_main *main_data);
+void	free_mesh(t_mesh *mesh);
 
 #endif
+
+
+
