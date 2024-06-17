@@ -6,7 +6,7 @@
 /*   By: frapp <fabi@student.42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:02:08 by fabian            #+#    #+#             */
-/*   Updated: 2024/06/18 01:01:11 by frapp            ###   ########.fr       */
+/*   Updated: 2024/06/16 06:45:13 by frapp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 // todo should be enum
 #define MOUSE_SENS_WIDGET_INDEX 0
 
-#define WIDTH (256 * 10)
-#define HEIGHT (256 * 8)
+#define WIDTH 2000
+#define HEIGHT 1500
 
 #define ASPECT_RATIO ((double)HEIGHT) / ((double)WIDTH)
 
@@ -281,20 +281,23 @@ typedef struct s_settings
 
 typedef struct s_main
 {
-	_Alignas(128) double depth[WIDTH * HEIGHT];
-	double		yaw;
-	double		pitch;
-	double		roll;
-	mlx_t		*mlx;
-	t_mesh		*objs;
-	int			nb;
-	t_mesh		*meshes;
+	double			yaw;
+	double			pitch;
+	double			roll;
 	t_world_data	world_data;
-	int			mesh_count;
-	mlx_image_t	*img;
-	t_controls	controls;
-	t_settings	settings;
-	t_menu		menu;
+	mlx_t			*mlx;
+	t_mesh			*objs;
+	int				nb;
+	t_mesh			*meshes;
+	int				mesh_count;
+	mlx_image_t		*img;
+	// todo float depth buffer (or smaller)
+	// second depth buffer with 1 bit per pixel so not every frame
+	// the entiere dpeth buffer has to be reset (just reset the small one)
+	double			depth[WIDTH * HEIGHT];
+	t_controls		controls;
+	t_settings		settings;
+	t_menu			menu;
 }	t_main;
 
 // todo: get better textures

@@ -37,3 +37,4 @@ bool	arr_append(void **arr, void *new_data, int data_size, int old_arr_len)
 	*arr = new;
 	return (true);
 }
+

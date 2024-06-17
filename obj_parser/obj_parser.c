@@ -554,6 +554,7 @@ t_mesh	load_obj_file(char *dir, char *path, t_main *main_data)
 	t_mesh			mesh;
 
 	ft_bzero(&vars, sizeof(vars));
+	init_basic_data_mesh(main_data, &mesh);
 	vars.path = path;
 	vars.mesh = &mesh;
 	mesh.obj_file = true;
@@ -581,19 +582,7 @@ t_mesh	load_obj_file(char *dir, char *path, t_main *main_data)
 	obj_parser_handle_faces(&vars);
 	mesh.triangles = vars.tris;
 	mesh.count = vars.tris_count;
-	t_vec3	momentum = {0.5, 0.3, 0.0};
-	mesh.momentum = momentum;
-	double rotation_mat[4][4] = {
-		{1.0f, 0.0f, 0.0f, 0.0f},
-		{0.0f, 1.0f, 0.0f, 0.0f},
-		{0.0f, 0.0f, 1.0f, 0.0f},
-		{0.0f, 0.0f, 0.0f, 1.0f}
-	};
-	ft_memcpy(mesh.rotation_mat_x, rotation_mat, sizeof(rotation_mat));
-	ft_memcpy(mesh.rotation_mat_y, rotation_mat, sizeof(rotation_mat));
-	ft_memcpy(mesh.rotation_mat_z, rotation_mat, sizeof(rotation_mat));
 	mesh.main = main_data;
-	mesh.d_time = &main_data->mlx->delta_time;
 	mesh.img = main_data->img;
 	free(vars.vertexes);
 	free(vars.normals);

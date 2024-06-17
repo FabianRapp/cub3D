@@ -23,12 +23,12 @@
       "-v",
       "-c",
       "-o",
-      "CMakeFiles/cmTC_aff1c.dir/CMakeCCompilerABI.c.o",
+      "CMakeFiles/cmTC_933e6.dir/CMakeCCompilerABI.c.o",
       "/usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c"
     ],
-    "directory": "/home/fabi/42/cub3D/MLX42/build/CMakeFiles/CMakeScratch/TryCompile-Fp0ewO",
+    "directory": "/home/fabi/42/cub3D/MLX42/build/CMakeFiles/CMakeScratch/TryCompile-luKzo0",
     "file": "/usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c",
-    "output": "/home/fabi/42/cub3D/MLX42/build/CMakeFiles/CMakeScratch/TryCompile-Fp0ewO/CMakeFiles/cmTC_aff1c.dir/CMakeCCompilerABI.c.o"
+    "output": "/home/fabi/42/cub3D/MLX42/build/CMakeFiles/CMakeScratch/TryCompile-luKzo0/CMakeFiles/cmTC_933e6.dir/CMakeCCompilerABI.c.o"
   },
   {
     "arguments": [
@@ -36,68 +36,12 @@
       "-v",
       "-c",
       "-o",
-      "CMakeFiles/cmTC_b7a49.dir/CMakeCXXCompilerABI.cpp.o",
+      "CMakeFiles/cmTC_fc93a.dir/CMakeCXXCompilerABI.cpp.o",
       "/usr/share/cmake-3.28/Modules/CMakeCXXCompilerABI.cpp"
     ],
-    "directory": "/home/fabi/42/cub3D/MLX42/build/CMakeFiles/CMakeScratch/TryCompile-gvyVfz",
+    "directory": "/home/fabi/42/cub3D/MLX42/build/CMakeFiles/CMakeScratch/TryCompile-jfmp6U",
     "file": "/usr/share/cmake-3.28/Modules/CMakeCXXCompilerABI.cpp",
-    "output": "/home/fabi/42/cub3D/MLX42/build/CMakeFiles/CMakeScratch/TryCompile-gvyVfz/CMakeFiles/cmTC_b7a49.dir/CMakeCXXCompilerABI.cpp.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/cc",
-      "-I/home/fabi/42/cub3D/MLX42/include",
-      "-std=c11",
-      "-fPIC",
-      "-D",
-      "LODEPNG_NO_COMPILE_ENCODER",
-      "-D",
-      "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
-      "-Wextra",
-      "-Wall",
-      "-Werror",
-      "-Wunreachable-code",
-      "-Wno-char-subscripts",
-      "-Wno-sign-compare",
-      "-Wno-unused-parameter",
-      "-Wno-missing-field-initializers",
-      "-g",
-      "-c",
-      "-o",
-      "CMakeFiles/mlx42.dir/src/mlx_cursor.c.o",
-      "/home/fabi/42/cub3D/MLX42/src/mlx_cursor.c"
-    ],
-    "directory": "/home/fabi/42/cub3D/MLX42/build",
-    "file": "/home/fabi/42/cub3D/MLX42/src/mlx_cursor.c",
-    "output": "/home/fabi/42/cub3D/MLX42/build/CMakeFiles/mlx42.dir/src/mlx_cursor.c.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/cc",
-      "-I/home/fabi/42/cub3D/MLX42/include",
-      "-std=c11",
-      "-fPIC",
-      "-D",
-      "LODEPNG_NO_COMPILE_ENCODER",
-      "-D",
-      "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
-      "-Wextra",
-      "-Wall",
-      "-Werror",
-      "-Wunreachable-code",
-      "-Wno-char-subscripts",
-      "-Wno-sign-compare",
-      "-Wno-unused-parameter",
-      "-Wno-missing-field-initializers",
-      "-g",
-      "-c",
-      "-o",
-      "CMakeFiles/mlx42.dir/src/mlx_exit.c.o",
-      "/home/fabi/42/cub3D/MLX42/src/mlx_exit.c"
-    ],
-    "directory": "/home/fabi/42/cub3D/MLX42/build",
-    "file": "/home/fabi/42/cub3D/MLX42/src/mlx_exit.c",
-    "output": "/home/fabi/42/cub3D/MLX42/build/CMakeFiles/mlx42.dir/src/mlx_exit.c.o"
+    "output": "/home/fabi/42/cub3D/MLX42/build/CMakeFiles/CMakeScratch/TryCompile-jfmp6U/CMakeFiles/cmTC_fc93a.dir/CMakeCXXCompilerABI.cpp.o"
   },
   {
     "arguments": [
@@ -154,6 +98,62 @@
     "directory": "/home/fabi/42/cub3D/MLX42/build",
     "file": "/home/fabi/42/cub3D/MLX42/src/mlx_images.c",
     "output": "/home/fabi/42/cub3D/MLX42/build/CMakeFiles/mlx42.dir/src/mlx_images.c.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-I/home/fabi/42/cub3D/MLX42/include",
+      "-std=c11",
+      "-fPIC",
+      "-D",
+      "LODEPNG_NO_COMPILE_ENCODER",
+      "-D",
+      "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+      "-Wextra",
+      "-Wall",
+      "-Werror",
+      "-Wunreachable-code",
+      "-Wno-char-subscripts",
+      "-Wno-sign-compare",
+      "-Wno-unused-parameter",
+      "-Wno-missing-field-initializers",
+      "-g",
+      "-c",
+      "-o",
+      "CMakeFiles/mlx42.dir/src/mlx_cursor.c.o",
+      "/home/fabi/42/cub3D/MLX42/src/mlx_cursor.c"
+    ],
+    "directory": "/home/fabi/42/cub3D/MLX42/build",
+    "file": "/home/fabi/42/cub3D/MLX42/src/mlx_cursor.c",
+    "output": "/home/fabi/42/cub3D/MLX42/build/CMakeFiles/mlx42.dir/src/mlx_cursor.c.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-I/home/fabi/42/cub3D/MLX42/include",
+      "-std=c11",
+      "-fPIC",
+      "-D",
+      "LODEPNG_NO_COMPILE_ENCODER",
+      "-D",
+      "LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS",
+      "-Wextra",
+      "-Wall",
+      "-Werror",
+      "-Wunreachable-code",
+      "-Wno-char-subscripts",
+      "-Wno-sign-compare",
+      "-Wno-unused-parameter",
+      "-Wno-missing-field-initializers",
+      "-g",
+      "-c",
+      "-o",
+      "CMakeFiles/mlx42.dir/src/mlx_exit.c.o",
+      "/home/fabi/42/cub3D/MLX42/src/mlx_exit.c"
+    ],
+    "directory": "/home/fabi/42/cub3D/MLX42/build",
+    "file": "/home/fabi/42/cub3D/MLX42/src/mlx_exit.c",
+    "output": "/home/fabi/42/cub3D/MLX42/build/CMakeFiles/mlx42.dir/src/mlx_exit.c.o"
   },
   {
     "arguments": [
@@ -763,20 +763,6 @@
       "-fsanitize=address",
       "-g",
       "-c",
-      "-oo_files/mesh_rotation.o",
-      "-I./includes",
-      "-I./MLX42/include/MLX42",
-      "mesh_rotation.c"
-    ],
-    "directory": "/home/fabi/42/cub3D",
-    "file": "/home/fabi/42/cub3D/mesh_rotation.c"
-  },
-  {
-    "arguments": [
-      "/usr/bin/cc",
-      "-fsanitize=address",
-      "-g",
-      "-c",
       "-oo_files/utils1.o",
       "-I./includes",
       "-I./MLX42/include/MLX42",
@@ -1008,6 +994,20 @@
     ],
     "directory": "/home/fabi/42/cub3D",
     "file": "/home/fabi/42/cub3D/init.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-fsanitize=address",
+      "-g",
+      "-c",
+      "-oo_files/cleanup.o",
+      "-I./includes",
+      "-I./MLX42/include/MLX42",
+      "utils/cleanup.c"
+    ],
+    "directory": "/home/fabi/42/cub3D",
+    "file": "/home/fabi/42/cub3D/utils/cleanup.c"
   },
   {
     "arguments": [

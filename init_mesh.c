@@ -19,17 +19,15 @@ void	fill_tetra_mesh(t_mesh *cube, t_main *main_data)
 	double dy = 0.25;//sinf(M_PI_4 / 3.0);
 	const t_triangle init_triangles[] = {
 		//front
-		{.p={{M_SQRT1_2, 1.0f, M_SQRT1_2}, {0, 0, 1}, {dx, 0, dy}}, YELLOW, 1},
+		{.p={{M_SQRT1_2, 1.0f, M_SQRT1_2}, {0, 0, 1}, {dx, 0, dy}}, .col=YELLOW, 1},
 		//LEFT
-		{.p={{M_SQRT1_2, 1.0f, M_SQRT1_2}, {dx, 0, dy}, {dy, 0, dx}}, YELLOW, 1},
-		{.p={{M_SQRT1_2, 1.0f, M_SQRT1_2}, {dy, 0, dx}, {dx, 0, dy}}, YELLOW, 1},
+		{.p={{M_SQRT1_2, 1.0f, M_SQRT1_2}, {dx, 0, dy}, {dy, 0, dx}}, .col=YELLOW, 1},
+		{.p={{M_SQRT1_2, 1.0f, M_SQRT1_2}, {dy, 0, dx}, {dx, 0, dy}}, .col=YELLOW, 1},
 		// BOTTOM triangles
 		{.p={{0, 0, 1}, {dx, 0, dy}, {dy, 0, dx}}, YELLOW, 1},
 	};
 	cube->triangles = ft_memdup(&init_triangles, sizeof(init_triangles));
 	cube->count = sizeof(init_triangles) / sizeof(t_triangle);
-	t_vec3 momentum = {0.3, -1, 0};
-	ft_memcpy(&cube->momentum, &momentum, sizeof(momentum));
 	cube->main = main_data;
 	cube->obj_file = false;
 	for (int i = 0; i < cube->count; i++)
@@ -65,8 +63,6 @@ void	fill_cube_mesh(t_mesh *cube, t_main *main_data)
 		{.p={{1, 0, -2}, {0, 0, -2}, {0, 0, -1}}, .col=RED},
 		{.p={{1, 0, -2}, {0, 0, -1}, {1, 0, -1}}, .col=RED},
 	};
-	t_vec3 momentum = {1, 0, 0};
-	ft_memcpy(&cube->momentum, &momentum, sizeof(momentum));
 	cube->triangles = ft_memdup(&init_triangles, sizeof(init_triangles));
 	cube->count = sizeof(init_triangles) / sizeof(t_triangle);
 	cube->main = main_data;
@@ -103,21 +99,9 @@ void	fill_skybox_mesh(t_mesh *mesh, t_main *main_data)
 		{.p={{1, -1, Z_FAR}, {-1, -1, Z_FAR}, {-1, -1, 0}}, .col=ORANGE},
 		{.p={{1, -1, Z_FAR}, {-1, -1, 0}, {1, -1, 0}}, .col=LIME},
 	};
-	double rotation_mat[4][4] = {
-		{1.0f, 0.0f, 0.0f, 0.0f},
-		{0.0f, 1.0f, 0.0f, 0.0f},
-		{0.0f, 0.0f, 1.0f, 0.0f},
-		{0.0f, 0.0f, 0.0f, 1.0f}
-	};
-	ft_memcpy(mesh->rotation_mat_x, rotation_mat, sizeof(rotation_mat));
-	ft_memcpy(mesh->rotation_mat_y, rotation_mat, sizeof(rotation_mat));
-	ft_memcpy(mesh->rotation_mat_z, rotation_mat, sizeof(rotation_mat));
-	t_vec3 momentum = {0, 0, 0};
-	ft_memcpy(&mesh->momentum, &momentum, sizeof(momentum));
 	mesh->triangles = ft_memdup(&init_triangles, sizeof(init_triangles));
 	mesh->count = sizeof(init_triangles) / sizeof(t_triangle);
 	mesh->main = main_data;
-	mesh->d_time = &main_data->mlx->delta_time;
 	mesh->img = main_data->img;
 	mesh->obj_file = false;
 	for (int i = 0; i < mesh->count; i++)
@@ -151,28 +135,6 @@ void	fill_cube_mesh2(t_mesh *cube, t_main *main_data)
 		{.p={{1, 0, 1, .w = 1}, {0, 0, 1, .w = 1}, {0, 0, 0, .w = 1}}, .col=ORANGE},
 		{.p={{1, 0, 1, .w = 1}, {0, 0, 0, .w = 1}, {1, 0, 0, .w = 1}}, .col=LIME},
 	};
-
-	// const t_triangle init_triangles[] = {
-	// 	{.p={{0, 0, 1}, {0, 1, 1}, {1, 1, 1}}, .col=RED},
-	// 	{.p={{0, 0, 1}, {1, 1, 1}, {1, 0, 1}}, .col=GREEN},
-	// 	// EAST triangles
-	// 	{.p={{1, 0, 1}, {1, 1, 1}, {1, 1, 2}}, .col=BLUE},
-	// 	{.p={{1, 0, 1}, {1, 1, 2}, {1, 0, 2}}, .col=MAGENTA},
-	// 	// NORTH triangles
-	// 	{.p={{1, 0, 2}, {1, 1, 2}, {0, 1, 2}}, .col=YELLOW},
-	// 	{.p={{1, 0, 2}, {0, 1, 2}, {0, 0, 2}}, .col=WHITE},
-	// 	// WEST triangles
-	// 	{.p={{0, 0, 2}, {0, 1, 2}, {0, 1, 1}}, .col=CYAN},
-	// 	{.p={{0, 0, 2}, {0, 1, 1}, {0, 0, 1}}, .col=PURPLE},
-	// 	// TOP triangles
-	// 	{.p={{0, 1, 1}, {0, 1, 2}, {1, 1, 2}}, .col=TEAL},
-	// 	{.p={{0, 1, 1}, {1, 1, 2}, {1, 1, 1}}, .col=PINK},
-	// 	// BOTTOM triangles
-	// 	{.p={{1, 0, 2}, {0, 0, 2}, {0, 0, 1}}, .col=ORANGE},
-	// 	{.p={{1, 0, 2}, {0, 0, 1}, {1, 0, 1}}, .col=LIME},
-	// };
-	t_vec3 momentum = {0, 1, 0};
-	ft_memcpy(&cube->momentum, &momentum, sizeof(momentum));
 	cube->triangles = ft_memdup(&init_triangles, sizeof(init_triangles));
 	cube->count = sizeof(init_triangles) / sizeof(t_triangle);
 	cube->main = main_data;
