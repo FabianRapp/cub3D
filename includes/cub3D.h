@@ -187,8 +187,6 @@ typedef union u_color_split
 	uint8_t		argb[4];
 }	t_color_split;
 
-
-
 typedef struct s_light_argb_stren
 {
 	double	v[4];
@@ -204,6 +202,7 @@ typedef struct s_light
 
 typedef struct s_physics_data
 {
+	double			*delta_time;
 	double			x_speed;
 	double			y_speed;
 	double			z_speed;
@@ -221,30 +220,28 @@ typedef struct s_model_space_data
 	double			x_rotation;
 	double			y_rotation;
 	double			z_rotation;
+	t_vec3			center;
 }	t_model_space_data;
 
 typedef struct s_world_data
 {
+
 }	t_world_data;
 
 typedef struct s_mesh
 {
-	t_triangle		*triangles;
-	int				count;
-	double			rotation_mat_x[4][4];
-	double			rotation_mat_y[4][4];
-	double			rotation_mat_z[4][4];
-	t_model_space_data	model_space;
-	t_vec3			momentum;
-	t_vec3			center_pull;
-	t_vec3			center;
-	bool			obj_file;
-	double			a;
-	double			*d_time;
-	mlx_image_t		*img;
-	t_main			*main;
-	t_mtl			**mtl_libs;
-	int				mtl_count;
+	t_triangle			*triangles;
+	int					count;
+	t_model_space_data	model_space_data;
+	t_world_data		*world_data;
+	t_physics_data		physics_data;
+	bool				obj_file;
+	double				a;
+	double				*d_time;
+	mlx_image_t			*img;
+	t_main				*main;
+	t_mtl				**mtl_libs;
+	int					mtl_count;
 }	t_mesh;
 
 typedef struct	s_movement_state
@@ -283,24 +280,25 @@ typedef struct s_settings
 
 typedef struct s_main
 {
-	t_vec3		camera;
-	t_vec3		look_direct;
-	t_vec3		direct[3];
-	t_vec3		up;
-	double		world_mat[4][4];
-	double		yaw;
-	double		pitch;
-	double		roll;
-	mlx_t		*mlx;
-	t_mesh		*objs;
-	int			nb;
-	t_mesh		*meshes;
-	int			mesh_count;
-	mlx_image_t	*img;
-	double		depth[WIDTH * HEIGHT];
-	t_controls	controls;
-	t_settings	settings;
-	t_menu		menu;
+	t_vec3			camera;
+	t_vec3			look_direct;
+	t_vec3			direct[3];
+	t_vec3			up;
+	double			world_mat[4][4];
+	double			yaw;
+	double			pitch;
+	double			roll;
+	t_world_data	world_data;
+	mlx_t			*mlx;
+	t_mesh			*objs;
+	int				nb;
+	t_mesh			*meshes;
+	int				mesh_count;
+	mlx_image_t		*img;
+	double			depth[WIDTH * HEIGHT];
+	t_controls		controls;
+	t_settings		settings;
+	t_menu			menu;
 }	t_main;
 
 struct s_fps_textures
@@ -322,16 +320,12 @@ void	draw_mesh(t_mesh *cube_mesh);
 // main.c
 
 //old.c
-t_triangle	apply_rotation_addtiononal_translation(t_mesh *mesh, int i);
 
 //utils/fps.c
 struct s_fps_textures	get_fps_digit_texture(void);
 void					free_fps_digit_textures(void);
 void					display_fps_hook(void *param);
 
-// mesh_rotation.c
-void	mod_cube_rotation(t_mesh *mesh, double delta_time);
-void	mod_cube_rotation2(t_mesh *mesh, double delta_time);
 mlx_image_t	*first_ob_ball(mlx_t *mlx);
 
 void	translate_mesh_3d(t_mesh *mesh, t_vec3 v);
@@ -447,6 +441,8 @@ void	init_main(t_main *main_data);
 void	init_hooks(t_main *main_data);
 void	init_menu_widgets(t_main *main_data);
 void	init_default_model_space(t_model_space_data *data);
+void	init_basic_data_mesh(t_main *main_data, t_mesh *mesh);
+
 
 // utils/cleanup.c
 void	cleanup_exit(void *m_data);

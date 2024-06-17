@@ -104,8 +104,22 @@ void	init_default_model_space(t_model_space_data *data)
 	data->z_rotation = 0.0;
 }
 
+void	init_default_physics_data(t_main *main_data, t_physics_data *data)
+{
+	data->delta_time = &main_data->mlx->delta_time;
+	data->x_speed = 0;
+	data->y_speed = 0;
+	data->z_speed = 0;
+}
 
-
+//needs mlx to be initialized first
+void	init_basic_data_mesh(t_main *main_data, t_mesh *mesh)
+{
+	ft_bzero(mesh, sizeof *mesh);
+	init_default_model_space(&mesh->model_space_data);
+	init_default_physics_data(main_data, &mesh->physics_data);
+	mesh->world_data = &main_data->world_data;
+}
 
 
 

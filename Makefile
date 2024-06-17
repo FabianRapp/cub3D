@@ -30,7 +30,6 @@ SOURCES= \
 	draw.c \
 	vec3.c \
 	init_mesh.c \
-	mesh_rotation.c \
 	utils1.c \
 	triangle.c \
 	obj_parser/obj_parser.c \

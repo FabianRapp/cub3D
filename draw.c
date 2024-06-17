@@ -333,7 +333,7 @@ void	draw_mesh(t_mesh *mesh)
 	t_triangle		viewed;
 
 	mesh_physics_handler(mesh);
-	fill_model_matrix(&mesh->model_space);
+	fill_model_matrix(&mesh->model_space_data);
 
 	t_vec3	vec_target = v3_add(mesh->main->camera, mesh->main->look_direct);
 	double	camera[4][4];
@@ -362,10 +362,11 @@ void	draw_mesh(t_mesh *mesh)
 
 		model = mesh->triangles[i];//not neededm, for debugging
 		//Model space
-		matrix_mult_vec3_4x4(mesh->triangles[i].p + 0, mesh->model_space.model_matrix, model.p + 0);
-		matrix_mult_vec3_4x4 (mesh->triangles[i].p + 1, mesh->model_space.model_matrix, model.p + 1);
-		matrix_mult_vec3_4x4(mesh->triangles[i].p + 2, mesh->model_space.model_matrix, model.p + 2);
-		//
+		matrix_mult_vec3_4x4(mesh->triangles[i].p + 0, mesh->model_space_data.model_matrix, model.p + 0);
+		matrix_mult_vec3_4x4(mesh->triangles[i].p + 1, mesh->model_space_data.model_matrix, model.p + 1);
+		matrix_mult_vec3_4x4(mesh->triangles[i].p + 2, mesh->model_space_data.model_matrix, model.p + 2);
+
+		// check if triangle is facing away from the view direction
 		model.normal = cross_product(v3_sub(model.p[1], model.p[0]), v3_sub(model.p[2], model.p[0]));
 		unit_vec3(&model.normal);
 		if (dot_prod_unit(model.normal, v3_sub(model.p[0], mesh->main->camera)) >= 0)
