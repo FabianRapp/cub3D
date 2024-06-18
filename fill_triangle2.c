@@ -13,6 +13,23 @@
 #include "includes/cub3D.h"
 #include "MLX42/include/MLX42/MLX42.h"
 
+uint32_t colors[] = {
+0xFF000001,
+0xFF000100,
+0xFF00FF01,
+0xFFFF0001,
+0xFFFF00FF,
+0xFF00FFFF,
+0xFFFFFFFF,
+0xFF00FFFF,
+0xFFFF00A1,
+0xFF0080FF,
+0xFF808001,
+0xFFFF80FF,
+0xFF80FF01,
+0xFFD3D3D4,
+0xFFA9A9A9,
+};
 
 int8_t	edge_fn(int a[2], int b[2], int c[2])
 {
@@ -100,7 +117,11 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 	t_vec3	*p = projected->p;
 	double		*depth;
 	uint32_t	*pixels = (uint32_t *)img->pixels;
-
+	static int color_index = 0;
+	color = colors[color_index++];
+	if (color_index >= sizeof colors / sizeof(uint32_t))
+		color_index = 0;
+	const bool color_mode = 1;
 	//fprintf(stderr, "here\n");
 	depth = mesh->main->depth;
 	sort_vertexes_for_y(projected);
@@ -135,19 +156,9 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 	double	unprojected_z_dist10 = p[1].unprojected_z - p[0].unprojected_z;
 	double	unprojected_z_dist20 = p[2].unprojected_z - p[0].unprojected_z;
 
-	t_vec3	split_vertex;
-
-	split_vertex.y = p[1].y;
-
-	double	split_progress = y_dist10 / y_dist20;
-
-	//split_vertex.x = ;
-	//split_vertex.unprojected_z = ;
-
 	double	cur_y_lf = p[0].y;
 	double	total_y_progress = 0;
-	int		col_index;
-	static int i = 0;
+	int		cur_col;
 	int row_index =  (int)round(cur_y_lf);
 	double section_y_progress = 0;
 	if (!zero_f(y_dist10))
@@ -169,53 +180,48 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 			double cur_z;
 			double	first_col_z;
 			double	last_col_z;
-			first_col_z = total_y_progress * unprojected_z_dist10 + p[0].unprojected_z;
-			last_col_z = section_y_progress * unprojected_z_dist20 + p[0].unprojected_z;
-			double	z_dist = last_col_z - first_col_z;
-			int	len_x = last_col - first_col + 1;
-			if (!len_x)
-			{
-				cur_y_lf = cur_y_lf + 1.0f;
-				row_index =  (int)round(cur_y_lf);
-				continue ;
-			}
-			int	col_index = first_col;
+			first_col_z = total_y_progress * unprojected_z_dist20 + p[0].unprojected_z;
+			last_col_z = section_y_progress * unprojected_z_dist10 + p[0].unprojected_z;
+			int	cur_col = first_col;
 			int row_start_offset = WIDTH * row_index;
 			int	direct_x;
 			if (first_col <= last_col)
 				direct_x = 1;
 			else
 				direct_x = -1;
-			while (1)
+			int	len_x = last_col - first_col + direct_x;
+			double	z_dist = last_col_z - first_col_z;//+ direct_x;
+			assume(len_x);
+			for (int i = 0; i < abs(len_x); i++)
 			{
-				assume(col_index < WIDTH);
+				double p = cur_col - first_col;
+				//last_col_z - first_col_z;
+				cur_z = (p * z_dist) / ((double)len_x) + first_col_z;
+double t = (cur_col - first_col) / (double)len_x;
+cur_z = first_col_z + t * (last_col_z - first_col_z);
+				assume(cur_col < WIDTH);
 				double x_progress;
-				//if (col_index == first_col)
-				//{
-				//	x_progress = 0.0;
-				//	cur_z = first_col_z;
-				//}
-				//else if (col_index == last_col)
-				//{
-				//	x_progress = 1.0;
-				//	cur_z = last_col_z;
-				//}
-				//else
-				{
-					x_progress = 1.0 - ((last_col - col_index) / (double)len_x);
-					//x_progress = ((double)(col_index - first_col + 1)) / len_x;
-					cur_z = x_progress * z_dist + first_col_z;
-				}
-				int fin_index = col_index + row_start_offset;
-				assume(cur_z >= Z_NEAR && cur_z < Z_FAR);
+				x_progress = 1.0 - ((last_col - cur_col) / (double)len_x);
+				//x_progress = ((double)(cur_col - first_col + 1)) / len_x;
+				//cur_z = x_progress * z_dist + first_col_z;
+				int fin_index = cur_col + row_start_offset;
+				if (cur_z < Z_NEAR)
+					printf("%lf\n", cur_z);
+				assume((cur_z >= Z_NEAR || zero_f(cur_z - Z_NEAR)) && cur_z < Z_FAR);
 				if (cur_z < depth[fin_index])
 				{
 					depth[fin_index] = cur_z;
-					pixels[fin_index] = color;
+					if (color_mode)
+						pixels[fin_index] = color;
+					else
+					{
+						if (direct_x == 1)
+							pixels[fin_index] = GREEN;
+						else
+							pixels[fin_index] = RED;
+					}
 				}
-				if (abs(col_index - last_col) == 0)
-					break ;
-				col_index += direct_x;
+				cur_col += direct_x;
 			}
 			cur_y_lf = cur_y_lf + 1.0f;
 			row_index =  (int)round(cur_y_lf);
@@ -226,11 +232,8 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 	if (zero_f(y_dist21))
 		return ;
 	double	unprojected_z_dist21 = p[2].unprojected_z - p[1].unprojected_z;
-	double	m2 = slope_2d_x_per_y(p[0], p[2]);
-	double	m3 = slope_2d_x_per_y(p[1], p[2]);
-	long long int last_col;
+	int last_col;
 	cur_y_lf = p[1].y;
-	assert(cur_y_lf >= 0.0);
 	row_index = (int)round(cur_y_lf);
 	section_y_progress = 0.0;
 	while (section_y_progress < 1.0)
@@ -247,60 +250,52 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 		assume(total_y_progress >= 0.0 && total_y_progress <= 1.0);
 		assume(row_index >= 0);
 		assume(row_index < HEIGHT);
-		double	first_col = (int)round((m3 * (cur_y_lf - p[1].y) + p[1].x));
-		last_col =  (long long)round(((m2 * (cur_y_lf - p[2].y) + p[2].x)));
+		assume(section_y_progress <= total_y_progress);
+		int first_col = (int)round(x_dist20 * total_y_progress + p[0].x);
+		last_col = (int)round(p[1].x + section_y_progress * x_dist21);
 		double cur_z;
-		double first_col_z = section_y_progress * (unprojected_z_dist21) + p[1].unprojected_z;
-		double last_col_z = section_y_progress * unprojected_z_dist20 + p[0].unprojected_z;
-		int	len_x = last_col - first_col;
-		col_index = first_col;
+		double first_col_z = total_y_progress * unprojected_z_dist20 + p[0].unprojected_z;
+		double last_col_z = section_y_progress * unprojected_z_dist21 + p[1].unprojected_z;
+		cur_col = first_col;
 		double	z_dist = last_col_z - first_col_z;
 		int row_start_offset = WIDTH * row_index;
-		if (first_col < last_col)
+		assume(row_start_offset + WIDTH <= WIDTH * HEIGHT);
+		int	direct_x;
+		if (first_col <= last_col)
+			direct_x = 1;
+		else
+			direct_x = -1;
+		int	len_x = last_col - first_col + direct_x;
+		assume(first_col >= 0 && first_col < WIDTH);
+		assume(last_col >= 0 && last_col < WIDTH);
+		for (int i = 0; i < abs(len_x); i++)
 		{
-			if (last_col >= WIDTH)
-				printf("last_col: %lld (width: %d)(line %d)\n", last_col, WIDTH, __LINE__);
-			if (col_index < 0)
+			double x_progress = 1.0 - (last_col - cur_col) / (double)len_x;
+			double p = cur_col - first_col;
+			//last_col_z - first_col_z;
+			cur_z = (p * z_dist) / ((double)len_x) + first_col_z;
+double t = (cur_col - first_col) / (double)len_x;
+cur_z = first_col_z + t * (last_col_z - first_col_z);
+			//double x_progress = (cur_col - first_col) / len_x;
+			//cur_z = x_progress * z_dist + first_col_z;
+			int fin_index = cur_col + row_start_offset;
+			assume((cur_z >= Z_NEAR || zero_f(cur_z - Z_NEAR)) && cur_z < Z_FAR);
+			if (cur_z < depth[fin_index])
 			{
-				//printf("col_index < 0: %d in line %d\n", col_index, __LINE__);
-				col_index = 0;
-			}
-			while(col_index <= last_col && col_index < WIDTH)
-			{
-				double x_progress = (col_index - first_col) / len_x;
-				cur_z = x_progress * z_dist + first_col_z;
-				int fin_index = col_index + row_start_offset;
-				//if (cur_z < Z_NEAR)
-				//	printf("cur_z: %lf (line %d, Z_NEAR: %f)\n", cur_z, __LINE__, Z_NEAR);
-				if (cur_z > Z_NEAR && cur_z < depth[fin_index])
-				{
-					depth[fin_index] = cur_z;
+				depth[fin_index] = cur_z;
+				if (color_mode)
 					pixels[fin_index] = color;
-				}
-				col_index++;
-			}
-		}
-		else if (first_col > last_col)
-		{
-			if (last_col < 0)
-				printf("last_col: %lld (line %d)\n", last_col, __LINE__);
-			if (col_index >= WIDTH)
-			{
-				printf("col_index >= WIDTH(%d): %d in line %d (last_col: %lld)\n", WIDTH, col_index, __LINE__, last_col);
-				col_index = WIDTH - 1;
-			}
-			while (col_index >= last_col && col_index >= 0)
-			{
-				double x_progress = (col_index - first_col) / len_x;
-				cur_z = x_progress * z_dist + first_col_z;
-				int fin_index = col_index + row_start_offset;
-				if (cur_z > Z_NEAR && cur_z < depth[fin_index])
+				else
 				{
-					depth[fin_index] = cur_z;
-					pixels[fin_index] = color;
+					if (direct_x == 1)
+						pixels[fin_index] = WHITE;
+					else
+						pixels[fin_index] = BLUE;
 				}
-				col_index--;
 			}
+			if (first_col == last_col)
+				return ;
+			cur_col += direct_x;
 		}
 		cur_y_lf += 1.0f;
 		row_index =  (int)round(cur_y_lf);

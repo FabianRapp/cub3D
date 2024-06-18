@@ -66,7 +66,7 @@ void	projection_matrix(double mat[4][4])
 	mat[2][0] = 0.0;
 	mat[2][1] = 0.0;
 	mat[2][2] = ((double) Z_NORM);
-	mat[2][3] = 1.0;
+	mat[2][3] = -1.0;
 	mat[3][0] = 0.0;
 	mat[3][1] = 0.0;
 	mat[3][2] = ((double) Z_OFFSET);

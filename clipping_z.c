@@ -132,7 +132,7 @@ int8_t	clipping_z_near(t_triangle *tri, t_triangle *clipped)
 			inside_index[inside_points++] = i;
 		i++;
 	}
-	if (inside_points == 0) //inside_points == 2 ||
+	if (inside_points == 0)
 		return (0);
 	if (inside_points == 3)
 	{
@@ -159,6 +159,11 @@ int8_t	clipping_z_near(t_triangle *tri, t_triangle *clipped)
 	clipped[1].p[0] = tri->p[inside_index[1]];
 	clipped[1].p[1] = clipped[0].p[2];
 	clipped[1].p[2] = line_zplane_intersection(tri->p[inside_index[1]], tri->p[outside_index], true);
+	for (int i = 0; i < 3; i ++)
+	{
+		assume(clipped[0].p[i].z >= Z_NEAR);
+		assume(clipped[1].p[i].z >= Z_NEAR);
+	}
 	//print_vec3(tri->p[inside_index[0]], "inside 0: ");
 	//print_vec3(tri->p[inside_index[1]], "inside 1: ");
 	//print_vec3(tri->p[outside_index], "outside: ");

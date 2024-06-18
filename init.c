@@ -35,7 +35,6 @@ static void	init_settings(t_main *main_data)
 	main_data->controls.jump_height = 1;
 }
 
-#include <sanitizer/lsan_interface.h>
 
 void	init_mlx_no_leaks(t_main *main_data)
 {

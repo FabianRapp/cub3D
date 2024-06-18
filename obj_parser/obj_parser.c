@@ -58,6 +58,13 @@ t_mtl	*get_mtl(t_obj_parser *vars, char *name)
 void	obj_parser_count(t_obj_parser *vars)
 {
 	vars->fd = open(vars->path, O_RDONLY);
+	if (vars-> fd < 0 || errno)
+	{
+		printf("%s\n", getenv("PWD"));
+		printf("err: %s %s %d %s\n", strerror(errno), __FILE__, __LINE__, vars->path);
+		exit(errno);
+	}
+
 	vars->line = get_next_line(vars->fd);
 	while (vars->line)
 	{
@@ -115,6 +122,12 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 	char	**split;
 
 	vars->fd = open(vars->path, O_RDONLY);
+	if (vars-> fd < 0 || errno)
+	{
+		printf("err: %s %s %d %s\n", strerror(errno), __FILE__, __LINE__, vars->path);
+		exit(errno);
+	}
+
 	vars->line = get_next_line(vars->fd);
 	vertex_i = 0;
 	normal_i = 0;
@@ -267,6 +280,12 @@ void	obj_parser_handle_faces(t_obj_parser *vars)
 
 	cur_mtl = NULL;
 	vars->fd = open(vars->path, O_RDONLY);
+	if (vars-> fd < 0 || errno)
+	{
+		printf("err: %s %s %d %s\n", strerror(errno), __FILE__, __LINE__, vars->path);
+		exit(errno);
+	}
+
 	vars->line = get_next_line(vars->fd);
 	int nb = 0;
 	while (vars->line)
@@ -396,6 +415,12 @@ int	mtl_len(char *file_path)
 	int		len;
 
 	fd = open(file_path, O_RDONLY);
+	if ( fd < 0 || errno)
+	{
+		printf("err: %s %s %d %s\n", strerror(errno), __FILE__, __LINE__, file_path);
+		exit(errno);
+	}
+
 	line = get_next_line(fd);
 	len = 0;
 	while (line)
@@ -454,6 +479,11 @@ t_mtl	*parse_mtl(char *dir, char *file_name)
 	count = mtl_len(file_path);
 	arr = ft_calloc(count + 1, sizeof(t_mtl));
 	fd = open(file_path, O_RDONLY);
+	if ( fd < 0 || errno)
+	{
+		printf("err: %s %s %d %s\n", strerror(errno), __FILE__, __LINE__, file_path);
+		exit(errno);
+	}
 	free(file_path);
 	line = get_next_line(fd);
 
@@ -515,6 +545,12 @@ void	obj_parser_parse_mtl_libs(t_obj_parser *vars, char *dir, char *path)
 	int		i;
 
 	fd = open(path, O_RDONLY);
+	if ( fd < 0 || errno)
+	{
+		printf("err: %s %s %d %s\n", strerror(errno), __FILE__, __LINE__, path);
+		exit(errno);
+	}
+
 	line = get_next_line(fd);
 	i = 0;
 	while (line && i < vars->mtl_libs_count)
@@ -553,6 +589,7 @@ t_mesh	load_obj_file(char *dir, char *path, t_main *main_data)
 	t_obj_parser	vars;
 	t_mesh			mesh;
 
+	errno = 0;
 	ft_bzero(&vars, sizeof(vars));
 	init_basic_data_mesh(main_data, &mesh);
 	vars.path = path;

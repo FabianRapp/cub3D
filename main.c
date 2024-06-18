@@ -180,23 +180,34 @@ void	add_obj_file_meshes(t_main *main_data)
 {
 	t_mesh	new_mesh;
 
-	new_mesh = load_obj_file("./", "axis.obj", main_data);
+	//new_mesh = load_obj_file("./", "axis.obj", main_data);
+	//make_mesh_render_rdy(&new_mesh);
+	//if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
+	//	ft_error(main_data);
+	//main_data->mesh_count++;
+	//new_mesh = load_obj_file("teapot/", "teapot/teapot.obj", main_data);
+	//make_mesh_render_rdy(&new_mesh);
+	//if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
+	//	ft_error(main_data);
+	//main_data->mesh_count++;
+	
+	new_mesh = load_obj_file("./objs/", "objs/HorseArmor.obj", main_data);
 	make_mesh_render_rdy(&new_mesh);
+	//new_mesh.model_space_data.x_scale = 20;
+	//new_mesh.model_space_data.y_scale = 20;
+	//new_mesh.model_space_data.z_scale = 20;
 	if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
 		ft_error(main_data);
 	main_data->mesh_count++;
-	new_mesh = load_obj_file("teapot/", "teapot/teapot.obj", main_data);
-	make_mesh_render_rdy(&new_mesh);
-	if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
-		ft_error(main_data);
-	main_data->mesh_count++;
+
 }
 
 int32_t	main(void)
 {
 	mlx_image_t		*ob;
 	static t_main			m_data; //has to be static so it's in the
-                                    //BSS segment
+                                   //BSS segment
+	errno = 0;
 
 	int i = 0;
 	init_main(&m_data);

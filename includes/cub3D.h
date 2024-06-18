@@ -32,7 +32,8 @@
 # include <limits.h>
 # include "libft.h"
 # include <time.h>
-
+# include <errno.h>
+# include <string.h>
 // out headers
 # include "menu.h"
 
@@ -71,6 +72,10 @@
 #define LIME 0xFF80FF00
 #define LIGHT_GREY 0xFFD3D3D3
 #define DARK_GREY 0xFFA9A9A9
+
+
+
+
 //=== DEFAULT KEY BINDS======
 
 #define FORWARD_KEY MLX_KEY_W
@@ -122,7 +127,7 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 
 #define ASPECT_RATIO ((double)HEIGHT) / ((double)WIDTH)
 
-#define FOV 60.0
+#define FOV 60
 #define FOV_RAD 1 / tan((double)FOV * 0.5 / 180.0 * 3.14159)
 //#define FOV_RAD 1.0471975512 // precomputed for FOV = 60.0 degrees
 //#define FOV_RAD 1.73205257663 // precomputed for FOV = 60.0 degrees

@@ -179,6 +179,9 @@ void	fill_model_matrix(t_model_space_data *data)
 	double	roty_mat[4][4];
 	double	rotz_mat[4][4];
 
+	//data->x_scale = 20;
+	//data->y_scale = 20;
+	//data->z_scale = 20;
 	translation_matrix(translation_mat, data->x_translation, data->y_translation, data->z_translation);
 	scale_matrix(scale_mat, data->x_scale, data->y_scale, data->z_scale);
 	rot_matx_4x4(rotx_mat, data->x_rotation);
@@ -305,11 +308,11 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 						assume(0);
 					}
 				}
-				if (!projected.p[0].mtl || !projected.p[0].mtl->texture)
+				//if (!projected.p[0].mtl || !projected.p[0].mtl->texture)
 					fill_triangle_color(mesh->img, &projected, projected.col, mesh);
 					// fill_triangle_color(mesh->img, &projected, base_data->col, mesh);
-				else
-					fill_triangle_texture(mesh->img, &projected, mesh, color_scalars);
+				//else
+				//	fill_triangle_texture(mesh->img, &projected, mesh, color_scalars);
 				l++;
 			}
 			q++;
