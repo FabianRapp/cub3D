@@ -261,8 +261,7 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 	j = 0;
 	while (j < clipped_count_front)
 	{
-		if (clipped_count_front)
-			triangle = clipped_z_front[j];
+		triangle = clipped_z_front[j];
 		//todo: clipping_z_far not active for debugging
 		//clipped_count_back = clipping_z_far(&triangle, clipped_z_back);
 		clipped_z_back[0] = triangle;
@@ -271,11 +270,9 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 		uint32_t col = clipped_z_front[j].col; //TODO remove this line after fixing/implenting clipping
 		while (q < clipped_count_back)
 		{
-			if (clipped_count_back)
-				triangle = clipped_z_back[q];
-
+			triangle = clipped_z_back[q];
 			// enter projeceted space
-			projected.col = col; //TODO remove this line after fixing/implenting clipping
+			projected = triangle;
 			matrix_mult_vec3_4x4(triangle.p + 0, project_mat, &projected.p[0]);
 			matrix_mult_vec3_4x4(triangle.p + 1, project_mat, &projected.p[1]);
 			matrix_mult_vec3_4x4(triangle.p + 2, project_mat, &projected.p[2]);
@@ -284,12 +281,11 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 			{
 				assume(!zero_f(projected.p[i].w));
 				div_vec3(projected.p + i, projected.p[i].w);
+				projected.p[i].unprojected_z = clipped_z_back[q].p[i].unprojected_z;
 			}
-			scale_to_screen(&projected);
 
-			projected.unprojected_z[0] = triangle.p[0].z;
-			projected.unprojected_z[1] = triangle.p[1].z;
-			projected.unprojected_z[2] = triangle.p[2].z;
+			scale_to_screen(&projected); // todo: this could be after xy-
+			// clipping to simplify clipping to values 0 to 1 (needs
 			t_triangle				clipped[30];
 			clipped[0] = projected;
 			int clipped_count = call_clipping_xy(clipped);
@@ -407,10 +403,11 @@ void	draw_mesh(t_mesh *mesh)
 
 		// enter view space
 		viewed = model;
-		matrix_mult_vec3_4x4(model.p + 0, mat_view, viewed.p + 0);
-		matrix_mult_vec3_4x4 (model.p + 1, mat_view, viewed.p + 1);
-		matrix_mult_vec3_4x4(model.p + 2, mat_view, viewed.p + 2);
-
+		for (int i = 0; i < 3; i++)
+		{
+			matrix_mult_vec3_4x4(model.p + i, mat_view, viewed.p + i);
+			viewed.p[i].unprojected_z = viewed.p[i].z;
+		}
 		rasterize(viewed, mesh, mesh->triangles + i, color_scalars);
 		i++;
 	}

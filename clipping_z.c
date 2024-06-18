@@ -41,12 +41,13 @@ t_vec3	line_zplane_intersection(t_vec3 line_start, t_vec3 line_end, bool z_near)
 	static const t_vec3	plane_n = {.x=0, .y=0,.z = 1};
 	static const t_vec3	plane_near = {.x=0, .y=0,.z = Z_NEAR};
 	t_vec3				plane_p;
+	t_vec3	intersection;
+	t_vec3	line_direct;
+
 	if (z_near)
 		plane_p = plane_near;
 	else
 		plane_p = plane_far;
-	t_vec3	intersection;
-	t_vec3	line_direct;
 	double	d;
 	double	dot_directline_nplane;
 
@@ -61,9 +62,9 @@ t_vec3	line_zplane_intersection(t_vec3 line_start, t_vec3 line_end, bool z_near)
 	d = (dot_prod_unit(plane_p, plane_n) - dot_prod_unit(line_start, plane_n)) / dot_directline_nplane;
 	intersection = v3_add(v3_scale(line_direct, d), line_start);
 	if (z_near)
-		intersection.z = Z_NEAR + Z_NEAR * 0.05;
+		intersection.z = Z_NEAR;
 	else
-		intersection.z = Z_FAR - Z_FAR * 0.01;
+		intersection.z = Z_FAR - 1.0;
 	intersection.u = d * (line_end.u - line_start.u);
 	intersection.v = d * (line_end.v - line_start.v);
 	return (intersection);

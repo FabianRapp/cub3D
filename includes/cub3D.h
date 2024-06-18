@@ -157,6 +157,7 @@ typedef struct s_mtl
 }	t_mtl;
 
 
+
 typedef struct s_vec3
 {
 	double			x;//HAS TO BE FIRST
@@ -166,12 +167,13 @@ typedef struct s_vec3
 	t_mtl			*mtl; // HAS TO BE AFTER POSITION DATA
 	double			u;
 	double			v;
+	double			unprojected_z;
 }	t_vec3;
 
 typedef struct s_triangle
 {
 	t_vec3		p[3];// HAS TO BE FIRST
-	double		unprojected_z[3];// HAS TO BE SECOND
+	//double		unprojected_z[3];// HAS TO BE SECOND
 	uint32_t	col; //HAS TO BE THIRD
 	t_vec3		centroid;
 	t_vec3		normal;
@@ -439,6 +441,7 @@ void	init_hooks(t_main *main_data);
 void	init_menu_widgets(t_main *main_data);
 void	init_default_model_space(t_model_space_data *data);
 void	init_basic_data_mesh(t_main *main_data, t_mesh *mesh);
+void	make_mesh_render_rdy(t_mesh *mesh);
 
 
 // utils/cleanup.c

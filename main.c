@@ -181,10 +181,12 @@ void	add_obj_file_meshes(t_main *main_data)
 	t_mesh	new_mesh;
 
 	new_mesh = load_obj_file("./", "axis.obj", main_data);
+	make_mesh_render_rdy(&new_mesh);
 	if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
 		ft_error(main_data);
 	main_data->mesh_count++;
 	new_mesh = load_obj_file("teapot/", "teapot/teapot.obj", main_data);
+	make_mesh_render_rdy(&new_mesh);
 	if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
 		ft_error(main_data);
 	main_data->mesh_count++;

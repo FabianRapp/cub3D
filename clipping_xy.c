@@ -105,7 +105,7 @@ static void fast_line_intersect(const t_clipping_para para, t_vec3 p1, t_vec3 *p
 		p2->x = p1.x + dist_x * progress;
 		if (p2->x < 0.0f)
 			p2->x = 0.0f;
-		else if (p2->x > WIDTH - 1.0)
+		else if (p2->x >= WIDTH - 1.0)
 			p2->x = WIDTH - 1.0;
 	}
 	else if (para.split.right)
@@ -133,6 +133,7 @@ static void fast_line_intersect(const t_clipping_para para, t_vec3 p1, t_vec3 *p
 	else
 		assume(0);
 	p2->u = p1.u + (p2->u - p1.u) * progress;
+	p2->unprojected_z = p1.unprojected_z + (p2->unprojected_z - p1.unprojected_z) * progress;
 	if (p2->u < 0.0)
 		p2->u = 0.0;
 	else if (p2->u > 1.0)
@@ -142,6 +143,10 @@ static void fast_line_intersect(const t_clipping_para para, t_vec3 p1, t_vec3 *p
 		p2->v = 0.0;
 	else if (p2->v > 1.0)
 		p2->v = 1.0;
+	if (p2->unprojected_z < Z_NEAR)
+		p2->unprojected_z = Z_NEAR;
+	else if (p2->unprojected_z >= Z_FAR)
+		p2->unprojected_z = (Z_FAR - 1.0);
 }
 
 static int8_t	count_inside_points(t_triangle *clipped, int8_t cur_index, const t_clipping_para para, int8_t inside_index[3])
@@ -157,9 +162,9 @@ static int8_t	count_inside_points(t_triangle *clipped, int8_t cur_index, const t
 			inside_index[inside_points++] = i;
 		else if (para.split.top && clipped[cur_index].p[i].y >= 0.0f)
 			inside_index[inside_points++] = i;
-		else if (para.split.right && clipped[cur_index].p[i].x < (double)WIDTH)
+		else if (para.split.right && clipped[cur_index].p[i].x <= (WIDTH - 1))
 			inside_index[inside_points++] = i;
-		else if (para.split.bot && clipped[cur_index].p[i].y < (double)HEIGHT)
+		else if (para.split.bot && clipped[cur_index].p[i].y <= (HEIGHT - 1))
 			inside_index[inside_points++] = i;
 		i++;
 	}

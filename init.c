@@ -90,6 +90,30 @@ void	init_menu_widgets(t_main *main_data)
 	add_menu_widget(main_data, WIDGET_SLIDER, "Press 'm' to exit/enter menu", (t_widget_val)(main_data->settings.mouse_sens / MOUSE_SENS_BASE), &main_data->menu);
 }
 
+// called before a mesh is added to the redender loop and after
+// initiializing it
+// can throw errors in debug mode for invalid data
+void	make_mesh_render_rdy(t_mesh *mesh)
+{
+	int	i;
+	int	j;
+	t_triangle	*tris;
+
+	tris = mesh->triangles;
+	i = 0;
+	while (i < mesh->count)
+	{
+		j = 0;
+		while (j < 3)
+		{
+			tris[i].p[j].unprojected_z = tris[i].p[j].z;
+			j++;
+		}
+		i++;
+	}
+}
+
+
 void	init_default_model_space(t_model_space_data *data)
 {
 	ident_mat_4x4(data->model_matrix);
