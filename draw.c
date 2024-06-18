@@ -281,7 +281,8 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 			{
 				assume(!zero_f(projected.p[i].w));
 				div_vec3(projected.p + i, projected.p[i].w);
-				projected.p[i].unprojected_z = clipped_z_back[q].p[i].unprojected_z;
+				projected.p[i].unprojected_z = clipped_z_back[q].p[i].z;
+				assume(projected.p[i].unprojected_z >= Z_NEAR && projected.p[i].unprojected_z < Z_FAR);
 			}
 
 			scale_to_screen(&projected); // todo: this could be after xy-

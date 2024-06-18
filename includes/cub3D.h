@@ -122,22 +122,22 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 
 #define ASPECT_RATIO ((double)HEIGHT) / ((double)WIDTH)
 
-#define FOV 60.0f
+#define FOV 60.0
 #define FOV_RAD 1 / tan((double)FOV * 0.5 / 180.0 * 3.14159)
 //#define FOV_RAD 1.0471975512 // precomputed for FOV = 60.0 degrees
 //#define FOV_RAD 1.73205257663 // precomputed for FOV = 60.0 degrees
 //#define FOV_RAD 1.0 / tan(M_PI_4)
-#define Z_FAR 1000.0f
-#define Z_NEAR 0.1f
+#define Z_FAR 1000.0
+#define Z_NEAR 0.1
 #define Z_NORM ((double)Z_FAR) / (Z_FAR - Z_NEAR)
 #define Z_OFFSET (-(double)Z_FAR * Z_NEAR) / (Z_FAR - Z_NEAR)
 
 #define PROJECTION_MATRIX \
 { \
-	{(double)(ASPECT_RATIO * ((double)FOV_RAD)), 0.0f, 0.0f, 0.0f}, \
-	{0.0f, (double)(FOV_RAD), 0.0f, 0.0f}, \
-	{0.0f, 0.0f, ((double) Z_NORM), 1.0f}, \
-	{0.0f, 0.0f, ((double) Z_OFFSET), 0.0f} \
+	{(double)(ASPECT_RATIO * ((double)FOV_RAD)), 0.0, 0.0, 0.0}, \
+	{0.0, (double)(FOV_RAD), 0.0, 0.0}, \
+	{0.0, 0.0, ((double) Z_NORM), 1.0}, \
+	{0.0, 0.0, ((double) Z_OFFSET), 0.0} \
 }
 
 typedef struct s_mtl

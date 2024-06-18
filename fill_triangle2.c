@@ -161,51 +161,61 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 			if (total_y_progress >= 1.0)
 				return ;
 			assume(total_y_progress >= 0.0 && total_y_progress <= 1.0);
-			col_index = (int)round(x_dist20 * total_y_progress + p[0].x);
+			int first_col = (int)round(x_dist20 * total_y_progress + p[0].x);
 			section_y_progress =  (cur_y_lf - p[0].y) / y_dist10;
 			if (section_y_progress >= 1.0)
 				break ;
-			assume(row_index < HEIGHT);
-			int	x_max = (int)round(x_dist10 * section_y_progress + p[0].x);
+			int	last_col = (int)round(x_dist10 * section_y_progress + p[0].x);
 			double cur_z;
-			double z_row_start = section_y_progress * unprojected_z_dist10 + p[0].unprojected_z;
-			double end_z = total_y_progress * unprojected_z_dist20 + p[0].unprojected_z;
-			int	len_x = x_max - col_index;
-			double	start_col = col_index;
-			double	z_dist = end_z - z_row_start;
-			int row_start_offset = WIDTH * row_index;
-			if (col_index < x_max)
+			double	first_col_z;
+			double	last_col_z;
+			first_col_z = total_y_progress * unprojected_z_dist10 + p[0].unprojected_z;
+			last_col_z = section_y_progress * unprojected_z_dist20 + p[0].unprojected_z;
+			double	z_dist = last_col_z - first_col_z;
+			int	len_x = last_col - first_col + 1;
+			if (!len_x)
 			{
-				while (col_index <= x_max && col_index < WIDTH)
-				{
-					double x_progress = fabs(col_index - start_col) / len_x;
-					cur_z = x_progress * z_dist + z_row_start;
-					int fin_index = col_index + row_start_offset;
-					if (cur_z < Z_NEAR)
-						printf("cur_z: %lf (line %d, Z_NEAR: %f)\n", cur_z, __LINE__, Z_NEAR);
-					if (cur_z > Z_NEAR && cur_z < depth[fin_index])
-					{
-						depth[fin_index] = cur_z;
-						pixels[fin_index] = color;
-					}
-					col_index++;
-				}
+				cur_y_lf = cur_y_lf + 1.0f;
+				row_index =  (int)round(cur_y_lf);
+				continue ;
 			}
-			else if (col_index > x_max)
+			int	col_index = first_col;
+			int row_start_offset = WIDTH * row_index;
+			int	direct_x;
+			if (first_col <= last_col)
+				direct_x = 1;
+			else
+				direct_x = -1;
+			while (1)
 			{
 				assume(col_index < WIDTH);
-				while (col_index >= x_max && col_index >= 0)
+				double x_progress;
+				//if (col_index == first_col)
+				//{
+				//	x_progress = 0.0;
+				//	cur_z = first_col_z;
+				//}
+				//else if (col_index == last_col)
+				//{
+				//	x_progress = 1.0;
+				//	cur_z = last_col_z;
+				//}
+				//else
 				{
-					double x_progress = (col_index - start_col) / len_x;
-					cur_z = x_progress * z_dist + z_row_start;
-					int fin_index = col_index + row_start_offset;
-					if (cur_z > Z_NEAR && cur_z < depth[fin_index])
-					{
-						depth[fin_index] = cur_z;
-						pixels[fin_index] = color;
-					}
-					col_index--;
+					x_progress = 1.0 - ((last_col - col_index) / (double)len_x);
+					//x_progress = ((double)(col_index - first_col + 1)) / len_x;
+					cur_z = x_progress * z_dist + first_col_z;
 				}
+				int fin_index = col_index + row_start_offset;
+				assume(cur_z >= Z_NEAR && cur_z < Z_FAR);
+				if (cur_z < depth[fin_index])
+				{
+					depth[fin_index] = cur_z;
+					pixels[fin_index] = color;
+				}
+				if (abs(col_index - last_col) == 0)
+					break ;
+				col_index += direct_x;
 			}
 			cur_y_lf = cur_y_lf + 1.0f;
 			row_index =  (int)round(cur_y_lf);
@@ -218,7 +228,7 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 	double	unprojected_z_dist21 = p[2].unprojected_z - p[1].unprojected_z;
 	double	m2 = slope_2d_x_per_y(p[0], p[2]);
 	double	m3 = slope_2d_x_per_y(p[1], p[2]);
-	long long int x_max;
+	long long int last_col;
 	cur_y_lf = p[1].y;
 	assert(cur_y_lf >= 0.0);
 	row_index = (int)round(cur_y_lf);
@@ -237,28 +247,28 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 		assume(total_y_progress >= 0.0 && total_y_progress <= 1.0);
 		assume(row_index >= 0);
 		assume(row_index < HEIGHT);
-		double	start_col = (int)round((m3 * (cur_y_lf - p[1].y) + p[1].x));
-		x_max =  (long long)round(((m2 * (cur_y_lf - p[2].y) + p[2].x)));
+		double	first_col = (int)round((m3 * (cur_y_lf - p[1].y) + p[1].x));
+		last_col =  (long long)round(((m2 * (cur_y_lf - p[2].y) + p[2].x)));
 		double cur_z;
-		double z_row_start = section_y_progress * (unprojected_z_dist21) + p[1].unprojected_z;
-		double end_z = section_y_progress * unprojected_z_dist20 + p[0].unprojected_z;
-		int	len_x = x_max - start_col;
-		col_index = start_col;
-		double	z_dist = end_z - z_row_start;
+		double first_col_z = section_y_progress * (unprojected_z_dist21) + p[1].unprojected_z;
+		double last_col_z = section_y_progress * unprojected_z_dist20 + p[0].unprojected_z;
+		int	len_x = last_col - first_col;
+		col_index = first_col;
+		double	z_dist = last_col_z - first_col_z;
 		int row_start_offset = WIDTH * row_index;
-		if (col_index < x_max)
+		if (first_col < last_col)
 		{
-			if (x_max >= WIDTH)
-				printf("x_max: %lld (width: %d)(line %d)\n", x_max, WIDTH, __LINE__);
+			if (last_col >= WIDTH)
+				printf("last_col: %lld (width: %d)(line %d)\n", last_col, WIDTH, __LINE__);
 			if (col_index < 0)
 			{
 				//printf("col_index < 0: %d in line %d\n", col_index, __LINE__);
 				col_index = 0;
 			}
-			while(col_index <= x_max && col_index < WIDTH)
+			while(col_index <= last_col && col_index < WIDTH)
 			{
-				double x_progress = (col_index - start_col) / len_x;
-				cur_z = x_progress * z_dist + z_row_start;
+				double x_progress = (col_index - first_col) / len_x;
+				cur_z = x_progress * z_dist + first_col_z;
 				int fin_index = col_index + row_start_offset;
 				//if (cur_z < Z_NEAR)
 				//	printf("cur_z: %lf (line %d, Z_NEAR: %f)\n", cur_z, __LINE__, Z_NEAR);
@@ -270,19 +280,19 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 				col_index++;
 			}
 		}
-		else if (col_index > x_max)
+		else if (first_col > last_col)
 		{
-			if (x_max < 0)
-				printf("x_max: %lld (line %d)\n", x_max, __LINE__);
+			if (last_col < 0)
+				printf("last_col: %lld (line %d)\n", last_col, __LINE__);
 			if (col_index >= WIDTH)
 			{
-				printf("col_index >= WIDTH(%d): %d in line %d (x_max: %lld)\n", WIDTH, col_index, __LINE__, x_max);
+				printf("col_index >= WIDTH(%d): %d in line %d (last_col: %lld)\n", WIDTH, col_index, __LINE__, last_col);
 				col_index = WIDTH - 1;
 			}
-			while (col_index >= x_max && col_index >= 0)
+			while (col_index >= last_col && col_index >= 0)
 			{
-				double x_progress = (col_index - start_col) / len_x;
-				cur_z = x_progress * z_dist + z_row_start;
+				double x_progress = (col_index - first_col) / len_x;
+				cur_z = x_progress * z_dist + first_col_z;
 				int fin_index = col_index + row_start_offset;
 				if (cur_z > Z_NEAR && cur_z < depth[fin_index])
 				{
