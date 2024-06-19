@@ -118,7 +118,7 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 	double		*depth;
 	uint32_t	*pixels = (uint32_t *)img->pixels;
 	static int color_index = 0;
-	color = colors[color_index++];
+	//color = colors[color_index++];
 	if (color_index >= sizeof colors / sizeof(uint32_t))
 		color_index = 0;
 	const bool color_mode = 1;

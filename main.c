@@ -40,15 +40,15 @@ void	handle_movement_per_frame(t_main *main_data)
 	{
 		t_vec3 left = cross_product(main_data->world_data.look_direct, main_data->world_data.up);
 		unit_vec3(&left);
-		main_data->world_data.camera.x += main_data->mlx->delta_time * controls.movement_speed_left * left.x;
-		main_data->world_data.camera.z += main_data->mlx->delta_time * controls.movement_speed_left * left.z;
+		main_data->world_data.camera.x -= main_data->mlx->delta_time * controls.movement_speed_left * left.x;
+		main_data->world_data.camera.z -= main_data->mlx->delta_time * controls.movement_speed_left * left.z;
 	}
 	if (controls.state.right)
 	{
 		t_vec3 right = cross_product(main_data->world_data.up, main_data->world_data.look_direct);
 		unit_vec3(&right);
-		main_data->world_data.camera.x += main_data->mlx->delta_time * controls.movement_speed_right * right.x;
-		main_data->world_data.camera.z += main_data->mlx->delta_time * controls.movement_speed_right * right.z;
+		main_data->world_data.camera.x -= main_data->mlx->delta_time * controls.movement_speed_right * right.x;
+		main_data->world_data.camera.z -= main_data->mlx->delta_time * controls.movement_speed_right * right.z;
 	}
 	if (controls.state.back)
 	{
@@ -57,9 +57,9 @@ void	handle_movement_per_frame(t_main *main_data)
 		movement.z -= main_data->world_data.look_direct.z * main_data->mlx->delta_time * controls.movement_speed_back;
 	}
 	if (controls.state.jump)
-		movement.y -= controls.jump_height * main_data->mlx->delta_time;
-	if (controls.state.negative_jump)
 		movement.y += controls.jump_height * main_data->mlx->delta_time;
+	if (controls.state.negative_jump)
+		movement.y -= controls.jump_height * main_data->mlx->delta_time;
 	if (!zero_f(movement.x) || !zero_f(movement.y) || !zero_f(movement.z))
 		add_vec3(&main_data->world_data.camera, &movement);
 }
@@ -181,11 +181,18 @@ void	add_obj_file_meshes(t_main *main_data)
 	t_mesh	new_mesh;
 
 	new_mesh = load_obj_file("./", "axis.obj", main_data);
+	new_mesh.model_space_data.x_scale = 0.1;
+	new_mesh.model_space_data.y_scale = 0.1;
+	new_mesh.model_space_data.z_scale = 0.1;
 	make_mesh_render_rdy(&new_mesh);
 	if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
 		ft_error(main_data);
 	main_data->mesh_count++;
 	new_mesh = load_obj_file("teapot/", "teapot/teapot.obj", main_data);
+	new_mesh.model_space_data.x_scale = 0.1;
+	new_mesh.model_space_data.y_scale = 0.1;
+	new_mesh.model_space_data.z_scale = 0.1;
+
 	make_mesh_render_rdy(&new_mesh);
 	if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
 		ft_error(main_data);
@@ -193,9 +200,9 @@ void	add_obj_file_meshes(t_main *main_data)
 	
 	//new_mesh = load_obj_file("./objs/", "objs/HorseArmor.obj", main_data);
 	//make_mesh_render_rdy(&new_mesh);
-	////new_mesh.model_space_data.x_scale = 20;
-	////new_mesh.model_space_data.y_scale = 20;
-	////new_mesh.model_space_data.z_scale = 20;
+	//new_mesh.model_space_data.x_scale = 20;
+	//new_mesh.model_space_data.y_scale = 20;
+	//new_mesh.model_space_data.z_scale = 20;
 	//if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
 	//	ft_error(main_data);
 	//main_data->mesh_count++;

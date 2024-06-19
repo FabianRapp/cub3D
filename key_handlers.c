@@ -160,13 +160,13 @@ void	cursor_hook(double xpos, double ypos, void* param)
 	}
 	x_dist = xpos - ((float)(WIDTH / 2));
 	y_dist = ypos - ((float)(HEIGHT / 2));
-	main_data->pitch += main_data->settings.mouse_sens * y_dist;
+	main_data->pitch -= main_data->settings.mouse_sens * y_dist;
 	if (main_data->pitch < ((-M_PI + 0.05) / 2)) // can't look straight up/down up avoid bugs
 		main_data->pitch = ((-M_PI + 0.05) / 2);
 	else if (main_data->pitch > ((M_PI - 0.05)/ 2))
 		main_data->pitch = ((M_PI - 0.05) / 2);
-	main_data->yaw += main_data->settings.mouse_sens * x_dist;
-	main_data->yaw -= ((int)(main_data->yaw / (2 * (double)M_PI)))* (2 * (double)M_PI); // main_data->yaw %= 2 * PI
+	main_data->yaw -= main_data->settings.mouse_sens * x_dist;
+	main_data->yaw += ((int)(main_data->yaw / (2 * (double)M_PI)))* (2 * (double)M_PI); // main_data->yaw %= 2 * PI
 	//printf("pitch: %f\nyaw: %f\n", main_data->pitch, main_data->yaw);
 }
 

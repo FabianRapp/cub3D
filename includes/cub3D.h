@@ -122,28 +122,57 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 // todo should be enum
 #define MOUSE_SENS_WIDGET_INDEX 0
 
-#define WIDTH (256 * 10)
-#define HEIGHT (256 * 8)
-
-#define ASPECT_RATIO ((double)HEIGHT) / ((double)WIDTH)
-
-#define FOV 60
-#define FOV_RAD 1 / tan((double)FOV * 0.5 / 180.0 * 3.14159)
 //#define FOV_RAD 1.0471975512 // precomputed for FOV = 60.0 degrees
 //#define FOV_RAD 1.73205257663 // precomputed for FOV = 60.0 degrees
 //#define FOV_RAD 1.0 / tan(M_PI_4)
-#define Z_FAR 1000.0
-#define Z_NEAR 0.1
 #define Z_NORM ((double)Z_FAR) / (Z_FAR - Z_NEAR)
 #define Z_OFFSET (-(double)Z_FAR * Z_NEAR) / (Z_FAR - Z_NEAR)
 
+#define WIDTH (256 * 10)
+#define HEIGHT (256 * 8)
+#define ASPECT_RATIO (((double)WIDTH) / ((double)HEIGHT))
+#define FOV 100.0
+//#define FOV_RAD (1.0 / tan((double)FOV * 0.5 / 180.0 * 3.14159))
+#define FOV_RAD ((FOV * M_PI / 180.0))
+#define Z_FAR 1000.0
+#define Z_NEAR 0.1
+#define FOV_Y (FOV_RAD)
+#define FOV_X (2 * atan((1.0 / ASPECT_RATIO) * tan(FOV_Y / 2.0)))
+
 #define PROJECTION_MATRIX \
 { \
-	{(double)(ASPECT_RATIO * ((double)FOV_RAD)), 0.0, 0.0, 0.0}, \
-	{0.0, (double)(FOV_RAD), 0.0, 0.0}, \
-	{0.0, 0.0, ((double) Z_NORM), 1.0}, \
-	{0.0, 0.0, ((double) Z_OFFSET), 0.0} \
+	{1.0 / tan(FOV_X / 2.0), 0, 0, 0}, \
+	{0, 1.0 / tan(FOV_Y / 2.0), 0, 0}, \
+	{0, 0, -((double)Z_FAR) / ((double)Z_FAR- Z_NEAR), (-1.0 * Z_NEAR * Z_FAR) / ((double)Z_FAR - Z_NEAR)}, \
+	{0, 0, -1.0, 0} \
 }
+
+
+
+//#define PROJECTION_MATRIX \
+//{ \
+//	{(double)(ASPECT_RATIO * ((double)FOV_RAD)), 0.0, 0.0, 0.0}, \
+//	{0.0, (double)(FOV_RAD), 0.0, 0.0}, \
+//	{0.0, 0.0, -((double)Z_FAR + Z_NEAR) / ((double)Z_FAR- Z_NEAR), Z_OFFSET}, \
+//	{0.0, 0.0, -1, 0.0} \
+//}
+
+
+//#define PROJECTION_MATRIX \
+//{ \
+//	{(double)(ASPECT_RATIO * ((double)FOV_RAD)), 0.0, 0.0, 0.0}, \
+//	{0.0, (double)(FOV_RAD), 0.0, 0.0}, \
+//	{0.0, 0.0, ((double) Z_NORM), -2.0 * (Z_NEAR * Z_FAR) / ((double)Z_FAR - Z_NEAR)}, \
+//	{0.0, 0.0, -1, 0.0} \
+//}
+
+//#define PROJECTION_MATRIX \
+//{ \
+//	{(double)(ASPECT_RATIO * ((double)FOV_RAD)), 0.0, 0.0, 0.0}, \
+//	{0.0, (double)(FOV_RAD), 0.0, 0.0}, \
+//	{0.0, 0.0, ((double) Z_NORM), 1.0}, \
+//	{0.0, 0.0, ((double) Z_OFFSET), 0.0} \
+//}
 
 typedef struct s_mtl
 {
