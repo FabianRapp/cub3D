@@ -317,11 +317,11 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 						assume(0);
 					}
 				}
-				//if (!projected.p[0].mtl || !projected.p[0].mtl->texture)
+				if (!projected.p[0].mtl || !projected.p[0].mtl->texture)
 					fill_triangle_color(mesh->img, &projected, projected.col, mesh);
-					// fill_triangle_color(mesh->img, &projected, base_data->col, mesh);
-				//else
-				//	fill_triangle_texture(mesh->img, &projected, mesh, color_scalars);
+					//fill_triangle_color(mesh->img, &projected, base_data->col, mesh);
+				else
+					fill_triangle_texture(mesh->img, &projected, mesh, color_scalars);
 				l++;
 			}
 			q++;

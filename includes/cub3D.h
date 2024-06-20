@@ -20,7 +20,7 @@
 	- clipping against Z axis seems to not work correctly (shows when triangle clips 2 other sides for z < Z_NEAR)
 
 */
-
+# include <assert.h>
 # include <fcntl.h>
 # include <stdio.h>
 # include "../MLX42/include/MLX42/MLX42.h"
@@ -230,6 +230,7 @@ typedef struct s_vec3
 typedef struct s_triangle
 {
 	t_vec3		p[3];// HAS TO BE FIRST
+	t_vec3		normals[3];
 	//double		unprojected_z[3];// HAS TO BE SECOND
 	uint32_t	col; //HAS TO BE THIRD
 	t_vec3		centroid;

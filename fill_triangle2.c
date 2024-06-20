@@ -75,29 +75,15 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 	t_vec3	*p = projected->p;
 	double		*depth;
 	uint32_t	*pixels = (uint32_t *)img->pixels;
-	static int color_index = 0;
+	//static int color_index = 0;
 	//color = colors[color_index++];
-	if (color_index >= sizeof colors / sizeof(uint32_t))
-		color_index = 0;
-	const bool color_mode = 1;
-	//fprintf(stderr, "here\n");
+	//if (color_index >= sizeof colors / sizeof(uint32_t))
+	//	color_index = 0;
 	depth = mesh->main->depth;
 	sort_vertexes_for_y(projected);
-	if (!(p[0].y <= p[1].y && p[1].y <= p[2].y))
-	{
-		fprintf(stderr, "error sort_vertexes_for_y 1: %f 2: %f 3: %f\n", p[0].y, p[1].y, p[2].y);
-		exit(1);
-	}
+	assume(p[0].y <= p[1].y && p[1].y <= p[2].y);
 	for (int i = 0; i < 3; i++)
 	{
-		if ((int)round(p[i].x) < 0)
-			printf("x: lf: %lf round int: %d\n", p[i].x, (int)round(p[i].x));
-		if ((int)round(p[i].x) >= WIDTH)
-			printf("x: lf: %lf round int: %d (width: %d)\n", p[i].x, (int)round(p[i].x), WIDTH);
-		if ((int)round(p[i].y) < 0)
-			printf("y: lf: %lf round int: %d\n", p[i].y, (int)round(p[i].y));
-		if ((int)round(p[i].y) >=HEIGHT)
-			printf("y: lf: %lf round int: %dheight: %d\n", p[i].y, (int)round(p[i].y), HEIGHT);
 		assume((int)round(p[i].x) >= 0);
 		assume((int)round(p[i].x) < WIDTH);
 		assume((int)round(p[i].y) >= 0.0);
@@ -121,7 +107,6 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 	double section_y_progress = 0;
 	if (!zero_f(y_dist10))
 	{
-		//while (cur_y_lf <= p[1].y)
 		while (section_y_progress < 1.0)
 		{
 			if (row_index >= HEIGHT)
@@ -152,30 +137,19 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 			assume(len_x);
 			for (int i = 0; i < abs(len_x); i++)
 			{
-				double p = cur_col - first_col;
-				//last_col_z - first_col_z;
-				cur_z = (p * z_dist) / ((double)len_x) + first_col_z;
+				//double p = cur_col - first_col;
+				//cur_z = (p * z_dist) / ((double)len_x) + first_col_z;
 double t = (cur_col - first_col) / (double)len_x;
 cur_z = first_col_z + t * (last_col_z - first_col_z);
 				assume(cur_col < WIDTH);
 				double x_progress;
 				x_progress = 1.0 - ((last_col - cur_col) / (double)len_x);
-				//x_progress = ((double)(cur_col - first_col + 1)) / len_x;
-				//cur_z = x_progress * z_dist + first_col_z;
 				int fin_index = cur_col + row_start_offset;
 				if (cur_z < depth[fin_index])
 				{
 					//printf("%lf\n", cur_z);
 					depth[fin_index] = cur_z;
-					if (color_mode)
-						pixels[fin_index] = color;
-					else
-					{
-						if (direct_x == 1)
-							pixels[fin_index] = GREEN;
-						else
-							pixels[fin_index] = RED;
-					}
+					pixels[fin_index] = color;
 				}
 				cur_col += direct_x;
 			}
@@ -226,27 +200,16 @@ cur_z = first_col_z + t * (last_col_z - first_col_z);
 		assume(last_col >= 0 && last_col < WIDTH);
 		for (int i = 0; i < abs(len_x); i++)
 		{
-			double x_progress = 1.0 - (last_col - cur_col) / (double)len_x;
-			double p = cur_col - first_col;
+			//double p = cur_col - first_col;
 			//last_col_z - first_col_z;
-			cur_z = (p * z_dist) / ((double)len_x) + first_col_z;
+			//cur_z = (p * z_dist) / ((double)len_x) + first_col_z;
 double t = (cur_col - first_col) / (double)len_x;
 cur_z = first_col_z + t * (last_col_z - first_col_z);
-			//double x_progress = (cur_col - first_col) / len_x;
-			//cur_z = x_progress * z_dist + first_col_z;
 			int fin_index = cur_col + row_start_offset;
 			if (cur_z < depth[fin_index])
 			{
 				depth[fin_index] = cur_z;
-				if (color_mode)
-					pixels[fin_index] = color;
-				else
-				{
-					if (direct_x == 1)
-						pixels[fin_index] = WHITE;
-					else
-						pixels[fin_index] = BLUE;
-				}
+				pixels[fin_index] = color;
 			}
 			if (first_col == last_col)
 				return ;

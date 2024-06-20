@@ -142,12 +142,19 @@ void	ft_hook(void* param)
 	handle_movement_per_frame(main_data);
 	reset_pixel_buffer_main(main_data->img->pixels, main_data->depth);
 	i = 0;
+	static int q = 0;
 	while (i < main_data->mesh_count)
 	{
 		//mod_cube_rotation(main_data->meshes + i, main_data->mlx->delta_time);
 		draw_mesh(main_data->meshes + i);
+
+		if (!q)
+		{
+			printf("mesh %d has %d tris\n", i, main_data->meshes[i].count);
+		}
 		i++;
 	}
+	q++;
 }
 
 void	translate_triangle_3d(t_triangle *tri_a, t_vec3 v)
@@ -181,32 +188,38 @@ void	add_obj_file_meshes(t_main *main_data)
 {
 	t_mesh	new_mesh;
 
-	new_mesh = load_obj_file("./", "axis.obj", main_data);
-	new_mesh.model_space_data.x_scale = 0.1;
-	new_mesh.model_space_data.y_scale = 0.1;
-	new_mesh.model_space_data.z_scale = 0.1;
-	make_mesh_render_rdy(&new_mesh);
-	if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
-		ft_error(main_data);
-	main_data->mesh_count++;
-	new_mesh = load_obj_file("teapot/", "teapot/teapot.obj", main_data);
-	new_mesh.model_space_data.x_scale = 0.1;
-	new_mesh.model_space_data.y_scale = 0.1;
-	new_mesh.model_space_data.z_scale = 0.1;
-
-	make_mesh_render_rdy(&new_mesh);
-	if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
-		ft_error(main_data);
-	main_data->mesh_count++;
-	
-	//new_mesh = load_obj_file("./objs/", "objs/HorseArmor.obj", main_data);
+	//new_mesh = load_obj_file("./", "axis.obj", main_data);
+	//new_mesh.model_space_data.x_scale = 0.1;
+	//new_mesh.model_space_data.y_scale = 0.1;
+	//new_mesh.model_space_data.z_scale = 0.1;
 	//make_mesh_render_rdy(&new_mesh);
-	//new_mesh.model_space_data.x_scale = 20;
-	//new_mesh.model_space_data.y_scale = 20;
-	//new_mesh.model_space_data.z_scale = 20;
 	//if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
 	//	ft_error(main_data);
 	//main_data->mesh_count++;
+	//new_mesh = load_obj_file("teapot/", "teapot/teapot.obj", main_data);
+	//new_mesh.model_space_data.x_scale = 0.1;
+	//new_mesh.model_space_data.y_scale = 0.1;
+	//new_mesh.model_space_data.z_scale = 0.1;
+
+	//make_mesh_render_rdy(&new_mesh);
+	//if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
+	//	ft_error(main_data);
+	//main_data->mesh_count++;
+	
+	//new_mesh = load_obj_file("./objs/", "objs/HorseArmor.obj", main_data);
+	//make_mesh_render_rdy(&new_mesh);
+	////new_mesh.model_space_data.x_scale = 20;
+	////new_mesh.model_space_data.y_scale = 20;
+	////new_mesh.model_space_data.z_scale = 20;
+	//if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
+	//	ft_error(main_data);
+	//main_data->mesh_count++;
+
+	new_mesh = load_obj_file("./egg/", "egg/RAN_Easter_Egg_2024_High_Poly.obj", main_data);
+	make_mesh_render_rdy(&new_mesh);
+	if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
+		ft_error(main_data);
+	main_data->mesh_count++;
 
 }
 
