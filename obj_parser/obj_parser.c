@@ -239,18 +239,18 @@ void	triangulation(t_obj_parser *vars, t_vec3 *vertexes, int vertex_count, t_vec
 		tris = vars->tris;
 	tris_i = vars->tris_count;
 	vars->tris_count += local_tris_count;
-	vertex_i = 0;
+	vertex_i = vertex_count - 1;
 	while (tris_i < vars->tris_count)
 	{
 		ft_memcpy(tris[tris_i].p, vertexes, sizeof(t_vec3) * 3);
 		tris[tris_i].p[0] = vertexes[0];
-		tris[tris_i].p[1] = vertexes[vertex_i + 1];
-		tris[tris_i].p[2] = vertexes[vertex_i + 2];
+		tris[tris_i].p[1] = vertexes[vertex_i];
+		tris[tris_i].p[2] = vertexes[vertex_i - 1];
 		tris[tris_i].normals[0] = normals[0];
-		tris[tris_i].normals[1] = normals[vertex_i + 1];
-		tris[tris_i].normals[2] = normals[vertex_i + 2];
+		tris[tris_i].normals[1] = normals[vertex_i];
+		tris[tris_i].normals[2] = normals[vertex_i - 1];
 		tris[tris_i].col = vars->colors[(vars->tris_count + tris_i) % OBJ_PARSER_COLOR_COUNT];
-		vertex_i++;
+		vertex_i--;
 		tris_i++;
 	}
 }
