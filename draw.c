@@ -256,7 +256,8 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 	int			clipped_count_front;
 	int			clipped_count_back;
 	t_triangle	projected;
-	const double	project_mat[4][4] = PROJECTION_MATRIX;
+	double	project_mat[4][4] = PROJECTION_MATRIX;
+	projection_matrix(project_mat);
 
 	clipped_count_front = clipping_z_near(&triangle, clipped_z_front);
 	int	j;
@@ -276,14 +277,22 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 			triangle = clipped_z_back[q];
 			// enter projeceted space
 			projected = triangle;
-			matrix_mult_vec3_4x4(triangle.p + 0, project_mat, &projected.p[0]);
-			matrix_mult_vec3_4x4(triangle.p + 1, project_mat, &projected.p[1]);
-			matrix_mult_vec3_4x4(triangle.p + 2, project_mat, &projected.p[2]);
+			for (int i = 0; i < 3; i++)
+			{
+				//matrix_mult_vec3_4x4(triangle.p + i, project_mat, &projected.p[i])
+				projected.p[i].z = triangle.p[i].z * (Z_FAR / (Z_FAR - Z_NEAR)) - ((Z_FAR * Z_NEAR) / (Z_FAR - Z_NEAR));
+				projected.p[i].z /= triangle.p[i].z;
+				projected.p[i].w = 1 * triangle.p[i].z;
+				projected.p[i].x = -1.0 * triangle.p[i].x * ASPECT_RATIO * (1 / tan(FOV_RAD / 2));
+				projected.p[i].x /= triangle.p[i].z;
+				projected.p[i].y = -1.0 * triangle.p[i].y * (1 / tan(FOV_RAD / 2));
+				projected.p[i].y /= triangle.p[i].z;
+			}
 			cpy_triangle_data_rasterize(base_data, &projected);
 			for (int i = 0; i < 3; i++)
 			{
 				assume(!zero_f(projected.p[i].w));
-				div_vec3(projected.p + i, projected.p[i].w);
+				//div_vec3(projected.p + i, projected.p[i].w);
 				projected.p[i].unprojected_z = clipped_z_back[q].p[i].z;
 				assume(projected.p[i].unprojected_z >= Z_NEAR && projected.p[i].unprojected_z < Z_FAR);
 			}

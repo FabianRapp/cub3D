@@ -131,21 +131,36 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 #define WIDTH (256 * 10)
 #define HEIGHT (256 * 8)
 #define ASPECT_RATIO (((double)WIDTH) / ((double)HEIGHT))
-#define FOV 100.0
+#define FOV (M_PI * (2.0 / 3.0))
+#define FOV_RAD (1 /  tan(FOV / 2))
 //#define FOV_RAD (1.0 / tan((double)FOV * 0.5 / 180.0 * 3.14159))
-#define FOV_RAD ((FOV * M_PI / 180.0))
+//#define FOV_RAD ((FOV * M_PI / 180.0))
 #define Z_FAR 1000.0
 #define Z_NEAR 0.1
-#define FOV_Y (FOV_RAD)
-#define FOV_X (2 * atan((1.0 / ASPECT_RATIO) * tan(FOV_Y / 2.0)))
+//#define FOV_X (1 / tan((((double)WIDTH / 2)) / Z_NEAR))
+#define FOV_X (1 / (tan(FOV_RAD / 2)))
+//#define FOV_X (1 / tan(FOV_RAD / 2))
+//#define FOV_Y (1 / tan(FOV_RAD / 2))
+#define FOV_Y FOV_X
+//#define FOV_Y (1 / tan((((double)HEIGHT / 2)) / Z_NEAR))
+//#define FOV_Y (FOV_RAD)
+//#define FOV_X (2 * atan((1.0 / ASPECT_RATIO) * tan(FOV_Y / 2.0)))
 
 #define PROJECTION_MATRIX \
 { \
-	{1.0 / tan(FOV_X / 2.0), 0, 0, 0}, \
-	{0, 1.0 / tan(FOV_Y / 2.0), 0, 0}, \
+	{FOV_X, 0, 0, 0}, \
+	{0, FOV_Y, 0, 0}, \
 	{0, 0, -((double)Z_FAR) / ((double)Z_FAR- Z_NEAR), (-1.0 * Z_NEAR * Z_FAR) / ((double)Z_FAR - Z_NEAR)}, \
 	{0, 0, -1.0, 0} \
 }
+
+//#define PROJECTION_MATRIX \
+//{ \
+//	{1.0 / tan(FOV_X / 2.0), 0, 0, 0}, \
+//	{0, 1.0 / tan(FOV_Y / 2.0), 0, 0}, \
+//	{0, 0, -((double)Z_FAR) / ((double)Z_FAR- Z_NEAR), (-1.0 * Z_NEAR * Z_FAR) / ((double)Z_FAR - Z_NEAR)}, \
+//	{0, 0, -1.0, 0} \
+//}
 
 
 
@@ -164,6 +179,14 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 //	{0.0, (double)(FOV_RAD), 0.0, 0.0}, \
 //	{0.0, 0.0, ((double) Z_NORM), -2.0 * (Z_NEAR * Z_FAR) / ((double)Z_FAR - Z_NEAR)}, \
 //	{0.0, 0.0, -1, 0.0} \
+//}
+
+//#define PROJECTION_MATRIX \
+//{ \
+//	{FOV_X, 0.0, 0.0, 0.0}, \
+//	{0.0, FOV_Y, 0.0, 0.0}, \
+//	{0.0, 0.0, ((double) Z_NORM), 1.0}, \
+//	{0.0, 0.0, ((double) Z_OFFSET), 0.0} \
 //}
 
 //#define PROJECTION_MATRIX \

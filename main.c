@@ -67,6 +67,7 @@ void	handle_movement_per_frame(t_main *main_data)
 static inline void	reset_depth(double *depth)
 {
 	static const double	z_far = (double)Z_FAR;
+	//static const double		z_far = -(double)Z_FAR;
 	static const int32_t	pixel_count = WIDTH * HEIGHT;
 
 	asm volatile(
@@ -215,7 +216,11 @@ int32_t	main(void)
 	static t_main			m_data; //has to be static so it's in the
                                    //BSS segment
 	errno = 0;
-
+	printf("FOV: %lf\n", FOV);
+	printf("tan(FOV): %lf\n", tan(FOV));
+	printf("FOV_X: %lf\nFOV_Y: %lf\n", FOV_X, FOV_Y);
+	printf("FOV_RAD: %lf\n", FOV_RAD);
+	printf("ASPECT_RATIO: %lf\n", ASPECT_RATIO);
 	int i = 0;
 	init_main(&m_data);
 	add_obj_file_meshes(&m_data);
