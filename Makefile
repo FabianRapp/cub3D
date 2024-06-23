@@ -73,6 +73,8 @@ all: mlx $(OBJECTS)
 
 fast: fclean
 	make CFLAGS="-march=native -Ofast -DNDEBUG=1 -mavx"
+#make CFLAGS="-fsanitize=address"
+#CFLAGS="-march=native -Ofast -DNDEBUG=1 -mavx"
 
 prof: fclean
 	make CFLAGS="-march=native -Ofast -mavx2 -DNDEBUG=1 -g -pg" CC=gcc

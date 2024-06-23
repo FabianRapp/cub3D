@@ -22,7 +22,7 @@ void	unit_vec3(t_vec3 *v)
 	sum = v->x * v->x + v->y * v->y + v->z * v->z;
 	if (sum > 0.0001 || sum < -0.0001)
 	{
-		len = sqrtf(sum);
+		len = sqrt(sum);
 		v->x /= len;
 		v->y /= len;
 		v->z /= len;

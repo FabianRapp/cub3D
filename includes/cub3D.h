@@ -94,6 +94,8 @@
 
 #define MOUSE_SENS_BASE (0.001f)
 
+#define ZERO_LF (0.0001)
+
 #define X 0
 #define Y 1
 #define Z 2

@@ -63,35 +63,48 @@ void	abs_uv(t_vec3	*p)
 
 //void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh, t_light_argb_stren color_scalars)
 
-uint32_t	load_pixel_from_mlx_texture(mlx_texture_t *texture, double x, double y)
+uint32_t	load_pixel_from_mlx_texture(mlx_texture_t *texture, double u, double v)
 {
 	const	uint32_t	width = texture->width;
 	const	uint32_t	height = texture->height;
-	int32_t	y_index = ((int32_t) height * y);
+	uint32_t	*buffer = (uint32_t *)texture->pixels;
+
 	assume(texture->width && texture->height);
-	if (x < 0.0)
-		x = 0.0;
-	else if (x > 1.0)
-		x = 1.0;
-	if (y < 0.0)
-		y = 0.0;
-	else if (y >= 1.0)
-		y = 1.0;
-	if (y_index == (int32_t)texture->height)
-		y_index--;
-	int32_t	x_index = ((int32_t) width * x);
+	if (u < 0.0)
+	{
+		//printf("%lf\n", u);
+		u = 0.0;
+	}
+	else if (u > 1.0)
+	{
+		//printf("%lf\n", x);
+		u = 1.0;
+	}
+	if (v < 0.0)
+	{
+		//printf("%lf\n", y);
+		v = 0.0;
+	}
+	else if (v >= 1.0)
+	{
+		//printf("%lf\n", y);
+		v = 1.0;
+	}
+	int x_index = round((texture->width - 1) * (u));
+	int y_index = round((texture->height - 1) * (v));
+	//y_index = ((height - 1) * (1 - y));
+	//x_index = ((width - 1) * (1 - x));
+	assume(x_index >= 0 && y_index >= 0);
 	if (x_index < 0)
 		x_index = 0;
 	if (y_index < 0)
 		y_index = 0;
-	if (x_index == texture->width)
-		x_index--;
 	if (!(x_index < texture->width))
-			printf("x_index: %d width: %u x: %lf\n", x_index, texture->width, x);
+			printf("x_index: %d width: %u u: %lf\n", x_index, texture->width, u);
 	if (!(y_index < texture->height))
-			printf("y_index: %d height: %u y: %lf\n", y_index, texture->height, y);
+			printf("y_index: %d height: %u v: %lf\n", y_index, texture->height, v);
 	const	uint32_t	i = (width * y_index + x_index);
-	return (((uint32_t *)(texture->pixels))[i]);
+	return (buffer[i]);
 }
 
 void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh, t_light_argb_stren color_sclars)
@@ -195,6 +208,8 @@ cur_z = first_col_z + t * (last_col_z - first_col_z);
 					depth[fin_index] = cur_z;
 					cur_u = first_col_u + t * (last_col_u - first_col_u);
 					cur_v = first_col_v + t * (last_col_v - first_col_v);
+					//cur_u = p[0].u;
+					//cur_v = p[0].v;
 					pixels[fin_index] = load_pixel_from_mlx_texture(mtl->texture, cur_u, cur_v);
 				}
 				cur_col += direct_x;
@@ -270,10 +285,13 @@ cur_z = first_col_z + t * (last_col_z - first_col_z);
 				depth[fin_index] = cur_z;
 				cur_u = first_col_u + t * (last_col_u - first_col_u);
 				cur_v = first_col_v + t * (last_col_v - first_col_v);
+				//cur_u = p[1].u;
+				//cur_v = p[1].v;
 				pixels[fin_index] = load_pixel_from_mlx_texture(mtl->texture, cur_u, cur_v);
 			}
 			if (first_col == last_col)
-				return ;
+				break ;
+				//return ;
 			cur_col += direct_x;
 		}
 		cur_y_lf += 1.0f;

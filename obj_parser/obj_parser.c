@@ -121,6 +121,11 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 	int		texture_cords_i;
 	char	**split;
 
+	if (vars-> fd < 0 || errno)
+	{
+		printf("err: %s %s %d %s\n", strerror(errno), __FILE__, __LINE__, vars->path);
+		exit(errno);
+	}
 	vars->fd = open(vars->path, O_RDONLY);
 	if (vars-> fd < 0 || errno)
 	{
@@ -180,12 +185,14 @@ t_vec3	parse_face_vertex(t_obj_parser *vars, char *sub_face, t_mtl *mtl)
 	int		v_index;
 	int		vtexture_index;
 
+	while (!ft_isdigit(*sub_face))
+		sub_face++;
 	split = ft_split(sub_face, '/');
 	v_index = ft_atoi(split[0]) - 1;
 	ft_memcpy(&return_vec, vars->vertexes + v_index, sizeof(t_vec3));
 	return_vec.w = 1;
 	return_vec.mtl = mtl;
-	if (split[1] && split[2])
+	if (split[1])
 	{
 		vtexture_index = ft_atoi(split[1]) - 1;
 		return_vec.u = vars->texture_cords[vtexture_index].u;
@@ -202,6 +209,8 @@ t_vec3	parse_face_normals(t_obj_parser *vars, char *sub_face)
 	char	**split;
 	int 	i;
 
+	while (!ft_isdigit(*sub_face))
+		sub_face++;
 	split = ft_split(sub_face, '/');
 	if (!split || !split[0] || !split[1] || !split[2])
 	{
@@ -239,6 +248,7 @@ void	triangulation(t_obj_parser *vars, t_vec3 *vertexes, int vertex_count, t_vec
 		tris = vars->tris;
 	tris_i = vars->tris_count;
 	vars->tris_count += local_tris_count;
+	//vertex_i = vertex_count - 1;
 	vertex_i = vertex_count - 1;
 	while (tris_i < vars->tris_count)
 	{
@@ -539,7 +549,6 @@ t_mesh	load_obj_file(char *dir, char *path, t_main *main_data)
 	mesh.obj_file = true;
 	init_obj_file_colors(&vars);
 	obj_parser_count(&vars);
-
 	vars.vertexes = ft_calloc(vars.vertex_count, sizeof(t_vec3));
 	vars.normals = ft_calloc(vars.normal_count, sizeof(t_vec3));
 	vars.texture_cords = ft_calloc(vars.texture_cords_count, sizeof(t_vec3));
@@ -556,6 +565,11 @@ t_mesh	load_obj_file(char *dir, char *path, t_main *main_data)
 		cleanup_exit(main_data);
 	}
 	obj_parser_parse_mtl_libs(&vars, dir, path);
+	if (errno)
+	{
+		printf("%s\n", strerror(errno));
+		errno = 0;
+	}
 	obj_parser_fill_vertexes(&vars);
 	obj_parser_handle_faces(&vars);
 	mesh.triangles = vars.tris;

@@ -188,14 +188,14 @@ void	add_obj_file_meshes(t_main *main_data)
 {
 	t_mesh	new_mesh;
 
-	//new_mesh = load_obj_file("./", "axis.obj", main_data);
-	//new_mesh.model_space_data.x_scale = 0.1;
-	//new_mesh.model_space_data.y_scale = 0.1;
-	//new_mesh.model_space_data.z_scale = 0.1;
-	//make_mesh_render_rdy(&new_mesh);
-	//if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
-	//	ft_error(main_data);
-	//main_data->mesh_count++;
+	new_mesh = load_obj_file("./", "axis.obj", main_data);
+	new_mesh.model_space_data.x_scale = 0.1;
+	new_mesh.model_space_data.y_scale = 0.1;
+	new_mesh.model_space_data.z_scale = 0.1;
+	make_mesh_render_rdy(&new_mesh);
+	if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
+		ft_error(main_data);
+	main_data->mesh_count++;
 	//new_mesh = load_obj_file("teapot/", "teapot/teapot.obj", main_data);
 	//new_mesh.model_space_data.x_scale = 0.1;
 	//new_mesh.model_space_data.y_scale = 0.1;
@@ -215,7 +215,22 @@ void	add_obj_file_meshes(t_main *main_data)
 	//	ft_error(main_data);
 	//main_data->mesh_count++;
 
-	new_mesh = load_obj_file("./egg/", "egg/RAN_Easter_Egg_2024_High_Poly.obj", main_data);
+	//new_mesh = load_obj_file("./egg/", "egg/RAN_Easter_Egg_2024_High_Poly.obj", main_data);
+	//make_mesh_render_rdy(&new_mesh);
+	//new_mesh.model_space_data.x_scale = 10;
+	//new_mesh.model_space_data.y_scale = 10;
+	//new_mesh.model_space_data.z_scale = 10;
+	//if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
+	//	ft_error(main_data);
+	//main_data->mesh_count++;
+
+	//new_mesh = load_obj_file("./HP_Laptop_High_Poly/", "HP_Laptop_High_Poly/Laptop_HighPolay_HP_BI_2.obj", main_data);
+	//make_mesh_render_rdy(&new_mesh);
+	//if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
+	//	ft_error(main_data);
+	//main_data->mesh_count++;
+
+	new_mesh = load_obj_file("./", "circle.obj", main_data);
 	make_mesh_render_rdy(&new_mesh);
 	if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
 		ft_error(main_data);

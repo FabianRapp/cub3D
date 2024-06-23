@@ -380,7 +380,8 @@ void	draw_mesh(t_mesh *mesh)
 		// check if triangle is facing away from the view direction
 		model.normal = cross_product(v3_sub(model.p[1], model.p[0]), v3_sub(model.p[2], model.p[0]));
 		unit_vec3(&model.normal);
-		if (dot_prod_unit(model.normal, v3_sub(model.p[0], mesh->world_data->camera)) >= 0)
+		//if (dot_prod_unit(model.normal, v3_sub(model.p[0], mesh->world_data->camera)) >= 0)
+		if (dot_prod_unit(model.normal, v3_sub(model.p[0], mesh->world_data->camera)) < 0)
 		{
 			i++;
 			continue ;
