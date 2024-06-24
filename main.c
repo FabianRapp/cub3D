@@ -114,19 +114,19 @@ static inline void	reset_pixel_buffer_main(uint8_t *pixels, double *depth)
 	while (i < (WIDTH * HEIGHT / 2))
 		buffer[i++] = black;
 	i = 0;
-	reset_depth(depth);
-	//while (i < (WIDTH * HEIGHT))//2.5%runtime
-	//{
-	//	depth[i] = Z_FAR; //19.0% runtime
-	//	depth[i + 1] = Z_FAR;
-	//	depth[i + 2] = Z_FAR;
-	//	depth[i + 3] = Z_FAR;
-	//	depth[i + 4] = Z_FAR;
-	//	depth[i + 5] = Z_FAR;
-	//	depth[i + 6] = Z_FAR;
-	//	depth[i + 7] = Z_FAR;
-	//	i += 8;
-	//}
+	//reset_depth(depth);
+	while (i < (WIDTH * HEIGHT))//2.5%runtime
+	{
+		depth[i] = Z_FAR; //19.0% runtime
+		depth[i + 1] = Z_FAR;
+		depth[i + 2] = Z_FAR;
+		depth[i + 3] = Z_FAR;
+		depth[i + 4] = Z_FAR;
+		depth[i + 5] = Z_FAR;
+		depth[i + 6] = Z_FAR;
+		depth[i + 7] = Z_FAR;
+		i += 8;
+	}
 }
 
 // Print the window width and height.

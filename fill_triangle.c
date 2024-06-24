@@ -63,13 +63,13 @@ void	abs_uv(t_vec3	*p)
 
 //void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh, t_light_argb_stren color_scalars)
 
-uint32_t	load_pixel_from_mlx_texture(mlx_texture_t *texture, double u, double v)
+static inline uint32_t	load_pixel_from_mlx_texture(mlx_texture_t texture, double u, double v)
 {
-	const	uint32_t	width = texture->width;
-	const	uint32_t	height = texture->height;
-	uint32_t	*buffer = (uint32_t *)texture->pixels;
+	const	uint32_t	width = texture.width;
+	const	uint32_t	height = texture.height;
+	uint32_t	*buffer = (uint32_t *)texture.pixels;
 
-	assume(texture->width && texture->height);
+	assume(texture.width && texture.height);
 	if (u < 0.0)
 	{
 		//printf("%lf\n", u);
@@ -90,21 +90,10 @@ uint32_t	load_pixel_from_mlx_texture(mlx_texture_t *texture, double u, double v)
 		//printf("%lf\n", y);
 		v = 1.0;
 	}
-	int x_index = round((texture->width - 1) * (u));
-	int y_index = round((texture->height - 1) * (v));
-	//y_index = ((height - 1) * (1 - y));
-	//x_index = ((width - 1) * (1 - x));
+	int x_index = round((texture.width - 1) * (u));
+	int y_index = round((texture.height - 1) * (v));
 	assume(x_index >= 0 && y_index >= 0);
-	if (x_index < 0)
-		x_index = 0;
-	if (y_index < 0)
-		y_index = 0;
-	if (!(x_index < texture->width))
-			printf("x_index: %d width: %u u: %lf\n", x_index, texture->width, u);
-	if (!(y_index < texture->height))
-			printf("y_index: %d height: %u v: %lf\n", y_index, texture->height, v);
-	const	uint32_t	i = (width * y_index + x_index);
-	return (buffer[i]);
+	return (buffer[width * y_index + x_index]);
 }
 
 void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh, t_light_argb_stren color_sclars)
@@ -113,6 +102,7 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 	double		*depth;
 	uint32_t	*pixels = (uint32_t *)img->pixels;
 	t_mtl	*mtl = projected->p->mtl;
+	const mlx_texture_t	texture = *(mtl->texture);
 	int a = 0;
 	assume(mtl);
 	uint32_t	color = RED;
@@ -211,7 +201,7 @@ cur_z = first_col_z + t * (last_col_z - first_col_z);
 					cur_v = first_col_v + t * (last_col_v - first_col_v);
 					//cur_u = p[0].u;
 					//cur_v = p[0].v;
-					pixels[fin_index] = load_pixel_from_mlx_texture(mtl->texture, cur_u, cur_v);
+					pixels[fin_index] = load_pixel_from_mlx_texture(texture, cur_u, cur_v);
 				}
 				cur_col += direct_x;
 			}
@@ -281,14 +271,14 @@ cur_z = first_col_z + t * (last_col_z - first_col_z);
 double t = (cur_col - first_col) / (double)len_x;
 cur_z = first_col_z + t * (last_col_z - first_col_z);
 			int fin_index = cur_col + row_start_offset;
-			if (cur_z < depth[fin_index])
+			if (cur_z < depth[fin_index])//should be prefetched
 			{
 				depth[fin_index] = cur_z;
 				cur_u = first_col_u + t * (last_col_u - first_col_u);
 				cur_v = first_col_v + t * (last_col_v - first_col_v);
 				//cur_u = p[1].u;
 				//cur_v = p[1].v;
-				pixels[fin_index] = load_pixel_from_mlx_texture(mtl->texture, cur_u, cur_v);
+				pixels[fin_index] = load_pixel_from_mlx_texture(texture, cur_u, cur_v);
 				//pixels[fin_index] = RED;
 			}
 			if (first_col == last_col)
