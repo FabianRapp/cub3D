@@ -224,17 +224,17 @@ void	add_obj_file_meshes(t_main *main_data)
 	//	ft_error(main_data);
 	//main_data->mesh_count++;
 
-	//new_mesh = load_obj_file("./HP_Laptop_High_Poly/", "HP_Laptop_High_Poly/Laptop_HighPolay_HP_BI_2.obj", main_data);
-	//make_mesh_render_rdy(&new_mesh);
-	//if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
-	//	ft_error(main_data);
-	//main_data->mesh_count++;
-
-	new_mesh = load_obj_file("./", "circle.obj", main_data);
+	new_mesh = load_obj_file("./HP_Laptop_High_Poly/", "HP_Laptop_High_Poly/Laptop_HighPolay_HP_BI_2.obj", main_data);
 	make_mesh_render_rdy(&new_mesh);
 	if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
 		ft_error(main_data);
 	main_data->mesh_count++;
+
+	//new_mesh = load_obj_file("./", "circle.obj", main_data);
+	//make_mesh_render_rdy(&new_mesh);
+	//if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
+	//	ft_error(main_data);
+	//main_data->mesh_count++;
 
 }
 

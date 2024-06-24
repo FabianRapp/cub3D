@@ -91,7 +91,7 @@ uint32_t	load_pixel_from_mlx_texture(mlx_texture_t *texture, double u, double v)
 		v = 1.0;
 	}
 	int x_index = round((texture->width - 1) * (u));
-	int y_index = round((texture->height - 1) * (v));
+	int y_index = round((texture->height - 1) * (1.0 - v));
 	//y_index = ((height - 1) * (1 - y));
 	//x_index = ((width - 1) * (1 - x));
 	assume(x_index >= 0 && y_index >= 0);
