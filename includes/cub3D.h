@@ -90,6 +90,8 @@
 #define MENU_KEY MLX_KEY_M
 #define CURSORE_MODE_TOGGLE MLX_KEY_T
 
+#define CAM_RESET_KEY MLX_KEY_0
+
 //=============================
 
 #define MOUSE_SENS_BASE (0.001f)
@@ -401,6 +403,7 @@ t_vec3	out_of_bound_triangle_projeceted(t_triangle *projected);
 bool	zero_f(double f);
 void	reset_pixel_buffer(uint8_t *pixels, double *depth);
 void	ft_free_img(t_main *main_data, mlx_image_t **img);
+void	reset_camera(t_main *main_data);
 
 void	ft_put_pixel(uint8_t *pixel_buffer, int x, int y, int color);
 void	ft_put_pixel_fin_index(uint8_t *pixel_buffer, int index, int color);

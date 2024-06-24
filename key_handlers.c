@@ -126,6 +126,8 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		settings_key_handler(keydata, (t_main *)param);
 	if (keydata.key == MENU_KEY && keydata.action == MLX_PRESS)
 		toggl_menu_state((t_main *)param);
+	if (keydata.key == CAM_RESET_KEY && keydata.action == MLX_PRESS)
+		reset_camera((t_main *)param);
 }
 
 void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *param)

@@ -45,18 +45,8 @@ void	init_mlx_no_leaks(t_main *main_data)
 
 void	init_main(t_main *main_data)
 {
-	const t_vec3	init_cam = {.x = 0, .y = 0, .z = 0, .w = 1};
-	const t_vec3	init_look_direct = {.x = 0, .y = 0, .z = 1, .w = 1};
-	const t_vec3	init_up = {.x = 0.0, .y = 1, .z = 0, .w = 1};
 	ft_bzero(main_data, sizeof(t_main));
-	main_data->pitch = 0;
-	main_data->yaw = 0;
-	main_data->roll = 0;
-	ft_memcpy(&main_data->world_data.camera, &init_cam, sizeof(init_cam));
-	ft_memcpy(&main_data->world_data.up, &init_up, sizeof(init_up));
-	unit_vec3(&main_data->world_data.up);
-	ft_memcpy(&main_data->world_data.look_direct, &init_look_direct, sizeof(init_look_direct));
-	unit_vec3(&main_data->world_data.look_direct);
+	reset_camera(main_data);
 	// MLX allows you to define its core behaviour before startup.
 	mlx_set_setting(0, true);
 	init_mlx_no_leaks(main_data);
