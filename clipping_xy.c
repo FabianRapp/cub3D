@@ -133,7 +133,6 @@ static void fast_line_intersect(const t_clipping_para para, t_vec3 p1, t_vec3 *p
 	else
 		assume(0);
 	p2->u = p1.u + (p2->u - p1.u) * progress;
-	p2->unprojected_z = p1.unprojected_z + (p2->unprojected_z - p1.unprojected_z) * progress;
 	if (p2->u < 0.0)
 		p2->u = 0.0;
 	else if (p2->u > 1.0)
@@ -143,7 +142,6 @@ static void fast_line_intersect(const t_clipping_para para, t_vec3 p1, t_vec3 *p
 		p2->v = 0.0;
 	else if (p2->v > 1.0)
 		p2->v = 1.0;
-	assume(p2->unprojected_z >= Z_NEAR);
 }
 
 static int8_t	count_inside_points(t_triangle *clipped, int8_t cur_index, const t_clipping_para para, int8_t inside_index[3])

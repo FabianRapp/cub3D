@@ -84,22 +84,21 @@ void	init_menu_widgets(t_main *main_data)
 // can throw errors in debug mode for invalid data
 void	make_mesh_render_rdy(t_mesh *mesh)
 {
-	int	i;
-	int	j;
-	t_triangle	*tris;
+	//int	i;
+	//int	j;
+	//t_triangle	*tris;
 
-	tris = mesh->triangles;
-	i = 0;
-	while (i < mesh->count)
-	{
-		j = 0;
-		while (j < 3)
-		{
-			tris[i].p[j].unprojected_z = tris[i].p[j].z;
-			j++;
-		}
-		i++;
-	}
+	//tris = mesh->triangles;
+	//i = 0;
+	//while (i < mesh->count)
+	//{
+	//	j = 0;
+	//	while (j < 3)
+	//	{
+	//		j++;
+	//	}
+	//	i++;
+	//}
 }
 
 

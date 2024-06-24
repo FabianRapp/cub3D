@@ -237,7 +237,6 @@ void	cpy_triangle_data_rasterize(t_triangle *src, t_triangle *dst)
 {
 	int	i;
 
-	// printf("full size: %zu\nsize: %zu\n", sizeof(t_triangle), (uintptr_t)(&src->unprojected_z) - (uintptr_t)src);
 	ft_memcpy(&dst->centroid, &src->centroid, sizeof(t_triangle) - (((uintptr_t)(&src->centroid)) - ((uintptr_t)src)));
 	i = 0;
 	while (i < 3)
@@ -293,8 +292,6 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 			{
 				assume(!zero_f(projected.p[i].w));
 				//div_vec3(projected.p + i, projected.p[i].w);
-				projected.p[i].unprojected_z = clipped_z_back[q].p[i].z;
-				assume(projected.p[i].unprojected_z >= Z_NEAR && projected.p[i].unprojected_z < Z_FAR);
 			}
 
 			scale_to_screen(&projected); // todo: this could be after xy-
@@ -420,7 +417,6 @@ void	draw_mesh(t_mesh *mesh)
 		for (int i = 0; i < 3; i++)
 		{
 			matrix_mult_vec3_4x4(model.p + i, mat_view, viewed.p + i);
-			viewed.p[i].unprojected_z = viewed.p[i].z;
 		}
 		rasterize(viewed, mesh, mesh->triangles + i, color_scalars);
 		i++;

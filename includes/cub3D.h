@@ -228,14 +228,12 @@ typedef struct s_vec3
 	t_mtl			*mtl; // HAS TO BE AFTER POSITION DATA
 	double			u;
 	double			v;
-	double			unprojected_z;
 }	t_vec3;
 
 typedef struct s_triangle
 {
 	t_vec3		p[3];// HAS TO BE FIRST
 	t_vec3		normals[3];
-	//double		unprojected_z[3];// HAS TO BE SECOND
 	uint32_t	col; //HAS TO BE THIRD
 	t_vec3		centroid;
 	t_vec3		normal;
