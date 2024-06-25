@@ -424,6 +424,9 @@ void	fill_cube_mesh2(t_mesh *cube, t_main *main_data);
 void	fill_skybox_mesh(t_mesh *cube, t_main *main_data);
 
 // vec3.c
+t_vec3 v3_scale_incl_uv(t_vec3 a, double scalar);
+t_vec3	v3_add_incl_uv(t_vec3 a, t_vec3 b);
+t_vec3	v3_sub_incl_uv(t_vec3 a, t_vec3 b);
 t_vec3	v3_zero(void);
 t_vec3	v3_add(t_vec3 a, t_vec3 b);
 t_vec3	v3_reverse(t_vec3 a);

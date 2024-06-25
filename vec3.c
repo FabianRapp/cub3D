@@ -122,6 +122,18 @@ t_vec3	v3_add(t_vec3 a, t_vec3 b)
 	return (v);
 }
 
+t_vec3	v3_add_incl_uv(t_vec3 a, t_vec3 b)
+{
+	t_vec3	v;
+
+	v.x = a.x + b.x;
+	v.y = a.y + b.y;
+	v.z = a.z + b.z;
+	v.u = a.u + b.u;
+	v.v = a.v + b.v;
+	return (v);
+}
+
 t_vec3	v3_sub(t_vec3 a, t_vec3 b)
 {
 	t_vec3	v;
@@ -130,6 +142,18 @@ t_vec3	v3_sub(t_vec3 a, t_vec3 b)
 	v.y = a.y - b.y;
 	v.z = a.z - b.z;
 	v.w = 1;
+	return (v);
+}
+
+t_vec3	v3_sub_incl_uv(t_vec3 a, t_vec3 b)
+{
+	t_vec3	v;
+
+	v.x = a.x - b.x;
+	v.y = a.y - b.y;
+	v.z = a.z - b.z;
+	v.u = a.u - b.u;
+	v.v = a.v - b.v;
 	return (v);
 }
 
@@ -162,6 +186,18 @@ t_vec3 v3_scale(t_vec3 a, double scalar)
 	v.y = a.y * scalar;
 	v.z = a.z * scalar;
 	v.w = 1;
+	return v;
+}
+
+t_vec3 v3_scale_incl_uv(t_vec3 a, double scalar)
+{
+	t_vec3	v;
+
+	v.x = a.x * scalar;
+	v.y = a.y * scalar;
+	v.z = a.z * scalar;
+	v.u = a.u * scalar;
+	v.v = a.v * scalar;
 	return v;
 }
 
