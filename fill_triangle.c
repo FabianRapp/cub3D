@@ -170,9 +170,9 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 			first_col_z = total_y_progress * z_dist20 + p[0].z;
 			last_col_z = section_y_progress * z_dist10 + p[0].z;
 			first_col_u = total_y_progress * u_dist20 + p[0].u;
-			last_col_u = total_y_progress * u_dist10 + p[0].u;
+			last_col_u = section_y_progress * u_dist10 + p[0].u;
 			first_col_v = total_y_progress * v_dist20 + p[0].v;
-			last_col_v = total_y_progress * v_dist10 + p[0].v;
+			last_col_v = section_y_progress * v_dist10 + p[0].v;
 			int	cur_col = first_col;
 			int row_start_offset = WIDTH * row_index;
 			int	direct_x;
@@ -202,6 +202,7 @@ cur_z = first_col_z + t * (last_col_z - first_col_z);
 					//cur_u = p[0].u;
 					//cur_v = p[0].v;
 					pixels[fin_index] = load_pixel_from_mlx_texture(texture, cur_u, cur_v);
+					//pixels[fin_index] = RED;
 				}
 				cur_col += direct_x;
 			}
@@ -214,6 +215,8 @@ cur_z = first_col_z + t * (last_col_z - first_col_z);
 	if (zero_f(y_dist21))
 		return ;
 	double	z_dist21 = p[2].z - p[1].z;
+	double	u_dist21 = p[2].u - p[1].u;
+	double	v_dist21 = p[2].v - p[1].v;
 	int last_col;
 	cur_y_lf = p[1].y;
 	row_index = (int)round(cur_y_lf);
@@ -245,11 +248,11 @@ cur_z = first_col_z + t * (last_col_z - first_col_z);
 		double	first_col_v;
 		double	last_col_v;
 		first_col_z = total_y_progress * z_dist20 + p[0].z;
-		last_col_z = section_y_progress *z_dist10 + p[0].z;
+		last_col_z = section_y_progress * z_dist21 + p[1].z;
 		first_col_u = total_y_progress * u_dist20 + p[0].u;
-		last_col_u = total_y_progress * u_dist10 + p[0].u;
+		last_col_u = section_y_progress * u_dist21 + p[1].u;
 		first_col_v = total_y_progress * v_dist20 + p[0].v;
-		last_col_v = total_y_progress * v_dist10 + p[0].v;
+		last_col_v = section_y_progress * v_dist21 + p[1].v;
 
 		cur_col = first_col;
 		double	z_dist = last_col_z - first_col_z;
@@ -265,9 +268,6 @@ cur_z = first_col_z + t * (last_col_z - first_col_z);
 		assume(last_col >= 0 && last_col < WIDTH);
 		for (int i = 0; i < abs(len_x); i++)
 		{
-			//double p = cur_col - first_col;
-			//last_col_z - first_col_z;
-			//cur_z = (p * z_dist) / ((double)len_x) + first_col_z;
 double t = (cur_col - first_col) / (double)len_x;
 cur_z = first_col_z + t * (last_col_z - first_col_z);
 			int fin_index = cur_col + row_start_offset;
@@ -276,8 +276,6 @@ cur_z = first_col_z + t * (last_col_z - first_col_z);
 				depth[fin_index] = cur_z;
 				cur_u = first_col_u + t * (last_col_u - first_col_u);
 				cur_v = first_col_v + t * (last_col_v - first_col_v);
-				//cur_u = p[1].u;
-				//cur_v = p[1].v;
 				pixels[fin_index] = load_pixel_from_mlx_texture(texture, cur_u, cur_v);
 				//pixels[fin_index] = RED;
 			}
