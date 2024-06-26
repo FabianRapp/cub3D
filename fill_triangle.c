@@ -131,6 +131,14 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 	int		cur_col;
 	int row_index =  (int)round(cur_y_lf);
 	double section_y_progress = 0;
+	double	z_diff20 = p[2].z - p[0].z;
+	double	z_diff10 = p[1].z - p[0].z;
+
+	double	u_diff20 = p[2].u - p[0].u;
+	double	u_diff10 = p[1].u - p[0].u;
+
+	double	v_diff20 = p[2].v - p[0].v;
+	double	v_diff10 = p[1].v - p[0].v;
 	if (!zero_f(diff_10.y))
 	{
 		while (section_y_progress < 1.0)
@@ -157,12 +165,12 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 			double	cur_v;
 			double	first_col_v;
 			double	last_col_v;
-			first_col_z = total_y_progress * z_dist20 + p[0].z;
-			last_col_z = section_y_progress * z_dist10 + p[0].z;
-			first_col_u = total_y_progress * u_dist20 + p[0].u;
-			last_col_u = section_y_progress * u_dist10 + p[0].u;
-			first_col_v = total_y_progress * v_dist20 + p[0].v;
-			last_col_v = section_y_progress * v_dist10 + p[0].v;
+			first_col_z = total_y_progress * z_diff20 + p[0].z;
+			last_col_z = section_y_progress * z_diff10 + p[0].z;
+			first_col_u = total_y_progress * u_diff20 + p[0].u;
+			last_col_u = section_y_progress * u_diff10 + p[0].u;
+			first_col_v = total_y_progress * v_diff20 + p[0].v;
+			last_col_v = section_y_progress * v_diff10 + p[0].v;
 			int	cur_col = first_col;
 			int row_start_offset = WIDTH * row_index;
 			int	direct_x;
@@ -186,8 +194,8 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 					depth[fin_index] = cur_z;
 					//cur_u = first_pixel_in_row.u + cur_row_progress * (last_pixel_in_row.u - first_pixel_in_row.u);
 					//cur_v = first_pixel_in_row.v + cur_row_progress * (last_pixel_in_row.v - first_pixel_in_row.v);
-					cur_u = first_col_u + cur_row_progress * (last_col_u - first_col_v);
-					cur_v = first_col_v + cur_row_progress * (last_col_u - first_col_v);
+					cur_u = first_col_u + cur_row_progress * (last_col_u - first_col_u);
+					cur_v = first_col_v + cur_row_progress * (last_col_v - first_col_v);
 					pixels[fin_index] = load_pixel_from_mlx_texture(texture, cur_u, cur_v);
 					//pixels[fin_index] = RED;
 				}
@@ -201,9 +209,9 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 
 	if (zero_f(diff_21.y))
 		return ;
-	double	z_dist21 = p[2].z - p[1].z;
-	double	u_dist21 = p[2].u - p[1].u;
-	double	v_dist21 = p[2].v - p[1].v;
+	double	z_diff21 = p[2].z - p[1].z;
+	double	u_diff21 = p[2].u - p[1].u;
+	double	v_diff21 = p[2].v - p[1].v;
 	int last_col;
 	cur_y_lf = p[1].y;
 	row_index = (int)round(cur_y_lf);
@@ -234,12 +242,12 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 		double	cur_v;
 		double	first_col_v;
 		double	last_col_v;
-		first_col_z = total_y_progress * z_dist20 + p[0].z;
-		last_col_z = section_y_progress * z_dist21 + p[1].z;
-		first_col_u = total_y_progress * u_dist20 + p[0].u;
-		last_col_u = section_y_progress * u_dist21 + p[1].u;
-		first_col_v = total_y_progress * v_dist20 + p[0].v;
-		last_col_v = section_y_progress * v_dist21 + p[1].v;
+		first_col_z = total_y_progress * z_diff20 + p[0].z;
+		last_col_z = section_y_progress * z_diff21 + p[1].z;
+		first_col_u = total_y_progress * u_diff20 + p[0].u;
+		last_col_u = section_y_progress * u_diff21 + p[1].u;
+		first_col_v = total_y_progress * v_diff20 + p[0].v;
+		last_col_v = section_y_progress * v_diff21 + p[1].v;
 
 		cur_col = first_col;
 		double	z_diff = last_col_z - first_col_z;
