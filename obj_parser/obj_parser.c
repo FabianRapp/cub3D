@@ -163,7 +163,7 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 		{
 			split = ft_split(vars->line, ' ');
 			vars->texture_cords[texture_cords_i].u = str_to_double(split[1]);
-			vars->texture_cords[texture_cords_i].v = str_to_double(split[2]);
+			vars->texture_cords[texture_cords_i].v = 1.0 - str_to_double(split[2]);
 			vars->texture_cords[texture_cords_i].w = 1;
 			if (split[3])
 				vars->texture_cords[texture_cords_i].w = str_to_double(split[3]);
