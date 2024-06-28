@@ -13,7 +13,7 @@
 #include "includes/cub3D.h"
 #include "MLX42/include/MLX42/MLX42.h"
 
-uint32_t colors[] = {
+const uint32_t colors[] = {
 0xFF000001,
 0xFF000100,
 0xFF00FF01,
@@ -30,13 +30,7 @@ uint32_t colors[] = {
 0xFFD3D3D4,
 0xFFA9A9A9,
 };
-
-int8_t	edge_fn(int a[2], int b[2], int c[2])
-{
-	return (((b[X] - a[X]) * (c[Y] - a[Y]) * (b[Y] - a[Y]) * (c[X] - a[X])) > 0);
-}
-
-
+/*
 void	fill_min_max_xy(int a[2], int b[2], int c[2], int min[2], int max[2])
 {
 	min[X] = 0;
@@ -69,16 +63,13 @@ void	fill_min_max_xy(int a[2], int b[2], int c[2], int min[2], int max[2])
 	if (c[Y] > max[Y] && c[Y] < HEIGHT)
 		max[Y] = c[Y];
 }
+*/
 
 void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color, t_mesh *mesh)
 {
 	t_vec3	*p = projected->p;
 	double		*depth;
 	uint32_t	*pixels = (uint32_t *)img->pixels;
-	//static int color_index = 0;
-	//color = colors[color_index++];
-	//if (color_index >= sizeof colors / sizeof(uint32_t))
-	//	color_index = 0;
 	depth = mesh->main->depth;
 	sort_vertexes_for_y(projected);
 	assume(p[0].y <= p[1].y && p[1].y <= p[2].y);
