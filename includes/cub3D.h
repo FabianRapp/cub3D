@@ -343,7 +343,12 @@ typedef struct s_settings
 
 typedef struct s_main
 {
-	_Alignas(128) double depth[WIDTH * HEIGHT];
+	_Alignas(128) float	depth[WIDTH * HEIGHT];
+	uint64_t	depth_bit_array[WIDTH * HEIGHT / 8];//1 bit per pixel,
+								// only if the bit is the the real depth array
+								// is checked (is set together with the real
+								// depth array), allows to not reset the big
+								// real depth array to save time
 	double		yaw;
 	double		pitch;
 	double		roll;
@@ -399,7 +404,7 @@ t_vec3	out_of_bound(t_vec3 *v);
 t_vec3	out_of_bound_triangle(t_triangle *tri);
 t_vec3	out_of_bound_triangle_projeceted(t_triangle *projected);
 bool	zero_f(double f);
-void	reset_pixel_buffer(uint8_t *pixels, double *depth);
+void	reset_pixel_buffer(uint8_t *pixels, float *depth);
 void	ft_free_img(t_main *main_data, mlx_image_t **img);
 void	reset_camera(t_main *main_data);
 

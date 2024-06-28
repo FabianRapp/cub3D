@@ -68,8 +68,9 @@ void	fill_min_max_xy(int a[2], int b[2], int c[2], int min[2], int max[2])
 void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color, t_mesh *mesh)
 {
 	t_vec3	*p = projected->p;
-	double		*depth;
+	float		*depth;
 	uint32_t	*pixels = (uint32_t *)img->pixels;
+	uint64_t	*depth_bit_array = mesh->main->depth_bit_array;
 	depth = mesh->main->depth;
 	sort_vertexes_for_y(projected);
 	assume(p[0].y <= p[1].y && p[1].y <= p[2].y);
@@ -93,7 +94,7 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 
 	double	cur_y_lf = p[0].y;
 	double	total_y_progress = 0;
-	int		cur_col;
+	int		cur_x;
 	int row_index =  (int)round(cur_y_lf);
 	double section_y_progress = 0;
 	if (!zero_f(y_dist10))
@@ -111,12 +112,12 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 			if (section_y_progress >= 1.0)
 				break ;
 			int	last_col = (int)round(x_dist10 * section_y_progress + p[0].x);
-			double cur_z;
+			float	cur_z;
 			double	first_col_z;
 			double	last_col_z;
 			first_col_z = total_y_progress * z_dist20 + p[0].z;
 			last_col_z = section_y_progress * z_dist10 + p[0].z;
-			int	cur_col = first_col;
+			int	cur_x = first_col;
 			int row_start_offset = WIDTH * row_index;
 			int	direct_x;
 			if (first_col <= last_col)
@@ -128,21 +129,25 @@ void	fill_triangle_color(mlx_image_t *img, t_triangle *projected, uint32_t color
 			assume(len_x);
 			for (int i = 0; i < abs(len_x); i++)
 			{
-				//double p = cur_col - first_col;
+				//double p = cur_x - first_col;
 				//cur_z = (p * z_dist) / ((double)len_x) + first_col_z;
-double t = (cur_col - first_col) / (double)len_x;
-cur_z = first_col_z + t * (last_col_z - first_col_z);
-				assume(cur_col < WIDTH);
+double row_progress = (cur_x - first_col) / (double)len_x;
+cur_z = first_col_z + row_progress * (last_col_z - first_col_z);
+				assume(cur_x < WIDTH);
 				double x_progress;
-				x_progress = 1.0 - ((last_col - cur_col) / (double)len_x);
-				int fin_index = cur_col + row_start_offset;
-				if (cur_z < depth[fin_index])
+				x_progress = 1.0 - ((last_col - cur_x) / (double)len_x);
+				int fin_index = cur_x + row_start_offset;
+				uint32_t	bit_array_index = fin_index / 8;
+				uint8_t		bit_mask = 1 << (fin_index % 8);
+				if (cur_z < depth[fin_index]
+					|| !(depth_bit_array[bit_array_index] & bit_mask))
 				{
+					depth_bit_array[bit_array_index] |= bit_mask;
 					//printf("%lf\n", cur_z);
 					depth[fin_index] = cur_z;
 					pixels[fin_index] = color;
 				}
-				cur_col += direct_x;
+				cur_x += direct_x;
 			}
 			cur_y_lf = cur_y_lf + 1.0f;
 			row_index =  (int)round(cur_y_lf);
@@ -177,7 +182,7 @@ cur_z = first_col_z + t * (last_col_z - first_col_z);
 		double cur_z;
 		double first_col_z = total_y_progress * z_dist20 + p[0].z;
 		double last_col_z = section_y_progress * z_dist21 + p[1].z;
-		cur_col = first_col;
+		cur_x = first_col;
 		double	z_dist = last_col_z - first_col_z;
 		int row_start_offset = WIDTH * row_index;
 		assume(row_start_offset + WIDTH <= WIDTH * HEIGHT);
@@ -191,20 +196,21 @@ cur_z = first_col_z + t * (last_col_z - first_col_z);
 		assume(last_col >= 0 && last_col < WIDTH);
 		for (int i = 0; i < abs(len_x); i++)
 		{
-			//double p = cur_col - first_col;
-			//last_col_z - first_col_z;
-			//cur_z = (p * z_dist) / ((double)len_x) + first_col_z;
-double t = (cur_col - first_col) / (double)len_x;
-cur_z = first_col_z + t * (last_col_z - first_col_z);
-			int fin_index = cur_col + row_start_offset;
-			if (cur_z < depth[fin_index])
+			double row_progress = (cur_x - first_col) / (double)len_x;
+			cur_z = first_col_z + row_progress * (last_col_z - first_col_z);
+			int fin_index = cur_x + row_start_offset;
+			uint32_t	bit_array_index = fin_index / 8;
+			uint8_t		bit_mask = 1 << (fin_index % 8);
+			if (cur_z < depth[fin_index]
+				|| !(depth_bit_array[bit_array_index] & bit_mask))
 			{
+				depth_bit_array[bit_array_index] |= bit_mask;
 				depth[fin_index] = cur_z;
 				pixels[fin_index] = color;
 			}
 			if (first_col == last_col)
 				return ;
-			cur_col += direct_x;
+			cur_x += direct_x;
 		}
 		cur_y_lf += 1.0f;
 		row_index =  (int)round(cur_y_lf);

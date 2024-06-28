@@ -64,6 +64,8 @@ void	handle_movement_per_frame(t_main *main_data)
 		add_vec3(&main_data->world_data.camera, &movement);
 }
 
+//todo: needs rework to work with float depth array
+// (or what ever data type the depth array ends up to be)
 static inline void	reset_depth(double *depth)
 {
 	static const double	z_far = (double)Z_FAR;
@@ -88,7 +90,7 @@ static inline void	reset_depth(double *depth)
 }
 
 //% of line by line profile
-static inline void	reset_pixel_buffer_main(uint8_t *pixels, double *depth)
+static inline void	reset_pixel_buffer_main(uint8_t *pixels, float *depth, uint64_t *depth_bit_array)
 {
 	uint64_t	*buffer = (uint64_t *)pixels;
 	const uint64_t	black = (((uint64_t)BLACK<<32) | BLACK);
@@ -114,19 +116,22 @@ static inline void	reset_pixel_buffer_main(uint8_t *pixels, double *depth)
 	while (i < (WIDTH * HEIGHT / 2))
 		buffer[i++] = black;
 	i = 0;
-	//reset_depth(depth);
-	while (i < (WIDTH * HEIGHT))//2.5%runtime
-	{
-		depth[i] = Z_FAR; //19.0% runtime
-		depth[i + 1] = Z_FAR;
-		depth[i + 2] = Z_FAR;
-		depth[i + 3] = Z_FAR;
-		depth[i + 4] = Z_FAR;
-		depth[i + 5] = Z_FAR;
-		depth[i + 6] = Z_FAR;
-		depth[i + 7] = Z_FAR;
-		i += 8;
-	}
+	while (i < (WIDTH * HEIGHT / 8))
+		depth_bit_array[i++] = 0;
+	//i = 0;
+	////reset_depth(depth);
+	//while (i < (WIDTH * HEIGHT))//2.5%runtime
+	//{
+	//	depth[i] = Z_FAR; //19.0% runtime
+	//	depth[i + 1] = Z_FAR;
+	//	depth[i + 2] = Z_FAR;
+	//	depth[i + 3] = Z_FAR;
+	//	depth[i + 4] = Z_FAR;
+	//	depth[i + 5] = Z_FAR;
+	//	depth[i + 6] = Z_FAR;
+	//	depth[i + 7] = Z_FAR;
+	//	i += 8;
+	//}
 }
 
 // Print the window width and height.
@@ -140,7 +145,7 @@ void	ft_hook(void* param)
 	if (main_data->settings.paused == true)
 		return ;
 	handle_movement_per_frame(main_data);
-	reset_pixel_buffer_main(main_data->img->pixels, main_data->depth);
+	reset_pixel_buffer_main(main_data->img->pixels, main_data->depth, main_data->depth_bit_array);
 	i = 0;
 	static int q = 0;
 	while (i < main_data->mesh_count)

@@ -38,7 +38,7 @@ void	ft_free_img(t_main *main_data, mlx_image_t **img)
 	*img = NULL;
 }
 
-void	reset_pixel_buffer(uint8_t *pixels, double *depth)
+void	reset_pixel_buffer(uint8_t *pixels, float *depth)
 {
 	uint32_t	*buffer = (uint32_t *)pixels;
 
