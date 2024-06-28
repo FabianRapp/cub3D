@@ -138,7 +138,7 @@ static inline void	inner_loop(const t_most_inner_loop_vars vars)
 	{
 		assume(cur_x < WIDTH);
 		int fin_index = cur_x + vars.row_start_offset;
-		uint32_t	bit_array_index = fin_index / 8;
+		uint32_t	bit_array_index = fin_index >> 3;
 		uint8_t		bit_mask = 1 << (fin_index % 8);
 		//__builtin_prefetch(vars.depth + fin_index, 1, 3);
 		//__builtin_prefetch(vars.depth_bit_array + fin_index - vars.texture_width, 1, 3);
@@ -155,8 +155,10 @@ static inline void	inner_loop(const t_most_inner_loop_vars vars)
 			vars.depth[fin_index] = cur_z;
 			double cur_u = vars.first_pixel_in_row.u + row_progress * (vars.last_pixel_in_row.u - vars.first_pixel_in_row.u);
 			double cur_v = vars.first_pixel_in_row.v + row_progress * (vars.last_pixel_in_row.v - vars.first_pixel_in_row.v);
-			vars.pixels[fin_index] = load_pixel_from_mlx_texture(
-				cur_u * vars.texture.max_width_index, cur_v * vars.texture.max_height_index, vars.texture.buffer, vars.texture.width);
+			vars.pixels[fin_index] = vars.texture.buffer[
+				((int)(cur_u * vars.texture.max_width_index)) + ((int)(cur_v * vars.texture.max_height_index)) * vars.texture.width];
+				//load_pixel_from_mlx_texture(
+				 //cur_u * vars.texture.max_width_index, cur_v * vars.texture.max_height_index, vars.texture.buffer, vars.texture.width);
 		}
 		//if (vars.first_col == last_col)
 		//	break ;
