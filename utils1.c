@@ -21,9 +21,9 @@ bool	is_power2(uint32_t nb)
 
 void	reset_camera(t_main *main_data)
 {
-	const t_vec3	init_cam = {.x = 0, .y = 0, .z = 0, .w = 1};
-	const t_vec3	init_look_direct = {.x = 0, .y = 0, .z = 1, .w = 1};
-	const t_vec3	init_up = {.x = 0.0, .y = 1, .z = 0, .w = 1};
+	const t_vec3	init_cam = {.x = 0, .y = 0, .z = 0, };//.w = 1};
+	const t_vec3	init_look_direct = {.x = 0, .y = 0, };//.z = 1, .w = 1};
+	const t_vec3	init_up = {.x = 0.0, .y = 1, .z = 0,};// .w = 1};
 
 	main_data->pitch = 0;
 	main_data->yaw = 0;

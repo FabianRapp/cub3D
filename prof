@@ -1,0 +1,1565 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  us/call  us/call  name    
+  2.71      1.16     1.16                             matrix_mult_vec3_4x4 (matrix_mult.c:62 @ aa32)
+  2.52      2.24     1.08                             draw_mesh (draw.c:378 @ 5ab1)
+  2.48      3.30     1.06                             inner_loop (fill_triangle.c:157 @ b088)
+  2.43      4.34     1.04                             reset_pixel_buffer_main (main.c:108 @ 3387)
+  2.29      5.32     0.98                             reset_pixel_buffer_main (main.c:107 @ 3384)
+  2.28      6.29     0.97                             inner_loop (fill_triangle.c:157 @ b4b1)
+  2.13      7.21     0.91                             inner_loop (fill_triangle.c:157 @ b170)
+  2.02      8.07     0.86                             inner_loop (fill_triangle.c:158 @ b57c)
+  1.75      8.82     0.75                             inner_loop (fill_triangle.c:157 @ b582)
+  1.31      9.38     0.56                             draw_mesh (draw.c:381 @ 5bba)
+  1.25      9.91     0.54                             fill_triangle_color (fill_triangle2.c:202 @ bc6c)
+  1.21     10.44     0.52                             fill_triangle_color (fill_triangle2.c:143 @ b88c)
+  1.20     10.95     0.52                             inner_loop (fill_triangle.c:159 @ b587)
+  1.14     11.44     0.49                             lodepng_memset (lodepng.c:129 @ 14fd9)
+  1.00     11.87     0.43                             get_unset_used_index (clipping_xy.c:71 @ ccdb)
+  0.95     12.28     0.41                             fill_triangle_color (fill_triangle2.c:204 @ bc90)
+  0.91     12.66     0.39                             get_blocked_val_inline (fill_triangle.c:129 @ b0d5)
+  0.88     13.04     0.38                             inner_loop (fill_triangle.c:159 @ b175)
+  0.84     13.40     0.36                             get_unset_used_index (clipping_xy.c:69 @ ccd2)
+  0.82     13.75     0.35                             inner_loop (fill_triangle.c:159 @ b08d)
+  0.76     14.07     0.33                             inner_loop (fill_triangle.c:158 @ b17b)
+  0.76     14.40     0.33                             lodepng_memcpy (lodepng.c:123 @ 14f8e)
+  0.74     14.71     0.32                             inner_loop (fill_triangle.c:159 @ b4b6)
+  0.72     15.03     0.31                             inner_loop (fill_triangle.c:146 @ b458)
+  0.68     15.31     0.29                             get_blocked_val_inline (fill_triangle.c:129 @ b5d3)
+  0.58     15.56     0.25                             get_blocked_val_inline (fill_triangle.c:129 @ b1bd)
+  0.57     15.81     0.24                             fill_triangle_color (fill_triangle2.c:143 @ b963)
+  0.56     16.05     0.24                             inner_loop (fill_triangle.c:156 @ b155)
+  0.55     16.29     0.23                             get_unset_used_index (clipping_xy.c:71 @ ccbf)
+  0.54     16.52     0.23                             inner_loop (fill_triangle.c:164 @ b0e0)
+  0.54     16.75     0.23                             inner_loop (fill_triangle.c:167 @ b1cf)
+  0.51     16.96     0.22                             inner_loop (fill_triangle.c:159 @ b17d)
+  0.49     17.18     0.21                             get_blocked_val_inline (fill_triangle.c:129 @ b501)
+  0.49     17.39     0.21                             inner_loop (fill_triangle.c:156 @ b565)
+  0.49     17.59     0.21                             inner_loop (fill_triangle.c:169 @ b5f0)
+  0.48     17.80     0.20                             fill_triangle_color (fill_triangle2.c:142 @ b95d)
+  0.48     18.00     0.20                             inner_loop (fill_triangle.c:167 @ b513)
+  0.47     18.20     0.20                             inner_loop (fill_triangle.c:146 @ b02d)
+  0.47     18.41     0.20                             inner_loop (fill_triangle.c:158 @ b070)
+  0.47     18.61     0.20                             inner_loop (fill_triangle.c:154 @ b5e3)
+  0.47     18.80     0.20                             matrix_mult_vec3_4x4 (matrix_mult.c:63 @ aa81)
+  0.46     19.00     0.20                             inner_loop (fill_triangle.c:164 @ b0b9)
+  0.46     19.20     0.20                             inner_loop (fill_triangle.c:162 @ b598)
+  0.46     19.39     0.20                             inner_loop (fill_triangle.c:164 @ b5a9)
+  0.44     19.58     0.19                             get_blocked_val_inline (fill_triangle.c:126 @ b5c9)
+  0.44     19.77     0.19                             matrix_mult_vec3_4x4 (matrix_mult.c:64 @ aaa4)
+  0.42     19.95     0.18                             inner_loop (fill_triangle.c:149 @ b041)
+  0.42     20.13     0.18                             inner_loop (fill_triangle.c:158 @ b498)
+  0.42     20.31     0.18                             inner_loop (fill_triangle.c:157 @ b574)
+  0.42     20.49     0.18                             inner_loop (fill_triangle.c:159 @ b576)
+  0.42     20.67     0.18                             inner_loop (fill_triangle.c:164 @ b5df)
+  0.41     20.84     0.17                             paethPredictor (lodepng.c:4247 @ 1c201)
+  0.40     21.02     0.17                             inner_loop (fill_triangle.c:159 @ b07d)
+  0.40     21.18     0.17                             inner_loop (fill_triangle.c:167 @ b0e6)
+  0.40     21.36     0.17                             inner_loop (fill_triangle.c:159 @ b165)
+  0.40     21.52     0.17                             inner_loop (fill_triangle.c:169 @ b1d9)
+  0.39     21.69     0.17                             inner_loop (fill_triangle.c:164 @ b5b5)
+  0.37     21.85     0.16 381464703     0.00     0.00  matrix_mult_vec3_4x4 (matrix_mult.c:61 @ aa20)
+  0.37     22.01     0.16                             inner_loop (fill_triangle.c:158 @ b093)
+  0.37     22.17     0.16                             paethPredictor (lodepng.c:4244 @ 1c1d7)
+  0.37     22.33     0.16                             update_adler32 (lodepng.c:2148 @ 178dc)
+  0.36     22.48     0.15                             fill_triangle_texture (fill_triangle.c:213 @ af7b)
+  0.36     22.64     0.15                             inner_loop (fill_triangle.c:169 @ b0ee)
+  0.36     22.80     0.15                             inner_loop (fill_triangle.c:154 @ b1cc)
+  0.35     22.95     0.15                             inner_loop (fill_triangle.c:171 @ b511)
+  0.35     23.09     0.15                             inner_loop (fill_triangle.c:154 @ b5f4)
+  0.35     23.25     0.15                             matrix_mult_vec3_4x4 (matrix_mult.c:65 @ aac8)
+  0.35     23.39     0.15                             reset_pixel_buffer_main (main.c:104 @ 3395)
+  0.34     23.54     0.14                             inner_loop (fill_triangle.c:159 @ b095)
+  0.33     23.68     0.14                             inner_loop (fill_triangle.c:165 @ b191)
+  0.33     23.82     0.14                             inner_loop (fill_triangle.c:164 @ b1c8)
+  0.33     23.96     0.14                             reset_pixel_buffer_main (main.c:109 @ 338b)
+  0.32     24.09     0.14                             draw_mesh (draw.c:421 @ 5d61)
+  0.32     24.23     0.14                             fill_triangle_color (fill_triangle2.c:202 @ bb4e)
+  0.30     24.36     0.13 47872597     0.00     0.00  rasterize (draw.c:251 @ 52b0)
+  0.30     24.49     0.13                             fill_triangle_color (fill_triangle2.c:142 @ b893)
+  0.30     24.62     0.13                             ft_memcpy (ft_memcpy.c:29 @ f223)
+  0.30     24.75     0.13                             inner_loop (fill_triangle.c:159 @ b074)
+  0.30     24.88     0.13                             inner_loop (fill_triangle.c:171 @ b0e4)
+  0.30     25.01     0.13                             inner_loop (fill_triangle.c:159 @ b4be)
+  0.30     25.14     0.13                             inner_loop (fill_triangle.c:164 @ b50d)
+  0.30     25.27     0.13                             inner_loop (fill_triangle.c:159 @ b56c)
+  0.29     25.39     0.12                             inner_loop (fill_triangle.c:162 @ b09e)
+  0.29     25.52     0.12                             inner_loop (fill_triangle.c:159 @ b15c)
+  0.28     25.64     0.12                             ensureBits32 (lodepng.c:546 @ 159a0)
+  0.28     25.76     0.12                             get_blocked_val_inline (fill_triangle.c:126 @ b0cb)
+  0.28     25.88     0.12                             inner_loop (fill_triangle.c:157 @ b080)
+  0.28     26.00     0.12                             inner_loop (fill_triangle.c:158 @ b083)
+  0.28     26.12     0.12                             inner_loop (fill_triangle.c:168 @ b0ea)
+  0.28     26.24     0.12                             inner_loop (fill_triangle.c:156 @ b150)
+  0.28     26.36     0.12                             inner_loop (fill_triangle.c:158 @ b152)
+  0.28     26.48     0.12                             inner_loop (fill_triangle.c:154 @ b1dd)
+  0.28     26.60     0.12                             my_str_cpy (get_next_line_utils.c:70 @ 10aa8)
+  0.28     26.72     0.12                             paethPredictor (lodepng.c:4250 @ 1c23f)
+  0.28     26.84     0.12                             unfilterScanline (lodepng.c:4493 @ 1d937)
+  0.27     26.95     0.12                             fill_triangle_color (fill_triangle2.c:204 @ bb48)
+  0.27     27.07     0.12                             get_blocked_val_inline (fill_triangle.c:127 @ b0be)
+  0.27     27.18     0.12                             inner_loop (fill_triangle.c:164 @ b0ae)
+  0.27     27.30     0.12                             inner_loop (fill_triangle.c:167 @ b5e6)
+  0.26     27.41     0.11                             fill_triangle_color (fill_triangle2.c:205 @ bc85)
+  0.26     27.52     0.11                             fill_triangle_texture (fill_triangle.c:296 @ b52b)
+  0.26     27.63     0.11                             ft_memcpy (ft_memcpy.c:28 @ f1f2)
+  0.26     27.74     0.11                             get_blocked_val_inline (fill_triangle.c:127 @ b5ba)
+  0.26     27.85     0.11                             inner_loop (fill_triangle.c:156 @ b06d)
+  0.26     27.96     0.11                             inner_loop (fill_triangle.c:157 @ b4a9)
+  0.26     28.07     0.11                             inner_loop (fill_triangle.c:169 @ b51b)
+  0.26     28.18     0.11                             paethPredictor (lodepng.c:4241 @ 1c1be)
+  0.25     28.29     0.10                             ensureBits32 (lodepng.c:549 @ 15a33)
+  0.25     28.39     0.10                             fill_triangle_color (fill_triangle2.c:197 @ bcae)
+  0.25     28.50     0.10                             inner_loop (fill_triangle.c:162 @ b186)
+  0.25     28.60     0.10                             inner_loop (fill_triangle.c:168 @ b517)
+  0.23     28.70     0.10 238339083     0.00     0.00  v3_sub (vec3.c:138 @ 61e0)
+  0.23     28.80     0.10                             get_blocked_val_inline (fill_triangle.c:125 @ b4df)
+  0.23     28.90     0.10                             huffmanDecodeSymbol (lodepng.c:1075 @ 16777)
+  0.23     29.00     0.10                             inner_loop (fill_triangle.c:163 @ b0a4)
+  0.23     29.10     0.10                             inner_loop (fill_triangle.c:165 @ b0a9)
+  0.23     29.20     0.10                             inner_loop (fill_triangle.c:148 @ b468)
+  0.23     29.30     0.10                             inner_loop (fill_triangle.c:154 @ b479)
+  0.23     29.40     0.10                             inner_loop (fill_triangle.c:158 @ b568)
+  0.23     29.50     0.10                             inner_loop (fill_triangle.c:157 @ b579)
+  0.23     29.60     0.10                             inner_loop (fill_triangle.c:168 @ b5ea)
+  0.23     29.70     0.10                             unfilterScanline (lodepng.c:4497 @ 1da2d)
+  0.23     29.80     0.10                             unfilterScanline (lodepng.c:4499 @ 1da97)
+  0.22     29.89     0.10                             fill_triangle_color (fill_triangle2.c:199 @ bc60)
+  0.22     29.99     0.10                             get_blocked_val_inline (fill_triangle.c:127 @ b5ae)
+  0.22     30.09     0.10                             inner_loop (fill_triangle.c:165 @ b182)
+  0.22     30.18     0.10                             inner_loop (fill_triangle.c:165 @ b4d2)
+  0.21     30.27     0.09                             get_blocked_val_inline (fill_triangle.c:125 @ b5b1)
+  0.21     30.36     0.09                             inner_loop (fill_triangle.c:165 @ b09a)
+  0.21     30.45     0.09                             inner_loop (fill_triangle.c:164 @ b196)
+  0.21     30.54     0.09                             inner_loop (fill_triangle.c:168 @ b1d3)
+  0.21     30.63     0.09                             inner_loop (fill_triangle.c:156 @ b490)
+  0.21     30.72     0.09                             inner_loop (fill_triangle.c:158 @ b492)
+  0.21     30.81     0.09                             inner_loop (fill_triangle.c:165 @ b4c3)
+  0.21     30.90     0.09                             rasterize (draw.c:328 @ 57e5)
+  0.20     30.98     0.09                             fill_triangle_color (fill_triangle2.c:145 @ b971)
+  0.20     31.07     0.09                             get_blocked_val_inline (fill_triangle.c:125 @ b4f3)
+  0.20     31.16     0.09                             inner_loop (fill_triangle.c:157 @ b4a4)
+  0.20     31.24     0.09                             inner_loop (fill_triangle.c:159 @ b4a6)
+  0.20     31.32     0.09                             update_adler32 (lodepng.c:2147 @ 178c7)
+  0.19     31.41     0.08                             fill_triangle_color (fill_triangle2.c:208 @ bca5)
+  0.19     31.48     0.08                             get_blocked_val_inline (fill_triangle.c:125 @ b0c8)
+  0.19     31.57     0.08                             get_blocked_val_inline (fill_triangle.c:125 @ b5cc)
+  0.19     31.64     0.08                             inner_loop (fill_triangle.c:148 @ b03d)
+  0.19     31.73     0.08                             inner_loop (fill_triangle.c:158 @ b158)
+  0.19     31.80     0.08                             inner_loop (fill_triangle.c:154 @ b51f)
+  0.19     31.89     0.08                             inner_loop (fill_triangle.c:158 @ b58d)
+  0.19     31.96     0.08                             inner_loop (fill_triangle.c:159 @ b58f)
+  0.19     32.05     0.08                             inner_loop (fill_triangle.c:165 @ b5a4)
+  0.19     32.12     0.08                             unfilterScanline (lodepng.c:4496 @ 1d9f8)
+  0.18     32.20     0.07                             fill_triangle_color (fill_triangle2.c:134 @ b855)
+  0.18     32.27     0.07                             fill_triangle_color (fill_triangle2.c:147 @ b977)
+  0.18     32.35     0.07                             get_blocked_val_inline (fill_triangle.c:126 @ b1b3)
+  0.18     32.42     0.07                             inner_loop (fill_triangle.c:156 @ b068)
+  0.18     32.50     0.07                             inner_loop (fill_triangle.c:158 @ b06a)
+  0.18     32.58     0.07                             inner_loop (fill_triangle.c:154 @ b0f2)
+  0.18     32.65     0.07                             inner_loop (fill_triangle.c:157 @ b168)
+  0.18     32.73     0.07                             inner_loop (fill_triangle.c:158 @ b16b)
+  0.18     32.80     0.07                             inner_loop (fill_triangle.c:158 @ b4bc)
+  0.18     32.88     0.07                             inner_loop (fill_triangle.c:163 @ b59e)
+  0.16     32.95     0.07 153698758     0.00     0.00  zero_f (utils1.c:68 @ 7a00)
+  0.16     33.02     0.07                             fill_triangle_color (fill_triangle2.c:140 @ b948)
+  0.16     33.09     0.07                             fill_triangle_color (fill_triangle2.c:141 @ b950)
+  0.16     33.16     0.07                             fill_triangle_color (fill_triangle2.c:199 @ bb40)
+  0.16     33.23     0.07                             get_blocked_val_inline (fill_triangle.c:128 @ b0c2)
+  0.16     33.30     0.07                             get_blocked_val_inline (fill_triangle.c:125 @ b0ce)
+  0.16     33.37     0.07                             get_blocked_val_inline (fill_triangle.c:125 @ b19d)
+  0.16     33.44     0.07                             get_blocked_val_inline (fill_triangle.c:128 @ b4ec)
+  0.16     33.51     0.07                             get_blocked_val_inline (fill_triangle.c:125 @ b4fa)
+  0.16     33.58     0.07                             inner_loop (fill_triangle.c:159 @ b49c)
+  0.16     33.65     0.07                             inner_loop (fill_triangle.c:164 @ b4d7)
+  0.16     33.72     0.07                             matrix_mult_vec3_4x4 (matrix_mult.c:66 @ aaef)
+  0.16     33.78     0.07                             update_adler32 (lodepng.c:2146 @ 178e2)
+  0.15     33.85     0.07                             ensureBits32 (lodepng.c:548 @ 15a16)
+  0.15     33.91     0.07                             fill_triangle_color (fill_triangle2.c:139 @ b868)
+  0.15     33.98     0.07                             fill_triangle_color (fill_triangle2.c:205 @ bb75)
+  0.15     34.05     0.07                             fill_triangle_texture (fill_triangle.c:253 @ b0fe)
+  0.15     34.11     0.07                             get_blocked_val_inline (fill_triangle.c:127 @ b1a6)
+  0.15     34.17     0.07                             get_blocked_val_inline (fill_triangle.c:127 @ b4dc)
+  0.15     34.24     0.07                             get_blocked_val_inline (fill_triangle.c:126 @ b4f0)
+  0.15     34.30     0.07                             inner_loop (fill_triangle.c:164 @ b1a1)
+  0.15     34.37     0.07                             inner_loop (fill_triangle.c:163 @ b4cd)
+  0.15     34.44     0.07                             v3_sub (vec3.c:145 @ 6207)
+  0.14     34.49     0.06 43821275     0.00     0.00  call_clipping_xy (clipping_xy.c:250 @ cb30)
+  0.14     34.55     0.06                             draw_mesh (draw.c:373 @ 5a83)
+  0.14     34.62     0.06                             fill_triangle_color (fill_triangle2.c:143 @ b958)
+  0.14     34.67     0.06                             fill_triangle_color (fill_triangle2.c:204 @ bb6f)
+  0.14     34.73     0.06                             fill_triangle_texture (fill_triangle.c:276 @ b3c4)
+  0.14     34.80     0.06                             ft_memcpy (ft_memcpy.c:29 @ f2ad)
+  0.14     34.85     0.06                             get_blocked_val_inline (fill_triangle.c:125 @ b1b6)
+  0.14     34.91     0.06                             get_blocked_val_inline (fill_triangle.c:128 @ b5be)
+  0.14     34.98     0.06                             huffmanDecodeSymbol (lodepng.c:1076 @ 16790)
+  0.14     35.03     0.06                             inflateHuffmanBlock (lodepng.c:1281 @ 170f9)
+  0.14     35.09     0.06                             inner_loop (fill_triangle.c:149 @ b46c)
+  0.14     35.16     0.06                             inner_loop (fill_triangle.c:165 @ b594)
+  0.14     35.22     0.06                             lodepng_memcpy (lodepng.c:124 @ 14fc2)
+  0.14     35.27     0.06                             paethPredictor (lodepng.c:4245 @ 1c1ec)
+  0.14     35.34     0.06                             unfilterScanline (lodepng.c:4498 @ 1da62)
+  0.13     35.39     0.06                             draw_mesh (draw.c:370 @ 5a51)
+  0.13     35.45     0.06                             draw_mesh (draw.c:378 @ 5ba2)
+  0.13     35.50     0.06                             get_blocked_val_inline (fill_triangle.c:127 @ b0b2)
+  0.13     35.55     0.06                             inner_loop (fill_triangle.c:171 @ b5ee)
+  0.13     35.61     0.06                             paethPredictor (lodepng.c:4249 @ 1c226)
+  0.12     35.66     0.05 50892597     0.00     0.00  clipping_z_near (clipping_z.c:126 @ c490)
+  0.12     35.71     0.05                             call_clipping_xy (clipping_xy.c:268 @ d1b8)
+  0.12     35.76     0.05                             draw_mesh (draw.c:389 @ 5c6f)
+  0.12     35.81     0.05                             fill_slider (menu.c:93 @ ddd8)
+  0.12     35.86     0.05                             fill_triangle_color (fill_triangle2.c:130 @ b981)
+  0.12     35.91     0.05                             fill_triangle_color (fill_triangle2.c:205 @ bb65)
+  0.12     35.96     0.05                             get_blocked_val_inline (fill_triangle.c:125 @ b0b5)
+  0.12     36.01     0.05                             inner_loop (fill_triangle.c:147 @ b039)
+  0.12     36.06     0.05                             inner_loop (fill_triangle.c:157 @ b07b)
+  0.12     36.11     0.05                             inner_loop (fill_triangle.c:163 @ b18c)
+  0.12     36.16     0.05                             inner_loop (fill_triangle.c:158 @ b4ac)
+  0.12     36.21     0.05                             peekBits (lodepng.c:564 @ 15b8f)
+  0.12     36.26     0.05                             v3_add_incl_uv (fill_triangle.c:68 @ b3f9)
+  0.11     36.30     0.04                             advanceBits (lodepng.c:569 @ 15bb7)
+  0.11     36.35     0.04                             fill_triangle_color (fill_triangle2.c:135 @ b85b)
+  0.11     36.40     0.04                             fill_triangle_color (fill_triangle2.c:147 @ b8a4)
+  0.11     36.44     0.04                             fill_triangle_color (fill_triangle2.c:208 @ bb84)
+  0.11     36.48     0.04                             get_blocked_val_inline (fill_triangle.c:128 @ b1aa)
+  0.11     36.53     0.04                             get_blocked_val_inline (fill_triangle.c:126 @ b4f7)
+  0.11     36.58     0.04                             get_blocked_val_inline (fill_triangle.c:128 @ b4fe)
+  0.11     36.62     0.04                             get_unset_last_used_index (clipping_xy.c:54 @ d108)
+  0.11     36.66     0.04                             inflateHuffmanBlock (lodepng.c:1315 @ 172af)
+  0.11     36.71     0.04                             inner_loop (fill_triangle.c:162 @ b4c7)
+  0.11     36.76     0.04                             inner_loop (fill_triangle.c:156 @ b560)
+  0.11     36.80     0.04                             inner_loop (fill_triangle.c:158 @ b562)
+  0.09     36.84     0.04                             _init
+  0.09     36.88     0.04                             call_clipping_xy (clipping_xy.c:261 @ cb7a)
+  0.09     36.92     0.04                             dot_prod_unit (vec3.c:111 @ 60ee)
+  0.09     36.96     0.04                             draw_mesh (draw.c:417 @ 5d4b)
+  0.09     37.00     0.04                             fill_triangle_color (fill_triangle2.c:148 @ b8ab)
+  0.09     37.04     0.04                             fill_triangle_color (fill_triangle2.c:139 @ b944)
+  0.09     37.08     0.04                             fill_triangle_color (fill_triangle2.c:142 @ b96a)
+  0.09     37.12     0.04                             fill_triangle_color (fill_triangle2.c:207 @ bb81)
+  0.09     37.16     0.04                             fill_triangle_texture (fill_triangle.c:277 @ b3ed)
+  0.09     37.20     0.04                             fill_triangle_texture (fill_triangle.c:295 @ b527)
+  0.09     37.24     0.04                             ft_memcpy (ft_memcpy.c:31 @ f1c8)
+  0.09     37.28     0.04                             ft_memcpy (ft_memcpy.c:29 @ f265)
+  0.09     37.32     0.04                             get_blocked_val_inline (fill_triangle.c:126 @ b0c6)
+  0.09     37.36     0.04                             get_blocked_val_inline (fill_triangle.c:125 @ b1b0)
+  0.09     37.40     0.04                             get_blocked_val_inline (fill_triangle.c:127 @ b4e8)
+  0.09     37.44     0.04                             get_blocked_val_inline (fill_triangle.c:128 @ b5d0)
+  0.09     37.48     0.04                             huffmanDecodeSymbol (lodepng.c:1073 @ 1674e)
+  0.09     37.52     0.04                             inner_loop (fill_triangle.c:154 @ b04e)
+  0.09     37.56     0.04                             inner_loop (fill_triangle.c:147 @ b464)
+  0.09     37.60     0.04                             inner_loop (fill_triangle.c:156 @ b495)
+  0.09     37.64     0.04                             my_str_cpy (get_next_line_utils.c:71 @ 10acc)
+  0.09     37.68     0.04                             rasterize (draw.c:265 @ 5379)
+  0.09     37.72     0.04                             v3_sub (vec3.c:146 @ 6230)
+  0.08     37.76     0.04                             cpy_triangle_data_rasterize (draw.c:244 @ 5586)
+  0.08     37.79     0.04                             draw_mesh (draw.c:372 @ 5a6e)
+  0.08     37.83     0.04                             draw_mesh (draw.c:379 @ 5bb2)
+  0.08     37.86     0.04                             fill_triangle_color (fill_triangle2.c:130 @ b8af)
+  0.08     37.90     0.04                             fill_triangle_color (fill_triangle2.c:204 @ bc67)
+  0.08     37.93     0.04                             fill_triangle_color (fill_triangle2.c:203 @ bc76)
+  0.08     37.97     0.04                             fill_triangle_color (fill_triangle2.c:209 @ bcaa)
+  0.08     38.00     0.04                             huffmanDecodeSymbol (lodepng.c:1078 @ 167b0)
+  0.08     38.03     0.04                             inner_loop (fill_triangle.c:164 @ b4e3)
+  0.08     38.07     0.04                             lodepng_memcpy (lodepng.c:121 @ 14f7a)
+  0.08     38.10     0.04                             my_str_cpy (get_next_line_utils.c:71 @ 10ad3)
+  0.08     38.14     0.04                             my_str_cpy (get_next_line_utils.c:74 @ 10ad6)
+  0.08     38.17     0.04                             rasterize (draw.c:270 @ 540a)
+  0.08     38.21     0.04                             unfilterScanline (lodepng.c:4495 @ 1d9c7)
+  0.08     38.24     0.04                             update_adler32 (lodepng.c:2146 @ 178be)
+  0.07     38.27     0.03 127935605     0.00     0.00  dot_prod_unit (vec3.c:110 @ 60e0)
+  0.07     38.30     0.03 79283514     0.00     0.00  cross_product (vec3.c:99 @ 6060)
+  0.07     38.34     0.03                             advanceBits (lodepng.c:568 @ 15bab)
+  0.07     38.37     0.03                             clipping_z_near (clipping_z.c:193 @ c55e)
+  0.07     38.40     0.03                             count_inside_points (clipping_xy.c:158 @ cbbd)
+  0.07     38.42     0.03                             count_inside_points (clipping_xy.c:156 @ cbc6)
+  0.07     38.45     0.03                             count_inside_points (clipping_xy.c:162 @ cc02)
+  0.07     38.48     0.03                             count_inside_points (clipping_xy.c:160 @ cf58)
+  0.07     38.52     0.03                             count_inside_points (clipping_xy.c:156 @ d1f1)
+  0.07     38.55     0.03                             cross_product (vec3.c:106 @ 6082)
+  0.07     38.58     0.03                             cross_product (vec3.c:102 @ 608b)
+  0.07     38.60     0.03                             draw_mesh (draw.c:374 @ 5a9a)
+  0.07     38.63     0.03                             draw_mesh (draw.c:381 @ 5c4a)
+  0.07     38.66     0.03                             draw_mesh (draw.c:409 @ 5cf7)
+  0.07     38.70     0.03                             ensureBits32 (lodepng.c:544 @ 15982)
+  0.07     38.73     0.03                             fill_slider (menu.c:90 @ dd95)
+  0.07     38.76     0.03                             fill_triangle_color (fill_triangle2.c:145 @ b8a1)
+  0.07     38.78     0.03                             fill_triangle_color (fill_triangle2.c:203 @ bb56)
+  0.07     38.81     0.03                             fill_triangle_texture (fill_triangle.c:298 @ ada6)
+  0.07     38.84     0.03                             fill_triangle_texture (fill_triangle.c:246 @ afe8)
+  0.07     38.88     0.03                             fill_triangle_texture (fill_triangle.c:208 @ b110)
+  0.07     38.91     0.03                             fill_triangle_texture (fill_triangle.c:267 @ b368)
+  0.07     38.94     0.03                             fill_triangle_texture (fill_triangle.c:271 @ b37c)
+  0.07     38.97     0.03                             fill_triangle_texture (fill_triangle.c:265 @ b53b)
+  0.07     38.99     0.03                             ft_memcpy (ft_memcpy.c:28 @ f18f)
+  0.07     39.02     0.03                             get_blocked_val_inline (fill_triangle.c:128 @ b0d2)
+  0.07     39.05     0.03                             get_unset_used_index (clipping_xy.c:68 @ d377)
+  0.07     39.09     0.03                             inflateHuffmanBlock (lodepng.c:1314 @ 172ed)
+  0.07     39.12     0.03                             my_str_cpy (get_next_line_utils.c:70 @ 10ad0)
+  0.07     39.15     0.03                             rasterize (draw.c:261 @ 536b)
+  0.07     39.17     0.03                             sort_buffer (get_next_line_utils.c:98 @ 10bd9)
+  0.07     39.20     0.03                             unit_vec3 (vec3.c:22 @ 5e4e)
+  0.07     39.23     0.03                             unit_vec3 (vec3.c:30 @ 5e98)
+  0.07     39.27     0.03                             v3_add_incl_uv (fill_triangle.c:69 @ b40e)
+  0.07     39.30     0.03                             v3_sub (vec3.c:143 @ 61f5)
+  0.07     39.33     0.03                             v3_sub (vec3.c:141 @ 61fa)
+  0.07     39.35     0.03                             zero_f (utils1.c:69 @ 7a0e)
+  0.07     39.38     0.03                             zero_f (utils1.c:69 @ 7a17)
+  0.06     39.41     0.03                             advanceBits (lodepng.c:570 @ 15bcf)
+  0.06     39.44     0.03                             count_inside_points (clipping_xy.c:160 @ cfbf)
+  0.06     39.46     0.03                             fill_triangle_color (fill_triangle2.c:141 @ b877)
+  0.06     39.48     0.03                             fill_triangle_color (fill_triangle2.c:205 @ bc96)
+  0.06     39.51     0.03                             fill_triangle_color (fill_triangle2.c:207 @ bc9b)
+  0.06     39.53     0.03                             fill_triangle_texture (fill_triangle.c:215 @ af8b)
+  0.06     39.56     0.03                             fill_triangle_texture (fill_triangle.c:277 @ b40a)
+  0.06     39.59     0.03                             ft_memcpy (ft_memcpy.c:28 @ f291)
+  0.06     39.61     0.03                             get_blocked_val_inline (fill_triangle.c:128 @ b1ba)
+  0.06     39.63     0.03                             get_blocked_val_inline (fill_triangle.c:126 @ b5c2)
+  0.06     39.66     0.03                             inflateHuffmanBlock (lodepng.c:1275 @ 170a6)
+  0.06     39.69     0.03                             inflateHuffmanBlock (lodepng.c:1298 @ 171a9)
+  0.06     39.71     0.03                             inflateHuffmanBlock (lodepng.c:1299 @ 171c7)
+  0.06     39.73     0.03                             inner_loop (fill_triangle.c:157 @ b163)
+  0.06     39.76     0.03                             lodepng_crc32 (lodepng.c:2663 @ 17d4b)
+  0.06     39.78     0.03                             lodepng_memset (lodepng.c:127 @ 14fc6)
+  0.06     39.81     0.03                             unfilterScanline (lodepng.c:4494 @ 1d99f)
+  0.05     39.83     0.02 175685536     0.00     0.00  ft_memcpy (ft_memcpy.c:16 @ f170)
+  0.05     39.85     0.02 79677444     0.00     0.00  unit_vec3 (vec3.c:18 @ 5e40)
+  0.05     39.87     0.02 47872597     0.00     0.00  projection_matrix (init_matrix.c:57 @ a010)
+  0.05     39.89     0.02                             append_buffer (get_next_line_utils.c:126 @ 10b0c)
+  0.05     39.91     0.02                             clipping_xy (clipping_xy.c:176 @ cc9c)
+  0.05     39.93     0.02                             clipping_z_near (clipping_z.c:137 @ c4f0)
+  0.05     39.95     0.02                             count_inside_points (clipping_xy.c:160 @ cf17)
+  0.05     39.97     0.02                             create_blocked_arr (arrays.c:44 @ ed01)
+  0.05     39.99     0.02                             cross_product (vec3.c:104 @ 60be)
+  0.05     40.01     0.02                             cross_product (vec3.c:106 @ 60c3)
+  0.05     40.03     0.02                             draw_mesh (draw.c:416 @ 5cba)
+  0.05     40.05     0.02                             ensureBits25 (lodepng.c:525 @ 157d5)
+  0.05     40.07     0.02                             ensureBits25 (lodepng.c:528 @ 15803)
+  0.05     40.09     0.02                             ensureBits25 (lodepng.c:530 @ 15879)
+  0.05     40.11     0.02                             fill_triangle_color (fill_triangle2.c:140 @ b86f)
+  0.05     40.13     0.02                             fill_triangle_color (fill_triangle2.c:134 @ b930)
+  0.05     40.15     0.02                             fill_triangle_color (fill_triangle2.c:136 @ b934)
+  0.05     40.17     0.02                             fill_triangle_color (fill_triangle2.c:143 @ b96c)
+  0.05     40.19     0.02                             fill_triangle_color (fill_triangle2.c:148 @ b97d)
+  0.05     40.21     0.02                             fill_triangle_color (fill_triangle2.c:205 @ bb5e)
+  0.05     40.23     0.02                             fill_triangle_color (fill_triangle2.c:209 @ bb8a)
+  0.05     40.25     0.02                             fill_triangle_color (fill_triangle2.c:208 @ bc9e)
+  0.05     40.27     0.02                             fill_triangle_texture (fill_triangle.c:213 @ af64)
+  0.05     40.29     0.02                             fill_triangle_texture (fill_triangle.c:213 @ af72)
+  0.05     40.31     0.02                             fill_triangle_texture (fill_triangle.c:215 @ af77)
+  0.05     40.33     0.02                             fill_triangle_texture (fill_triangle.c:246 @ aff8)
+  0.05     40.35     0.02                             fill_triangle_texture (fill_triangle.c:249 @ b00d)
+  0.05     40.37     0.02                             fill_triangle_texture (fill_triangle.c:249 @ b028)
+  0.05     40.39     0.02                             fill_triangle_texture (fill_triangle.c:276 @ b391)
+  0.05     40.41     0.02                             fill_triangle_texture (fill_triangle.c:292 @ b44b)
+  0.05     40.43     0.02                             ft_memcpy (ft_memcpy.c:20 @ f185)
+  0.05     40.45     0.02                             ft_memcpy (ft_memcpy.c:22 @ f18a)
+  0.05     40.47     0.02                             ft_memcpy (ft_memcpy.c:29 @ f1e8)
+  0.05     40.49     0.02                             ft_memcpy (ft_memcpy.c:28 @ f35a)
+  0.05     40.51     0.02                             ft_split (ft_split.c:79 @ fbe0)
+  0.05     40.53     0.02                             get_blocked_val_inline (fill_triangle.c:127 @ b19a)
+  0.05     40.55     0.02                             inflateHuffmanBlock (lodepng.c:1287 @ 1713f)
+  0.05     40.57     0.02                             inflateHuffmanBlock (lodepng.c:1295 @ 1718b)
+  0.05     40.59     0.02                             inflateHuffmanBlock (lodepng.c:1301 @ 171d0)
+  0.05     40.61     0.02                             inflateHuffmanBlock (lodepng.c:1325 @ 1735d)
+  0.05     40.63     0.02                             inner_loop (fill_triangle.c:151 @ b00f)
+  0.05     40.65     0.02                             my_str_cpy (get_next_line_utils.c:74 @ 105e5)
+  0.05     40.67     0.02                             my_str_cpy (get_next_line_utils.c:74 @ 10af4)
+  0.05     40.69     0.02                             my_str_cpy (get_next_line_utils.c:80 @ 10b79)
+  0.05     40.71     0.02                             rasterize (draw.c:291 @ 55c5)
+  0.05     40.73     0.02                             rasterize (draw.c:304 @ 5648)
+  0.05     40.75     0.02                             reset_pixel_buffer_main (main.c:108 @ 3380)
+  0.05     40.77     0.02                             unfilterScanline (lodepng.c:4491 @ 1daff)
+  0.05     40.79     0.02                             unfilterScanline (lodepng.c:4507 @ 1db81)
+  0.05     40.81     0.02                             v3_add_incl_uv (fill_triangle.c:69 @ afdc)
+  0.05     40.83     0.02                             v3_sub (vec3.c:146 @ 621d)
+  0.05     40.85     0.02                             v3_sub (vec3.c:145 @ 621e)
+  0.05     40.87     0.02                             v3_sub_incl_uv (fill_triangle.c:78 @ b1f8)
+  0.04     40.88     0.01                             call_clipping_xy (clipping_xy.c:262 @ d0a0)
+  0.04     40.90     0.01                             count_inside_points (clipping_xy.c:158 @ cf0e)
+  0.04     40.91     0.01                             cpy_triangle_data_rasterize (draw.c:240 @ 557e)
+  0.04     40.93     0.01                             cpy_triangle_data_rasterize (draw.c:242 @ 55a6)
+  0.04     40.95     0.01                             create_blocked_arr (arrays.c:44 @ ece7)
+  0.04     40.96     0.01                             cross_product (vec3.c:106 @ 606e)
+  0.04     40.98     0.01                             cross_product (vec3.c:102 @ 607a)
+  0.04     40.99     0.01                             ensureBits32 (lodepng.c:543 @ 15972)
+  0.04     41.01     0.01                             ensureBits32 (lodepng.c:545 @ 1598e)
+  0.04     41.02     0.01                             ensureBits32 (lodepng.c:547 @ 159d3)
+  0.04     41.03     0.01                             fill_triangle_color (fill_triangle2.c:143 @ b895)
+  0.04     41.05     0.01                             fill_triangle_color (fill_triangle2.c:130 @ b938)
+  0.04     41.06     0.01                             fill_triangle_color (fill_triangle2.c:135 @ b93b)
+  0.04     41.08     0.01                             fill_triangle_color (fill_triangle2.c:207 @ bb7a)
+  0.04     41.09     0.01                             fill_triangle_color (fill_triangle2.c:207 @ bca2)
+  0.04     41.11     0.01                             fill_triangle_texture (fill_triangle.c:277 @ b3d1)
+  0.04     41.12     0.01                             fill_triangle_texture (fill_triangle.c:287 @ b42a)
+  0.04     41.14     0.01                             fill_triangle_texture (fill_triangle.c:292 @ b43b)
+  0.04     41.16     0.01                             ft_memcpy (ft_memcpy.c:29 @ f29b)
+  0.04     41.17     0.01                             get_blocked_val_inline (fill_triangle.c:126 @ b1ae)
+  0.04     41.19     0.01                             inner_loop (fill_triangle.c:171 @ b1d7)
+  0.04     41.20     0.01                             inner_loop (fill_triangle.c:151 @ b3d6)
+  0.04     41.22     0.01                             inner_loop (fill_triangle.c:153 @ b447)
+  0.04     41.23     0.01                             lodepng_crc32 (lodepng.c:2662 @ 17d25)
+  0.04     41.24     0.01                             lodepng_crc32 (lodepng.c:2667 @ 17dfb)
+  0.04     41.26     0.01                             rasterize (draw.c:293 @ 55b6)
+  0.04     41.27     0.01                             readBits (lodepng.c:575 @ 15bf9)
+  0.04     41.29     0.01                             sort_vertexes_for_y (fill_triangle.c:36 @ ac52)
+  0.04     41.30     0.01                             v3_add_incl_uv (fill_triangle.c:68 @ b3b8)
+  0.02     41.31     0.01  5145024     0.00     0.00  sort_vertexes_for_y (fill_triangle.c:17 @ ab80)
+  0.02     41.33     0.01     1192     8.39     8.39  scale_matrix (init_matrix.c:37 @ 9f80)
+  0.02     41.34     0.01                             HuffmanTree_makeTable (lodepng.c:680 @ 15dcf)
+  0.02     41.34     0.01                             HuffmanTree_makeTable (lodepng.c:700 @ 15f91)
+  0.02     41.35     0.01                             append_buffer (get_next_line_utils.c:123 @ 10bad)
+  0.02     41.37     0.01                             clipping_z_near (clipping_z.c:136 @ c512)
+  0.02     41.38     0.01                             count_inside_points (clipping_xy.c:160 @ cbd7)
+  0.02     41.38     0.01                             count_inside_points (clipping_xy.c:156 @ cc59)
+  0.02     41.40     0.01                             count_inside_points (clipping_xy.c:162 @ cc74)
+  0.02     41.41     0.01                             count_inside_points (clipping_xy.c:156 @ cd27)
+  0.02     41.41     0.01                             count_inside_points (clipping_xy.c:156 @ cd42)
+  0.02     41.42     0.01                             count_inside_points (clipping_xy.c:161 @ cf3c)
+  0.02     41.44     0.01                             count_inside_points (clipping_xy.c:158 @ cf78)
+  0.02     41.45     0.01                             count_inside_points (clipping_xy.c:160 @ d060)
+  0.02     41.45     0.01                             create_blocked_arr (arrays.c:44 @ ed47)
+  0.02     41.47     0.01                             cross_product (vec3.c:102 @ 60a1)
+  0.02     41.48     0.01                             cross_product (vec3.c:107 @ 60b5)
+  0.02     41.48     0.01                             cross_product (vec3.c:104 @ 60b6)
+  0.02     41.49     0.01                             draw_mesh (draw.c:379 @ 5b97)
+  0.02     41.51     0.01                             draw_mesh (draw.c:416 @ 5d1b)
+  0.02     41.52     0.01                             draw_mesh (draw.c:419 @ 5d3e)
+  0.02     41.52     0.01                             ensureBits25 (lodepng.c:524 @ 157c9)
+  0.02     41.53     0.01                             ensureBits32 (lodepng.c:542 @ 15966)
+  0.02     41.55     0.01                             ensureBits32 (lodepng.c:547 @ 159f0)
+  0.02     41.55     0.01                             ensureBits32 (lodepng.c:546 @ 15a0f)
+  0.02     41.56     0.01                             fast_line_intersect (clipping_xy.c:98 @ c98c)
+  0.02     41.58     0.01                             fill_slider (menu.c:90 @ dd88)
+  0.02     41.59     0.01                             fill_slider (menu.c:88 @ dd91)
+  0.02     41.59     0.01                             fill_triangle_color (fill_triangle2.c:112 @ b7c5)
+  0.02     41.60     0.01                             fill_triangle_color (fill_triangle2.c:114 @ b7cb)
+  0.02     41.62     0.01                             fill_triangle_color (fill_triangle2.c:134 @ b850)
+  0.02     41.62     0.01                             fill_triangle_color (fill_triangle2.c:136 @ b852)
+  0.02     41.63     0.01                             fill_triangle_color (fill_triangle2.c:143 @ b87f)
+  0.02     41.65     0.01                             fill_triangle_color (fill_triangle2.c:134 @ b8fe)
+  0.02     41.66     0.01                             fill_triangle_color (fill_triangle2.c:174 @ ba6b)
+  0.02     41.66     0.01                             fill_triangle_color (fill_triangle2.c:208 @ bb7d)
+  0.02     41.67     0.01                             fill_triangle_color (fill_triangle2.c:216 @ bb9a)
+  0.02     41.69     0.01                             fill_triangle_color (fill_triangle2.c:205 @ bc7e)
+  0.02     41.70     0.01                             fill_triangle_texture (fill_triangle.c:210 @ af50)
+  0.02     41.70     0.01                             fill_triangle_texture (fill_triangle.c:217 @ af91)
+  0.02     41.72     0.01                             fill_triangle_texture (fill_triangle.c:222 @ af9c)
+  0.02     41.73     0.01                             fill_triangle_texture (fill_triangle.c:217 @ afac)
+  0.02     41.73     0.01                             fill_triangle_texture (fill_triangle.c:249 @ b01b)
+  0.02     41.74     0.01                             fill_triangle_texture (fill_triangle.c:246 @ b128)
+  0.02     41.76     0.01                             fill_triangle_texture (fill_triangle.c:258 @ b216)
+  0.02     41.77     0.01                             fill_triangle_texture (fill_triangle.c:272 @ b387)
+  0.02     41.77     0.01                             fill_triangle_texture (fill_triangle.c:276 @ b3db)
+  0.02     41.78     0.01                             fill_triangle_texture (fill_triangle.c:291 @ b42e)
+  0.02     41.80     0.01                             fill_triangle_texture (fill_triangle.c:287 @ b437)
+  0.02     41.80     0.01                             ft_atoi (ft_atoi.c:44 @ f5fa)
+  0.02     41.81     0.01                             ft_split (ft_split.c:81 @ fc45)
+  0.02     41.83     0.01                             ft_strlen (ft_strlen.c:22 @ f093)
+  0.02     41.84     0.01                             get_blocked_val_inline (fill_triangle.c:125 @ b5c5)
+  0.02     41.84     0.01                             get_str_count (ft_split.c:22 @ fb8d)
+  0.02     41.85     0.01                             get_unset_last_used_index (clipping_xy.c:56 @ d11a)
+  0.02     41.87     0.01                             get_unset_used_index (clipping_xy.c:73 @ cbcd)
+  0.02     41.88     0.01                             get_unset_used_index (clipping_xy.c:71 @ d370)
+  0.02     41.88     0.01                             huffmanDecodeSymbol (lodepng.c:1074 @ 16762)
+  0.02     41.90     0.01                             huffmanDecodeSymbol (lodepng.c:1077 @ 167a9)
+  0.02     41.91     0.01                             huffmanDecodeSymbol (lodepng.c:1084 @ 1681f)
+  0.02     41.91     0.01                             huffmanDecodeSymbol (lodepng.c:1086 @ 16837)
+  0.02     41.92     0.01                             inflateHuffmanBlock (lodepng.c:1269 @ 17086)
+  0.02     41.94     0.01                             inflateHuffmanBlock (lodepng.c:1279 @ 170f0)
+  0.02     41.95     0.01                             inflateHuffmanBlock (lodepng.c:1286 @ 1712b)
+  0.02     41.95     0.01                             inflateHuffmanBlock (lodepng.c:1288 @ 1715b)
+  0.02     41.97     0.01                             inflateHuffmanBlock (lodepng.c:1305 @ 171ee)
+  0.02     41.98     0.01                             inflateHuffmanBlock (lodepng.c:1314 @ 172a3)
+  0.02     41.98     0.01                             inflateHuffmanBlock (lodepng.c:1329 @ 173b0)
+  0.02     41.99     0.01                             inner_loop (fill_triangle.c:146 @ afff)
+  0.02     42.01     0.01                             inner_loop (fill_triangle.c:138 @ b020)
+  0.02     42.02     0.01                             inner_loop (fill_triangle.c:139 @ b024)
+  0.02     42.02     0.01                             inner_loop (fill_triangle.c:154 @ b138)
+  0.02     42.03     0.01                             inner_loop (fill_triangle.c:164 @ b32a)
+  0.02     42.05     0.01                             inner_loop (fill_triangle.c:139 @ b454)
+  0.02     42.05     0.01                             inner_loop (fill_triangle.c:154 @ b550)
+  0.02     42.06     0.01                             line_zplane_intersection (clipping_z.c:52 @ bd93)
+  0.02     42.08     0.01                             lodepng_crc32 (lodepng.c:2665 @ 17dab)
+  0.02     42.09     0.01                             lodepng_memset (lodepng.c:130 @ 15002)
+  0.02     42.09     0.01                             mlx_render_images (mlx_loop.c:33 @ 12ef6)
+  0.02     42.10     0.01                             mlx_render_images (mlx_loop.c:60 @ 12fef)
+  0.02     42.12     0.01                             my_str_cpy (get_next_line_utils.c:74 @ 10b65)
+  0.02     42.12     0.01                             rasterize (draw.c:264 @ 53dc)
+  0.02     42.13     0.01                             rasterize (draw.c:285 @ 546c)
+  0.02     42.15     0.01                             rasterize (draw.c:287 @ 5489)
+  0.02     42.16     0.01                             rasterize (draw.c:286 @ 549f)
+  0.02     42.16     0.01                             rasterize (draw.c:288 @ 54a3)
+  0.02     42.17     0.01                             rasterize (draw.c:282 @ 54bf)
+  0.02     42.19     0.01                             rasterize (draw.c:285 @ 54cb)
+  0.02     42.20     0.01                             rasterize (draw.c:288 @ 5504)
+  0.02     42.20     0.01                             rasterize (draw.c:282 @ 5510)
+  0.02     42.22     0.01                             rasterize (draw.c:286 @ 5531)
+  0.02     42.23     0.01                             rasterize (draw.c:300 @ 55f1)
+  0.02     42.23     0.01                             rasterize (draw.c:301 @ 5640)
+  0.02     42.24     0.01                             rasterize (draw.c:310 @ 56bc)
+  0.02     42.26     0.01                             rasterize (draw.c:265 @ 57c8)
+  0.02     42.27     0.01                             rasterize (draw.c:265 @ 57d9)
+  0.02     42.27     0.01                             readBits (lodepng.c:574 @ 15be9)
+  0.02     42.28     0.01                             readBits (lodepng.c:578 @ 15c25)
+  0.02     42.30     0.01                             reading (get_next_line.c:34 @ fd3d)
+  0.02     42.30     0.01                             reading (get_next_line.c:17 @ fd4a)
+  0.02     42.31     0.01                             reverseBits (lodepng.c:581 @ 15c27)
+  0.02     42.33     0.01                             sort_buffer (get_next_line_utils.c:92 @ 108f8)
+  0.02     42.34     0.01                             sort_buffer (get_next_line_utils.c:92 @ 10903)
+  0.02     42.34     0.01                             sort_buffer (get_next_line_utils.c:101 @ 10a98)
+  0.02     42.35     0.01                             unfilterScanline (lodepng.c:4390 @ 1c9ba)
+  0.02     42.37     0.01                             unfilterScanline (lodepng.c:4492 @ 1d90f)
+  0.02     42.38     0.01                             unfilterScanline (lodepng.c:4511 @ 1dc52)
+  0.02     42.38     0.01                             v3_add_incl_uv (fill_triangle.c:67 @ afcc)
+  0.01     42.39     0.01                             call_clipping_xy (clipping_xy.c:264 @ d0b3)
+  0.01     42.40     0.01                             clipp_loop (clipping_xy.c:240 @ cbdb)
+  0.01     42.40     0.01                             clipp_loop (clipping_xy.c:241 @ ccb6)
+  0.01     42.41     0.01                             clipping_z_near (clipping_z.c:136 @ c4df)
+  0.01     42.41     0.01                             clipping_z_near (clipping_z.c:137 @ c4e6)
+  0.01     42.41     0.01                             clipping_z_near (clipping_z.c:137 @ c509)
+  0.01     42.42     0.01                             clipping_z_near (clipping_z.c:137 @ c51a)
+  0.01     42.42     0.01                             count_inside_points (clipping_xy.c:160 @ cbc0)
+  0.01     42.43     0.01                             count_inside_points (clipping_xy.c:162 @ cbc3)
+  0.01     42.44     0.01                             count_inside_points (clipping_xy.c:158 @ cbd3)
+  0.01     42.44     0.01                             count_inside_points (clipping_xy.c:157 @ cd37)
+  0.01     42.45     0.01                             count_inside_points (clipping_xy.c:157 @ cd52)
+  0.01     42.45     0.01                             count_inside_points (clipping_xy.c:156 @ cf05)
+  0.01     42.45     0.01                             count_inside_points (clipping_xy.c:158 @ cfaf)
+  0.01     42.46     0.01                             create_blocked_arr (arrays.c:42 @ ecf7)
+  0.01     42.47     0.01                             draw_mesh (draw.c:407 @ 5d03)
+  0.01     42.47     0.01                             draw_mesh (draw.c:409 @ 5d0f)
+  0.01     42.48     0.01                             draw_mesh (draw.c:367 @ 5dc7)
+  0.01     42.48     0.01                             ensureBits32 (lodepng.c:546 @ 159ee)
+  0.01     42.48     0.01                             fast_line_intersect (clipping_xy.c:99 @ c9a9)
+  0.01     42.49     0.01                             fast_line_intersect (clipping_xy.c:100 @ c9ae)
+  0.01     42.49     0.01                             fast_line_intersect (clipping_xy.c:100 @ c9b7)
+  0.01     42.50     0.01                             fast_line_intersect (clipping_xy.c:101 @ c9cb)
+  0.01     42.51     0.01                             fill_slider (menu.c:96 @ ddcd)
+  0.01     42.51     0.01                             fill_slider (menu.c:95 @ ddcf)
+  0.01     42.52     0.01                             fill_triangle_color (fill_triangle2.c:145 @ b89a)
+  0.01     42.52     0.01                             fill_triangle_color (fill_triangle2.c:135 @ b8f3)
+  0.01     42.52     0.01                             fill_triangle_color (fill_triangle2.c:121 @ b902)
+  0.01     42.53     0.01                             fill_triangle_color (fill_triangle2.c:199 @ baed)
+  0.01     42.53     0.01                             fill_triangle_color (fill_triangle2.c:200 @ baf2)
+  0.01     42.54     0.01                             fill_triangle_color (fill_triangle2.c:197 @ bb8e)
+  0.01     42.55     0.01                             fill_triangle_texture (fill_triangle.c:252 @ b0fa)
+  0.01     42.55     0.01                             fill_triangle_texture (fill_triangle.c:261 @ b285)
+  0.01     42.55     0.01                             fill_triangle_texture (fill_triangle.c:265 @ b2a7)
+  0.01     42.56     0.01                             fill_triangle_texture (fill_triangle.c:287 @ b399)
+  0.01     42.56     0.01                             ft_memcpy (ft_memcpy.c:28 @ f24a)
+  0.01     42.57     0.01                             ft_memcpy (ft_memcpy.c:29 @ f253)
+  0.01     42.58     0.01                             ft_memcpy (ft_memcpy.c:29 @ f277)
+  0.01     42.58     0.01                             ft_memcpy (ft_memcpy.c:28 @ f27f)
+  0.01     42.59     0.01                             ft_memcpy (ft_memcpy.c:29 @ f2bf)
+  0.01     42.59     0.01                             ft_memcpy (ft_memcpy.c:28 @ f2c7)
+  0.01     42.59     0.01                             get_free_index (clipping_xy.c:34 @ d0e2)
+  0.01     42.60     0.01                             get_free_index (clipping_xy.c:36 @ d0eb)
+  0.01     42.60     0.01                             get_free_index (clipping_xy.c:42 @ d0ff)
+  0.01     42.61     0.01                             get_unset_last_used_index (clipping_xy.c:54 @ d0f6)
+  0.01     42.62     0.01                             get_unset_last_used_index (clipping_xy.c:56 @ d112)
+  0.01     42.62     0.01                             huffmanDecodeSymbol (lodepng.c:1079 @ 167c3)
+  0.01     42.62     0.01                             inflateHuffmanBlock (lodepng.c:1255 @ 16fba)
+  0.01     42.63     0.01                             inflateHuffmanBlock (lodepng.c:1260 @ 16fbf)
+  0.01     42.63     0.01                             inflateHuffmanBlock (lodepng.c:1265 @ 1702a)
+  0.01     42.64     0.01                             inflateHuffmanBlock (lodepng.c:1267 @ 17046)
+  0.01     42.65     0.01                             inflateHuffmanBlock (lodepng.c:1278 @ 170cb)
+  0.01     42.65     0.01                             inflateHuffmanBlock (lodepng.c:1307 @ 1721e)
+  0.01     42.66     0.01                             inflateHuffmanBlock (lodepng.c:1309 @ 17232)
+  0.01     42.66     0.01                             inflateHuffmanBlock (lodepng.c:1313 @ 17296)
+  0.01     42.66     0.01                             inflateHuffmanBlock (lodepng.c:1269 @ 172fc)
+  0.01     42.67     0.01                             inflateHuffmanBlock (lodepng.c:1318 @ 172fe)
+  0.01     42.67     0.01                             inflateHuffmanBlock (lodepng.c:1269 @ 17334)
+  0.01     42.68     0.01                             inflateHuffmanBlock (lodepng.c:1320 @ 17336)
+  0.01     42.69     0.01                             inflateHuffmanBlock (lodepng.c:1333 @ 173cb)
+  0.01     42.69     0.01                             inflateHuffmanBlock (lodepng.c:1335 @ 173d7)
+  0.01     42.70     0.01                             inner_loop (fill_triangle.c:164 @ b2db)
+  0.01     42.70     0.01                             inner_loop (fill_triangle.c:152 @ b425)
+  0.01     42.70     0.01                             inner_loop (fill_triangle.c:139 @ b43f)
+  0.01     42.71     0.01                             inner_loop (fill_triangle.c:138 @ b443)
+  0.01     42.72     0.01                             lodepng_crc32 (lodepng.c:2665 @ 17df9)
+  0.01     42.72     0.01                             lodepng_free (lodepng.c:91 @ 14f77)
+  0.01     42.73     0.01                             rasterize (draw.c:251 @ 5319)
+  0.01     42.73     0.01                             rasterize (draw.c:258 @ 532b)
+  0.01     42.73     0.01                             rasterize (draw.c:267 @ 5405)
+  0.01     42.74     0.01                             readBits (lodepng.c:576 @ 15c0f)
+  0.01     42.74     0.01                             reading (get_next_line.c:28 @ fd35)
+  0.01     42.75     0.01                             reading (get_next_line.c:32 @ fd37)
+  0.01     42.76     0.01                             scale_to_screen (draw.c:162 @ 562b)
+  0.01     42.76     0.01                             scale_to_screen (draw.c:164 @ 5633)
+  0.01     42.77     0.01                             sort_buffer (get_next_line_utils.c:97 @ 10935)
+  0.01     42.77     0.01                             sort_buffer (get_next_line_utils.c:98 @ 1093a)
+  0.01     42.77     0.01                             sort_vertexes_for_y (fill_triangle.c:35 @ ac45)
+  0.01     42.78     0.01                             translation_matrix (init_matrix.c:78 @ a06e)
+  0.01     42.78     0.01                             translation_matrix (init_matrix.c:93 @ a076)
+  0.01     42.79     0.01                             unit_vec3 (vec3.c:26 @ 5e7f)
+  0.01     42.80     0.01                             unit_vec3 (vec3.c:28 @ 5e87)
+  0.01     42.80     0.01                             v3_add_incl_uv (fill_triangle.c:67 @ b39b)
+  0.01     42.80     0.01                             v3_add_incl_uv (fill_triangle.c:67 @ b3be)
+  0.01     42.81     0.01                             v3_add_incl_uv (fill_triangle.c:69 @ b404)
+  0.01     42.81     0.01                             v3_sub (vec3.c:143 @ 6213)
+  0.01     42.82     0.01                             v3_sub_incl_uv (fill_triangle.c:79 @ b2d6)
+  0.00     42.82     0.00 25510117     0.00     0.00  append_buffer (get_next_line_utils.c:105 @ 108e0)
+  0.00     42.82     0.00  9587604     0.00     0.00  ft_isdigit (ft_isdigit.c:14 @ f060)
+  0.00     42.82     0.00  5134408     0.00     0.00  fill_triangle_texture (fill_triangle.c:178 @ acd0)
+  0.00     42.82     0.00  3198978     0.00     0.00  ft_calloc (ft_calloc.c:16 @ f640)
+  0.00     42.82     0.00  2839367     0.00     0.00  ft_strchr (ft_strchr.c:16 @ f450)
+  0.00     42.82     0.00  1569210     0.00     0.00  ft_strlen (ft_strlen.c:16 @ f080)
+  0.00     42.82     0.00  1564810     0.00     0.00  ft_atoi (ft_atoi.c:23 @ f5a0)
+  0.00     42.82     0.00  1456644     0.00     0.00  ft_strncmp (ft_strncmp.c:16 @ f500)
+  0.00     42.82     0.00   743101     0.00     0.00  ft_free_2darr (ft_free_2darr.c:16 @ 10300)
+  0.00     42.82     0.00   743101     0.00     0.00  ft_split (ft_split.c:66 @ fb40)
+  0.00     42.82     0.00   632434     0.00     0.00  cleanup (get_next_line_utils.c:16 @ 10450)
+  0.00     42.82     0.00   632434     0.00     0.00  get_current_file (get_next_line_utils.c:38 @ 104d0)
+  0.00     42.82     0.00   632434     0.00     0.00  get_next_line (get_next_line.c:69 @ fe40)
+  0.00     42.82     0.00   632434     0.00     0.00  reading (get_next_line.c:16 @ fcf0)
+  0.00     42.82     0.00   632419     0.00     0.00  my_str_cpy (get_next_line_utils.c:64 @ 10580)
+  0.00     42.82     0.00   391544     0.00     0.00  v3_add (vec3.c:115 @ 6110)
+  0.00     42.82     0.00   390948     0.00     0.00  v3_scale (vec3.c:182 @ 6370)
+  0.00     42.82     0.00   389756     0.00     0.00  line_zplane_intersection (clipping_z.c:39 @ bd10)
+  0.00     42.82     0.00   383547     0.00     0.00  str_to_double (obj_parser.c:88 @ 86f0)
+  0.00     42.82     0.00   383539     0.00     0.00  ft_powint (ft_powint.c:16 @ ff70)
+  0.00     42.82     0.00   266190     0.00     0.00  parse_face_normals (obj_parser.c:207 @ 8c80)
+  0.00     42.82     0.00   266188     0.00     0.00  parse_face_vertex (obj_parser.c:182 @ 8b60)
+  0.00     42.82     0.00   133171     0.00     0.00  ft_bzero (ft_bzero.c:16 @ f140)
+  0.00     42.82     0.00    66582     0.00     0.00  ft_put_pixel_fin_index (utils1.c:166 @ 8260)
+  0.00     42.82     0.00    10616     0.00     0.00  fill_triangle_color (fill_triangle2.c:69 @ b610)
+  0.00     42.82     0.00     4768     0.00     0.00  mat4x4_mult_mat4x4 (matrix_mult.c:27 @ a650)
+  0.00     42.82     0.00     1192     0.00     0.00  draw_mesh (draw.c:336 @ 5870)
+  0.00     42.82     0.00     1192     0.00     0.00  fill_model_matrix (draw.c:175 @ 4e50)
+  0.00     42.82     0.00     1192     0.00     0.00  init_day_light (draw.c:207 @ 4fc0)
+  0.00     42.82     0.00     1192     0.00     0.00  matrix_look_at (init_matrix.c:219 @ a580)
+  0.00     42.82     0.00     1192     0.00     0.00  matrix_point_at (init_matrix.c:179 @ a2d0)
+  0.00     42.82     0.00     1192     0.00     0.00  rot_matx_4x4 (init_matrix.c:117 @ a110)
+  0.00     42.82     0.00     1192     0.00     0.00  rot_maty_4x4 (init_matrix.c:137 @ a1a0)
+  0.00     42.82     0.00     1192     0.00     0.00  rot_matz_4x4 (init_matrix.c:157 @ a250)
+  0.00     42.82     0.00     1192     0.00     0.00  translation_matrix (init_matrix.c:77 @ a060)
+  0.00     42.82     0.00      733     0.00     0.00  display_fps_hook (fps.c:170 @ 42e0)
+  0.00     42.82     0.00      733     0.00     0.00  ft_hook (main.c:143 @ 32d0)
+  0.00     42.82     0.00      733     0.00     0.00  menu_handler (menu_public.c:36 @ e040)
+  0.00     42.82     0.00      596     0.00     0.00  get_direction (vec3.c:337 @ 6710)
+  0.00     42.82     0.00      596     0.00     0.00  handle_movement_per_frame (main.c:27 @ 2e30)
+  0.00     42.82     0.00      283     0.00     0.00  cursor_hook (key_handlers.c:152 @ d920)
+  0.00     42.82     0.00      217     0.00     0.00  display_digit (fps.c:84 @ 3e50)
+  0.00     42.82     0.00      193     0.00     0.00  display_fps (fps.c:136 @ 40f0)
+  0.00     42.82     0.00      134     0.00     0.00  handle_open_menu (menu.c:103 @ dce0)
+  0.00     42.82     0.00       55     0.00     0.00  key_hook (key_handlers.c:113 @ d670)
+  0.00     42.82     0.00       39     0.00     0.00  ft_strcmp (ft_strncmp.c:34 @ f550)
+  0.00     42.82     0.00       39     0.00     0.00  is_buffer_all_zeros (ft_realloc_copy_until_zeroed.c:16 @ 101f0)
+  0.00     42.82     0.00       37     0.00     0.00  add_vec3 (vec3.c:213 @ 6440)
+  0.00     42.82     0.00       25     0.00     0.00  ft_strtrim (ft_strtrim.c:27 @ f920)
+  0.00     42.82     0.00       19     0.00     0.00  ft_strlcpy (ft_strlcpy.c:16 @ f3e0)
+  0.00     42.82     0.00        8     0.00     0.00  ft_strjoin (ft_strjoin.c:16 @ f6a0)
+  0.00     42.82     0.00        7     0.00     0.00  create_blocked_arr (arrays.c:15 @ eab0)
+  0.00     42.82     0.00        7     0.00     0.00  ft_free_img (utils1.c:39 @ 7910)
+  0.00     42.82     0.00        4     0.00     0.00  cursor_menu (menu_hooks.c:65 @ e3d0)
+  0.00     42.82     0.00        3     0.00     0.00  add_menu_widget (menu_public.c:61 @ e130)
+  0.00     42.82     0.00        3     0.00     0.00  fill_slider (menu.c:73 @ dc00)
+  0.00     42.82     0.00        3     0.00     0.00  ft_free (ft_free.c:16 @ 10420)
+  0.00     42.82     0.00        3     0.00     0.00  init_entry_widget (menu.c:48 @ da60)
+  0.00     42.82     0.00        2     0.00     0.00  add_obj_file_meshes (main.c:197 @ 36d0)
+  0.00     42.82     0.00        2     0.00     0.00  arr_append (arr_append.c:20 @ 10360)
+  0.00     42.82     0.00        2     0.00     0.00  close_menu (menu_open_close.c:19 @ de10)
+  0.00     42.82     0.00        2     0.00     0.00  ident_mat_4x4 (init_matrix.c:97 @ a0c0)
+  0.00     42.82     0.00        2     0.00     0.00  init_basic_data_mesh (init.c:129 @ e820)
+  0.00     42.82     0.00        2     0.00     0.00  load_obj_file (obj_parser.c:540 @ 9bc0)
+  0.00     42.82     0.00        2     0.00     0.00  make_mesh_render_rdy (init.c:86 @ e790)
+  0.00     42.82     0.00        2     0.00     0.00  obj_parser_count (obj_parser.c:59 @ 8560)
+  0.00     42.82     0.00        2     0.00     0.00  obj_parser_fill_vertexes (obj_parser.c:118 @ 8840)
+  0.00     42.82     0.00        2     0.00     0.00  obj_parser_handle_faces (obj_parser.c:287 @ 91e0)
+  0.00     42.82     0.00        2     0.00     0.00  obj_parser_parse_mtl_libs (obj_parser.c:494 @ 9a20)
+  0.00     42.82     0.00        1     0.00     0.00  clean_mlx (cleanup.c:4 @ e8c0)
+  0.00     42.82     0.00        1     0.00     0.00  cleanup_exit (cleanup.c:32 @ e990)
+  0.00     42.82     0.00        1     0.00     0.00  free_fps_digit_textures (fps.c:57 @ 3c50)
+  0.00     42.82     0.00        1     0.00     0.00  free_menu (menu_public.c:19 @ dfa0)
+  0.00     42.82     0.00        1     0.00     0.00  get_fps_digit_texture (fps.c:35 @ 3bc0)
+  0.00     42.82     0.00        1     0.00     0.00  init_hooks (init.c:66 @ e650)
+  0.00     42.82     0.00        1     0.00     0.00  init_main (init.c:47 @ e4b0)
+  0.00     42.82     0.00        1     0.00     0.00  init_menu (menu_public.c:49 @ e090)
+  0.00     42.82     0.00        1     0.00     0.00  init_menu_widgets (init.c:76 @ e6f0)
+  0.00     42.82     0.00        1     0.00     0.00  is_power2 (utils1.c:18 @ 77b0)
+  0.00     42.82     0.00        1     0.00     0.00  mtl_len (obj_parser.c:364 @ 92b0)
+  0.00     42.82     0.00        1     0.00     0.00  open_menu (menu_open_close.c:41 @ def0)
+  0.00     42.82     0.00        1     0.00     0.00  parse_mtl (obj_parser.c:421 @ 9430)
+  0.00     42.82     0.00        1     0.00     0.00  reset_camera (utils1.c:23 @ 77f0)
+  0.00     42.82     0.00        1     0.00     0.00  reset_pixel_buffer (utils1.c:47 @ 7950)
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2024 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 4 byte(s) for 0.02% of 42.82 seconds
+
+index % time    self  children    called     name
+                0.03    0.00 79282304/381464703     draw_mesh (draw.c:372 @ 5a6e) [179]
+                0.03    0.00 79282304/381464703     draw_mesh (draw.c:373 @ 5a83) [129]
+                0.03    0.00 79282304/381464703     draw_mesh (draw.c:374 @ 5a9a) [190]
+                0.06    0.00 143617791/381464703     draw_mesh (draw.c:417 @ 5d4b) [112]
+[59]     0.4    0.16    0.00 381464703         matrix_mult_vec3_4x4 (matrix_mult.c:61 @ aa20) [59]
+-----------------------------------------------
+                0.13    0.00 47872597/47872597     draw_mesh (draw.c:421 @ 5d61) [26]
+[75]     0.3    0.13    0.00 47872597         rasterize (draw.c:251 @ 52b0) [75]
+-----------------------------------------------
+                                                 <spontaneous>
+[107]    0.3    0.11    0.00                 paethPredictor (lodepng.c:4241 @ 1c1be) [107]
+-----------------------------------------------
+                0.00    0.00    1192/238339083     matrix_point_at (init_matrix.c:185 @ a31e) [622]
+                0.00    0.00    1192/238339083     matrix_point_at (init_matrix.c:190 @ a3ee) [623]
+                0.00    0.00  100031/238339083     clipping_z_near (clipping_z.c:152 @ c7b6) [614]
+                0.00    0.00  389756/238339083     line_zplane_intersection (clipping_z.c:52 @ bd93) [409]
+                0.03    0.00 79282304/238339083     draw_mesh (draw.c:381 @ 5bba) [10]
+                0.07    0.00 158564608/238339083     draw_mesh (draw.c:378 @ 5ab1) [1]
+[113]    0.2    0.10    0.00 238339083         v3_sub (vec3.c:138 @ 61e0) [113]
+-----------------------------------------------
+                0.00    0.00     559/153698758     handle_movement_per_frame (main.c:63 @ 32a8) [630]
+                0.00    0.00    1168/153698758     handle_movement_per_frame (main.c:63 @ 3090) [621]
+                0.00    0.00    7464/153698758     fill_triangle_color (fill_triangle2.c:158 @ b9ac) [620]
+                0.00    0.00   10616/153698758     fill_triangle_color (fill_triangle2.c:86 @ b658) [618]
+                0.00    0.00   10616/153698758     fill_triangle_color (fill_triangle2.c:90 @ b6ee) [619]
+                0.00    0.00  389756/153698758     line_zplane_intersection (clipping_z.c:53 @ bded) [610]
+                0.00    0.00  389756/153698758     line_zplane_intersection (clipping_z.c:60 @ bdfd) [611]
+                0.00    0.00  389756/153698758     line_zplane_intersection (clipping_z.c:64 @ be16) [612]
+                0.00    0.00 4726478/153698758     fill_triangle_texture (fill_triangle.c:258 @ b216) [408]
+                0.00    0.00 5134356/153698758     fill_triangle_texture (fill_triangle.c:204 @ ae67) [604]
+                0.00    0.00 5134408/153698758     fill_triangle_texture (fill_triangle.c:196 @ ad9d) [603]
+                0.00    0.00 6040000/153698758     fast_line_intersect (clipping_xy.c:100 @ c9b7) [517]
+                0.06    0.00 131463825/153698758     rasterize (draw.c:293 @ 55c0) [206]
+[165]    0.2    0.07    0.00 153698758         zero_f (utils1.c:68 @ 7a00) [165]
+-----------------------------------------------
+                0.06    0.00 43821275/43821275     rasterize (draw.c:301 @ 5640) [177]
+[192]    0.1    0.06    0.00 43821275         call_clipping_xy (clipping_xy.c:250 @ cb30) [192]
+-----------------------------------------------
+                0.00    0.00  735420/50892597     clipping_xy (clipping_xy.c:188 @ d281) [607]
+                0.00    0.00  735420/50892597     clipping_xy (clipping_xy.c:189 @ d296) [608]
+                0.00    0.00  774580/50892597     clipping_xy (clipping_xy.c:198 @ ce11) [605]
+                0.00    0.00  774580/50892597     clipping_xy (clipping_xy.c:201 @ ce3d) [606]
+                0.05    0.00 47872597/50892597     rasterize (draw.c:261 @ 536b) [153]
+[211]    0.1    0.05    0.00 50892597         clipping_z_near (clipping_z.c:126 @ c490) [211]
+-----------------------------------------------
+                                                 <spontaneous>
+[249]    0.1    0.04    0.00                 huffmanDecodeSymbol (lodepng.c:1073 @ 1674e) [249]
+-----------------------------------------------
+                                                 <spontaneous>
+[256]    0.1    0.04    0.00                 _init [256]
+-----------------------------------------------
+                                                 <spontaneous>
+[265]    0.1    0.04    0.00                 lodepng_memcpy (lodepng.c:121 @ 14f7a) [265]
+-----------------------------------------------
+                0.00    0.00    1192/127935605     matrix_point_at (init_matrix.c:188 @ a381) [629]
+                0.00    0.00  779512/127935605     line_zplane_intersection (clipping_z.c:65 @ be23) [609]
+                0.01    0.00 47872597/127935605     draw_mesh (draw.c:389 @ 5c6f) [191]
+                0.02    0.00 79282304/127935605     draw_mesh (draw.c:381 @ 5bba) [10]
+[271]    0.1    0.03    0.00 127935605         dot_prod_unit (vec3.c:110 @ 60e0) [271]
+-----------------------------------------------
+                0.00    0.00       2/79283514     handle_movement_per_frame (main.c:41 @ 31c0) [636]
+                0.00    0.00      16/79283514     handle_movement_per_frame (main.c:48 @ 30f8) [633]
+                0.00    0.00    1192/79283514     matrix_point_at (init_matrix.c:194 @ a463) [624]
+                0.03    0.00 79282304/79283514     draw_mesh (draw.c:378 @ 5ab1) [1]
+[272]    0.1    0.03    0.00 79283514         cross_product (vec3.c:99 @ 6060) [272]
+-----------------------------------------------
+                                                 <spontaneous>
+[273]    0.1    0.03    0.00                 advanceBits (lodepng.c:568 @ 15bab) [273]
+-----------------------------------------------
+                                                 <spontaneous>
+[322]    0.1    0.03    0.00                 lodepng_memset (lodepng.c:127 @ 14fc6) [322]
+-----------------------------------------------
+                0.00    0.00       1/175685536     reset_camera (utils1.c:31 @ 789f) [643]
+                0.00    0.00       1/175685536     reset_camera (utils1.c:32 @ 78be) [638]
+                0.00    0.00       1/175685536     reset_camera (utils1.c:34 @ 78cb) [644]
+                0.00    0.00       2/175685536     arr_append (arr_append.c:34 @ 103c0) [641]
+                0.00    0.00       2/175685536     arr_append (arr_append.c:35 @ 103d5) [642]
+                0.00    0.00       3/175685536     add_menu_widget (menu_public.c:68 @ e17b) [639]
+                0.00    0.00      22/175685536     triangulation (obj_parser.c:242 @ 844e) [635]
+                0.00    0.00    1192/175685536     fill_model_matrix (draw.c:203 @ 4f7d) [632]
+                0.00    0.00  133024/175685536     triangulation (obj_parser.c:255 @ 82fb) [617]
+                0.00    0.00  266188/175685536     parse_face_vertex (obj_parser.c:192 @ 8bd2) [615]
+                0.00    0.00 43821275/175685536     cpy_triangle_data_rasterize (draw.c:240 @ 557e) [378]
+                0.01    0.00 131463825/175685536     cpy_triangle_data_rasterize (draw.c:242 @ 559d) [407]
+[325]    0.0    0.02    0.00 175685536         ft_memcpy (ft_memcpy.c:16 @ f170) [325]
+-----------------------------------------------
+                0.02    0.00 47872597/47872597     rasterize (draw.c:258 @ 532b) [323]
+[326]    0.0    0.02    0.00 47872597         projection_matrix (init_matrix.c:57 @ a010) [326]
+-----------------------------------------------
+                0.00    0.00       1/79677444     reset_camera (utils1.c:32 @ 78be) [638]
+                0.00    0.00       1/79677444     reset_camera (utils1.c:35 @ 78dd) [640]
+                0.00    0.00       2/79677444     handle_movement_per_frame (main.c:42 @ 321d) [637]
+                0.00    0.00      16/79677444     handle_movement_per_frame (main.c:49 @ 314d) [634]
+                0.00    0.00     596/79677444     cursor_movement_per_frame (main.c:18 @ 2f0a) [631]
+                0.00    0.00    1192/79677444     init_light (draw.c:145 @ 511f) [625]
+                0.00    0.00    1192/79677444     init_light (draw.c:150 @ 5990) [626]
+                0.00    0.00    1192/79677444     matrix_point_at (init_matrix.c:186 @ a379) [627]
+                0.00    0.00    1192/79677444     matrix_point_at (init_matrix.c:191 @ a45b) [628]
+                0.00    0.00  389756/79677444     line_zplane_intersection (clipping_z.c:61 @ be0a) [613]
+                0.02    0.00 79282304/79677444     draw_mesh (draw.c:378 @ 5ba2) [164]
+[377]    0.0    0.02    0.00 79677444         unit_vec3 (vec3.c:18 @ 5e40) [377]
+-----------------------------------------------
+                0.00    0.00   10616/5145024     fill_triangle_color (fill_triangle2.c:72 @ b63f) [616]
+                0.01    0.00 5134408/5145024     fill_triangle_texture (fill_triangle.c:180 @ ad07) [516]
+[410]    0.0    0.01    0.00 5145024         sort_vertexes_for_y (fill_triangle.c:17 @ ab80) [410]
+-----------------------------------------------
+                0.01    0.00    1192/1192        fill_model_matrix (draw.c:186 @ 4ebc) [436]
+[411]    0.0    0.01    0.00    1192         scale_matrix (init_matrix.c:37 @ 9f80) [411]
+-----------------------------------------------
+                                                 <spontaneous>
+[431]    0.0    0.01    0.00                 ensureBits25 (lodepng.c:524 @ 157c9) [431]
+-----------------------------------------------
+                                                 <spontaneous>
+[432]    0.0    0.01    0.00                 ensureBits32 (lodepng.c:542 @ 15966) [432]
+-----------------------------------------------
+                                                 <spontaneous>
+[504]    0.0    0.01    0.00                 readBits (lodepng.c:574 @ 15be9) [504]
+-----------------------------------------------
+                                                 <spontaneous>
+[508]    0.0    0.01    0.00                 reverseBits (lodepng.c:581 @ 15c27) [508]
+-----------------------------------------------
+                0.00    0.00 25510117/25510117     reading (get_next_line.c:34 @ fd3d) [506]
+[645]    0.0    0.00    0.00 25510117         append_buffer (get_next_line_utils.c:105 @ 108e0) [645]
+-----------------------------------------------
+                0.00    0.00      48/9587604     fill_3_doubles (obj_parser.c:402 @ 97e5) [1943]
+                0.00    0.00      48/9587604     fill_3_doubles (obj_parser.c:402 @ 9888) [1954]
+                0.00    0.00     168/9587604     fill_3_doubles (obj_parser.c:409 @ 9820) [1950]
+                0.00    0.00     168/9587604     fill_3_doubles (obj_parser.c:409 @ 98c0) [1961]
+                0.00    0.00  266188/9587604     parse_face_vertex (obj_parser.c:189 @ 8ba0) [7352]
+                0.00    0.00  266188/9587604     parse_face_normals (obj_parser.c:213 @ 8cb0) [7334]
+                0.00    0.00  383539/9587604     str_to_double (obj_parser.c:106 @ 8768) [8256]
+                0.00    0.00  767140/9587604     str_to_double (obj_parser.c:101 @ 8730) [8248]
+                0.00    0.00 7904117/9587604     ft_atoi (ft_atoi.c:39 @ f609) [2481]
+[646]    0.0    0.00    0.00 9587604         ft_isdigit (ft_isdigit.c:14 @ f060) [646]
+-----------------------------------------------
+                0.00    0.00 5134408/5134408     rasterize (draw.c:321 @ 5678) [7565]
+[647]    0.0    0.00    0.00 5134408         fill_triangle_texture (fill_triangle.c:178 @ acd0) [647]
+-----------------------------------------------
+                0.00    0.00       1/3198978     parse_mtl (obj_parser.c:432 @ 947f) [7375]
+                0.00    0.00       2/3198978     load_obj_file (obj_parser.c:552 @ 9c82) [5255]
+                0.00    0.00       2/3198978     load_obj_file (obj_parser.c:552 @ 9c9b) [5257]
+                0.00    0.00       2/3198978     load_obj_file (obj_parser.c:554 @ 9ca8) [5259]
+                0.00    0.00       2/3198978     load_obj_file (obj_parser.c:554 @ 9ccc) [5263]
+                0.00    0.00       3/3198978     add_menu_widget (menu_public.c:61 @ e15c) [914]
+                0.00    0.00       7/3198978     create_blocked_arr (arrays.c:24 @ eb47) [1434]
+                0.00    0.00       8/3198978     ft_strjoin (ft_strjoin.c:23 @ f6de) [2751]
+                0.00    0.00      22/3198978     triangulation (obj_parser.c:241 @ 842e) [8349]
+                0.00    0.00  743101/3198978     get_str_count (ft_split.c:36 @ fbae) [3468]
+                0.00    0.00 2455828/3198978     append_next_sub (ft_split.c:53 @ fc3d) [1000]
+[648]    0.0    0.00    0.00 3198978         ft_calloc (ft_calloc.c:16 @ f640) [648]
+-----------------------------------------------
+                0.00    0.00  383539/2839367     str_to_double (obj_parser.c:109 @ 87bd) [8264]
+                0.00    0.00 2455828/2839367     append_next_sub (ft_split.c:46 @ fc00) [995]
+[649]    0.0    0.00    0.00 2839367         ft_strchr (ft_strchr.c:16 @ f450) [649]
+-----------------------------------------------
+                0.00    0.00       4/1569210     obj_parser_parse_mtl_libs (obj_parser.c:510 @ 9ab3) [7147]
+                0.00    0.00       8/1569210     parse_mtl (obj_parser.c:451 @ 953e) [7388]
+                0.00    0.00       8/1569210     parse_mtl (obj_parser.c:458 @ 9580) [7395]
+                0.00    0.00       8/1569210     parse_mtl (obj_parser.c:460 @ 960e) [7401]
+                0.00    0.00       8/1569210     parse_mtl (obj_parser.c:464 @ 969e) [7405]
+                0.00    0.00       8/1569210     parse_mtl (obj_parser.c:466 @ 97ad) [7426]
+                0.00    0.00       8/1569210     parse_mtl (obj_parser.c:468 @ 9859) [7428]
+                0.00    0.00       8/1569210     ft_strjoin (ft_strjoin.c:16 @ f6a0) [695]
+                0.00    0.00       8/1569210     ft_strjoin (ft_strjoin.c:22 @ f6cc) [2748]
+                0.00    0.00       9/1569210     obj_parser_handle_faces (obj_parser.c:312 @ 8e36) [7094]
+                0.00    0.00      11/1569210     parse_mtl (obj_parser.c:445 @ 9514) [7384]
+                0.00    0.00      19/1569210     ft_strlcpy (ft_strlcpy.c:16 @ f400) [2799]
+                0.00    0.00      25/1569210     ft_strtrim (ft_strtrim.c:32 @ f93b) [2859]
+                0.00    0.00      26/1569210     parse_mtl (obj_parser.c:469 @ 98d8) [7429]
+                0.00    0.00      33/1569210     parse_mtl (obj_parser.c:471 @ 997c) [7431]
+                0.00    0.00      34/1569210     parse_mtl (obj_parser.c:467 @ 9838) [7427]
+                0.00    0.00      42/1569210     parse_mtl (obj_parser.c:465 @ 9788) [7425]
+                0.00    0.00      50/1569210     parse_mtl (obj_parser.c:463 @ 9678) [7404]
+                0.00    0.00      66/1569210     parse_mtl (obj_parser.c:459 @ 95ec) [7400]
+                0.00    0.00      66/1569210     parse_mtl (obj_parser.c:461 @ 9630) [7402]
+                0.00    0.00      85/1569210     mtl_len (obj_parser.c:380 @ 9323) [6928]
+                0.00    0.00     155/1569210     parse_mtl (obj_parser.c:455 @ 95ab) [7398]
+                0.00    0.00  115566/1569210     obj_parser_count (obj_parser.c:77 @ 8660) [6997]
+                0.00    0.00  115567/1569210     obj_parser_count (obj_parser.c:75 @ 8630) [6995]
+                0.00    0.00  144215/1569210     str_to_double (obj_parser.c:110 @ 87cc) [8265]
+                0.00    0.00  210748/1569210     obj_parser_handle_faces (obj_parser.c:308 @ 8e0a) [7092]
+                0.00    0.00  239324/1569210     str_to_double (obj_parser.c:112 @ 880f) [8271]
+                0.00    0.00  743101/1569210     append_next_sub (ft_split.c:48 @ fcb0) [1008]
+[650]    0.0    0.00    0.00 1569210         ft_strlen (ft_strlen.c:16 @ f080) [650]
+-----------------------------------------------
+                0.00    0.00  265768/1564810     parse_face_vertex (obj_parser.c:197 @ 8bff) [7365]
+                0.00    0.00  265768/1564810     parse_face_normals (obj_parser.c:215 @ 8ccf) [7337]
+                0.00    0.00  266188/1564810     parse_face_vertex (obj_parser.c:190 @ 8bbf) [7356]
+                0.00    0.00  383539/1564810     str_to_double (obj_parser.c:108 @ 879b) [8261]
+                0.00    0.00  383547/1564810     str_to_double (obj_parser.c:99 @ 8720) [8246]
+[651]    0.0    0.00    0.00 1564810         ft_atoi (ft_atoi.c:23 @ f5a0) [651]
+-----------------------------------------------
+                0.00    0.00       3/1456644     obj_parser_parse_mtl_libs (obj_parser.c:510 @ 9ab3) [7147]
+                0.00    0.00       9/1456644     obj_parser_handle_faces (obj_parser.c:317 @ 8f08) [7098]
+                0.00    0.00      11/1456644     parse_mtl (obj_parser.c:445 @ 9514) [7384]
+                0.00    0.00      26/1456644     parse_mtl (obj_parser.c:469 @ 98d8) [7429]
+                0.00    0.00      26/1456644     parse_mtl (obj_parser.c:471 @ 997c) [7431]
+                0.00    0.00      34/1456644     parse_mtl (obj_parser.c:467 @ 9838) [7427]
+                0.00    0.00      42/1456644     parse_mtl (obj_parser.c:465 @ 9788) [7425]
+                0.00    0.00      50/1456644     parse_mtl (obj_parser.c:463 @ 9678) [7404]
+                0.00    0.00      58/1456644     parse_mtl (obj_parser.c:461 @ 9630) [7402]
+                0.00    0.00      66/1456644     parse_mtl (obj_parser.c:459 @ 95ec) [7400]
+                0.00    0.00      74/1456644     parse_mtl (obj_parser.c:457 @ 95d2) [7399]
+                0.00    0.00      81/1456644     parse_mtl (obj_parser.c:455 @ 95ab) [7398]
+                0.00    0.00      85/1456644     mtl_len (obj_parser.c:380 @ 9323) [6928]
+                0.00    0.00  115566/1456644     obj_parser_count (obj_parser.c:77 @ 8660) [6997]
+                0.00    0.00  115567/1456644     obj_parser_count (obj_parser.c:75 @ 8630) [6995]
+                0.00    0.00  115567/1456644     obj_parser_fill_vertexes (obj_parser.c:162 @ 8a48) [7059]
+                0.00    0.00  133198/1456644     obj_parser_count (obj_parser.c:73 @ 85f9) [6989]
+                0.00    0.00  133198/1456644     obj_parser_fill_vertexes (obj_parser.c:152 @ 898a) [7038]
+                0.00    0.00  210739/1456644     obj_parser_handle_faces (obj_parser.c:317 @ 8dd8) [7089]
+                0.00    0.00  210748/1456644     obj_parser_count (obj_parser.c:71 @ 85e8) [6988]
+                0.00    0.00  210748/1456644     obj_parser_fill_vertexes (obj_parser.c:142 @ 896d) [7035]
+                0.00    0.00  210748/1456644     obj_parser_handle_faces (obj_parser.c:310 @ 8e13) [7093]
+[652]    0.0    0.00    0.00 1456644         ft_strncmp (ft_strncmp.c:16 @ f500) [652]
+-----------------------------------------------
+                0.00    0.00     420/743101      parse_face_normals (obj_parser.c:217 @ 8d30) [7344]
+                0.00    0.00   17631/743101      obj_parser_fill_vertexes (obj_parser.c:158 @ 8a2b) [7056]
+                0.00    0.00   48962/743101      obj_parser_fill_vertexes (obj_parser.c:170 @ 8ae0) [7074]
+                0.00    0.00   66582/743101      obj_parser_handle_faces (obj_parser.c:337 @ 9041) [7113]
+                0.00    0.00   77550/743101      obj_parser_fill_vertexes (obj_parser.c:147 @ 8939) [7029]
+                0.00    0.00  265768/743101      parse_face_normals (obj_parser.c:223 @ 8d19) [7342]
+                0.00    0.00  266188/743101      parse_face_vertex (obj_parser.c:200 @ 8c1b) [7367]
+[653]    0.0    0.00    0.00  743101         ft_free_2darr (ft_free_2darr.c:16 @ 10300) [653]
+-----------------------------------------------
+                0.00    0.00   17631/743101      obj_parser_fill_vertexes (obj_parser.c:154 @ 89a7) [7041]
+                0.00    0.00   48962/743101      obj_parser_fill_vertexes (obj_parser.c:162 @ 8a48) [7059]
+                0.00    0.00   66582/743101      obj_parser_handle_faces (obj_parser.c:320 @ 9070) [7114]
+                0.00    0.00   77550/743101      obj_parser_fill_vertexes (obj_parser.c:145 @ 88e0) [7018]
+                0.00    0.00  266188/743101      parse_face_vertex (obj_parser.c:190 @ 8baf) [7354]
+                0.00    0.00  266188/743101      parse_face_normals (obj_parser.c:214 @ 8cbf) [7336]
+[654]    0.0    0.00    0.00  743101         ft_split (ft_split.c:66 @ fb40) [654]
+-----------------------------------------------
+                0.00    0.00  632434/632434      shrink_out (get_next_line.c:53 @ ff40) [8045]
+[655]    0.0    0.00    0.00  632434         cleanup (get_next_line_utils.c:16 @ 10450) [655]
+-----------------------------------------------
+                0.00    0.00  632434/632434      get_next_line (get_next_line.c:75 @ fe55) [3431]
+[656]    0.0    0.00    0.00  632434         get_current_file (get_next_line_utils.c:38 @ 104d0) [656]
+-----------------------------------------------
+                0.00    0.00       1/632434      mtl_len (obj_parser.c:376 @ 92ed) [6924]
+                0.00    0.00       1/632434      parse_mtl (obj_parser.c:439 @ 94bd) [7378]
+                0.00    0.00       1/632434      obj_parser_parse_mtl_libs (obj_parser.c:517 @ 9b0f) [7152]
+                0.00    0.00       2/632434      obj_parser_count (obj_parser.c:61 @ 858a) [6980]
+                0.00    0.00       2/632434      obj_parser_count (obj_parser.c:83 @ 8620) [6992]
+                0.00    0.00       2/632434      obj_parser_fill_vertexes (obj_parser.c:130 @ 8891) [7009]
+                0.00    0.00       2/632434      obj_parser_fill_vertexes (obj_parser.c:176 @ 8af0) [7076]
+                0.00    0.00       2/632434      obj_parser_handle_faces (obj_parser.c:343 @ 90d0) [7124]
+                0.00    0.00       2/632434      obj_parser_handle_faces (obj_parser.c:300 @ 9206) [7131]
+                0.00    0.00       2/632434      obj_parser_parse_mtl_libs (obj_parser.c:508 @ 9a6e) [7142]
+                0.00    0.00       2/632434      obj_parser_parse_mtl_libs (obj_parser.c:513 @ 9aa8) [7146]
+                0.00    0.00       3/632434      parse_mtl (obj_parser.c:448 @ 9508) [7383]
+                0.00    0.00       8/632434      parse_mtl (obj_parser.c:454 @ 9568) [7393]
+                0.00    0.00       9/632434      mtl_len (obj_parser.c:388 @ 934d) [6931]
+                0.00    0.00      74/632434      parse_mtl (obj_parser.c:474 @ 959f) [7397]
+                0.00    0.00      77/632434      mtl_len (obj_parser.c:383 @ 9318) [6927]
+                0.00    0.00  210748/632434      obj_parser_count (obj_parser.c:79 @ 85cb) [6985]
+                0.00    0.00  210748/632434      obj_parser_fill_vertexes (obj_parser.c:173 @ 894c) [7032]
+                0.00    0.00  210748/632434      obj_parser_handle_faces (obj_parser.c:341 @ 8dfe) [7091]
+[657]    0.0    0.00    0.00  632434         get_next_line (get_next_line.c:69 @ fe40) [657]
+-----------------------------------------------
+                0.00    0.00  632434/632434      shrink_out (get_next_line.c:50 @ fe7a) [8034]
+[658]    0.0    0.00    0.00  632434         reading (get_next_line.c:16 @ fcf0) [658]
+-----------------------------------------------
+                0.00    0.00  632419/632419      shrink_out (get_next_line.c:63 @ feb8) [8042]
+[659]    0.0    0.00    0.00  632419         my_str_cpy (get_next_line_utils.c:64 @ 10580) [659]
+-----------------------------------------------
+                0.00    0.00     596/391544      cursor_movement_per_frame (main.c:18 @ 2ea3) [1566]
+                0.00    0.00    1192/391544      draw_mesh (draw.c:347 @ 5910) [1802]
+                0.00    0.00  389756/391544      line_zplane_intersection (clipping_z.c:70 @ c030) [4107]
+[660]    0.0    0.00    0.00  391544         v3_add (vec3.c:115 @ 6110) [660]
+-----------------------------------------------
+                0.00    0.00    1192/390948      matrix_point_at (init_matrix.c:188 @ a381) [629]
+                0.00    0.00  389756/390948      line_zplane_intersection (clipping_z.c:68 @ bfc0) [4106]
+[661]    0.0    0.00    0.00  390948         v3_scale (vec3.c:182 @ 6370) [661]
+-----------------------------------------------
+                0.00    0.00   94847/389756      clipping_z_near (clipping_z.c:187 @ c646) [1249]
+                0.00    0.00   94847/389756      clipping_z_near (clipping_z.c:188 @ c6b1) [1252]
+                0.00    0.00  100031/389756      clipping_z_near (clipping_z.c:164 @ c84a) [1281]
+                0.00    0.00  100031/389756      clipping_z_near (clipping_z.c:167 @ c8ff) [1289]
+[662]    0.0    0.00    0.00  389756         line_zplane_intersection (clipping_z.c:39 @ bd10) [662]
+-----------------------------------------------
+                0.00    0.00       8/383547      parse_mtl (obj_parser.c:458 @ 9580) [7395]
+                0.00    0.00       8/383547      parse_mtl (obj_parser.c:460 @ 960e) [7401]
+                0.00    0.00       8/383547      parse_mtl (obj_parser.c:462 @ 9652) [7403]
+                0.00    0.00       8/383547      parse_mtl (obj_parser.c:464 @ 969e) [7405]
+                0.00    0.00      24/383547      fill_3_doubles (obj_parser.c:401 @ 97d8) [1942]
+                0.00    0.00      24/383547      fill_3_doubles (obj_parser.c:401 @ 987b) [1953]
+                0.00    0.00   17631/383547      obj_parser_fill_vertexes (obj_parser.c:155 @ 89cd) [7046]
+                0.00    0.00   17631/383547      obj_parser_fill_vertexes (obj_parser.c:156 @ 89e5) [7049]
+                0.00    0.00   17631/383547      obj_parser_fill_vertexes (obj_parser.c:157 @ 8a05) [7052]
+                0.00    0.00   48962/383547      obj_parser_fill_vertexes (obj_parser.c:165 @ 8a6f) [7061]
+                0.00    0.00   48962/383547      obj_parser_fill_vertexes (obj_parser.c:166 @ 8aa0) [7066]
+                0.00    0.00   77550/383547      obj_parser_fill_vertexes (obj_parser.c:144 @ 88ef) [7019]
+                0.00    0.00   77550/383547      obj_parser_fill_vertexes (obj_parser.c:145 @ 88fe) [7022]
+                0.00    0.00   77550/383547      obj_parser_fill_vertexes (obj_parser.c:147 @ 891c) [7026]
+[663]    0.0    0.00    0.00  383547         str_to_double (obj_parser.c:88 @ 86f0) [663]
+-----------------------------------------------
+                0.00    0.00  144215/383539      str_to_double (obj_parser.c:110 @ 87cc) [8265]
+                0.00    0.00  239324/383539      str_to_double (obj_parser.c:112 @ 880f) [8271]
+[664]    0.0    0.00    0.00  383539         ft_powint (ft_powint.c:16 @ ff70) [664]
+-----------------------------------------------
+                0.00    0.00       2/266190      load_obj_file (obj_parser.c:573 @ 9d2d) [5272]
+                0.00    0.00  266188/266190      obj_parser_handle_faces (obj_parser.c:334 @ 900c) [7109]
+[665]    0.0    0.00    0.00  266190         parse_face_normals (obj_parser.c:207 @ 8c80) [665]
+-----------------------------------------------
+                0.00    0.00  266188/266188      obj_parser_handle_faces (obj_parser.c:333 @ 8fb3) [7106]
+[666]    0.0    0.00    0.00  266188         parse_face_vertex (obj_parser.c:182 @ 8b60) [666]
+-----------------------------------------------
+                0.00    0.00       1/133171      free_menu (menu_public.c:31 @ e01d) [2440]
+                0.00    0.00       1/133171      init_menu (menu_public.c:50 @ e0a7) [3878]
+                0.00    0.00       1/133171      init_main (init.c:48 @ e4df) [3859]
+                0.00    0.00       2/133171      load_obj_file (obj_parser.c:545 @ 9c1e) [5247]
+                0.00    0.00       2/133171      init_basic_data_mesh (init.c:130 @ e837) [3703]
+                0.00    0.00   66582/133171      obj_parser_handle_faces (obj_parser.c:327 @ 8f67) [7103]
+                0.00    0.00   66582/133171      obj_parser_handle_faces (obj_parser.c:330 @ 8f74) [7104]
+[667]    0.0    0.00    0.00  133171         ft_bzero (ft_bzero.c:16 @ f140) [667]
+-----------------------------------------------
+                0.00    0.00   66582/66582       triangulation (obj_parser.c:235 @ 9056) [8358]
+[668]    0.0    0.00    0.00   66582         ft_put_pixel_fin_index (utils1.c:166 @ 8260) [668]
+-----------------------------------------------
+                0.00    0.00   10616/10616       rasterize (draw.c:304 @ 57ad) [7580]
+[669]    0.0    0.00    0.00   10616         fill_triangle_color (fill_triangle2.c:69 @ b610) [669]
+-----------------------------------------------
+                0.00    0.00    1192/4768        fill_model_matrix (draw.c:192 @ 4f3c) [2014]
+                0.00    0.00    1192/4768        fill_model_matrix (draw.c:198 @ 4f4e) [2016]
+                0.00    0.00    1192/4768        fill_model_matrix (draw.c:198 @ 4f5a) [2018]
+                0.00    0.00    1192/4768        fill_model_matrix (draw.c:201 @ 4f68) [2019]
+[670]    0.0    0.00    0.00    4768         mat4x4_mult_mat4x4 (matrix_mult.c:27 @ a650) [670]
+-----------------------------------------------
+                0.00    0.00    1192/1192        ft_hook (main.c:158 @ 3420) [2534]
+[671]    0.0    0.00    0.00    1192         draw_mesh (draw.c:336 @ 5870) [671]
+-----------------------------------------------
+                0.00    0.00    1192/1192        draw_mesh (draw.c:345 @ 58d0) [1801]
+[672]    0.0    0.00    0.00    1192         fill_model_matrix (draw.c:175 @ 4e50) [672]
+-----------------------------------------------
+                0.00    0.00    1192/1192        draw_mesh (draw.c:355 @ 5943) [1804]
+[673]    0.0    0.00    0.00    1192         init_day_light (draw.c:207 @ 4fc0) [673]
+-----------------------------------------------
+                0.00    0.00    1192/1192        draw_mesh (draw.c:350 @ 592a) [1803]
+[674]    0.0    0.00    0.00    1192         matrix_look_at (init_matrix.c:219 @ a580) [674]
+-----------------------------------------------
+                0.00    0.00    1192/1192        draw_mesh (draw.c:347 @ 5910) [1802]
+[675]    0.0    0.00    0.00    1192         matrix_point_at (init_matrix.c:179 @ a2d0) [675]
+-----------------------------------------------
+                0.00    0.00    1192/1192        fill_model_matrix (draw.c:187 @ 4eea) [2009]
+[676]    0.0    0.00    0.00    1192         rot_matx_4x4 (init_matrix.c:117 @ a110) [676]
+-----------------------------------------------
+                0.00    0.00    1192/1192        fill_model_matrix (draw.c:188 @ 4efa) [2010]
+[677]    0.0    0.00    0.00    1192         rot_maty_4x4 (init_matrix.c:137 @ a1a0) [677]
+-----------------------------------------------
+                0.00    0.00    1192/1192        fill_model_matrix (draw.c:189 @ 4f18) [2011]
+[678]    0.0    0.00    0.00    1192         rot_matz_4x4 (init_matrix.c:157 @ a250) [678]
+-----------------------------------------------
+                0.00    0.00    1192/1192        fill_model_matrix (draw.c:192 @ 4eb0) [2007]
+[679]    0.0    0.00    0.00    1192         translation_matrix (init_matrix.c:77 @ a060) [679]
+-----------------------------------------------
+                0.00    0.00     733/733         mlx_exec_loop_hooks (mlx_loop.c:25 @ 12e9d) [6331]
+[680]    0.0    0.00    0.00     733         display_fps_hook (fps.c:170 @ 42e0) [680]
+-----------------------------------------------
+                0.00    0.00     733/733         mlx_exec_loop_hooks (mlx_loop.c:25 @ 12e9d) [6331]
+[681]    0.0    0.00    0.00     733         ft_hook (main.c:143 @ 32d0) [681]
+-----------------------------------------------
+                0.00    0.00     733/733         ft_hook (main.c:147 @ 32ef) [2528]
+[682]    0.0    0.00    0.00     733         menu_handler (menu_public.c:36 @ e040) [682]
+-----------------------------------------------
+                0.00    0.00     596/596         cursor_movement_per_frame (main.c:18 @ 2ea3) [1566]
+[683]    0.0    0.00    0.00     596         get_direction (vec3.c:337 @ 6710) [683]
+-----------------------------------------------
+                0.00    0.00     596/596         ft_hook (main.c:151 @ 330a) [2531]
+[684]    0.0    0.00    0.00     596         handle_movement_per_frame (main.c:27 @ 2e30) [684]
+-----------------------------------------------
+                0.00    0.00     283/283         mlx_cursor_cb (mlx_mouse.c:38 @ 133be) [6248]
+[685]    0.0    0.00    0.00     283         cursor_hook (key_handlers.c:152 @ d920) [685]
+-----------------------------------------------
+                0.00    0.00     217/217         display_fps (fps.c:163 @ 4194) [1687]
+[686]    0.0    0.00    0.00     217         display_digit (fps.c:84 @ 3e50) [686]
+-----------------------------------------------
+                0.00    0.00     193/193         display_fps_hook (fps.c:182 @ 433a) [1723]
+[687]    0.0    0.00    0.00     193         display_fps (fps.c:136 @ 40f0) [687]
+-----------------------------------------------
+                0.00    0.00     134/134         menu_handler (menu_public.c:40 @ e080) [6125]
+[688]    0.0    0.00    0.00     134         handle_open_menu (menu.c:103 @ dce0) [688]
+-----------------------------------------------
+                0.00    0.00      55/55          mlx_key_callback (mlx_keys.c:28 @ 12d38) [6550]
+[689]    0.0    0.00    0.00      55         key_hook (key_handlers.c:113 @ d670) [689]
+-----------------------------------------------
+                0.00    0.00      39/39          get_mtl (obj_parser.c:49 @ 8e90) [3425]
+[690]    0.0    0.00    0.00      39         ft_strcmp (ft_strncmp.c:34 @ f550) [690]
+-----------------------------------------------
+                0.00    0.00      39/39          get_mtl (obj_parser.c:47 @ 8eb7) [3426]
+[691]    0.0    0.00    0.00      39         is_buffer_all_zeros (ft_realloc_copy_until_zeroed.c:16 @ 101f0) [691]
+-----------------------------------------------
+                0.00    0.00      37/37          handle_movement_per_frame (main.c:64 @ 30ae) [3581]
+[692]    0.0    0.00    0.00      37         add_vec3 (vec3.c:213 @ 6440) [692]
+-----------------------------------------------
+                0.00    0.00       1/25          obj_parser_parse_mtl_libs (obj_parser.c:517 @ 9ad2) [7148]
+                0.00    0.00       7/25          parse_mtl (obj_parser.c:472 @ 99a1) [7432]
+                0.00    0.00       8/25          parse_mtl (obj_parser.c:452 @ 9547) [7389]
+                0.00    0.00       9/25          obj_parser_handle_faces (obj_parser.c:312 @ 8e44) [7095]
+[693]    0.0    0.00    0.00      25         ft_strtrim (ft_strtrim.c:27 @ f920) [693]
+-----------------------------------------------
+                0.00    0.00       3/19          add_menu_widget (menu_public.c:77 @ e1da) [929]
+                0.00    0.00       8/19          ft_strjoin (ft_strjoin.c:26 @ f6eb) [2753]
+                0.00    0.00       8/19          ft_strjoin (ft_strjoin.c:27 @ f6fa) [2754]
+[694]    0.0    0.00    0.00      19         ft_strlcpy (ft_strlcpy.c:16 @ f3e0) [694]
+-----------------------------------------------
+                0.00    0.00       1/8           parse_mtl (obj_parser.c:430 @ 946f) [7371]
+                0.00    0.00       7/8           parse_mtl (obj_parser.c:478 @ 96c9) [7407]
+[695]    0.0    0.00    0.00       8         ft_strjoin (ft_strjoin.c:16 @ f6a0) [695]
+                0.00    0.00       8/1569210     ft_strlen (ft_strlen.c:16 @ f080) [650]
+-----------------------------------------------
+                0.00    0.00       7/7           parse_mtl (obj_parser.c:481 @ 96de) [7411]
+[696]    0.0    0.00    0.00       7         create_blocked_arr (arrays.c:15 @ eab0) [696]
+-----------------------------------------------
+                0.00    0.00       1/7           free_menu (menu_public.c:22 @ dfbf) [2429]
+                0.00    0.00       3/7           free_menu (menu_public.c:27 @ dff0) [2435]
+                0.00    0.00       3/7           free_menu (menu_public.c:27 @ e000) [2437]
+[697]    0.0    0.00    0.00       7         ft_free_img (utils1.c:39 @ 7910) [697]
+-----------------------------------------------
+                0.00    0.00       4/4           mlx_cursor_cb (mlx_mouse.c:38 @ 133be) [6248]
+[698]    0.0    0.00    0.00       4         cursor_menu (menu_hooks.c:65 @ e3d0) [698]
+-----------------------------------------------
+                0.00    0.00       1/3           main (main.c:267 @ 2b69) [6021]
+                0.00    0.00       1/3           init_menu_widgets (init.c:77 @ e727) [3898]
+                0.00    0.00       1/3           init_menu_widgets (init.c:79 @ e760) [3900]
+[699]    0.0    0.00    0.00       3         add_menu_widget (menu_public.c:61 @ e130) [699]
+-----------------------------------------------
+                0.00    0.00       3/3           add_menu_widget (menu_public.c:86 @ e240) [938]
+[700]    0.0    0.00    0.00       3         fill_slider (menu.c:73 @ dc00) [700]
+-----------------------------------------------
+                0.00    0.00       1/3           cleanup_exit (cleanup.c:44 @ ea3e) [1115]
+                0.00    0.00       2/3           free_mesh (cleanup.c:28 @ ea2d) [2463]
+[701]    0.0    0.00    0.00       3         ft_free (ft_free.c:16 @ 10420) [701]
+-----------------------------------------------
+                0.00    0.00       3/3           add_menu_widget (menu_public.c:83 @ e20f) [935]
+[702]    0.0    0.00    0.00       3         init_entry_widget (menu.c:48 @ da60) [702]
+-----------------------------------------------
+                0.00    0.00       1/2           main (main.c:264 @ 2b59) [6019]
+                0.00    0.00       1/2           get_fps_digit_texture (fps.c:51 @ 3c18) [3382]
+[703]    0.0    0.00    0.00       2         add_obj_file_meshes (main.c:197 @ 36d0) [703]
+-----------------------------------------------
+                0.00    0.00       1/2           add_obj_file_meshes (main.c:205 @ 3815) [957]
+                0.00    0.00       1/2           add_obj_file_meshes (main.c:238 @ 3916) [963]
+[704]    0.0    0.00    0.00       2         arr_append (arr_append.c:20 @ 10360) [704]
+-----------------------------------------------
+                0.00    0.00       2/2           menu_handler (menu_public.c:41 @ e05d) [6120]
+[705]    0.0    0.00    0.00       2         close_menu (menu_open_close.c:19 @ de10) [705]
+-----------------------------------------------
+                0.00    0.00       2/2           init_basic_data_mesh (init.c:130 @ e837) [3703]
+[706]    0.0    0.00    0.00       2         ident_mat_4x4 (init_matrix.c:97 @ a0c0) [706]
+-----------------------------------------------
+                0.00    0.00       2/2           load_obj_file (obj_parser.c:546 @ 9c23) [5248]
+[707]    0.0    0.00    0.00       2         init_basic_data_mesh (init.c:129 @ e820) [707]
+-----------------------------------------------
+                0.00    0.00       1/2           add_obj_file_meshes (main.c:200 @ 372c) [946]
+                0.00    0.00       1/2           add_obj_file_meshes (main.c:236 @ 3839) [959]
+[708]    0.0    0.00    0.00       2         load_obj_file (obj_parser.c:540 @ 9bc0) [708]
+-----------------------------------------------
+                0.00    0.00       1/2           add_obj_file_meshes (main.c:204 @ 380d) [956]
+                0.00    0.00       1/2           add_obj_file_meshes (main.c:237 @ 390e) [962]
+[709]    0.0    0.00    0.00       2         make_mesh_render_rdy (init.c:86 @ e790) [709]
+-----------------------------------------------
+                0.00    0.00       2/2           load_obj_file (obj_parser.c:551 @ 9c7a) [5254]
+[710]    0.0    0.00    0.00       2         obj_parser_count (obj_parser.c:59 @ 8560) [710]
+-----------------------------------------------
+                0.00    0.00       2/2           load_obj_file (obj_parser.c:573 @ 9d2d) [5272]
+[711]    0.0    0.00    0.00       2         obj_parser_fill_vertexes (obj_parser.c:118 @ 8840) [711]
+-----------------------------------------------
+                0.00    0.00       2/2           load_obj_file (obj_parser.c:573 @ 9d2d) [5272]
+[712]    0.0    0.00    0.00       2         obj_parser_handle_faces (obj_parser.c:287 @ 91e0) [712]
+-----------------------------------------------
+                0.00    0.00       2/2           load_obj_file (obj_parser.c:567 @ 9d12) [5270]
+[713]    0.0    0.00    0.00       2         obj_parser_parse_mtl_libs (obj_parser.c:494 @ 9a20) [713]
+-----------------------------------------------
+                0.00    0.00       1/1           cleanup_exit (cleanup.c:46 @ ea59) [1117]
+[714]    0.0    0.00    0.00       1         clean_mlx (cleanup.c:4 @ e8c0) [714]
+-----------------------------------------------
+                0.00    0.00       1/1           mlx_key_callback (mlx_keys.c:28 @ 12d38) [6550]
+[715]    0.0    0.00    0.00       1         cleanup_exit (cleanup.c:32 @ e990) [715]
+-----------------------------------------------
+                0.00    0.00       1/1           clean_mlx (cleanup.c:5 @ e8d6) [1086]
+[716]    0.0    0.00    0.00       1         free_fps_digit_textures (fps.c:57 @ 3c50) [716]
+-----------------------------------------------
+                0.00    0.00       1/1           cleanup_exit (cleanup.c:45 @ ea4a) [1116]
+[717]    0.0    0.00    0.00       1         free_menu (menu_public.c:19 @ dfa0) [717]
+-----------------------------------------------
+                0.00    0.00       1/1           init_main (init.c:59 @ e5ad) [3865]
+[718]    0.0    0.00    0.00       1         get_fps_digit_texture (fps.c:35 @ 3bc0) [718]
+-----------------------------------------------
+                0.00    0.00       1/1           main (main.c:267 @ 2b69) [6021]
+[719]    0.0    0.00    0.00       1         init_hooks (init.c:66 @ e650) [719]
+-----------------------------------------------
+                0.00    0.00       1/1           main (main.c:264 @ 2b59) [6019]
+[720]    0.0    0.00    0.00       1         init_main (init.c:47 @ e4b0) [720]
+-----------------------------------------------
+                0.00    0.00       1/1           init_settings (init.c:31 @ e5dd) [3920]
+[721]    0.0    0.00    0.00       1         init_menu (menu_public.c:49 @ e090) [721]
+-----------------------------------------------
+                0.00    0.00       1/1           main (main.c:267 @ 2b69) [6021]
+[722]    0.0    0.00    0.00       1         init_menu_widgets (init.c:76 @ e6f0) [722]
+-----------------------------------------------
+                0.00    0.00       1/1           main (main.c:255 @ 2aaf) [6016]
+[723]    0.0    0.00    0.00       1         is_power2 (utils1.c:18 @ 77b0) [723]
+-----------------------------------------------
+                0.00    0.00       1/1           parse_mtl (obj_parser.c:430 @ 946f) [7371]
+[724]    0.0    0.00    0.00       1         mtl_len (obj_parser.c:364 @ 92b0) [724]
+-----------------------------------------------
+                0.00    0.00       1/1           menu_handler (menu_public.c:42 @ e070) [6124]
+[725]    0.0    0.00    0.00       1         open_menu (menu_open_close.c:41 @ def0) [725]
+-----------------------------------------------
+                0.00    0.00       1/1           obj_parser_parse_mtl_libs (obj_parser.c:517 @ 9aff) [7150]
+[726]    0.0    0.00    0.00       1         parse_mtl (obj_parser.c:421 @ 9430) [726]
+-----------------------------------------------
+                0.00    0.00       1/1           init_main (init.c:48 @ e4df) [3859]
+[727]    0.0    0.00    0.00       1         reset_camera (utils1.c:23 @ 77f0) [727]
+-----------------------------------------------
+                0.00    0.00       1/1           init_menu (menu_public.c:56 @ e10b) [3888]
+[728]    0.0    0.00    0.00       1         reset_pixel_buffer (utils1.c:47 @ 7950) [728]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2024 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+ [412] HuffmanTree_makeTable (lodepng.c:680 @ 15dcf) [195] fill_triangle_texture (fill_triangle.c:276 @ b3c4) [579] inner_loop (fill_triangle.c:152 @ b425)
+ [413] HuffmanTree_makeTable (lodepng.c:700 @ 15f91) [393] fill_triangle_texture (fill_triangle.c:277 @ b3d1) [580] inner_loop (fill_triangle.c:139 @ b43f)
+ [256] _init                 [456] fill_triangle_texture (fill_triangle.c:276 @ b3db) [581] inner_loop (fill_triangle.c:138 @ b443)
+ [699] add_menu_widget (menu_public.c:61 @ e130) [241] fill_triangle_texture (fill_triangle.c:277 @ b3ed) [400] inner_loop (fill_triangle.c:153 @ b447)
+ [703] add_obj_file_meshes (main.c:197 @ 36d0) [313] fill_triangle_texture (fill_triangle.c:277 @ b40a) [483] inner_loop (fill_triangle.c:139 @ b454)
+ [692] add_vec3 (vec3.c:213 @ 6440) [394] fill_triangle_texture (fill_triangle.c:287 @ b42a) [24] inner_loop (fill_triangle.c:146 @ b458)
+ [273] advanceBits (lodepng.c:568 @ 15bab) [457] fill_triangle_texture (fill_triangle.c:291 @ b42e) [251] inner_loop (fill_triangle.c:147 @ b464)
+ [223] advanceBits (lodepng.c:569 @ 15bb7) [458] fill_triangle_texture (fill_triangle.c:287 @ b437) [118] inner_loop (fill_triangle.c:148 @ b468)
+ [307] advanceBits (lodepng.c:570 @ 15bcf) [395] fill_triangle_texture (fill_triangle.c:292 @ b43b) [201] inner_loop (fill_triangle.c:149 @ b46c)
+ [645] append_buffer (get_next_line_utils.c:105 @ 108e0) [353] fill_triangle_texture (fill_triangle.c:292 @ b44b) [119] inner_loop (fill_triangle.c:154 @ b479)
+ [327] append_buffer (get_next_line_utils.c:126 @ 10b0c) [242] fill_triangle_texture (fill_triangle.c:295 @ b527) [134] inner_loop (fill_triangle.c:156 @ b490)
+ [414] append_buffer (get_next_line_utils.c:123 @ 10bad) [101] fill_triangle_texture (fill_triangle.c:296 @ b52b) [135] inner_loop (fill_triangle.c:158 @ b492)
+ [704] arr_append (arr_append.c:20 @ 10360) [293] fill_triangle_texture (fill_triangle.c:265 @ b53b) [252] inner_loop (fill_triangle.c:156 @ b495)
+ [192] call_clipping_xy (clipping_xy.c:250 @ cb30) [716] free_fps_digit_textures (fps.c:57 @ 3c50) [49] inner_loop (fill_triangle.c:158 @ b498)
+ [235] call_clipping_xy (clipping_xy.c:261 @ cb7a) [717] free_menu (menu_public.c:19 @ dfa0) [174] inner_loop (fill_triangle.c:159 @ b49c)
+ [379] call_clipping_xy (clipping_xy.c:262 @ d0a0) [651] ft_atoi (ft_atoi.c:23 @ f5a0) [140] inner_loop (fill_triangle.c:157 @ b4a4)
+ [518] call_clipping_xy (clipping_xy.c:264 @ d0b3) [459] ft_atoi (ft_atoi.c:44 @ f5fa) [141] inner_loop (fill_triangle.c:159 @ b4a6)
+ [212] call_clipping_xy (clipping_xy.c:268 @ d1b8) [667] ft_bzero (ft_bzero.c:16 @ f140) [105] inner_loop (fill_triangle.c:157 @ b4a9)
+ [714] clean_mlx (cleanup.c:4 @ e8c0) [648] ft_calloc (ft_calloc.c:16 @ f640) [220] inner_loop (fill_triangle.c:158 @ b4ac)
+ [655] cleanup (get_next_line_utils.c:16 @ 10450) [701] ft_free (ft_free.c:16 @ 10420) [6] inner_loop (fill_triangle.c:157 @ b4b1)
+ [715] cleanup_exit (cleanup.c:32 @ e990) [653] ft_free_2darr (ft_free_2darr.c:16 @ 10300) [23] inner_loop (fill_triangle.c:159 @ b4b6)
+ [519] clipp_loop (clipping_xy.c:240 @ cbdb) [697] ft_free_img (utils1.c:39 @ 7910) [162] inner_loop (fill_triangle.c:158 @ b4bc)
+ [520] clipp_loop (clipping_xy.c:241 @ ccb6) [681] ft_hook (main.c:143 @ 32d0) [80] inner_loop (fill_triangle.c:159 @ b4be)
+ [328] clipping_xy (clipping_xy.c:176 @ cc9c) [646] ft_isdigit (ft_isdigit.c:14 @ f060) [136] inner_loop (fill_triangle.c:165 @ b4c3)
+ [211] clipping_z_near (clipping_z.c:126 @ c490) [325] ft_memcpy (ft_memcpy.c:16 @ f170) [232] inner_loop (fill_triangle.c:162 @ b4c7)
+ [521] clipping_z_near (clipping_z.c:136 @ c4df) [354] ft_memcpy (ft_memcpy.c:20 @ f185) [188] inner_loop (fill_triangle.c:163 @ b4cd)
+ [522] clipping_z_near (clipping_z.c:137 @ c4e6) [355] ft_memcpy (ft_memcpy.c:22 @ f18a) [128] inner_loop (fill_triangle.c:165 @ b4d2)
+ [329] clipping_z_near (clipping_z.c:137 @ c4f0) [294] ft_memcpy (ft_memcpy.c:28 @ f18f) [175] inner_loop (fill_triangle.c:164 @ b4d7)
+ [523] clipping_z_near (clipping_z.c:137 @ c509) [243] ft_memcpy (ft_memcpy.c:31 @ f1c8) [264] inner_loop (fill_triangle.c:164 @ b4e3)
+ [415] clipping_z_near (clipping_z.c:136 @ c512) [356] ft_memcpy (ft_memcpy.c:29 @ f1e8) [81] inner_loop (fill_triangle.c:164 @ b50d)
+ [524] clipping_z_near (clipping_z.c:137 @ c51a) [102] ft_memcpy (ft_memcpy.c:28 @ f1f2) [66] inner_loop (fill_triangle.c:171 @ b511)
+ [274] clipping_z_near (clipping_z.c:193 @ c55e) [77] ft_memcpy (ft_memcpy.c:29 @ f223) [38] inner_loop (fill_triangle.c:167 @ b513)
+ [705] close_menu (menu_open_close.c:19 @ de10) [552] ft_memcpy (ft_memcpy.c:28 @ f24a) [111] inner_loop (fill_triangle.c:168 @ b517)
+ [275] count_inside_points (clipping_xy.c:158 @ cbbd) [553] ft_memcpy (ft_memcpy.c:29 @ f253) [106] inner_loop (fill_triangle.c:169 @ b51b)
+ [525] count_inside_points (clipping_xy.c:160 @ cbc0) [244] ft_memcpy (ft_memcpy.c:29 @ f265) [148] inner_loop (fill_triangle.c:154 @ b51f)
+ [526] count_inside_points (clipping_xy.c:162 @ cbc3) [554] ft_memcpy (ft_memcpy.c:29 @ f277) [484] inner_loop (fill_triangle.c:154 @ b550)
+ [276] count_inside_points (clipping_xy.c:156 @ cbc6) [555] ft_memcpy (ft_memcpy.c:28 @ f27f) [233] inner_loop (fill_triangle.c:156 @ b560)
+ [527] count_inside_points (clipping_xy.c:158 @ cbd3) [314] ft_memcpy (ft_memcpy.c:28 @ f291) [234] inner_loop (fill_triangle.c:158 @ b562)
+ [416] count_inside_points (clipping_xy.c:160 @ cbd7) [396] ft_memcpy (ft_memcpy.c:29 @ f29b) [35] inner_loop (fill_triangle.c:156 @ b565)
+ [277] count_inside_points (clipping_xy.c:162 @ cc02) [196] ft_memcpy (ft_memcpy.c:29 @ f2ad) [120] inner_loop (fill_triangle.c:158 @ b568)
+ [417] count_inside_points (clipping_xy.c:156 @ cc59) [556] ft_memcpy (ft_memcpy.c:29 @ f2bf) [82] inner_loop (fill_triangle.c:159 @ b56c)
+ [418] count_inside_points (clipping_xy.c:162 @ cc74) [557] ft_memcpy (ft_memcpy.c:28 @ f2c7) [50] inner_loop (fill_triangle.c:157 @ b574)
+ [419] count_inside_points (clipping_xy.c:156 @ cd27) [357] ft_memcpy (ft_memcpy.c:28 @ f35a) [51] inner_loop (fill_triangle.c:159 @ b576)
+ [528] count_inside_points (clipping_xy.c:157 @ cd37) [664] ft_powint (ft_powint.c:16 @ ff70) [121] inner_loop (fill_triangle.c:157 @ b579)
+ [420] count_inside_points (clipping_xy.c:156 @ cd42) [668] ft_put_pixel_fin_index (utils1.c:166 @ 8260) [8] inner_loop (fill_triangle.c:158 @ b57c)
+ [529] count_inside_points (clipping_xy.c:157 @ cd52) [654] ft_split (ft_split.c:66 @ fb40) [9] inner_loop (fill_triangle.c:157 @ b582)
+ [530] count_inside_points (clipping_xy.c:156 @ cf05) [358] ft_split (ft_split.c:79 @ fbe0) [13] inner_loop (fill_triangle.c:159 @ b587)
+ [380] count_inside_points (clipping_xy.c:158 @ cf0e) [460] ft_split (ft_split.c:81 @ fc45) [149] inner_loop (fill_triangle.c:158 @ b58d)
+ [330] count_inside_points (clipping_xy.c:160 @ cf17) [649] ft_strchr (ft_strchr.c:16 @ f450) [150] inner_loop (fill_triangle.c:159 @ b58f)
+ [421] count_inside_points (clipping_xy.c:161 @ cf3c) [690] ft_strcmp (ft_strncmp.c:34 @ f550) [202] inner_loop (fill_triangle.c:165 @ b594)
+ [278] count_inside_points (clipping_xy.c:160 @ cf58) [695] ft_strjoin (ft_strjoin.c:16 @ f6a0) [44] inner_loop (fill_triangle.c:162 @ b598)
+ [422] count_inside_points (clipping_xy.c:158 @ cf78) [694] ft_strlcpy (ft_strlcpy.c:16 @ f3e0) [163] inner_loop (fill_triangle.c:163 @ b59e)
+ [531] count_inside_points (clipping_xy.c:158 @ cfaf) [650] ft_strlen (ft_strlen.c:16 @ f080) [151] inner_loop (fill_triangle.c:165 @ b5a4)
+ [308] count_inside_points (clipping_xy.c:160 @ cfbf) [461] ft_strlen (ft_strlen.c:22 @ f093) [45] inner_loop (fill_triangle.c:164 @ b5a9)
+ [423] count_inside_points (clipping_xy.c:160 @ d060) [652] ft_strncmp (ft_strncmp.c:16 @ f500) [58] inner_loop (fill_triangle.c:164 @ b5b5)
+ [279] count_inside_points (clipping_xy.c:156 @ d1f1) [693] ft_strtrim (ft_strtrim.c:27 @ f920) [52] inner_loop (fill_triangle.c:164 @ b5df)
+ [378] cpy_triangle_data_rasterize (draw.c:240 @ 557e) [208] get_blocked_val_inline (fill_triangle.c:127 @ b0b2) [41] inner_loop (fill_triangle.c:154 @ b5e3)
+ [257] cpy_triangle_data_rasterize (draw.c:244 @ 5586) [216] get_blocked_val_inline (fill_triangle.c:125 @ b0b5) [99] inner_loop (fill_triangle.c:167 @ b5e6)
+ [381] cpy_triangle_data_rasterize (draw.c:242 @ 55a6) [97] get_blocked_val_inline (fill_triangle.c:127 @ b0be) [122] inner_loop (fill_triangle.c:168 @ b5ea)
+ [696] create_blocked_arr (arrays.c:15 @ eab0) [169] get_blocked_val_inline (fill_triangle.c:128 @ b0c2) [209] inner_loop (fill_triangle.c:171 @ b5ee)
+ [382] create_blocked_arr (arrays.c:44 @ ece7) [245] get_blocked_val_inline (fill_triangle.c:126 @ b0c6) [36] inner_loop (fill_triangle.c:169 @ b5f0)
+ [532] create_blocked_arr (arrays.c:42 @ ecf7) [144] get_blocked_val_inline (fill_triangle.c:125 @ b0c8) [67] inner_loop (fill_triangle.c:154 @ b5f4)
+ [331] create_blocked_arr (arrays.c:44 @ ed01) [86] get_blocked_val_inline (fill_triangle.c:126 @ b0cb) [691] is_buffer_all_zeros (ft_realloc_copy_until_zeroed.c:16 @ 101f0)
+ [424] create_blocked_arr (arrays.c:44 @ ed47) [170] get_blocked_val_inline (fill_triangle.c:125 @ b0ce) [723] is_power2 (utils1.c:18 @ 77b0)
+ [272] cross_product (vec3.c:99 @ 6060) [295] get_blocked_val_inline (fill_triangle.c:128 @ b0d2) [689] key_hook (key_handlers.c:113 @ d670)
+ [383] cross_product (vec3.c:106 @ 606e) [17] get_blocked_val_inline (fill_triangle.c:129 @ b0d5) [662] line_zplane_intersection (clipping_z.c:39 @ bd10)
+ [384] cross_product (vec3.c:102 @ 607a) [359] get_blocked_val_inline (fill_triangle.c:127 @ b19a) [409] line_zplane_intersection (clipping_z.c:52 @ bd93)
+ [280] cross_product (vec3.c:106 @ 6082) [171] get_blocked_val_inline (fill_triangle.c:125 @ b19d) [708] load_obj_file (obj_parser.c:540 @ 9bc0)
+ [281] cross_product (vec3.c:102 @ 608b) [184] get_blocked_val_inline (fill_triangle.c:127 @ b1a6) [401] lodepng_crc32 (lodepng.c:2662 @ 17d25)
+ [425] cross_product (vec3.c:102 @ 60a1) [227] get_blocked_val_inline (fill_triangle.c:128 @ b1aa) [321] lodepng_crc32 (lodepng.c:2663 @ 17d4b)
+ [426] cross_product (vec3.c:107 @ 60b5) [397] get_blocked_val_inline (fill_triangle.c:126 @ b1ae) [485] lodepng_crc32 (lodepng.c:2665 @ 17dab)
+ [427] cross_product (vec3.c:104 @ 60b6) [246] get_blocked_val_inline (fill_triangle.c:125 @ b1b0) [582] lodepng_crc32 (lodepng.c:2665 @ 17df9)
+ [332] cross_product (vec3.c:104 @ 60be) [156] get_blocked_val_inline (fill_triangle.c:126 @ b1b3) [402] lodepng_crc32 (lodepng.c:2667 @ 17dfb)
+ [333] cross_product (vec3.c:106 @ 60c3) [197] get_blocked_val_inline (fill_triangle.c:125 @ b1b6) [583] lodepng_free (lodepng.c:91 @ 14f77)
+ [685] cursor_hook (key_handlers.c:152 @ d920) [315] get_blocked_val_inline (fill_triangle.c:128 @ b1ba) [265] lodepng_memcpy (lodepng.c:121 @ 14f7a)
+ [698] cursor_menu (menu_hooks.c:65 @ e3d0) [27] get_blocked_val_inline (fill_triangle.c:129 @ b1bd) [22] lodepng_memcpy (lodepng.c:123 @ 14f8e)
+ [686] display_digit (fps.c:84 @ 3e50) [185] get_blocked_val_inline (fill_triangle.c:127 @ b4dc) [203] lodepng_memcpy (lodepng.c:124 @ 14fc2)
+ [687] display_fps (fps.c:136 @ 40f0) [114] get_blocked_val_inline (fill_triangle.c:125 @ b4df) [322] lodepng_memset (lodepng.c:127 @ 14fc6)
+ [680] display_fps_hook (fps.c:170 @ 42e0) [247] get_blocked_val_inline (fill_triangle.c:127 @ b4e8) [14] lodepng_memset (lodepng.c:129 @ 14fd9)
+ [271] dot_prod_unit (vec3.c:110 @ 60e0) [172] get_blocked_val_inline (fill_triangle.c:128 @ b4ec) [486] lodepng_memset (lodepng.c:130 @ 15002)
+ [236] dot_prod_unit (vec3.c:111 @ 60ee) [186] get_blocked_val_inline (fill_triangle.c:126 @ b4f0) [709] make_mesh_render_rdy (init.c:86 @ e790)
+ [671] draw_mesh (draw.c:336 @ 5870) [139] get_blocked_val_inline (fill_triangle.c:125 @ b4f3) [670] mat4x4_mult_mat4x4 (matrix_mult.c:27 @ a650)
+ [207] draw_mesh (draw.c:370 @ 5a51) [228] get_blocked_val_inline (fill_triangle.c:126 @ b4f7) [674] matrix_look_at (init_matrix.c:219 @ a580)
+ [179] draw_mesh (draw.c:372 @ 5a6e) [173] get_blocked_val_inline (fill_triangle.c:125 @ b4fa) [59] matrix_mult_vec3_4x4 (matrix_mult.c:61 @ aa20)
+ [129] draw_mesh (draw.c:373 @ 5a83) [229] get_blocked_val_inline (fill_triangle.c:128 @ b4fe) [2] matrix_mult_vec3_4x4 (matrix_mult.c:62 @ aa32)
+ [190] draw_mesh (draw.c:374 @ 5a9a) [34] get_blocked_val_inline (fill_triangle.c:129 @ b501) [42] matrix_mult_vec3_4x4 (matrix_mult.c:63 @ aa81)
+   [1] draw_mesh (draw.c:378 @ 5ab1) [126] get_blocked_val_inline (fill_triangle.c:127 @ b5ae) [47] matrix_mult_vec3_4x4 (matrix_mult.c:64 @ aaa4)
+ [428] draw_mesh (draw.c:379 @ 5b97) [130] get_blocked_val_inline (fill_triangle.c:125 @ b5b1) [68] matrix_mult_vec3_4x4 (matrix_mult.c:65 @ aac8)
+ [164] draw_mesh (draw.c:378 @ 5ba2) [103] get_blocked_val_inline (fill_triangle.c:127 @ b5ba) [176] matrix_mult_vec3_4x4 (matrix_mult.c:66 @ aaef)
+ [258] draw_mesh (draw.c:379 @ 5bb2) [198] get_blocked_val_inline (fill_triangle.c:128 @ b5be) [675] matrix_point_at (init_matrix.c:179 @ a2d0)
+  [10] draw_mesh (draw.c:381 @ 5bba) [316] get_blocked_val_inline (fill_triangle.c:126 @ b5c2) [682] menu_handler (menu_public.c:36 @ e040)
+ [282] draw_mesh (draw.c:381 @ 5c4a) [462] get_blocked_val_inline (fill_triangle.c:125 @ b5c5) [487] mlx_render_images (mlx_loop.c:33 @ 12ef6)
+ [191] draw_mesh (draw.c:389 @ 5c6f) [46] get_blocked_val_inline (fill_triangle.c:126 @ b5c9) [488] mlx_render_images (mlx_loop.c:60 @ 12fef)
+ [334] draw_mesh (draw.c:416 @ 5cba) [145] get_blocked_val_inline (fill_triangle.c:125 @ b5cc) [724] mtl_len (obj_parser.c:364 @ 92b0)
+ [283] draw_mesh (draw.c:409 @ 5cf7) [248] get_blocked_val_inline (fill_triangle.c:128 @ b5d0) [659] my_str_cpy (get_next_line_utils.c:64 @ 10580)
+ [533] draw_mesh (draw.c:407 @ 5d03) [25] get_blocked_val_inline (fill_triangle.c:129 @ b5d3) [365] my_str_cpy (get_next_line_utils.c:74 @ 105e5)
+ [534] draw_mesh (draw.c:409 @ 5d0f) [656] get_current_file (get_next_line_utils.c:38 @ 104d0) [93] my_str_cpy (get_next_line_utils.c:70 @ 10aa8)
+ [429] draw_mesh (draw.c:416 @ 5d1b) [683] get_direction (vec3.c:337 @ 6710) [253] my_str_cpy (get_next_line_utils.c:71 @ 10acc)
+ [430] draw_mesh (draw.c:419 @ 5d3e) [718] get_fps_digit_texture (fps.c:35 @ 3bc0) [298] my_str_cpy (get_next_line_utils.c:70 @ 10ad0)
+ [112] draw_mesh (draw.c:417 @ 5d4b) [558] get_free_index (clipping_xy.c:34 @ d0e2) [266] my_str_cpy (get_next_line_utils.c:71 @ 10ad3)
+  [26] draw_mesh (draw.c:421 @ 5d61) [559] get_free_index (clipping_xy.c:36 @ d0eb) [267] my_str_cpy (get_next_line_utils.c:74 @ 10ad6)
+ [535] draw_mesh (draw.c:367 @ 5dc7) [560] get_free_index (clipping_xy.c:42 @ d0ff) [366] my_str_cpy (get_next_line_utils.c:74 @ 10af4)
+ [431] ensureBits25 (lodepng.c:524 @ 157c9) [657] get_next_line (get_next_line.c:69 @ fe40) [489] my_str_cpy (get_next_line_utils.c:74 @ 10b65)
+ [335] ensureBits25 (lodepng.c:525 @ 157d5) [463] get_str_count (ft_split.c:22 @ fb8d) [367] my_str_cpy (get_next_line_utils.c:80 @ 10b79)
+ [336] ensureBits25 (lodepng.c:528 @ 15803) [561] get_unset_last_used_index (clipping_xy.c:54 @ d0f6) [710] obj_parser_count (obj_parser.c:59 @ 8560)
+ [337] ensureBits25 (lodepng.c:530 @ 15879) [230] get_unset_last_used_index (clipping_xy.c:54 @ d108) [711] obj_parser_fill_vertexes (obj_parser.c:118 @ 8840)
+ [432] ensureBits32 (lodepng.c:542 @ 15966) [562] get_unset_last_used_index (clipping_xy.c:56 @ d112) [712] obj_parser_handle_faces (obj_parser.c:287 @ 91e0)
+ [385] ensureBits32 (lodepng.c:543 @ 15972) [464] get_unset_last_used_index (clipping_xy.c:56 @ d11a) [713] obj_parser_parse_mtl_libs (obj_parser.c:494 @ 9a20)
+ [284] ensureBits32 (lodepng.c:544 @ 15982) [465] get_unset_used_index (clipping_xy.c:73 @ cbcd) [725] open_menu (menu_open_close.c:41 @ def0)
+ [386] ensureBits32 (lodepng.c:545 @ 1598e) [30] get_unset_used_index (clipping_xy.c:71 @ ccbf) [107] paethPredictor (lodepng.c:4241 @ 1c1be)
+  [85] ensureBits32 (lodepng.c:546 @ 159a0) [19] get_unset_used_index (clipping_xy.c:69 @ ccd2) [61] paethPredictor (lodepng.c:4244 @ 1c1d7)
+ [387] ensureBits32 (lodepng.c:547 @ 159d3) [15] get_unset_used_index (clipping_xy.c:71 @ ccdb) [204] paethPredictor (lodepng.c:4245 @ 1c1ec)
+ [536] ensureBits32 (lodepng.c:546 @ 159ee) [466] get_unset_used_index (clipping_xy.c:71 @ d370) [53] paethPredictor (lodepng.c:4247 @ 1c201)
+ [433] ensureBits32 (lodepng.c:547 @ 159f0) [296] get_unset_used_index (clipping_xy.c:68 @ d377) [210] paethPredictor (lodepng.c:4249 @ 1c226)
+ [434] ensureBits32 (lodepng.c:546 @ 15a0f) [684] handle_movement_per_frame (main.c:27 @ 2e30) [94] paethPredictor (lodepng.c:4250 @ 1c23f)
+ [180] ensureBits32 (lodepng.c:548 @ 15a16) [688] handle_open_menu (menu.c:103 @ dce0) [665] parse_face_normals (obj_parser.c:207 @ 8c80)
+ [108] ensureBits32 (lodepng.c:549 @ 15a33) [249] huffmanDecodeSymbol (lodepng.c:1073 @ 1674e) [666] parse_face_vertex (obj_parser.c:182 @ 8b60)
+ [435] fast_line_intersect (clipping_xy.c:98 @ c98c) [467] huffmanDecodeSymbol (lodepng.c:1074 @ 16762) [726] parse_mtl (obj_parser.c:421 @ 9430)
+ [537] fast_line_intersect (clipping_xy.c:99 @ c9a9) [115] huffmanDecodeSymbol (lodepng.c:1075 @ 16777) [221] peekBits (lodepng.c:564 @ 15b8f)
+ [538] fast_line_intersect (clipping_xy.c:100 @ c9ae) [199] huffmanDecodeSymbol (lodepng.c:1076 @ 16790) [326] projection_matrix (init_matrix.c:57 @ a010)
+ [517] fast_line_intersect (clipping_xy.c:100 @ c9b7) [468] huffmanDecodeSymbol (lodepng.c:1077 @ 167a9) [75] rasterize (draw.c:251 @ 52b0)
+ [539] fast_line_intersect (clipping_xy.c:101 @ c9cb) [263] huffmanDecodeSymbol (lodepng.c:1078 @ 167b0) [584] rasterize (draw.c:251 @ 5319)
+ [672] fill_model_matrix (draw.c:175 @ 4e50) [563] huffmanDecodeSymbol (lodepng.c:1079 @ 167c3) [323] rasterize (draw.c:258 @ 532b)
+ [700] fill_slider (menu.c:73 @ dc00) [469] huffmanDecodeSymbol (lodepng.c:1084 @ 1681f) [153] rasterize (draw.c:261 @ 536b)
+ [437] fill_slider (menu.c:90 @ dd88) [470] huffmanDecodeSymbol (lodepng.c:1086 @ 16837) [254] rasterize (draw.c:265 @ 5379)
+ [438] fill_slider (menu.c:88 @ dd91) [706] ident_mat_4x4 (init_matrix.c:97 @ a0c0) [490] rasterize (draw.c:264 @ 53dc)
+ [285] fill_slider (menu.c:90 @ dd95) [564] inflateHuffmanBlock (lodepng.c:1255 @ 16fba) [585] rasterize (draw.c:267 @ 5405)
+ [540] fill_slider (menu.c:96 @ ddcd) [565] inflateHuffmanBlock (lodepng.c:1260 @ 16fbf) [268] rasterize (draw.c:270 @ 540a)
+ [541] fill_slider (menu.c:95 @ ddcf) [566] inflateHuffmanBlock (lodepng.c:1265 @ 1702a) [491] rasterize (draw.c:285 @ 546c)
+ [213] fill_slider (menu.c:93 @ ddd8) [567] inflateHuffmanBlock (lodepng.c:1267 @ 17046) [492] rasterize (draw.c:287 @ 5489)
+ [669] fill_triangle_color (fill_triangle2.c:69 @ b610) [471] inflateHuffmanBlock (lodepng.c:1269 @ 17086) [493] rasterize (draw.c:286 @ 549f)
+ [439] fill_triangle_color (fill_triangle2.c:112 @ b7c5) [317] inflateHuffmanBlock (lodepng.c:1275 @ 170a6) [494] rasterize (draw.c:288 @ 54a3)
+ [440] fill_triangle_color (fill_triangle2.c:114 @ b7cb) [568] inflateHuffmanBlock (lodepng.c:1278 @ 170cb) [495] rasterize (draw.c:282 @ 54bf)
+ [441] fill_triangle_color (fill_triangle2.c:134 @ b850) [472] inflateHuffmanBlock (lodepng.c:1279 @ 170f0) [496] rasterize (draw.c:285 @ 54cb)
+ [442] fill_triangle_color (fill_triangle2.c:136 @ b852) [200] inflateHuffmanBlock (lodepng.c:1281 @ 170f9) [497] rasterize (draw.c:288 @ 5504)
+ [154] fill_triangle_color (fill_triangle2.c:134 @ b855) [473] inflateHuffmanBlock (lodepng.c:1286 @ 1712b) [498] rasterize (draw.c:282 @ 5510)
+ [224] fill_triangle_color (fill_triangle2.c:135 @ b85b) [360] inflateHuffmanBlock (lodepng.c:1287 @ 1713f) [499] rasterize (draw.c:286 @ 5531)
+ [181] fill_triangle_color (fill_triangle2.c:139 @ b868) [474] inflateHuffmanBlock (lodepng.c:1288 @ 1715b) [403] rasterize (draw.c:293 @ 55b6)
+ [338] fill_triangle_color (fill_triangle2.c:140 @ b86f) [361] inflateHuffmanBlock (lodepng.c:1295 @ 1718b) [368] rasterize (draw.c:291 @ 55c5)
+ [309] fill_triangle_color (fill_triangle2.c:141 @ b877) [318] inflateHuffmanBlock (lodepng.c:1298 @ 171a9) [500] rasterize (draw.c:300 @ 55f1)
+ [443] fill_triangle_color (fill_triangle2.c:143 @ b87f) [319] inflateHuffmanBlock (lodepng.c:1299 @ 171c7) [177] rasterize (draw.c:301 @ 5640)
+  [12] fill_triangle_color (fill_triangle2.c:143 @ b88c) [362] inflateHuffmanBlock (lodepng.c:1301 @ 171d0) [369] rasterize (draw.c:304 @ 5648)
+  [76] fill_triangle_color (fill_triangle2.c:142 @ b893) [475] inflateHuffmanBlock (lodepng.c:1305 @ 171ee) [501] rasterize (draw.c:310 @ 56bc)
+ [388] fill_triangle_color (fill_triangle2.c:143 @ b895) [569] inflateHuffmanBlock (lodepng.c:1307 @ 1721e) [502] rasterize (draw.c:265 @ 57c8)
+ [542] fill_triangle_color (fill_triangle2.c:145 @ b89a) [570] inflateHuffmanBlock (lodepng.c:1309 @ 17232) [503] rasterize (draw.c:265 @ 57d9)
+ [286] fill_triangle_color (fill_triangle2.c:145 @ b8a1) [571] inflateHuffmanBlock (lodepng.c:1313 @ 17296) [137] rasterize (draw.c:328 @ 57e5)
+ [225] fill_triangle_color (fill_triangle2.c:147 @ b8a4) [476] inflateHuffmanBlock (lodepng.c:1314 @ 172a3) [504] readBits (lodepng.c:574 @ 15be9)
+ [237] fill_triangle_color (fill_triangle2.c:148 @ b8ab) [231] inflateHuffmanBlock (lodepng.c:1315 @ 172af) [404] readBits (lodepng.c:575 @ 15bf9)
+ [259] fill_triangle_color (fill_triangle2.c:130 @ b8af) [297] inflateHuffmanBlock (lodepng.c:1314 @ 172ed) [586] readBits (lodepng.c:576 @ 15c0f)
+ [543] fill_triangle_color (fill_triangle2.c:135 @ b8f3) [572] inflateHuffmanBlock (lodepng.c:1269 @ 172fc) [505] readBits (lodepng.c:578 @ 15c25)
+ [444] fill_triangle_color (fill_triangle2.c:134 @ b8fe) [573] inflateHuffmanBlock (lodepng.c:1318 @ 172fe) [658] reading (get_next_line.c:16 @ fcf0)
+ [544] fill_triangle_color (fill_triangle2.c:121 @ b902) [574] inflateHuffmanBlock (lodepng.c:1269 @ 17334) [587] reading (get_next_line.c:28 @ fd35)
+ [339] fill_triangle_color (fill_triangle2.c:134 @ b930) [575] inflateHuffmanBlock (lodepng.c:1320 @ 17336) [588] reading (get_next_line.c:32 @ fd37)
+ [340] fill_triangle_color (fill_triangle2.c:136 @ b934) [363] inflateHuffmanBlock (lodepng.c:1325 @ 1735d) [506] reading (get_next_line.c:34 @ fd3d)
+ [389] fill_triangle_color (fill_triangle2.c:130 @ b938) [477] inflateHuffmanBlock (lodepng.c:1329 @ 173b0) [507] reading (get_next_line.c:17 @ fd4a)
+ [390] fill_triangle_color (fill_triangle2.c:135 @ b93b) [576] inflateHuffmanBlock (lodepng.c:1333 @ 173cb) [727] reset_camera (utils1.c:23 @ 77f0)
+ [238] fill_triangle_color (fill_triangle2.c:139 @ b944) [577] inflateHuffmanBlock (lodepng.c:1335 @ 173d7) [728] reset_pixel_buffer (utils1.c:47 @ 7950)
+ [166] fill_triangle_color (fill_triangle2.c:140 @ b948) [707] init_basic_data_mesh (init.c:129 @ e820) [370] reset_pixel_buffer_main (main.c:108 @ 3380)
+ [167] fill_triangle_color (fill_triangle2.c:141 @ b950) [673] init_day_light (draw.c:207 @ 4fc0) [5] reset_pixel_buffer_main (main.c:107 @ 3384)
+ [193] fill_triangle_color (fill_triangle2.c:143 @ b958) [702] init_entry_widget (menu.c:48 @ da60) [4] reset_pixel_buffer_main (main.c:108 @ 3387)
+  [37] fill_triangle_color (fill_triangle2.c:142 @ b95d) [719] init_hooks (init.c:66 @ e650) [73] reset_pixel_buffer_main (main.c:109 @ 338b)
+  [28] fill_triangle_color (fill_triangle2.c:143 @ b963) [720] init_main (init.c:47 @ e4b0) [69] reset_pixel_buffer_main (main.c:104 @ 3395)
+ [239] fill_triangle_color (fill_triangle2.c:142 @ b96a) [721] init_menu (menu_public.c:49 @ e090) [508] reverseBits (lodepng.c:581 @ 15c27)
+ [341] fill_triangle_color (fill_triangle2.c:143 @ b96c) [722] init_menu_widgets (init.c:76 @ e6f0) [676] rot_matx_4x4 (init_matrix.c:117 @ a110)
+ [138] fill_triangle_color (fill_triangle2.c:145 @ b971) [478] inner_loop (fill_triangle.c:146 @ afff) [677] rot_maty_4x4 (init_matrix.c:137 @ a1a0)
+ [155] fill_triangle_color (fill_triangle2.c:147 @ b977) [364] inner_loop (fill_triangle.c:151 @ b00f) [678] rot_matz_4x4 (init_matrix.c:157 @ a250)
+ [342] fill_triangle_color (fill_triangle2.c:148 @ b97d) [479] inner_loop (fill_triangle.c:138 @ b020) [411] scale_matrix (init_matrix.c:37 @ 9f80)
+ [214] fill_triangle_color (fill_triangle2.c:130 @ b981) [480] inner_loop (fill_triangle.c:139 @ b024) [589] scale_to_screen (draw.c:162 @ 562b)
+ [445] fill_triangle_color (fill_triangle2.c:174 @ ba6b) [39] inner_loop (fill_triangle.c:146 @ b02d) [590] scale_to_screen (draw.c:164 @ 5633)
+ [545] fill_triangle_color (fill_triangle2.c:199 @ baed) [217] inner_loop (fill_triangle.c:147 @ b039) [509] sort_buffer (get_next_line_utils.c:92 @ 108f8)
+ [546] fill_triangle_color (fill_triangle2.c:200 @ baf2) [146] inner_loop (fill_triangle.c:148 @ b03d) [510] sort_buffer (get_next_line_utils.c:92 @ 10903)
+ [168] fill_triangle_color (fill_triangle2.c:199 @ bb40) [48] inner_loop (fill_triangle.c:149 @ b041) [591] sort_buffer (get_next_line_utils.c:97 @ 10935)
+  [96] fill_triangle_color (fill_triangle2.c:204 @ bb48) [250] inner_loop (fill_triangle.c:154 @ b04e) [592] sort_buffer (get_next_line_utils.c:98 @ 1093a)
+  [74] fill_triangle_color (fill_triangle2.c:202 @ bb4e) [157] inner_loop (fill_triangle.c:156 @ b068) [511] sort_buffer (get_next_line_utils.c:101 @ 10a98)
+ [287] fill_triangle_color (fill_triangle2.c:203 @ bb56) [158] inner_loop (fill_triangle.c:158 @ b06a) [299] sort_buffer (get_next_line_utils.c:98 @ 10bd9)
+ [343] fill_triangle_color (fill_triangle2.c:205 @ bb5e) [104] inner_loop (fill_triangle.c:156 @ b06d) [410] sort_vertexes_for_y (fill_triangle.c:17 @ ab80)
+ [215] fill_triangle_color (fill_triangle2.c:205 @ bb65) [40] inner_loop (fill_triangle.c:158 @ b070) [593] sort_vertexes_for_y (fill_triangle.c:35 @ ac45)
+ [194] fill_triangle_color (fill_triangle2.c:204 @ bb6f) [78] inner_loop (fill_triangle.c:159 @ b074) [405] sort_vertexes_for_y (fill_triangle.c:36 @ ac52)
+ [182] fill_triangle_color (fill_triangle2.c:205 @ bb75) [218] inner_loop (fill_triangle.c:157 @ b07b) [663] str_to_double (obj_parser.c:88 @ 86f0)
+ [391] fill_triangle_color (fill_triangle2.c:207 @ bb7a) [54] inner_loop (fill_triangle.c:159 @ b07d) [679] translation_matrix (init_matrix.c:77 @ a060)
+ [446] fill_triangle_color (fill_triangle2.c:208 @ bb7d) [87] inner_loop (fill_triangle.c:157 @ b080) [594] translation_matrix (init_matrix.c:78 @ a06e)
+ [240] fill_triangle_color (fill_triangle2.c:207 @ bb81) [88] inner_loop (fill_triangle.c:158 @ b083) [595] translation_matrix (init_matrix.c:93 @ a076)
+ [226] fill_triangle_color (fill_triangle2.c:208 @ bb84) [3] inner_loop (fill_triangle.c:157 @ b088) [512] unfilterScanline (lodepng.c:4390 @ 1c9ba)
+ [344] fill_triangle_color (fill_triangle2.c:209 @ bb8a) [20] inner_loop (fill_triangle.c:159 @ b08d) [513] unfilterScanline (lodepng.c:4492 @ 1d90f)
+ [547] fill_triangle_color (fill_triangle2.c:197 @ bb8e) [60] inner_loop (fill_triangle.c:158 @ b093) [95] unfilterScanline (lodepng.c:4493 @ 1d937)
+ [447] fill_triangle_color (fill_triangle2.c:216 @ bb9a) [70] inner_loop (fill_triangle.c:159 @ b095) [324] unfilterScanline (lodepng.c:4494 @ 1d99f)
+ [125] fill_triangle_color (fill_triangle2.c:199 @ bc60) [131] inner_loop (fill_triangle.c:165 @ b09a) [269] unfilterScanline (lodepng.c:4495 @ 1d9c7)
+ [260] fill_triangle_color (fill_triangle2.c:204 @ bc67) [83] inner_loop (fill_triangle.c:162 @ b09e) [152] unfilterScanline (lodepng.c:4496 @ 1d9f8)
+  [11] fill_triangle_color (fill_triangle2.c:202 @ bc6c) [116] inner_loop (fill_triangle.c:163 @ b0a4) [123] unfilterScanline (lodepng.c:4497 @ 1da2d)
+ [261] fill_triangle_color (fill_triangle2.c:203 @ bc76) [117] inner_loop (fill_triangle.c:165 @ b0a9) [205] unfilterScanline (lodepng.c:4498 @ 1da62)
+ [448] fill_triangle_color (fill_triangle2.c:205 @ bc7e) [98] inner_loop (fill_triangle.c:164 @ b0ae) [124] unfilterScanline (lodepng.c:4499 @ 1da97)
+ [100] fill_triangle_color (fill_triangle2.c:205 @ bc85) [43] inner_loop (fill_triangle.c:164 @ b0b9) [371] unfilterScanline (lodepng.c:4491 @ 1daff)
+  [16] fill_triangle_color (fill_triangle2.c:204 @ bc90) [31] inner_loop (fill_triangle.c:164 @ b0e0) [372] unfilterScanline (lodepng.c:4507 @ 1db81)
+ [310] fill_triangle_color (fill_triangle2.c:205 @ bc96) [79] inner_loop (fill_triangle.c:171 @ b0e4) [514] unfilterScanline (lodepng.c:4511 @ 1dc52)
+ [311] fill_triangle_color (fill_triangle2.c:207 @ bc9b) [55] inner_loop (fill_triangle.c:167 @ b0e6) [377] unit_vec3 (vec3.c:18 @ 5e40)
+ [345] fill_triangle_color (fill_triangle2.c:208 @ bc9e) [89] inner_loop (fill_triangle.c:168 @ b0ea) [300] unit_vec3 (vec3.c:22 @ 5e4e)
+ [392] fill_triangle_color (fill_triangle2.c:207 @ bca2) [64] inner_loop (fill_triangle.c:169 @ b0ee) [596] unit_vec3 (vec3.c:26 @ 5e7f)
+ [143] fill_triangle_color (fill_triangle2.c:208 @ bca5) [159] inner_loop (fill_triangle.c:154 @ b0f2) [597] unit_vec3 (vec3.c:28 @ 5e87)
+ [262] fill_triangle_color (fill_triangle2.c:209 @ bcaa) [481] inner_loop (fill_triangle.c:154 @ b138) [301] unit_vec3 (vec3.c:30 @ 5e98)
+ [109] fill_triangle_color (fill_triangle2.c:197 @ bcae) [90] inner_loop (fill_triangle.c:156 @ b150) [270] update_adler32 (lodepng.c:2146 @ 178be)
+ [647] fill_triangle_texture (fill_triangle.c:178 @ acd0) [91] inner_loop (fill_triangle.c:158 @ b152) [142] update_adler32 (lodepng.c:2147 @ 178c7)
+ [288] fill_triangle_texture (fill_triangle.c:298 @ ada6) [29] inner_loop (fill_triangle.c:156 @ b155) [62] update_adler32 (lodepng.c:2148 @ 178dc)
+ [449] fill_triangle_texture (fill_triangle.c:210 @ af50) [147] inner_loop (fill_triangle.c:158 @ b158) [178] update_adler32 (lodepng.c:2146 @ 178e2)
+ [346] fill_triangle_texture (fill_triangle.c:213 @ af64) [84] inner_loop (fill_triangle.c:159 @ b15c) [660] v3_add (vec3.c:115 @ 6110)
+ [347] fill_triangle_texture (fill_triangle.c:213 @ af72) [320] inner_loop (fill_triangle.c:157 @ b163) [515] v3_add_incl_uv (fill_triangle.c:67 @ afcc)
+ [348] fill_triangle_texture (fill_triangle.c:215 @ af77) [56] inner_loop (fill_triangle.c:159 @ b165) [373] v3_add_incl_uv (fill_triangle.c:69 @ afdc)
+  [63] fill_triangle_texture (fill_triangle.c:213 @ af7b) [160] inner_loop (fill_triangle.c:157 @ b168) [598] v3_add_incl_uv (fill_triangle.c:67 @ b39b)
+ [312] fill_triangle_texture (fill_triangle.c:215 @ af8b) [161] inner_loop (fill_triangle.c:158 @ b16b) [406] v3_add_incl_uv (fill_triangle.c:68 @ b3b8)
+ [450] fill_triangle_texture (fill_triangle.c:217 @ af91) [7] inner_loop (fill_triangle.c:157 @ b170) [599] v3_add_incl_uv (fill_triangle.c:67 @ b3be)
+ [451] fill_triangle_texture (fill_triangle.c:222 @ af9c) [18] inner_loop (fill_triangle.c:159 @ b175) [222] v3_add_incl_uv (fill_triangle.c:68 @ b3f9)
+ [452] fill_triangle_texture (fill_triangle.c:217 @ afac) [21] inner_loop (fill_triangle.c:158 @ b17b) [600] v3_add_incl_uv (fill_triangle.c:69 @ b404)
+ [289] fill_triangle_texture (fill_triangle.c:246 @ afe8) [33] inner_loop (fill_triangle.c:159 @ b17d) [302] v3_add_incl_uv (fill_triangle.c:69 @ b40e)
+ [349] fill_triangle_texture (fill_triangle.c:246 @ aff8) [127] inner_loop (fill_triangle.c:165 @ b182) [661] v3_scale (vec3.c:182 @ 6370)
+ [350] fill_triangle_texture (fill_triangle.c:249 @ b00d) [110] inner_loop (fill_triangle.c:162 @ b186) [113] v3_sub (vec3.c:138 @ 61e0)
+ [453] fill_triangle_texture (fill_triangle.c:249 @ b01b) [219] inner_loop (fill_triangle.c:163 @ b18c) [303] v3_sub (vec3.c:143 @ 61f5)
+ [351] fill_triangle_texture (fill_triangle.c:249 @ b028) [71] inner_loop (fill_triangle.c:165 @ b191) [304] v3_sub (vec3.c:141 @ 61fa)
+ [548] fill_triangle_texture (fill_triangle.c:252 @ b0fa) [132] inner_loop (fill_triangle.c:164 @ b196) [189] v3_sub (vec3.c:145 @ 6207)
+ [183] fill_triangle_texture (fill_triangle.c:253 @ b0fe) [187] inner_loop (fill_triangle.c:164 @ b1a1) [601] v3_sub (vec3.c:143 @ 6213)
+ [290] fill_triangle_texture (fill_triangle.c:208 @ b110) [72] inner_loop (fill_triangle.c:164 @ b1c8) [374] v3_sub (vec3.c:146 @ 621d)
+ [454] fill_triangle_texture (fill_triangle.c:246 @ b128) [65] inner_loop (fill_triangle.c:154 @ b1cc) [375] v3_sub (vec3.c:145 @ 621e)
+ [408] fill_triangle_texture (fill_triangle.c:258 @ b216) [32] inner_loop (fill_triangle.c:167 @ b1cf) [255] v3_sub (vec3.c:146 @ 6230)
+ [549] fill_triangle_texture (fill_triangle.c:261 @ b285) [133] inner_loop (fill_triangle.c:168 @ b1d3) [376] v3_sub_incl_uv (fill_triangle.c:78 @ b1f8)
+ [550] fill_triangle_texture (fill_triangle.c:265 @ b2a7) [398] inner_loop (fill_triangle.c:171 @ b1d7) [602] v3_sub_incl_uv (fill_triangle.c:79 @ b2d6)
+ [291] fill_triangle_texture (fill_triangle.c:267 @ b368) [57] inner_loop (fill_triangle.c:169 @ b1d9) [165] zero_f (utils1.c:68 @ 7a00)
+ [292] fill_triangle_texture (fill_triangle.c:271 @ b37c) [92] inner_loop (fill_triangle.c:154 @ b1dd) [305] zero_f (utils1.c:69 @ 7a0e)
+ [455] fill_triangle_texture (fill_triangle.c:272 @ b387) [578] inner_loop (fill_triangle.c:164 @ b2db) [306] zero_f (utils1.c:69 @ 7a17)
+ [352] fill_triangle_texture (fill_triangle.c:276 @ b391) [482] inner_loop (fill_triangle.c:164 @ b32a)
+ [551] fill_triangle_texture (fill_triangle.c:287 @ b399) [399] inner_loop (fill_triangle.c:151 @ b3d6)

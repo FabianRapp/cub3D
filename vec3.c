@@ -10,7 +10,6 @@ t_vec3	v3_zero(void)
 	v.x = 0;
 	v.y = 0;
 	v.z = 0;
-	v.w = 0;
 	return (v);
 }
 
@@ -27,8 +26,6 @@ void	unit_vec3(t_vec3 *v)
 		v->y /= len;
 		v->z /= len;
 	}
-	else if (v->w == 3)
-		fprintf(stderr, "unable to make uinit vec: to close to zero: %f\n", sum);
 }
 
 // rotation_matrix_x
@@ -102,7 +99,6 @@ t_vec3	cross_product(t_vec3 a, t_vec3 b)
 	result.x = a.y * b.z - a.z * b.y;
 	result.y = a.z * b.x - a.x * b.z;
 	result.z = a.x * b.y - a.y * b.x;
-	result.w = 1;
 	return (result);
 }
 
@@ -118,7 +114,6 @@ t_vec3	v3_add(t_vec3 a, t_vec3 b)
 	v.x = a.x + b.x;
 	v.y = a.y + b.y;
 	v.z = a.z + b.z;
-	v.w = a.w;
 	return (v);
 }
 
@@ -141,7 +136,6 @@ t_vec3	v3_sub(t_vec3 a, t_vec3 b)
 	v.x = a.x - b.x;
 	v.y = a.y - b.y;
 	v.z = a.z - b.z;
-	v.w = 1;
 	return (v);
 }
 
@@ -164,7 +158,6 @@ t_vec3 v3_reverse(t_vec3 a)
 	v.x = -a.x;
 	v.y = -a.y;
 	v.z = -a.z;
-	v.w = 1;
 	return (v);
 }
 t_vec3 v3_multiply(t_vec3 a, t_vec3 b)
@@ -174,7 +167,6 @@ t_vec3 v3_multiply(t_vec3 a, t_vec3 b)
 	v.x = a.x * b.x;
 	v.y = a.y * b.y;
 	v.z = a.z * b.z;
-	v.w = 1;
 	return (v);
 }
 
@@ -185,7 +177,6 @@ t_vec3 v3_scale(t_vec3 a, double scalar)
 	v.x = a.x * scalar;
 	v.y = a.y * scalar;
 	v.z = a.z * scalar;
-	v.w = 1;
 	return v;
 }
 
@@ -206,7 +197,6 @@ void zero_vec3(t_vec3 *v)
 	v->x = 0;
 	v->y = 0;
 	v->z = 0;
-//	v->w = 1;
 }
 
 void add_vec3(t_vec3 *v, t_vec3 *a)
@@ -214,7 +204,6 @@ void add_vec3(t_vec3 *v, t_vec3 *a)
 	v->x += a->x;
 	v->y += a->y;
 	v->z += a->z;
-	//v->w += a->w;
 }
 
 void reverse_vec3(t_vec3 *v)
@@ -264,7 +253,7 @@ void	print_vec3(t_vec3 v, char *msg)
 {
 	if (!msg)
 	{
-		fprintf(stderr, "x: %.10f, y: %.10f z: %.10f w: %.2f u: %.2f v: %.2f", v.x, v.y, v.z, v.w, v.u, v.v);
+		fprintf(stderr, "x: %.10f, y: %.10f z: %.10f u: %.2f v: %.2f", v.x, v.y, v.z,  v.u, v.v);
 		if (v.mtl)
 		{
 			fprintf(stderr, "\n");
@@ -277,7 +266,7 @@ void	print_vec3(t_vec3 v, char *msg)
 	}
 	else
 	{
-		fprintf(stderr, "%s x: %.10f, y: %.10f z: %.10f w: %.2f u: %.2f v: %.2f", msg, v.x, v.y, v.z, v.w, v.u, v.v);
+		fprintf(stderr, "%s x: %.10f, y: %.10f z: %.10f u: %.2f v: %.2f", msg, v.x, v.y, v.z, v.u, v.v);
 		if (v.mtl)
 		{
 			fprintf(stderr, "\n");
@@ -319,7 +308,6 @@ void	init_vec3(t_vec3 *v, double x, double y, double z)
 	v->x = x;
 	v->y = y;
 	v->z = y;
-	v->w = 1;
 }
 
 t_vec3	vec3_init(double x, double y, double z)
@@ -329,7 +317,6 @@ t_vec3	vec3_init(double x, double y, double z)
 	v.x = x;
 	v.y = y;
 	v.z = y;
-	v.w = 1;
 	return (v);
 }
 
@@ -337,7 +324,6 @@ t_vec3	get_direction(double pitch, double yaw, double roll)
 {
 	t_vec3	direct;
 
-	direct.w = 1;
 	direct.x = cosf(pitch) * sinf(yaw);
 	direct.y = sinf(pitch);
 	direct.z = cosf(pitch) * cosf(yaw);

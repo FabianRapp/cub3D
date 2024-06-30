@@ -68,7 +68,7 @@ void	print_blocked_arr_with_xy(t_blocked_arr blocked)
 	{
 		for (int x = 0; x < blocked.base_width; x++)
 		{
-			uint32_t	base_total_index = x + y * blocked.base_width;
+			//uint32_t	base_total_index = x + y * blocked.base_width;
 			uint32_t	index_in_block = x % BLOCK_WIDTH + (y % BLOCK_HEIGHT) * BLOCK_WIDTH;
 			uint32_t	block_col = x / BLOCK_WIDTH;
 			uint32_t	block_row = y / BLOCK_HEIGHT;

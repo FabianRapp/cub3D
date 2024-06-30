@@ -1,6 +1,16 @@
 #include "includes/cub3D.h"
 #include "MLX42/include/MLX42/MLX42.h"
 
+// change loops later so this does not need to be used in this way
+t_arr_val	get_blocked_val(t_blocked_arr arr, uint32_t x, uint32_t y)
+{
+	uint32_t	index_in_block = x % BLOCK_WIDTH + (y % BLOCK_HEIGHT) * BLOCK_WIDTH;
+	uint32_t	block_col = x / BLOCK_WIDTH;
+	uint32_t	block_row = y / BLOCK_HEIGHT;
+	uint32_t	block_nb = block_col + block_row * arr.blocks_per_row;
+	return (arr.arr[index_in_block + block_nb * BLOCK_SIZE]);
+}
+
 t_blocked_arr create_blocked_arr(t_arr_val *base_arr, uint32_t base_width, uint32_t base_height)
 {
 	t_blocked_arr	blocked;

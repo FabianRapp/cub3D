@@ -119,49 +119,66 @@ typedef struct s_most_inner_loop_vars
 	const t_trimmed_texture	texture;
 }	t_most_inner_loop_vars;
 
+// todo: change loops later so this does not need to be used in this way
+t_arr_val	get_blocked_val_inline(t_blocked_arr arr, uint32_t x, uint32_t y)
+{
+	uint32_t	index_in_block = x % BLOCK_WIDTH + (y % BLOCK_HEIGHT) * BLOCK_WIDTH;
+	uint32_t	block_col = x / BLOCK_WIDTH;
+	uint32_t	block_row = y / BLOCK_HEIGHT;
+	uint32_t	block_nb = block_col + block_row * arr.blocks_per_row;
+	return (arr.arr[index_in_block + block_nb * BLOCK_SIZE]);
+}
+
 //depth_z_buffer is to save significant time in buffer reseting
 static inline void	inner_loop(const t_most_inner_loop_vars vars)
 {
 	uint16_t	cur_x;
 	float		cur_z;
+	float		progress_per_step;
+	float		diff_u = vars.last_pixel_in_row.u - vars.first_pixel_in_row.u;
+	float		diff_v = vars.last_pixel_in_row.v - vars.first_pixel_in_row.v;
+	float		step_u;
+	float		step_v;
+	float		step_z;
 
 	cur_x = vars.first_col;
+	uint32_t	fin_index = vars.first_col + vars.row_start_offset;
+	progress_per_step = 1.0 / vars.abs_len_x;
+	step_u = progress_per_step * diff_u;
+	step_v = progress_per_step * diff_v;
+	step_z = progress_per_step * vars.z_diff;
+	float	row_progress = 0.0;
+	cur_z = vars.first_pixel_in_row.z;
+	float	cur_u = vars.first_pixel_in_row.u;
+	float	cur_v = vars.first_pixel_in_row.v;
 	for (int i = 0; i < vars.abs_len_x; i++)
 	{
-		assume(cur_x < WIDTH);
-		uint32_t	fin_index = cur_x + vars.row_start_offset;
 		uint32_t	bit_array_index = fin_index >> 3;
 		uint8_t		bit_mask = 1 << (fin_index % 8);
-
-		float row_progress = (cur_x - vars.first_col) / vars.len_x;
-		cur_z = vars.first_pixel_in_row.z + row_progress * vars.z_diff;
 		if (cur_z < vars.depth[fin_index]
 			|| !(vars.depth_bit_array[bit_array_index] & bit_mask))
 		{
 			//if (!(vars.depth_bit_array[bit_array_index] & bit_mask))
 				vars.depth_bit_array[bit_array_index] |= bit_mask;
 			vars.depth[fin_index] = cur_z;
-			float cur_u = vars.first_pixel_in_row.u + row_progress * (vars.last_pixel_in_row.u - vars.first_pixel_in_row.u);
-			float cur_v = vars.first_pixel_in_row.v + row_progress * (vars.last_pixel_in_row.v - vars.first_pixel_in_row.v);
-			vars.pixels[fin_index] = vars.texture.buffer[
-				((int)(cur_u * vars.texture.max_width_index)) + ((int)(cur_v * vars.texture.max_height_index)) * vars.texture.width];
+			vars.pixels[fin_index] = get_blocked_val_inline(vars.texture.buffer, ((int)(cur_u * vars.texture.max_width_index)),
+											((int)(cur_v * vars.texture.max_height_index)));
 		}
-		cur_x += vars.direct_x;
-		__builtin_prefetch(vars.depth + fin_index + vars.texture.width, 1, 1);
-		__builtin_prefetch(vars.depth + fin_index - vars.texture.width, 1, 1);
+		cur_z += step_z;
+		cur_u += step_u;
+		cur_v += step_v;
+		row_progress += progress_per_step;
+		fin_index += vars.direct_x;
+		//__builtin_prefetch(vars.depth + fin_index + vars.texture.width, 1, 1);
+		//__builtin_prefetch(vars.depth + fin_index - vars.texture.width, 1, 1);
 	}
 }
 
 void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh, t_light_argb_stren color_sclars)
 {
 	t_vec3	*p = projected->p;
-	t_most_inner_loop_vars	inner_vars __attribute__((__aligned__(16))) = {.texture = 
-										{
-											.width = projected->p->mtl->texture->width,
-											.max_width_index = projected->p->mtl->texture->width - 1,
-											.max_height_index = projected->p->mtl->texture->height - 1,
-											.buffer = (uint32_t *)projected->p->mtl->texture->pixels,
-										},
+	t_most_inner_loop_vars	inner_vars __attribute__((__aligned__(16))) = {
+										.texture = projected->p->mtl->texture,
 										.pixels = (uint32_t *)(img->pixels),
 										.depth = mesh->main->depth,
 										.depth_bit_array = mesh->main->depth_bit_array,

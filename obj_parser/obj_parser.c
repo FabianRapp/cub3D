@@ -145,7 +145,7 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 			vars->vertexes[vertex_i].x = str_to_double(split[1]);
 			vars->vertexes[vertex_i].y = str_to_double(split[2]);
 			vars->vertexes[vertex_i].z = str_to_double(split[3]);
-			vars->vertexes[vertex_i].w = 1;
+			//vars->vertexes[vertex_i].w = 1;
 			ft_free_2darr(split);
 			vertex_i++;
 		}
@@ -155,7 +155,7 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 			vars->normals[normal_i].x = str_to_double(split[1]);
 			vars->normals[normal_i].y = str_to_double(split[2]);
 			vars->normals[normal_i].z = str_to_double(split[3]);
-			vars->normals[normal_i].w = 1;
+			//vars->normals[normal_i].w = 1;
 			ft_free_2darr(split);
 			normal_i++;
 		}
@@ -164,9 +164,9 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 			split = ft_split(vars->line, ' ');
 			vars->texture_cords[texture_cords_i].u = str_to_double(split[1]);
 			vars->texture_cords[texture_cords_i].v = 1.0 - str_to_double(split[2]);
-			vars->texture_cords[texture_cords_i].w = 1;
-			if (split[3])
-				vars->texture_cords[texture_cords_i].w = str_to_double(split[3]);
+			//vars->texture_cords[texture_cords_i].w = 1;
+			//if (split[3])
+				//vars->texture_cords[texture_cords_i].w = str_to_double(split[3]);
 			ft_free_2darr(split);
 			texture_cords_i++;
 		}
@@ -190,14 +190,14 @@ t_vec3	parse_face_vertex(t_obj_parser *vars, char *sub_face, t_mtl *mtl)
 	split = ft_split(sub_face, '/');
 	v_index = ft_atoi(split[0]) - 1;
 	ft_memcpy(&return_vec, vars->vertexes + v_index, sizeof(t_vec3));
-	return_vec.w = 1;
+	//return_vec.w = 1;
 	return_vec.mtl = mtl;
 	if (split[1])
 	{
 		vtexture_index = ft_atoi(split[1]) - 1;
 		return_vec.u = vars->texture_cords[vtexture_index].u;
 		return_vec.v = vars->texture_cords[vtexture_index].v;
-		return_vec.w = vars->texture_cords[vtexture_index].w;
+		//return_vec.w = vars->texture_cords[vtexture_index].w;
 	}
 	ft_free_2darr(split);
 	return(return_vec);
@@ -279,7 +279,7 @@ void	parse_vt(t_obj_parser *vars, char *face_p, t_vec3 *vec)
 	vt_index = ft_atoi(split[1]) - 1;
 	vec->u = vars->texture_cords[vt_index].u;
 	vec->v = vars->texture_cords[vt_index].v;
-	vec->w = vars->texture_cords[vt_index].w;
+	//vec->w = vars->texture_cords[vt_index].w;
 	ft_free_2darr(split);
 }
 
@@ -476,13 +476,13 @@ t_mtl	*parse_mtl(char *dir, char *file_name)
 		if (arr[i].map_kd)
 		{
 			tmp = ft_strjoin(dir, arr[i].map_kd);
-			arr[i].texture = mlx_load_png(tmp);
-			if (!arr[i].texture)
-				fprintf(stderr, "texture: %s\n", tmp);
-			else
-			{
-				//fprintf(stderr, "texture probe: %u\n", arr[i].texture->pixels[1000]);
-			}
+			//arr[i].texture = mlx_load_png(tmp);
+			mlx_texture_t *base_texture = mlx_load_png(tmp);
+			arr[i].texture.buffer = create_blocked_arr((uint32_t *)base_texture->pixels, base_texture->width, base_texture->height);
+			arr[i].texture.width = base_texture->width;
+			arr[i].texture.max_width_index = base_texture->width - 1;
+			arr[i].texture.max_height_index = base_texture->height - 1;
+			mlx_delete_texture(base_texture);
 			free(tmp);
 		}
 		i++;

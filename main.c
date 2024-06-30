@@ -26,7 +26,7 @@ void	cursor_movement_per_frame(t_main *main_data)
 void	handle_movement_per_frame(t_main *main_data)
 {
 	t_controls			controls;
-	t_vec3				movement = {0, 0, 0, .w = 1};
+	t_vec3				movement = {0, 0, 0, };//.w = 1};
 
 	cursor_movement_per_frame(main_data);
 	controls = main_data->controls;

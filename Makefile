@@ -29,7 +29,6 @@ SOURCES= \
 	stuff.c \
 	draw.c \
 	vec3.c \
-	init_mesh.c \
 	utils1.c \
 	triangle.c \
 	obj_parser/obj_parser.c \
@@ -49,6 +48,7 @@ SOURCES= \
 	init.c \
 	utils/cleanup.c \
 	arrays.c
+#init_mesh.c 
 
 VPATH = includes:MLX42/include/MLX42/:utils:utils/fixed_point:obj_parser:matrix:menu
 

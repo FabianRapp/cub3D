@@ -21,6 +21,7 @@ void	free_mesh(t_mesh *mesh)
 	i = 0;
 	while (i < mesh->mtl_count)
 	{
+		free(mesh->mtl_libs[i]->texture.buffer.to_free);
 		i++;
 	}
 	free(mesh->mtl_libs);

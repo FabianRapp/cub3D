@@ -314,7 +314,7 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 						assume(0);
 					}
 				}
-				if (!projected.p[0].mtl || !projected.p[0].mtl->texture)
+				if (!projected.p[0].mtl || !projected.p[0].mtl->texture.buffer.arr)
 					fill_triangle_color(mesh->img, &projected, projected.col, mesh);
 					//fill_triangle_color(mesh->img, &projected, base_data->col, mesh);
 				else
@@ -369,6 +369,9 @@ void	draw_mesh(t_mesh *mesh)
 
 		model = mesh->triangles[i];//not neededm, for debugging
 		//Model space
+		mesh->triangles[i].p[0].w = 1.0;
+		mesh->triangles[i].p[1].w = 1.0;
+		mesh->triangles[i].p[2].w = 1.0;
 		matrix_mult_vec3_4x4(mesh->triangles[i].p + 0, mesh->model_space_data.model_matrix, model.p + 0);
 		matrix_mult_vec3_4x4(mesh->triangles[i].p + 1, mesh->model_space_data.model_matrix, model.p + 1);
 		matrix_mult_vec3_4x4(mesh->triangles[i].p + 2, mesh->model_space_data.model_matrix, model.p + 2);

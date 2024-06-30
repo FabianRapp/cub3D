@@ -95,8 +95,6 @@ typedef struct s_blocked_arr
 #define DARK_GREY 0xFFA9A9A9
 
 
-
-
 //=== DEFAULT KEY BINDS======
 
 #define FORWARD_KEY MLX_KEY_W
@@ -224,26 +222,26 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 
 typedef struct s_trimmed_texture
 {
-	uint32_t	width;
-	uint32_t	max_width_index; //==width - 1
-	uint32_t	max_height_index; //== height - 1
-	uint32_t	*buffer;//should replace mlx's allocation with mine, aligned
+	uint32_t		width;
+	uint32_t		max_width_index; //==width - 1
+	uint32_t		max_height_index; //== height - 1
+	t_blocked_arr	buffer;//should replace mlx's allocation with mine, aligned
 }	t_trimmed_texture;
 
 typedef struct s_mtl
 {
-	char			*lib_name;
-	char			*name;
-	double			ns;
-	double			ka[3];
-	double			ks[3];
-	double			ke[3];
-	double			ni;
-	double			d;
-	double			illum;
-	char			*map_kd;
-	mlx_texture_t	*texture;
-	int				index;
+	char				*lib_name;
+	char				*name;
+	double				ns;
+	double				ka[3];
+	double				ks[3];
+	double				ke[3];
+	double				ni;
+	double				d;
+	double				illum;
+	char				*map_kd;
+	t_trimmed_texture	texture;
+	int					index;
 }	t_mtl;
 
 typedef struct s_vec3
@@ -251,7 +249,7 @@ typedef struct s_vec3
 	double			x;//HAS TO BE FIRST
 	double			y;//HAS TO BE SECOND
 	double			z;//HAS TO BE THIRD
-	double			w;
+	float			w;
 	t_mtl			*mtl; // HAS TO BE AFTER POSITION DATA
 	double			u;
 	double			v;
@@ -425,7 +423,12 @@ uint32_t	lerp_color(uint32_t max_col, double strength);
 
 int	lerp_int(int start, int end, double pos);
 
+//array.c
+t_blocked_arr create_blocked_arr(t_arr_val *base_arr, uint32_t base_width, uint32_t base_height);
+t_arr_val	get_blocked_val(t_blocked_arr arr, uint32_t x, uint32_t y);
+
 // utils.c
+bool	is_power2(uint32_t nb);
 bool	is_power2(uint32_t nb);
 void	ft_error(t_main *main_data);
 t_vec3	out_of_bound(t_vec3 *v);
