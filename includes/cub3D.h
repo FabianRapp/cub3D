@@ -47,6 +47,27 @@
 #define assume(cond) assert(cond)
 #endif
 
+typedef uint32_t	t_arr_val;
+
+#define CACHE_LINE_SIZE (64)
+// make this values hardcoded later
+#define BLOCK_SIZE ((uint8_t)(CACHE_LINE_SIZE / sizeof(t_arr_val)))
+#define BLOCK_WIDTH ((uint8_t)floor(log2(BLOCK_SIZE)))
+#define BLOCK_HEIGHT ((uint8_t)floor(log2(BLOCK_SIZE)))
+
+//arr is the same allocation as to_free but potentially advanded
+// for alignment
+typedef struct s_blocked_arr
+{
+	uint32_t	base_size;
+	uint32_t	base_width;
+	uint32_t	base_height;
+	uint32_t	blocks_per_row;
+	uint32_t	blocks_per_col;
+	t_arr_val	*arr;
+	void		*to_free;
+}	t_blocked_arr;
+
 #define ROT_X
 //#define ROT_Y
 #define ROT_Z
@@ -201,6 +222,14 @@ t_fixed		fixed_lerp1d(t_fixed point_a, t_fixed point_b, t_fixed progress);
 //	{0.0, 0.0, ((double) Z_OFFSET), 0.0} \
 //}
 
+typedef struct s_trimmed_texture
+{
+	uint32_t	width;
+	uint32_t	max_width_index; //==width - 1
+	uint32_t	max_height_index; //== height - 1
+	uint32_t	*buffer;//should replace mlx's allocation with mine, aligned
+}	t_trimmed_texture;
+
 typedef struct s_mtl
 {
 	char			*lib_name;
@@ -216,8 +245,6 @@ typedef struct s_mtl
 	mlx_texture_t	*texture;
 	int				index;
 }	t_mtl;
-
-
 
 typedef struct s_vec3
 {
@@ -399,6 +426,7 @@ uint32_t	lerp_color(uint32_t max_col, double strength);
 int	lerp_int(int start, int end, double pos);
 
 // utils.c
+bool	is_power2(uint32_t nb);
 void	ft_error(t_main *main_data);
 t_vec3	out_of_bound(t_vec3 *v);
 t_vec3	out_of_bound_triangle(t_triangle *tri);

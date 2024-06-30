@@ -279,8 +279,8 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 			for (int i = 0; i < 3; i++)
 			{
 				//matrix_mult_vec3_4x4(triangle.p + i, project_mat, &projected.p[i])
-				//projected.p[i].z = triangle.p[i].z * (Z_FAR / (Z_FAR - Z_NEAR)) - ((Z_FAR * Z_NEAR) / (Z_FAR - Z_NEAR));
-				//projected.p[i].z /= triangle.p[i].z;
+				projected.p[i].z = triangle.p[i].z * (Z_FAR / (Z_FAR - Z_NEAR)) - ((Z_FAR * Z_NEAR) / (Z_FAR - Z_NEAR));
+				projected.p[i].z /= triangle.p[i].z;
 				projected.p[i].w = 1 * triangle.p[i].z;
 				projected.p[i].x = -1.0 * triangle.p[i].x * ASPECT_RATIO * (1 / tan(FOV_RAD / 2));
 				projected.p[i].x /= triangle.p[i].z;

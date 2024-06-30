@@ -51,14 +51,6 @@ void	abs_uv(t_vec3	*p)
 }
 */
 
-typedef struct s_trimmed_texture
-{
-	uint32_t	width;
-	//uint32_t	height;
-	uint32_t	max_width_index; //==width - 1
-	uint32_t	max_height_index; //== height - 1
-	uint32_t	*buffer;
-}	t_trimmed_texture;
 
 static inline uint32_t	load_pixel_from_mlx_texture(uint32_t x, uint32_t y, uint32_t *buffer, uint32_t width)
 {
@@ -114,10 +106,9 @@ typedef struct s_vec3_fixed
 typedef struct s_most_inner_loop_vars
 {
 	uint16_t				abs_len_x;
-	int						row_start_offset;
+	uint32_t				row_start_offset;
 	double					len_x;
 	int						first_col;
-	const uint16_t			texture_width;
 	float					*const depth;
 	uint64_t				*const depth_bit_array;
 	t_vec3					first_pixel_in_row;
@@ -128,24 +119,21 @@ typedef struct s_most_inner_loop_vars
 	const t_trimmed_texture	texture;
 }	t_most_inner_loop_vars;
 
+//depth_z_buffer is to save significant time in buffer reseting
 static inline void	inner_loop(const t_most_inner_loop_vars vars)
 {
 	uint16_t	cur_x;
 	float		cur_z;
 
 	cur_x = vars.first_col;
-	for (int i = 0; i < abs((int)vars.len_x); i++)
+	for (int i = 0; i < vars.abs_len_x; i++)
 	{
 		assume(cur_x < WIDTH);
-		int fin_index = cur_x + vars.row_start_offset;
+		uint32_t	fin_index = cur_x + vars.row_start_offset;
 		uint32_t	bit_array_index = fin_index >> 3;
 		uint8_t		bit_mask = 1 << (fin_index % 8);
-		//__builtin_prefetch(vars.depth + fin_index, 1, 3);
-		//__builtin_prefetch(vars.depth_bit_array + fin_index - vars.texture_width, 1, 3);
-		//__asm__ volatile("PREFETCHT0 %0\n\t" : : "m" (vars.depth[fin_index]));
-		//__asm__ volatile("PREFETCHT0 %0\n\t" : : "m" (vars.depth_bit_array[fin_index]));
 
-		double row_progress = (cur_x - vars.first_col) / vars.len_x;
+		float row_progress = (cur_x - vars.first_col) / vars.len_x;
 		cur_z = vars.first_pixel_in_row.z + row_progress * vars.z_diff;
 		if (cur_z < vars.depth[fin_index]
 			|| !(vars.depth_bit_array[bit_array_index] & bit_mask))
@@ -153,42 +141,20 @@ static inline void	inner_loop(const t_most_inner_loop_vars vars)
 			//if (!(vars.depth_bit_array[bit_array_index] & bit_mask))
 				vars.depth_bit_array[bit_array_index] |= bit_mask;
 			vars.depth[fin_index] = cur_z;
-			double cur_u = vars.first_pixel_in_row.u + row_progress * (vars.last_pixel_in_row.u - vars.first_pixel_in_row.u);
-			double cur_v = vars.first_pixel_in_row.v + row_progress * (vars.last_pixel_in_row.v - vars.first_pixel_in_row.v);
+			float cur_u = vars.first_pixel_in_row.u + row_progress * (vars.last_pixel_in_row.u - vars.first_pixel_in_row.u);
+			float cur_v = vars.first_pixel_in_row.v + row_progress * (vars.last_pixel_in_row.v - vars.first_pixel_in_row.v);
 			vars.pixels[fin_index] = vars.texture.buffer[
 				((int)(cur_u * vars.texture.max_width_index)) + ((int)(cur_v * vars.texture.max_height_index)) * vars.texture.width];
-				//load_pixel_from_mlx_texture(
-				 //cur_u * vars.texture.max_width_index, cur_v * vars.texture.max_height_index, vars.texture.buffer, vars.texture.width);
 		}
-		//if (vars.first_col == last_col)
-		//	break ;
 		cur_x += vars.direct_x;
-		//__builtin_prefetch(vars.depth + fin_index + vars.texture_width, 0, 2);
-		//__builtin_prefetch(vars.depth + fin_index - vars.texture_width, 0, 2);
-		//__builtin_prefetch(vars.depth_bit_array + fin_index + vars.texture_width, 0, 2);
-		//__builtin_prefetch(vars.depth_bit_array + fin_index - vars.texture_width, 0, 2);
-		__builtin_prefetch(vars.depth + fin_index + vars.texture_width, 1, 1);
-		__builtin_prefetch(vars.depth + fin_index - vars.texture_width, 1, 1);
-		//__builtin_prefetch(vars.depth_bit_array + fin_index + vars.texture_width, 0, 2);
-		//__builtin_prefetch(vars.depth_bit_array + fin_index - vars.texture_width, 0, 2);
-		//__asm__ volatile(
-		//	"PREFETCHT2 %0\n\t"
-		//	"PREFETCHT2 %1\n\t"
-		//	"PREFETCHT2 %2\n\t"
-		//	"PREFETCHT2 %3\n\t"
-		//	:
-		//	:	"m" (vars.depth[fin_index + vars.texture_width]), "m" (vars.depth_bit_array[fin_index + vars.texture_width]),
-		//		"m" (vars.depth[fin_index - vars.texture_width]), "m" (vars.depth_bit_array[vars.texture_width])
-		//);
+		__builtin_prefetch(vars.depth + fin_index + vars.texture.width, 1, 1);
+		__builtin_prefetch(vars.depth + fin_index - vars.texture.width, 1, 1);
 	}
 }
 
 void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh, t_light_argb_stren color_sclars)
 {
 	t_vec3	*p = projected->p;
-	float		*depth;
-	uint32_t	*pixels = (uint32_t *)img->pixels;
-	uint64_t	*depth_bit_array = mesh->main->depth_bit_array;
 	t_most_inner_loop_vars	inner_vars __attribute__((__aligned__(16))) = {.texture = 
 										{
 											.width = projected->p->mtl->texture->width,
@@ -197,16 +163,9 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 											.buffer = (uint32_t *)projected->p->mtl->texture->pixels,
 										},
 										.pixels = (uint32_t *)(img->pixels),
-										.texture_width = projected->p->mtl->texture->width,
 										.depth = mesh->main->depth,
 										.depth_bit_array = mesh->main->depth_bit_array,
 									};
-	const t_trimmed_texture texture = {.width = projected->p->mtl->texture->width,
-										.max_width_index = projected->p->mtl->texture->width - 1,
-										.max_height_index = projected->p->mtl->texture->height - 1,
-										.buffer = (uint32_t *)projected->p->mtl->texture->pixels,
-									};
-	depth = mesh->main->depth;
 	sort_vertexes_for_y(projected);
 	assume(p[0].y <= p[1].y && p[1].y <= p[2].y);
 	for (int i = 0; i < 3; i++)
@@ -223,7 +182,6 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 
 	double	cur_y_lf = p[0].y;
 	double	total_y_progress = 0;
-	int		cur_x;
 	int row_index =  (int)round(cur_y_lf);
 	double section_y_progress = 0;
 	if (!zero_f(diff_10.y))
@@ -235,35 +193,44 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 			total_y_progress = (cur_y_lf - p[0].y) / diff_20.y;
 			if (total_y_progress >= 1.0)
 				return ;
-			assume(total_y_progress >= 0.0);
-			int first_col = (int)round(diff_20.x * total_y_progress + p[0].x);
+			inner_vars.first_col = (int)round(diff_20.x * total_y_progress + p[0].x);
 			section_y_progress =  (cur_y_lf - p[0].y) / diff_10.y;
 			if (section_y_progress >= 1.0)
 				break ;
 			int	last_col = (int)round(diff_10.x * section_y_progress + p[0].x);
-			float	cur_z;
-			t_vec3	first_pixel_in_row = v3_scale_incl_uv(diff_20, total_y_progress);
-			first_pixel_in_row = v3_add_incl_uv(first_pixel_in_row, p[0]);
-			t_vec3	last_pixel_in_row = v3_scale_incl_uv(diff_10, section_y_progress);
-			last_pixel_in_row = v3_add_incl_uv(last_pixel_in_row, p[0]);
-			int	cur_x = first_col;
-			int row_start_offset = WIDTH * row_index;
-			int	direct_x;
-			if (first_col <= last_col)
-				direct_x = 1;
+			inner_vars.first_pixel_in_row = v3_scale_incl_uv(diff_20, total_y_progress);
+			inner_vars.first_pixel_in_row = v3_add_incl_uv(inner_vars.first_pixel_in_row, p[0]);
+			inner_vars.last_pixel_in_row = v3_scale_incl_uv(diff_10, section_y_progress);
+			inner_vars.last_pixel_in_row = v3_add_incl_uv(inner_vars.last_pixel_in_row, p[0]);
+			inner_vars.row_start_offset = WIDTH * row_index;
+			if (inner_vars.first_col <= last_col)
+				inner_vars.direct_x = 1;
 			else
-				direct_x = -1;
-			int	len_x = last_col - first_col + direct_x;
-			double	z_diff = last_pixel_in_row.z - last_pixel_in_row.z;
+				inner_vars.direct_x = -1;
+			//if ((inner_vars.direct_x == 1 && p[1].x < p[2].x)
+			//	|| (inner_vars.direct_x == -1 && p[1].x > p[2].x))
+			//{
+			//	printf("direct_x: %d\n", inner_vars.direct_x);
+			//	for(int i = 0; i < 3; i++)
+			//	{
+			//		char	str[2] = {0};
+			//		str[0] = '0' + i;
+			//		print_vec3(p[i], str);
+			//	}
+			//}
+			//else if (p[1].x != p[2].x)
+			//{
+			//	printf("x\n");
+			//}
+			//if (p[1].x >= p[2].x)
+			//	inner_vars.direct_x = -1;
+			//else
+			//	inner_vars.direct_x = 1;
+			int	len_x = last_col - inner_vars.first_col + inner_vars.direct_x;
+			inner_vars.z_diff = inner_vars.last_pixel_in_row.z - inner_vars.first_pixel_in_row.z;
 			assume(len_x);
 			inner_vars.abs_len_x = abs(len_x);
-			inner_vars.row_start_offset = row_start_offset;
 			inner_vars.len_x = (double)len_x;
-			inner_vars.first_col = first_col;
-			inner_vars.first_pixel_in_row = first_pixel_in_row;
-			inner_vars.last_pixel_in_row = last_pixel_in_row;
-			inner_vars.z_diff = z_diff;
-			inner_vars.direct_x = direct_x;
 			inner_loop(inner_vars);
 			cur_y_lf = cur_y_lf + 1.0f;
 			row_index =  (int)round(cur_y_lf);
@@ -273,7 +240,6 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 
 	if (zero_f(diff_21.y))
 		return ;
-	int last_col;
 	cur_y_lf = p[1].y;
 	row_index = (int)round(cur_y_lf);
 	section_y_progress = 0.0;
@@ -282,46 +248,32 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 		if (row_index >= HEIGHT)
 			return ;
 		section_y_progress =  (cur_y_lf - p[1].y) / diff_21.y;
+		assume(section_y_progress >= 0.0);
 		if (section_y_progress >= 1.0)
 			return ;
-		assume(section_y_progress >= 0.0 && section_y_progress <= 1.0);
 		total_y_progress = (cur_y_lf - p[0].y) / diff_20.y;
 		if (total_y_progress >= 1.0)
 			return ;
-		assume(total_y_progress >= 0.0 && total_y_progress <= 1.0);
-		assume(row_index >= 0);
-		assume(row_index < HEIGHT);
-		assume(section_y_progress <= total_y_progress);
-		int first_col = (int)round(diff_20.x * total_y_progress + p[0].x);
-		last_col = (int)round(p[1].x + section_y_progress * diff_21.x);
+		assume(total_y_progress >= 0.0 && section_y_progress <= total_y_progress);
+		assume(row_index >= 0 && row_index < HEIGHT);
+		inner_vars.first_col = (int)round(diff_20.x * total_y_progress + p[0].x);
+		int last_col = (int)round(p[1].x + section_y_progress * diff_21.x);
 
-		t_vec3	first_pixel_in_row = v3_scale_incl_uv(diff_20, total_y_progress);
-		first_pixel_in_row = v3_add_incl_uv(first_pixel_in_row, p[0]);
-		t_vec3	last_pixel_in_row = v3_scale_incl_uv(diff_21, section_y_progress);
-		last_pixel_in_row = v3_add_incl_uv(last_pixel_in_row, p[1]);
+		inner_vars.first_pixel_in_row = v3_scale_incl_uv(diff_20, total_y_progress);
+		inner_vars.first_pixel_in_row = v3_add_incl_uv(inner_vars.first_pixel_in_row, p[0]);
+		inner_vars.last_pixel_in_row = v3_scale_incl_uv(diff_21, section_y_progress);
+		inner_vars.last_pixel_in_row = v3_add_incl_uv(inner_vars.last_pixel_in_row, p[1]);
 
-		double cur_z;
-
-		cur_x = first_col;
-		double	z_diff = last_pixel_in_row.z - first_pixel_in_row.z;
-		int row_start_offset = WIDTH * row_index;
-		assume(row_start_offset + WIDTH <= WIDTH * HEIGHT);
-		int	direct_x;
-		if (first_col <= last_col)
-			direct_x = 1;
+		inner_vars.z_diff = inner_vars.last_pixel_in_row.z - inner_vars.first_pixel_in_row.z;
+		inner_vars. row_start_offset = WIDTH * row_index;
+		assume(inner_vars.row_start_offset + WIDTH <= WIDTH * HEIGHT);
+		if (inner_vars.first_col <= (int)round(p[1].x + section_y_progress * diff_21.x))
+			inner_vars.direct_x = 1;
 		else
-			direct_x = -1;
-		int	len_x = last_col - first_col;// + direct_x;
-		assume(first_col >= 0 && first_col < WIDTH);
-		assume(last_col >= 0 && last_col < WIDTH);
+			inner_vars.direct_x = -1;
+		int	len_x = last_col - inner_vars.first_col;// + direct_x;
 		inner_vars.abs_len_x = abs(len_x);
-		inner_vars.row_start_offset = row_start_offset;
 		inner_vars.len_x = (double)len_x;
-		inner_vars.first_col = first_col;
-		inner_vars.first_pixel_in_row = first_pixel_in_row;
-		inner_vars.last_pixel_in_row = last_pixel_in_row;
-		inner_vars.z_diff = z_diff;
-		inner_vars.direct_x = direct_x;
 		inner_loop(inner_vars);
 		cur_y_lf += 1.0f;
 		row_index =  (int)round(cur_y_lf);

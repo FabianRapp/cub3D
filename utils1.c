@@ -14,6 +14,11 @@
 #include "includes/cub3D.h"
 #include "MLX42/include/MLX42/MLX42.h"
 
+bool	is_power2(uint32_t nb)
+{
+	return (ceil(log2(nb)) == floor(log2(nb)));
+}
+
 void	reset_camera(t_main *main_data)
 {
 	const t_vec3	init_cam = {.x = 0, .y = 0, .z = 0, .w = 1};

@@ -103,7 +103,10 @@ static inline void	reset_pixel_buffer_main(uint8_t *pixels, float *depth, uint64
 		buffer[i++] = black;
 	while (i < ((WIDTH * HEIGHT) / 2 - 16))
 	{
-		buffer[i] = black;//18.3 % runtime
+		//__builtin_prefetch(buffer + i + 24, 1, 1);
+		__builtin_prefetch(buffer + i + 16, 1, 1);
+		__builtin_prefetch(buffer + i + 8, 1, 2);
+		buffer[i] = black;
 		buffer[i + 1] = black;
 		buffer[i + 2] = black;
 		buffer[i + 3] = black;
@@ -111,6 +114,7 @@ static inline void	reset_pixel_buffer_main(uint8_t *pixels, float *depth, uint64
 		buffer[i + 5] = black;
 		buffer[i + 6] = black;
 		buffer[i + 7] = black;
+		
 		i += 8;
 	}
 	while (i < (WIDTH * HEIGHT / 2))
@@ -248,6 +252,8 @@ int32_t	main(void)
 	mlx_image_t		*ob;
 	static t_main			m_data; //has to be static so it's in the
                                    //BSS segment
+	assume(is_power2(BLOCK_SIZE));
+
 	errno = 0;
 	printf("FOV: %lf\n", FOV);
 	printf("tan(FOV): %lf\n", tan(FOV));

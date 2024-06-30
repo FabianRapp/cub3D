@@ -47,7 +47,8 @@ SOURCES= \
 	menu/menu_public.c \
 	menu/menu_hooks.c \
 	init.c \
-	utils/cleanup.c
+	utils/cleanup.c \
+	arrays.c
 
 VPATH = includes:MLX42/include/MLX42/:utils:utils/fixed_point:obj_parser:matrix:menu
 
@@ -78,6 +79,11 @@ fast: fclean
 
 prof: fclean
 	make CFLAGS="-march=native -Ofast -mavx2 -DNDEBUG=1 -g -pg" CC=gcc
+
+asm: fclean $(OBJECTS)
+	@cd libft && make
+	@$(CC) $(CFLAGS) -S $(OBJECTS) $(LIBFT) $(INCLUDES) -o $(NAME).asm $(MLX_FLAGS)
+	@echo "$(GREEN)$(NAME).asm generated!$(CLEAR)"
 
 bs:
 	echo $(OBJECTS)
