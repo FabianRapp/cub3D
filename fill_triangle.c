@@ -120,7 +120,7 @@ typedef struct s_most_inner_loop_vars
 }	t_most_inner_loop_vars;
 
 // todo: change loops later so this does not need to be used in this way
-t_arr_val	get_blocked_val_inline(t_blocked_arr arr, uint32_t x, uint32_t y)
+static inline t_arr_val	get_blocked_val_inline(t_blocked_arr arr, uint32_t x, uint32_t y)
 {
 	uint32_t	index_in_block = x % BLOCK_WIDTH + (y % BLOCK_HEIGHT) * BLOCK_WIDTH;
 	uint32_t	block_col = x / BLOCK_WIDTH;
@@ -130,6 +130,10 @@ t_arr_val	get_blocked_val_inline(t_blocked_arr arr, uint32_t x, uint32_t y)
 }
 
 //depth_z_buffer is to save significant time in buffer reseting
+//todo:
+//	-the blocke array should be indexed better (not with u v)
+//	-try if fixed point ops are better
+//	-make it so direct_x is always 1 before calling this to allow optimizatons
 static inline void	inner_loop(const t_most_inner_loop_vars vars)
 {
 	uint16_t	cur_x;
@@ -147,13 +151,12 @@ static inline void	inner_loop(const t_most_inner_loop_vars vars)
 	step_u = progress_per_step * diff_u;
 	step_v = progress_per_step * diff_v;
 	step_z = progress_per_step * vars.z_diff;
-	float	row_progress = 0.0;
 	cur_z = vars.first_pixel_in_row.z;
 	float	cur_u = vars.first_pixel_in_row.u;
 	float	cur_v = vars.first_pixel_in_row.v;
 	for (int i = 0; i < vars.abs_len_x; i++)
 	{
-		uint32_t	bit_array_index = fin_index >> 3;
+		uint32_t	bit_array_index = fin_index >> 3;//todo make fin_index a union to cur this
 		uint8_t		bit_mask = 1 << (fin_index % 8);
 		if (cur_z < vars.depth[fin_index]
 			|| !(vars.depth_bit_array[bit_array_index] & bit_mask))
@@ -164,11 +167,10 @@ static inline void	inner_loop(const t_most_inner_loop_vars vars)
 			vars.pixels[fin_index] = get_blocked_val_inline(vars.texture.buffer, ((int)(cur_u * vars.texture.max_width_index)),
 											((int)(cur_v * vars.texture.max_height_index)));
 		}
+		fin_index += vars.direct_x;
 		cur_z += step_z;
 		cur_u += step_u;
 		cur_v += step_v;
-		row_progress += progress_per_step;
-		fin_index += vars.direct_x;
 		//__builtin_prefetch(vars.depth + fin_index + vars.texture.width, 1, 1);
 		//__builtin_prefetch(vars.depth + fin_index - vars.texture.width, 1, 1);
 	}
@@ -201,6 +203,7 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 	double	total_y_progress = 0;
 	int row_index =  (int)round(cur_y_lf);
 	double section_y_progress = 0;
+	//int q = 0;
 	if (!zero_f(diff_10.y))
 	{
 		while (section_y_progress < 1.0)
@@ -221,9 +224,15 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 			inner_vars.last_pixel_in_row = v3_add_incl_uv(inner_vars.last_pixel_in_row, p[0]);
 			inner_vars.row_start_offset = WIDTH * row_index;
 			if (inner_vars.first_col <= last_col)
+			{
+				//assume(!q || (inner_vars.direct_x == 1));
 				inner_vars.direct_x = 1;
+			}
 			else
+			{
 				inner_vars.direct_x = -1;
+			}
+			//q++;
 			//if ((inner_vars.direct_x == 1 && p[1].x < p[2].x)
 			//	|| (inner_vars.direct_x == -1 && p[1].x > p[2].x))
 			//{
