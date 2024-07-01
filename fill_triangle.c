@@ -109,18 +109,19 @@ typedef struct s_vec3_fixed
 
 typedef struct s_most_inner_loop_vars
 {
-	uint16_t				abs_len_x;
-	uint32_t				row_start_offset;
-	double					len_x;
-	int						first_col;
-	float					*const depth;
-	uint64_t				*const depth_bit_array;
-	t_vec3					first_pixel_in_row;
-	t_vec3					last_pixel_in_row;
-	double					z_diff;
-	uint32_t				*const pixels;
-	int8_t					direct_x				: 2;
-	const t_trimmed_texture	texture;
+	uint16_t					abs_len_x;
+	uint32_t					row_start_offset;
+	double						len_x;
+	int							first_col;
+	float						*const depth;
+	uint64_t					*const depth_bit_array;
+	t_vec3						first_pixel_in_row;
+	t_vec3						last_pixel_in_row;
+	double						z_diff;
+	uint32_t					*const pixels;
+	int8_t						direct_x				: 2;
+	const t_trimmed_texture		texture;
+	const t_light_argb_stren	color_scalars;
 }	t_most_inner_loop_vars;
 
 // todo: change loops later so this does not need to be used in this way
@@ -174,8 +175,14 @@ static inline void	inner_loop(const t_most_inner_loop_vars vars)
 			//if (!(vars.depth_bit_array[bit_array_index] & bit_mask))
 				vars.depth_bit_array[bit_array_index] |= bit_mask;
 			vars.depth[fin_index] = cur_z;
-			vars.pixels[fin_index] = get_blocked_val_inline(vars.texture.buffer, ((int)(cur_u * vars.texture.max_width_index)),
+			t_color_split	color;
+			color.col = get_blocked_val_inline(vars.texture.buffer, ((int)(cur_u * vars.texture.max_width_index)),
 											((int)(cur_v * vars.texture.max_height_index)));
+			color.argb[R] *= vars.color_scalars.v[R];
+			color.argb[G] *= vars.color_scalars.v[G];
+			color.argb[B] *= vars.color_scalars.v[B];
+			color.argb[A] *= vars.color_scalars.v[A];
+			vars.pixels[fin_index] = color.col;
 		}
 		fin_index += vars.direct_x;
 		cur_z += step_z;
@@ -194,6 +201,7 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 										.pixels = (uint32_t *)(img->pixels),
 										.depth = mesh->main->depth,
 										.depth_bit_array = mesh->main->depth_bit_array,
+										.color_scalars = color_sclars,
 									};
 	sort_vertexes_for_y(projected);
 	assume(p[0].y <= p[1].y && p[1].y <= p[2].y);

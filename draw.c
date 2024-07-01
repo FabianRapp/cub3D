@@ -206,28 +206,37 @@ void	fill_model_matrix(t_model_space_data *data)
 t_light	init_day_light(double d_time)
 {
 	t_light			day_light;
-	static t_vec3	direct =  {.x = 1.0f, .y = -1.0f, .z = -1.0f, .w = 0};
+	static t_vec3	direct =  {.x = 0, .y = 1.0f, .z = 0.0, .w = 0};
+	static float	day_time = 0;
 	static double light_direct = -1;
 
 	if (direct.x < -1)
 		light_direct = 1;
 	if (direct.x > 1)
 		light_direct = -1;
-	direct.x += d_time * light_direct / 50;
-	double day_progress = (direct.x + 1) / 2;
+	day_time += d_time / 1;
+	if (day_time > 24)
+		day_time = 0;
+	//direct.x += d_time * light_direct / 50;
+	unit_vec3(&direct);
+	//double day_progress = (direct.x + 1) / 2;
+	double day_progress = 1.0 - (24 - day_time) / 24;
 	static double timer = 0;
 	timer += d_time;
 	if (timer > 1)
 	{
+		printf("day time: %f\n", day_time);
+		printf("day progress: %lf\n", day_progress);
 		//fprintf(stderr, "day time: %f\n", 24 * day_progress);
 		timer = 0;
 	}
-	double	light_intens = 1 - fabs(0.5 - day_progress);
+	//printf("day progress: %lf\n", day_progress);
+	//double	light_intens = 1 - fabs(0.5 - day_progress);
 	t_color_split light_col;
 	light_col.col = WHITE;
-	light_col.argb[R] *= 1 - 0.2 * fabs(0.5 - day_progress);
-	light_col.argb[G] *= 1 - 0.4 * fabs(0.5 - day_progress);
-	light_col.argb[B] *= 1 - 0.8 * fabs(0.5 - day_progress);
+	light_col.argb[R] *= 1 - 0.3;// * fabs(0.5 - day_progress);
+	light_col.argb[G] *= 1 - 0.5;// * fabs(0.5 - day_progress);
+	light_col.argb[B] *= 1 - 0.9;// * fabs(0.5 - day_progress);
 	init_light(&day_light, direct, light_col.col, 1 - fabs(0.5 - day_progress));
 	return (day_light);
 }
@@ -293,7 +302,6 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 				assume(!zero_f(projected.p[i].w));
 				//div_vec3(projected.p + i, projected.p[i].w);
 			}
-
 			scale_to_screen(&projected); // todo: this could be after xy-
 			// clipping to simplify clipping to values 0 to 1 (needs
 			t_triangle				clipped[30];
@@ -304,7 +312,6 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 			while (l < clipped_count)
 			{
 				projected = clipped[l];
-				//cpy_triangle_data_rasterize(base_data, &projected);
 				for (int i = 0; i < 3; i++)
 				{
 					if (!(projected.p[i].x >= 0.0f && projected.p[i].x < (double)WIDTH
@@ -316,7 +323,6 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 				}
 				if (!projected.p[0].mtl || !projected.p[0].mtl->texture.buffer.arr)
 					fill_triangle_color(mesh->img, &projected, projected.col, mesh);
-					//fill_triangle_color(mesh->img, &projected, base_data->col, mesh);
 				else
 					fill_triangle_texture(mesh->img, &projected, mesh, color_scalars);
 				l++;
@@ -353,7 +359,7 @@ void	draw_mesh(t_mesh *mesh)
 	t_light	day_light;
 
 	day_light = init_day_light(*mesh->physics_data.delta_time);
-
+	
 
 	t_light			ambient_light2;
 	const t_vec3	light_direct2 =  {1.0f, -1.0f, -1.0f};
@@ -380,23 +386,27 @@ void	draw_mesh(t_mesh *mesh)
 		// check if triangle is facing away from the view direction
 		model.normal = cross_product(v3_sub(model.p[1], model.p[0]), v3_sub(model.p[2], model.p[0]));
 		unit_vec3(&model.normal);
-		//if (dot_prod_unit(model.normal, v3_sub(model.p[0], mesh->world_data->camera)) >= 0)
-		if (dot_prod_unit(model.normal, v3_sub(model.p[0], mesh->world_data->camera)) < 0)
+		if (dot_prod_unit(model.normal, v3_sub(model.p[0], mesh->world_data->camera)) >= 0)
+		//if (dot_prod_unit(model.normal, v3_sub(model.p[0], mesh->world_data->camera)) < 0)
 		{
 			i++;
 			continue ;
 		}
 
 		t_light_argb_stren	color_scalars = {0};
-
+		color_scalars.v[A] = 1.0;
 		double light_dp = dot_prod_unit(model.normal, day_light.direct);
+		//printf("%lf\n", light_dp);
 		light_dp = fmaxf(light_dp, 0.0f);
+		light_dp = 1.0;
 		color_scalars.v[R] += day_light.strength.v[R] *  light_dp;
 		color_scalars.v[G] += day_light.strength.v[G] *  light_dp;
 		color_scalars.v[B] += day_light.strength.v[B] *  light_dp;
 
-		// light_dp = dot_prod_unit(transformed.normal, ambient_light2.direct);
-		// light_dp = fmaxf(light_dp, 0.0f);
+		//color_scalars.v[R] = 1.0;
+		//color_scalars.v[G] = 1.0;
+		//color_scalars.v[B] = 1.0;
+	
 		// color_scalars.v[R] += ambient_light2.strength.v[R] *  light_dp;
 		// color_scalars.v[G] += ambient_light2.strength.v[G] *  light_dp;
 		// color_scalars.v[B] += ambient_light2.strength.v[B] *  light_dp;
@@ -410,7 +420,11 @@ void	draw_mesh(t_mesh *mesh)
 		color_scalars.v[R] = fminf(color_scalars.v[R], 1.0f);
 		color_scalars.v[G] = fminf(color_scalars.v[G], 1.0f);
 		color_scalars.v[B] = fminf(color_scalars.v[B], 1.0f);
-
+		//printf("%lf\n", color_scalars.v[R]);
+		//for (int i = 0; i < 4; i++)
+		//{
+		//	printf("scaler %d: %lf\n", i, color_scalars.v[i]);
+		//}
 		// color.argb[R] *= color_scalars.v[R];
 		// color.argb[G] *= color_scalars.v[G];
 		// color.argb[B] *= color_scalars.v[B];
