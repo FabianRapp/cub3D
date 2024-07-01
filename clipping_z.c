@@ -49,7 +49,7 @@ t_vec3	line_zplane_intersection(t_vec3 line_start, t_vec3 line_end, bool z_near)
 	else
 		plane_p = plane_far;
 	double	d;
-	line_direct = v3_sub(line_end, line_start);
+	line_direct = v3_sub_incl_uv(line_end, line_start);
 	if (zero_f(line_direct.z))
 	{
 		printf("z_near(bool): %d\n", z_near);
@@ -58,20 +58,31 @@ t_vec3	line_zplane_intersection(t_vec3 line_start, t_vec3 line_end, bool z_near)
 		print_vec3(line_direct, "line_direct: ");
 	}
 	assume(!zero_f(line_direct.z));
-	unit_vec3(&line_direct);
+	//unit_vec3(&line_direct);
 	//if (!zero_f(line_direct.z))
 	//	line_direct.z = ZERO_LF * 2;
 	assume(!zero_f(line_direct.z));
-	d = (dot_prod_unit(plane_p, plane_n) - dot_prod_unit(line_start, plane_n)) / line_direct.z;
-	if (!z_near)
-		d *= -1;
-	intersection = v3_add(v3_scale(line_direct, d), line_start);
 	if (z_near)
+		d = (Z_NEAR - line_start.z) / line_direct.z;
+	else
+		d = (Z_FAR - line_start.z) / line_direct.z;
+	//d = (dot_prod_unit(plane_p, plane_n) - dot_prod_unit(line_start, plane_n)) / line_direct.z;
+	//if (!z_near)
+	//	d *= -1;
+	intersection = v3_add_incl_uv(v3_scale_incl_uv(line_direct, d), line_start);
+	if (z_near)
+	{
+		if (!zero_f(intersection.z - Z_NEAR))
+		{
+			print_vec3(intersection, 0);
+			exit(1);
+		}
 		intersection.z = Z_NEAR;
+	}
 	else
 		intersection.z = Z_FAR - 1.0;
-	intersection.u = d * (line_end.u - line_start.u);
-	intersection.v = d * (line_end.v - line_start.v);
+	//intersection.u = d * (line_end.u - line_start.u);
+	//intersection.v = d * (line_end.v - line_start.v);
 	return (intersection);
 }
 

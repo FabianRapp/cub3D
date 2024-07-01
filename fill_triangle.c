@@ -58,7 +58,7 @@ static inline uint32_t	load_pixel_from_mlx_texture(uint32_t x, uint32_t y, uint3
 	return (buffer[width * y + x]);
 }
 
-inline t_vec3	v3_add_incl_uv(t_vec3 a, t_vec3 b)
+static inline t_vec3	v3_add_incl_uv_inline(t_vec3 a, t_vec3 b)
 {
 	t_vec3	v;
 
@@ -70,11 +70,15 @@ inline t_vec3	v3_add_incl_uv(t_vec3 a, t_vec3 b)
 	return (v);
 }
 
-inline t_vec3	v3_sub_incl_uv(t_vec3 a, t_vec3 b)
+static inline t_vec3	v3_sub_incl_uv_inline(t_vec3 a, t_vec3 b)
 {
 	t_vec3	v;
 
 	v.x = a.x - b.x;
+	//if (v.x >= 0.0)
+	//	v.x += 1.0;
+	//else
+	//	v.x -= 1.0;
 	v.y = a.y - b.y;
 	v.z = a.z - b.z;
 	v.u = a.u - b.u;
@@ -82,7 +86,7 @@ inline t_vec3	v3_sub_incl_uv(t_vec3 a, t_vec3 b)
 	return (v);
 }
 
-inline t_vec3 v3_scale_incl_uv(t_vec3 a, double scalar)
+static inline t_vec3 v3_scale_incl_uv_inline(t_vec3 a, double scalar)
 {
 	t_vec3	v;
 
@@ -158,6 +162,12 @@ static inline void	inner_loop(const t_most_inner_loop_vars vars)
 	{
 		uint32_t	bit_array_index = fin_index >> 3;//todo make fin_index a union to cur this
 		uint8_t		bit_mask = 1 << (fin_index % 8);
+#ifndef NDEBUG
+		if (fin_index >= WIDTH * HEIGHT)
+		{
+			printf("fin_index: %u (%u > WIDTH * HEIGHT)\n", fin_index, fin_index - WIDTH * HEIGHT);
+		}
+#endif
 		if (cur_z < vars.depth[fin_index]
 			|| !(vars.depth_bit_array[bit_array_index] & bit_mask))
 		{
@@ -194,34 +204,32 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 		assume((int)round(p[i].y) >= 0.0);
 		assume((int)round(p[i].y) < HEIGHT);
 	}
-	t_vec3	diff_20 = v3_sub_incl_uv(p[2], p[0]);
+	t_vec3	diff_20 = v3_sub_incl_uv_inline(p[2], p[0]);
 	if (zero_f(diff_20.y))
 		return ;
-	t_vec3	diff_10 = v3_sub_incl_uv(p[1], p[0]);
+	t_vec3	diff_10 = v3_sub_incl_uv_inline(p[1], p[0]);
 
 	double	cur_y_lf = p[0].y;
-	double	total_y_progress = 0;
+	double	total_y_progress;
 	int row_index =  (int)round(cur_y_lf);
 	double section_y_progress = 0;
+	double	section_y_progress_per_step;
+	double	total_y_progress_per_step;
+	total_y_progress_per_step = 1.0 / diff_20.y;
+	total_y_progress = 0.0;
 	//int q = 0;
 	if (!zero_f(diff_10.y))
 	{
+		section_y_progress = 0.0;
+		section_y_progress_per_step = 1.0 / diff_10.y;
 		while (section_y_progress < 1.0)
 		{
-			if (row_index >= HEIGHT)
-				return ;
-			total_y_progress = (cur_y_lf - p[0].y) / diff_20.y;
-			if (total_y_progress >= 1.0)
-				return ;
 			inner_vars.first_col = (int)round(diff_20.x * total_y_progress + p[0].x);
-			section_y_progress =  (cur_y_lf - p[0].y) / diff_10.y;
-			if (section_y_progress >= 1.0)
-				break ;
 			int	last_col = (int)round(diff_10.x * section_y_progress + p[0].x);
-			inner_vars.first_pixel_in_row = v3_scale_incl_uv(diff_20, total_y_progress);
-			inner_vars.first_pixel_in_row = v3_add_incl_uv(inner_vars.first_pixel_in_row, p[0]);
-			inner_vars.last_pixel_in_row = v3_scale_incl_uv(diff_10, section_y_progress);
-			inner_vars.last_pixel_in_row = v3_add_incl_uv(inner_vars.last_pixel_in_row, p[0]);
+			inner_vars.first_pixel_in_row = v3_scale_incl_uv_inline(diff_20, total_y_progress);
+			inner_vars.first_pixel_in_row = v3_add_incl_uv_inline(inner_vars.first_pixel_in_row, p[0]);
+			inner_vars.last_pixel_in_row = v3_scale_incl_uv_inline(diff_10, section_y_progress);
+			inner_vars.last_pixel_in_row = v3_add_incl_uv_inline(inner_vars.last_pixel_in_row, p[0]);
 			inner_vars.row_start_offset = WIDTH * row_index;
 			if (inner_vars.first_col <= last_col)
 			{
@@ -260,49 +268,51 @@ void	fill_triangle_texture(mlx_image_t *img, t_triangle *projected, t_mesh *mesh
 			inner_loop(inner_vars);
 			cur_y_lf = cur_y_lf + 1.0f;
 			row_index =  (int)round(cur_y_lf);
+			total_y_progress += total_y_progress_per_step;
+			section_y_progress += section_y_progress_per_step;
 		}
 	}
-	t_vec3	diff_21 = v3_sub_incl_uv(p[2], p[1]);
-
-	if (zero_f(diff_21.y))
+	t_vec3	diff_21 = v3_sub_incl_uv_inline(p[2], p[1]);
+	if (zero_f(round(diff_21.y)) || total_y_progress >= 1.0)
 		return ;
 	cur_y_lf = p[1].y;
 	row_index = (int)round(cur_y_lf);
+	section_y_progress_per_step = 1.0 / diff_21.y;
 	section_y_progress = 0.0;
-	while (section_y_progress < 1.0)
+	while (section_y_progress < 1.0 && total_y_progress < 1.0)
 	{
-		if (row_index >= HEIGHT)
-			return ;
-		section_y_progress =  (cur_y_lf - p[1].y) / diff_21.y;
 		assume(section_y_progress >= 0.0);
-		if (section_y_progress >= 1.0)
-			return ;
-		total_y_progress = (cur_y_lf - p[0].y) / diff_20.y;
-		if (total_y_progress >= 1.0)
-			return ;
-		assume(total_y_progress >= 0.0 && section_y_progress <= total_y_progress);
+		assume(total_y_progress >= 0.0 && (section_y_progress <= total_y_progress || zero_f(section_y_progress - total_y_progress)));
 		assume(row_index >= 0 && row_index < HEIGHT);
 		inner_vars.first_col = (int)round(diff_20.x * total_y_progress + p[0].x);
 		int last_col = (int)round(p[1].x + section_y_progress * diff_21.x);
-
-		inner_vars.first_pixel_in_row = v3_scale_incl_uv(diff_20, total_y_progress);
-		inner_vars.first_pixel_in_row = v3_add_incl_uv(inner_vars.first_pixel_in_row, p[0]);
-		inner_vars.last_pixel_in_row = v3_scale_incl_uv(diff_21, section_y_progress);
-		inner_vars.last_pixel_in_row = v3_add_incl_uv(inner_vars.last_pixel_in_row, p[1]);
+		if (last_col > inner_vars.first_col)
+			inner_vars.direct_x = 1;
+		else
+			inner_vars.direct_x = -1;
+		inner_vars.first_pixel_in_row = v3_scale_incl_uv_inline(diff_20, total_y_progress);
+		inner_vars.first_pixel_in_row = v3_add_incl_uv_inline(inner_vars.first_pixel_in_row, p[0]);
+		inner_vars.last_pixel_in_row = v3_scale_incl_uv_inline(diff_21, section_y_progress);
+		inner_vars.last_pixel_in_row = v3_add_incl_uv_inline(inner_vars.last_pixel_in_row, p[1]);
 
 		inner_vars.z_diff = inner_vars.last_pixel_in_row.z - inner_vars.first_pixel_in_row.z;
 		inner_vars. row_start_offset = WIDTH * row_index;
 		assume(inner_vars.row_start_offset + WIDTH <= WIDTH * HEIGHT);
-		if (inner_vars.first_col <= (int)round(p[1].x + section_y_progress * diff_21.x))
-			inner_vars.direct_x = 1;
-		else
-			inner_vars.direct_x = -1;
-		int	len_x = last_col - inner_vars.first_col;// + direct_x;
+		//if (inner_vars.first_col <= (int)round(p[1].x + section_y_progress * diff_21.x))
+		//	inner_vars.direct_x = 1;
+		//else
+		//	inner_vars.direct_x = -1;
+		int	len_x = last_col - inner_vars.first_col + inner_vars.direct_x;
 		inner_vars.abs_len_x = abs(len_x);
 		inner_vars.len_x = (double)len_x;
 		inner_loop(inner_vars);
 		cur_y_lf += 1.0f;
 		row_index =  (int)round(cur_y_lf);
+		total_y_progress += total_y_progress_per_step;
+		section_y_progress += section_y_progress_per_step;
 	}
 }
+
+
+
 

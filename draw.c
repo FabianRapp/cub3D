@@ -237,11 +237,12 @@ void	cpy_triangle_data_rasterize(t_triangle *src, t_triangle *dst)
 {
 	int	i;
 
-	ft_memcpy(&dst->centroid, &src->centroid, sizeof(t_triangle) - (((uintptr_t)(&src->centroid)) - ((uintptr_t)src)));
+	//ft_memcpy(&dst->centroid, &src->centroid, sizeof(t_triangle) - (((uintptr_t)(&src->centroid)) - ((uintptr_t)src)));
 	i = 0;
 	while (i < 3)
 	{
-		ft_memcpy(&(dst->p + i)->mtl, &(src->p + i)->mtl, sizeof(t_vec3) - ((((uintptr_t)&(src->p + i)->mtl)) - ((uintptr_t)(src->p + i))));
+		dst->p[i].mtl = src->p->mtl;
+		//ft_memcpy(&(dst->p + i)->mtl, &(src->p + i)->mtl, sizeof(t_vec3) - ((((uintptr_t)&(src->p + i)->mtl)) - ((uintptr_t)(src->p + i))));
 		i++;
 	}
 }
@@ -255,8 +256,8 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 	int			clipped_count_front;
 	int			clipped_count_back;
 	t_triangle	projected;
-	double	project_mat[4][4] = PROJECTION_MATRIX;
-	projection_matrix(project_mat);
+	//double	project_mat[4][4] = PROJECTION_MATRIX;
+	//projection_matrix(project_mat);
 
 	clipped_count_front = clipping_z_near(&triangle, clipped_z_front);
 	int	j;
@@ -270,7 +271,6 @@ void	rasterize(t_triangle triangle, t_mesh *mesh, t_triangle *base_data, t_light
 		clipped_z_back[0] = triangle;
 		clipped_count_back = 1;
 		q = 0;
-		uint32_t col = clipped_z_front[j].col; //TODO remove this line after fixing/implenting clipping
 		while (q < clipped_count_back)
 		{
 			triangle = clipped_z_back[q];

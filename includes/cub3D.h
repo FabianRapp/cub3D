@@ -250,9 +250,9 @@ typedef struct s_vec3
 	double			y;//HAS TO BE SECOND
 	double			z;//HAS TO BE THIRD
 	float			w;
-	t_mtl			*mtl; // HAS TO BE AFTER POSITION DATA
 	double			u;
 	double			v;
+	t_mtl			*mtl; // HAS TO BE AFTER POSITION DATA
 }	t_vec3;
 
 typedef struct s_triangle
@@ -481,6 +481,12 @@ void	div_vec3(t_vec3 *v, double a);
 void	init_vec3(t_vec3 *v, double x, double y, double z);
 t_vec3	vec3_init(double x, double y, double z);
 t_vec3	get_direction(double pitch, double yaw, double roll);
+t_vec3	v3_sub_incl_uv(t_vec3 a, t_vec3 b);
+t_vec3 v3_scale_incl_uv(t_vec3 a, double scalar);
+t_vec3	v3_add_incl_uv(t_vec3 a, t_vec3 b);
+
+
+
 
 // obj_parser.c
 t_mesh	load_obj_file(char *dir, char *path, t_main *main_data);
