@@ -2,7 +2,7 @@
 #include "get_next_line.h"
 #include "libft.h"
 
-t_get_next_line	*get_current(t_get_next_line **list, int fd)
+t_get_next_line	*get_current_node(t_get_next_line **list, int fd)
 {
 	t_get_next_line	*cur;
 	t_get_next_line	*new;
@@ -190,7 +190,7 @@ char	*get_next_line(int fd, bool do_cleanup)
 	}
 	if (fd < 0)
 		return (NULL);
-	cur = get_current(&list, fd);
+	cur = get_current_node(&list, fd);
 	if (!cur)
 		return (NULL);
 	line = get_line(cur);

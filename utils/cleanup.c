@@ -44,6 +44,7 @@ void	cleanup_exit(void *m_data)
 	ft_free((void **)&main_data->meshes);
 	free_menu(main_data, &main_data->menu);
 	clean_mlx(main_data);
+	get_next_line(-1, true);
 	exit(0);
 }
 
