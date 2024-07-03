@@ -65,7 +65,7 @@ void	obj_parser_count(t_obj_parser *vars)
 		exit(errno);
 	}
 
-	vars->line = get_next_line(vars->fd);
+	vars->line = get_next_line(vars->fd, 0);
 	while (vars->line)
 	{
 		if (!ft_strncmp(vars->line, "v ", 2))
@@ -77,10 +77,10 @@ void	obj_parser_count(t_obj_parser *vars)
 		else if (!ft_strncmp(vars->line, "vt ", ft_strlen("vt ")))
 			vars->texture_cords_count++;
 		free(vars->line);
-		vars->line = get_next_line(vars->fd);
+		vars->line = get_next_line(vars->fd, 0);
 	}
-	get_next_line(vars->fd);
 	close(vars->fd);
+	get_next_line(vars->fd, true);
 }
 
 
@@ -133,7 +133,7 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 		exit(errno);
 	}
 
-	vars->line = get_next_line(vars->fd);
+	vars->line = get_next_line(vars->fd, 0);
 	vertex_i = 0;
 	normal_i = 0;
 	texture_cords_i = 0;
@@ -171,10 +171,10 @@ int	obj_parser_fill_vertexes(t_obj_parser *vars)
 			texture_cords_i++;
 		}
 		free(vars->line);
-		vars->line = get_next_line(vars->fd);
+		vars->line = get_next_line(vars->fd, 0);
 	}
-	get_next_line(vars->fd);
 	close(vars->fd);
+	get_next_line(vars->fd, true);
 	return (vertex_i);
 }
 
@@ -316,7 +316,7 @@ void	obj_parser_handle_faces(t_obj_parser *vars)
 		exit(errno);
 	}
 
-	vars->line = get_next_line(vars->fd);
+	vars->line = get_next_line(vars->fd, 0);
 	int nb = 0;
 	while (vars->line)
 	{
@@ -351,10 +351,10 @@ void	obj_parser_handle_faces(t_obj_parser *vars)
 			triangulation(vars, tmp_v, count, tmp_v_norm);
 		}
 		free(vars->line);
-		vars->line = get_next_line(vars->fd);
+		vars->line = get_next_line(vars->fd, 0);
 	}
-	get_next_line(vars->fd);
 	close(vars->fd);
+	get_next_line(vars->fd, true);
 }
 
 void	init_obj_file_colors(t_obj_parser *vars)
@@ -386,21 +386,22 @@ int	mtl_len(char *file_path)
 		exit(errno);
 	}
 
-	line = get_next_line(fd);
+	line = get_next_line(fd, 0);
 	len = 0;
 	while (line)
 	{
 		while (line && ft_strncmp(line, "newmtl ", ft_strlen("newmtl ")))
 		{
 			free(line);
-			line = get_next_line(fd);
+			line = get_next_line(fd, 0);
 		}
 		if (line)
 			len++;
 		free(line);
-		line = get_next_line(fd);
+		line = get_next_line(fd, 0);
 	}
 	close(fd);
+	get_next_line(fd, true);
 	return (len);
 }
 
@@ -450,7 +451,7 @@ t_mtl	*parse_mtl(char *dir, char *file_name)
 		exit(errno);
 	}
 	free(file_path);
-	line = get_next_line(fd);
+	line = get_next_line(fd, 0);
 
 	i = 0;
 	while (line)
@@ -458,13 +459,13 @@ t_mtl	*parse_mtl(char *dir, char *file_name)
 		while (line && ft_strncmp(line, "newmtl ", ft_strlen("newmtl ")))
 		{
 			free(line);
-			line = get_next_line(fd);
+			line = get_next_line(fd, 0);
 		}
 		arr[i].index = i;
 		arr[i].lib_name = file_name;
 		arr[i].name = ft_strtrim(line + ft_strlen("newmtl "), "\n");
 		free(line);
-		line = get_next_line(fd);
+		line = get_next_line(fd, 0);
 		while (line && ft_strncmp(line, "newmtl ", ft_strlen("newmtl ")))
 		{
 			if (!ft_strncmp(line, "Ns ", ft_strlen("Ns ")))
@@ -484,7 +485,7 @@ t_mtl	*parse_mtl(char *dir, char *file_name)
 			else if (!ft_strncmp(line, "map_Kd ", ft_strlen("map_Kd ")))
 				arr[i].map_kd = ft_strtrim(line + ft_strlen("map_Kd "), "\n");
 			free(line);
-			line = get_next_line(fd);
+			line = get_next_line(fd, 0);
 		}
 		if (arr[i].map_kd)
 		{
@@ -516,23 +517,24 @@ void	obj_parser_parse_mtl_libs(t_obj_parser *vars, char *dir, char *path)
 		exit(errno);
 	}
 
-	line = get_next_line(fd);
+	line = get_next_line(fd, 0);
 	i = 0;
 	while (line && i < vars->mtl_libs_count)
 	{
 		while (line && ft_strncmp(line, "mtllib ", ft_strlen("mtllib ")))
 		{
 			free(line);
-			line = get_next_line(fd);
+			line = get_next_line(fd, 0);
 		}
 		if (!line)
 			break ;
 		vars->mtl_libs[i] = parse_mtl(dir, ft_strtrim(line + ft_strlen("mtllib "), "\n"));
 		i++;
 		free(line);
-		line = get_next_line(fd);
+		line = get_next_line(fd, 0);
 	}
 	close(fd);
+	get_next_line(fd, true);
 	free(line);
 }
 

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "libft.h"
 
 //returns the size of a NULL-terminated array of strings
 size_t	ft_strarr_size(char **ptr)

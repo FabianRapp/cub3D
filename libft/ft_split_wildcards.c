@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "libft.h"
 
 static int	append_next_sub_wildcards(char **sub_str,
 	const char *rest_wildcard_str)

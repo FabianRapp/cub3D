@@ -1,52 +1,29 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: frapp <frapp@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/14 17:12:36 by frapp             #+#    #+#             */
-/*   Updated: 2024/04/24 10:14:42 by frapp            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
-# endif
-
-# include <stdlib.h>
+# include <stdbool.h>
 # include <unistd.h>
+# include <stdlib.h>
 
-char	*get_next_line(int fd);
-
-typedef struct s_file	t_file;
-typedef struct s_buffer	t_buffer;
-
-struct s_file
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10000
+# endif
+typedef struct s_get_next_line	t_get_next_line;
+typedef struct s_get_next_line
 {
-	char	buffer[BUFFER_SIZE + 5];
-	char	buffer_copy[BUFFER_SIZE + 5];
-	char	*output;
-	int		fd;
-	int		buffer1_chars;
-	int		output_size;
-	t_file	*first_file;
-	t_file	*next_file;
-	int		cur_all_c;
-	int		buffer1_i;
-	int		return_now;
-};
+	char			buffer[BUFFER_SIZE];
+	size_t			first_char_position;
+	int				read_position;
+	char			*tmp_line;
+	size_t			tmp_line_size;
+	size_t			cur_allocation_size;
+	size_t			next_allocation_size;
+	int				read_return;
+	int				fd;
+	t_get_next_line	*next;
+}	t_get_next_line;
 
-char	*cleanup(t_file *current_file, t_file *first_file);
-t_file	*get_current_file(int fd, t_file *first_file);
-int		my_str_cpy(char *dest, char *src, char *src2);
-void	sort_buffer(t_file *current_file);
-char	*append_buffer(t_file *current_file);
-char	*reading(t_file	*current_file);
-char	*shrink_out(int fd, t_file *first_file);
-char	*get_next_line(int fd);
+
+char	*get_next_line(int fd, bool do_cleanup);
 
 #endif

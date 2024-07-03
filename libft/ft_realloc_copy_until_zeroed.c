@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "libft.h"
 
 bool	is_buffer_all_zeros(void *buffer, size_t size)
 {

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "libft.h"
 
 //return false on error
 // *arr has to be dynamicly allocated and was freed if this function returns true

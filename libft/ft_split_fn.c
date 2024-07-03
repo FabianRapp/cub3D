@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "libft.h"
 
 static size_t	get_str_count_fn(const char *s, bool is_sep(char))
 {

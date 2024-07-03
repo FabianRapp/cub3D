@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "libft.h"
 
 int	logic_part(va_list *arg, const char **format_str,
 		int *written_bytes, int fd)
