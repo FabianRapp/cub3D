@@ -67,13 +67,15 @@ CLEAR	=	\033[0m
 
 .PHONY: clone_mlx42 all clean fclean ffclean
 
-all: mlx $(OBJECTS)
+all: fast
+
+debug: mlx $(OBJECTS)
 	@cd libft && make
 	@$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) $(INCLUDES) -o $(NAME) $(MLX_FLAGS)
 	@echo "$(GREEN)$(NAME) compiled!$(CLEAR)"
 
 fast: fclean
-	make CFLAGS="-march=native -Ofast -DNDEBUG=1 -mavx"
+	make debug CFLAGS="-march=native -Ofast -DNDEBUG=1 -mavx"
 #make CFLAGS="-fsanitize=address"
 #CFLAGS="-march=native -Ofast -DNDEBUG=1 -mavx"
 
@@ -81,17 +83,20 @@ prof: fclean
 	make CFLAGS="-march=native -Ofast -mavx2 -DNDEBUG=1 -g -pg" CC=gcc
 
 asm: fclean $(OBJECTS)
-	@cd libft && make
-	@$(CC) $(CFLAGS) -S $(OBJECTS) $(LIBFT) $(INCLUDES) -o $(NAME).asm $(MLX_FLAGS)
-	@echo "$(GREEN)$(NAME).asm generated!$(CLEAR)"
+	cd libft && make
+	$(CC) $(CFLAGS) -S $(OBJECTS) $(LIBFT) $(INCLUDES) -o $(NAME).asm $(MLX_FLAGS)
+	echo "$(GREEN)$(NAME).asm generated!$(CLEAR)"
 
 bs:
 	echo $(OBJECTS)
 
-$(OBJ_DIR)%.o: %.c mlx
-	@$(CC) $(CFLAGS) -c $< -o$@ $(INCLUDES)
+$(OBJ_DIR):
+	mkdir $(OBJ_DIR)
 
-clean: SOURCES += main.c
+$(OBJ_DIR)%.o: %.c mlx $(OBJ_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
+
+#clean: SOURCES += main.c
 clean:
 	@rm -f $(OBJECTS)
 	@rm -rf $(FIXED_TESTS_OBJECT_DIR)
@@ -104,8 +109,8 @@ fclean: clean
 	@echo "$(CYAN)cub3D fclean$(CLEAR)"
 
 ffclean: fclean
-	@rm -rf MLX42
-	@echo "$(CYAN)cub3D ffclean$(CLEAR)"
+	rm -rf MLX42
+	echo "$(CYAN)cub3D ffclean$(CLEAR)"
 
 re: fclean all
 
