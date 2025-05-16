@@ -75,7 +75,7 @@ void	init_hooks(t_main *main_data)
 void	init_menu_widgets(t_main *main_data)
 {
 	add_menu_widget(main_data, WIDGET_SLIDER, "Mouse Sensibility", (t_widget_val)(main_data->settings.mouse_sens / MOUSE_SENS_BASE), &main_data->menu);
-	add_menu_widget(main_data, WIDGET_SLIDER, "Test 1", (t_widget_val)(main_data->settings.mouse_sens / MOUSE_SENS_BASE), &main_data->menu);
+	//add_menu_widget(main_data, WIDGET_SLIDER, "Test 1", (t_widget_val)(main_data->settings.mouse_sens / MOUSE_SENS_BASE), &main_data->menu);
 	add_menu_widget(main_data, WIDGET_SLIDER, "Press 'm' to exit/enter menu", (t_widget_val)(main_data->settings.mouse_sens / MOUSE_SENS_BASE), &main_data->menu);
 }
 

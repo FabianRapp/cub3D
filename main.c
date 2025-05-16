@@ -12,6 +12,8 @@
 
 #include "includes/cub3D.h"
 #include "includes/menu.h"
+#include <libgen.h>
+#include <string.h>
 
 void	cursor_movement_per_frame(t_main *main_data)
 {
@@ -193,18 +195,20 @@ void	determine_centroid(t_triangle *tri)
 	tri->centroid.z = s.z / 3.0f;
 }
 
-void	add_obj_file_meshes(t_main *main_data)
+void	add_obj_file_meshes(t_main *main_data, int ac, char **argv)
 {
 	t_mesh	new_mesh;
 
-	new_mesh = load_obj_file("./", "axis.obj", main_data);
-	new_mesh.model_space_data.x_scale = 0.1;
-	new_mesh.model_space_data.y_scale = 0.1;
-	new_mesh.model_space_data.z_scale = 0.1;
-	make_mesh_render_rdy(&new_mesh);
-	if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
-		ft_error(main_data);
-	main_data->mesh_count++;
+	if (ac == 1) {
+		new_mesh = load_obj_file("./", "axis.obj", main_data);
+		new_mesh.model_space_data.x_scale = 0.1;
+		new_mesh.model_space_data.y_scale = 0.1;
+		new_mesh.model_space_data.z_scale = 0.1;
+		make_mesh_render_rdy(&new_mesh);
+		if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
+			ft_error(main_data);
+		main_data->mesh_count++;
+	}
 	//new_mesh = load_obj_file("teapot/", "teapot/teapot.obj", main_data);
 	//new_mesh.model_space_data.x_scale = 0.1;
 	//new_mesh.model_space_data.y_scale = 0.1;
@@ -233,7 +237,23 @@ void	add_obj_file_meshes(t_main *main_data)
 	//	ft_error(main_data);
 	//main_data->mesh_count++;
 
-	new_mesh = load_obj_file("./HP_Laptop_High_Poly/", "HP_Laptop_High_Poly/Laptop_HighPolay_HP_BI_2.obj", main_data);
+	if (ac == 1) {
+		new_mesh = load_obj_file("./HP_Laptop_High_Poly/", "HP_Laptop_High_Poly/Laptop_HighPolay_HP_BI_2.obj", main_data);
+	} else {
+		char buf[1027];
+		int len = strlen(argv[1]);
+		if (len > sizeof buf - 3) {
+			printf("Path too long");
+			cleanup_exit(main_data);
+		}
+		strcpy(buf, argv[1]);
+		char *dir = strdup(dirname(buf));
+		if (!ft_strjoin_inplace_char(&dir, '/')) {
+			ft_error(main_data);
+		}
+		new_mesh = load_obj_file(dir, argv[1], main_data);
+		free(dir);
+	}
 	make_mesh_render_rdy(&new_mesh);
 	if (!arr_append((void **)(&main_data->meshes), &new_mesh, sizeof(t_mesh), main_data->mesh_count))
 		ft_error(main_data);
@@ -247,7 +267,7 @@ void	add_obj_file_meshes(t_main *main_data)
 
 }
 
-int32_t	main(void)
+int32_t	main(int ac, char *av[])
 {
 	mlx_image_t		*ob;
 	static t_main			m_data; //has to be static so it's in the
@@ -262,7 +282,7 @@ int32_t	main(void)
 	printf("ASPECT_RATIO: %lf\n", ASPECT_RATIO);
 	int i = 0;
 	init_main(&m_data);
-	add_obj_file_meshes(&m_data);
+	add_obj_file_meshes(&m_data, ac, av);
 	//cleanup_exit(&m_data);
 	init_hooks(&m_data);//leave here to find easier
 	init_menu_widgets(&m_data);//leave here to find easier
