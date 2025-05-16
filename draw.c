@@ -234,9 +234,9 @@ t_light	init_day_light(double d_time)
 	//double	light_intens = 1 - fabs(0.5 - day_progress);
 	t_color_split light_col;
 	light_col.col = WHITE;
-	light_col.argb[R] *= 1 - 0.3;// * fabs(0.5 - day_progress);
-	light_col.argb[G] *= 1 - 0.5;// * fabs(0.5 - day_progress);
-	light_col.argb[B] *= 1 - 0.9;// * fabs(0.5 - day_progress);
+	//light_col.argb[R] *= 1 - 0.3;// * fabs(0.5 - day_progress);
+	//light_col.argb[G] *= 1 - 0.5;// * fabs(0.5 - day_progress);
+	//light_col.argb[B] *= 1 - 0.9;// * fabs(0.5 - day_progress);
 	init_light(&day_light, direct, light_col.col, 1 - fabs(0.5 - day_progress));
 	return (day_light);
 }
@@ -363,7 +363,7 @@ void	draw_mesh(t_mesh *mesh)
 
 	t_light			ambient_light2;
 	const t_vec3	light_direct2 =  {1.0f, -1.0f, -1.0f};
-	init_light(&ambient_light2, light_direct2, WHITE, 0.0f);
+	init_light(&ambient_light2, light_direct2, WHITE, 1.0f);
 
 	// t_light			ambient_light3;
 	// const t_vec3	light_direct3 =  {-1.0f, 1.0f, -1.0f};
@@ -395,10 +395,11 @@ void	draw_mesh(t_mesh *mesh)
 
 		t_light_argb_stren	color_scalars = {0};
 		color_scalars.v[A] = 1.0;
-		double light_dp = dot_prod_unit(model.normal, day_light.direct);
+		//double light_dp = dot_prod_unit(model.normal, day_light.direct);
+		//double light_dp = dot_prod_unit(model.normal, ambient_light2.direct);
 		//printf("%lf\n", light_dp);
-		light_dp = fmaxf(light_dp, 0.0f);
-		light_dp = 1.0;
+		//light_dp = fmaxf(light_dp, 0.0f);
+		double light_dp = 1.0;
 		color_scalars.v[R] += day_light.strength.v[R] *  light_dp;
 		color_scalars.v[G] += day_light.strength.v[G] *  light_dp;
 		color_scalars.v[B] += day_light.strength.v[B] *  light_dp;
